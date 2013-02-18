@@ -1,0 +1,248 @@
+
+image1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+initialBack
+  rotate: false
+  xy: 2, 2
+  size: 1303, 801
+  orig: 1303, 801
+  offset: 0, 0
+  index: -1
+backConf
+  rotate: false
+  xy: 2, 805
+  size: 1303, 801
+  orig: 1303, 801
+  offset: 0, 0
+  index: -1
+Confirm
+  rotate: false
+  xy: 1307, 2
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+MandoDirecciones
+  rotate: false
+  xy: 1609, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+barrahorizontalAbajo
+  rotate: false
+  xy: 2, 1608
+  size: 918, 70
+  orig: 918, 70
+  offset: 0, 0
+  index: -1
+barraverticalIzq
+  rotate: false
+  xy: 1307, 805
+  size: 81, 741
+  orig: 81, 741
+  offset: 0, 0
+  index: -1
+barraverticalDer
+  rotate: false
+  xy: 1390, 805
+  size: 62, 756
+  orig: 62, 756
+  offset: 0, 0
+  index: -1
+BotonLanza
+  rotate: false
+  xy: 1867, 2
+  size: 93, 270
+  orig: 93, 270
+  offset: 0, 0
+  index: -1
+unSec
+  rotate: false
+  xy: 1307, 304
+  size: 304, 75
+  orig: 304, 75
+  offset: 0, 0
+  index: -1
+tresSec
+  rotate: false
+  xy: 1307, 381
+  size: 304, 75
+  orig: 304, 75
+  offset: 0, 0
+  index: -1
+dosSec
+  rotate: false
+  xy: 1307, 458
+  size: 304, 75
+  orig: 304, 75
+  offset: 0, 0
+  index: -1
+cuatroSec
+  rotate: false
+  xy: 1307, 535
+  size: 304, 75
+  orig: 304, 75
+  offset: 0, 0
+  index: -1
+YesConfirm
+  rotate: false
+  xy: 1307, 612
+  size: 150, 100
+  orig: 150, 100
+  offset: 0, 0
+  index: -1
+NoConfirm
+  rotate: false
+  xy: 1459, 612
+  size: 150, 100
+  orig: 150, 100
+  offset: 0, 0
+  index: -1
+IndicadorVidas
+  rotate: false
+  xy: 1962, 2
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+VibrationOn
+  rotate: false
+  xy: 1609, 260
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+VibrationOff
+  rotate: false
+  xy: 1613, 304
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+SoundOn
+  rotate: false
+  xy: 1785, 304
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+SoundOff
+  rotate: false
+  xy: 1613, 336
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+Settings
+  rotate: false
+  xy: 1785, 336
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+Play
+  rotate: false
+  xy: 1613, 368
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+LoggedOut
+  rotate: false
+  xy: 1785, 368
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+LoggedIn
+  rotate: false
+  xy: 1613, 400
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+Help
+  rotate: false
+  xy: 1785, 400
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+Exit
+  rotate: false
+  xy: 1613, 432
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+ConfirmedExitOn
+  rotate: false
+  xy: 1785, 432
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+ConfirmedExitOff
+  rotate: false
+  xy: 1613, 464
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+Back
+  rotate: false
+  xy: 1785, 464
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+casilla
+  rotate: false
+  xy: 1962, 84
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+ArponParaBomba
+  rotate: false
+  xy: 1962, 132
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+iglus
+  rotate: false
+  xy: 1781, 260
+  size: 31, 32
+  orig: 31, 32
+  offset: 0, 0
+  index: -1
+
+image2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+secondBack
+  rotate: false
+  xy: 2, 2
+  size: 1303, 800
+  orig: 1303, 800
+  offset: 0, 0
+  index: -1
+fondoJuego
+  rotate: false
+  xy: 2, 804
+  size: 1300, 800
+  orig: 1300, 800
+  offset: 0, 0
+  index: -1
+barrahorizontalArriba
+  rotate: false
+  xy: 2, 1606
+  size: 921, 64
+  orig: 921, 64
+  offset: 0, 0
+  index: -1

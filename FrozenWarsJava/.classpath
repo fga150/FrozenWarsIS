@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="librerias/gdx-backend-jogl-natives.jar"/>
+	<classpathentry kind="lib" path="librerias/gdx-backend-jogl.jar"/>
+	<classpathentry kind="lib" path="librerias/gdx-natives.jar"/>
+	<classpathentry kind="lib" path="librerias/gdx-tools.jar"/>
+	<classpathentry kind="lib" path="librerias/gdx.jar"/>
+	<classpathentry kind="lib" path="librerias/jdom.jar"/>
+	<classpathentry kind="lib" path="librerias/netty-3.2.2.Final.jar"/>
+	<classpathentry kind="lib" path="librerias/SFS2X_API_Java.jar"/>
+	<classpathentry kind="lib" path="librerias/sfs2x-client-core.jar"/>
+	<classpathentry kind="lib" path="librerias/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="librerias/slf4j-simple-1.6.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
