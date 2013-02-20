@@ -1,0 +1,17 @@
+<Map>
+	<Name>mapaGuay</Name>
+	<Upgrades>
+		<Boots>5</Boots>
+		<MaxRange>4</MaxRange>
+		<NumLances>6</NumLances>
+		<Throw>4</Throw>
+	</Upgrades>
+	<Boxes>
+		<Breakable>4-5</Breakable>
+		<Breakable>1-4</Breakable>
+		<Breakable>2-4</Breakable>
+		<Breakable>5-6</Breakable>
+		<Breakable>4-6</Breakable>
+		<Breakable>8-5</Breakable>
+	</Boxes>
+</Map>
