@@ -213,9 +213,16 @@ ArponParaBomba
   orig: 32, 64
   offset: 0, 0
   index: -1
-iglus
+barril
   rotate: false
   xy: 1781, 260
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+iglus
+  rotate: false
+  xy: 1815, 260
   size: 31, 32
   orig: 31, 32
   offset: 0, 0

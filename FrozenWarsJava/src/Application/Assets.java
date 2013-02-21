@@ -51,7 +51,8 @@ public class Assets {
 	    private static AtlasRegion mapBackground;
 	    private static AtlasRegion lifeIcon;
 	    private static AtlasRegion directionPanel;
-	    private static AtlasRegion buttonLance;
+	    private static AtlasRegion barrel;
+	    private static AtlasRegion buttonHarpoon;
 	    private static AtlasRegion box;
 	    private static AtlasRegion igloo;
 	    private static AtlasRegion VerticalBarLeft;
@@ -109,32 +110,22 @@ public class Assets {
 			mapBackground = atlas.findRegion("fondoJuego");
 			lifeIcon = atlas.findRegion("IndicadorVidas");
 			directionPanel=(atlas.findRegion("MandoDirecciones"));
-			buttonLance=(atlas.findRegion("BotonLanza")); 
+			buttonHarpoon = atlas.findRegion("BotonLanza"); 
+			barrel = atlas.findRegion("barril");
 			box=((atlas.findRegion("casilla")));
 			VerticalBarLeft=((atlas.findRegion("barraverticalIzq")));
 			VerticalBarRigth=((atlas.findRegion("barraverticalDer")));
 			HorizontalBarUP=((atlas.findRegion("barrahorizontalArriba")));
 			HorizontalBarDown=((atlas.findRegion("barrahorizontalAbajo")));
 	    }
-	   
-	    
-	    public static AtlasRegion getLance() {
+	   	    
+	    public static AtlasRegion getHarpoon() {
 			return harpooon;
 		}
 
 
-		public static void setLance(AtlasRegion lance) {
-			Assets.harpooon = lance;
-		}
-
-
-		public static AtlasRegion getButtonLance() {
-			return buttonLance;
-		}
-
-
-		public static void setButtonLance(AtlasRegion buttonLance) {
-			Assets.buttonLance = buttonLance;
+		public static void setHarpoon(AtlasRegion harpooon) {
+			Assets.harpooon = harpooon;
 		}
 
 
@@ -152,6 +143,22 @@ public class Assets {
 			Assets.directionPanel = directionPanel;
 		}
 
+
+		public static AtlasRegion getButtonHarpoon() {
+			return buttonHarpoon;
+		}
+
+		public static void setButtonHarpoon(AtlasRegion buttonHarpoon) {
+			Assets.buttonHarpoon = buttonHarpoon;
+		}
+
+		public static AtlasRegion getBarrel() {
+			return barrel;
+		}
+
+		public static void setBarrel(AtlasRegion barrel) {
+			Assets.barrel = barrel;
+		}
 
 		public static AtlasRegion getMapBackground() {
 			return mapBackground;
