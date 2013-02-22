@@ -55,10 +55,10 @@ public class GameScreen implements Screen{
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		//--------------------------------------------------------------------
 		penguinAnimations = new PenguinAnimation[4];
-		penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/pClarosRojo.png"),manager.getPlayerPosition(0),manager.getPlayerDirection(0));
-		penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"),manager.getPlayerPosition(1),manager.getPlayerDirection(1));
-		penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pOscurosAmarillo.png"),manager.getPlayerPosition(2),manager.getPlayerDirection(2));
-		penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pOscurosAzul.png"),manager.getPlayerPosition(3),manager.getPlayerDirection(3));
+		penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/pClarosRojo.png"),manager.getPlayerPosition(0));
+		penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"),manager.getPlayerPosition(1));
+		penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pOscurosAmarillo.png"),manager.getPlayerPosition(2));
+		penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pOscurosAzul.png"),manager.getPlayerPosition(3));
         stateTime = 0f;     
 
       //--------------------------------------------------------------
@@ -100,20 +100,15 @@ public class GameScreen implements Screen{
 			for (int j=0;j<11;j++){
 				TextureRegion texture= null;
 				TypeSquare type = manager.getSquare(i,j);
-				texture = Assets.getBox(); 
+				if (type.equals(TypeSquare.empty)) texture = Assets.getBox(); 
+				else if (type.equals(TypeSquare.unbreakable)) texture = Assets.getIgloo();
+				else if (type.equals(TypeSquare.Harpoon)) texture = Assets.getLance();
 				batcher.draw(texture,i+8,j+1,1,1);
-				if (!type.equals(TypeSquare.empty)){
-					if (type.equals(TypeSquare.unbreakable)) texture = Assets.getIgloo();
-					else if (type.equals(TypeSquare.Harpoon)) texture = Assets.getHarpoon();				
-					else if (type.equals(TypeSquare.breakable)) texture  = Assets.getBarrel();
-					
-					 batcher.draw(texture,i+8,j+1,1,1);
-				}				
 			}
 		}	
 		
 		batcher.draw(Assets.getDirectionPanel(),1,0,7,7);
-		batcher.draw(Assets.getButtonHarpoon(),19,0,2,4);
+		batcher.draw(Assets.getButtonLance(),19,0,2,4);
 		
 		
 		//Display position of the player
@@ -162,7 +157,6 @@ public class GameScreen implements Screen{
         else if (dir.equals(Direction.up)) currentFrame = penguinAnimations[playerId].getwalkAnimationU().getKeyFrame(stateTime, true);
         else if (dir.equals(Direction.down)) currentFrame = penguinAnimations[playerId].getwalkAnimationD().getKeyFrame(stateTime, true);
         penguinAnimations[playerId].setPosition(position);
-        penguinAnimations[playerId].setlookAt(dir);
         penguinAnimations[playerId].setCurrentFrame(currentFrame);     
 	}
 	
@@ -206,5 +200,4 @@ public class GameScreen implements Screen{
 	public void setPreguinAnimations(PenguinAnimation[] preguinAnimations) {
 		this.penguinAnimations = preguinAnimations;
 	}
-
 }

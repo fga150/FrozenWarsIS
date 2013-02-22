@@ -6,8 +6,6 @@ import java.net.URL;
 
 import Application.MatchManager;
 import Application.MatchManager.Direction;
-
-import com.badlogic.gdx.math.Vector3;
 import com.smartfoxserver.v2.exceptions.SFSException;
 import sfs2x.client.SmartFox;
 import sfs2x.client.core.BaseEvent;
@@ -69,8 +67,10 @@ public class SmartFoxServer implements IEventListener {
 				else if (message.charAt(1)=='1') dir = Direction.right;
 				else if (message.charAt(1)=='2') dir = Direction.up;
 				else if (message.charAt(1)=='3') dir = Direction.down;
-				String text = (message.substring(2,3));
-				int jugador = Integer.parseInt(text);
+				int jugador = Integer.parseInt(message.substring(2));
+				manager.movePlayerEvent(dir,jugador);
+			}
+			else if (message.charAt(0)=='L'){
 				int xPosition = 0;
 				int yPosition = 0;
 				boolean found = false;
@@ -81,28 +81,6 @@ public class SmartFoxServer implements IEventListener {
 					else i++;
 				}
 				i = 0;
-				found = false;
-				while (i<message.length() & !found){
-					found = (message.charAt(i)=='Y');
-					if (found) yPosition = i;
-					else i++;
-				}
-				xPosition++;
-				float xPlayerPosition = Float.parseFloat(message.substring(xPosition, yPosition));
-				yPosition++;
-				float yPlayerPosition = Float.parseFloat(message.substring(yPosition));
-				manager.movePlayerEvent(dir,jugador,xPlayerPosition,yPlayerPosition);
-			}
-			else if (message.charAt(0)=='H'){
-				int xPosition = 0;
-				int yPosition = 0;
-				boolean found = false;
-				int i = 1;
-				while (i<message.length() & !found){
-					found = (message.charAt(i)=='X');
-					if (found) xPosition = i;
-					else i++;
-				}
 				found = false;
 				while (i<message.length() & !found){
 					found = (message.charAt(i)=='Y');
@@ -128,19 +106,18 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void conectaSala(String user){
 		sfsClient.send(new LoginRequest(user,"", SFS_ZONE));
-		System.currentTimeMillis();
 	}
 
-	public void sendMove(Direction dir, int myPlayerId,Vector3 position) {
+	public void sendMove(Direction dir, int myPlayerId) {
 		int dirCod = -1;
 		if (dir.equals(Direction.left)) dirCod = 0;
 		else if (dir.equals(Direction.right)) dirCod = 1;
 		else if (dir.equals(Direction.up)) dirCod = 2;
 		else if (dir.equals(Direction.down)) dirCod = 3;
-		sfsClient.send(new PublicMessageRequest("M"+Integer.toString(dirCod)+Integer.toString(myPlayerId)+"X"+ position.x +"Y" + position.y));	
+		sfsClient.send(new PublicMessageRequest("M"+Integer.toString(dirCod)+Integer.toString(myPlayerId)));	
 	}
 	
 	public void sendLance(int x,int y) {
-		sfsClient.send(new PublicMessageRequest("H"+"X"+x+"Y"+y));	
+		sfsClient.send(new PublicMessageRequest("L"+"X"+x+"Y"+y));	
 	}
 }

@@ -14,6 +14,7 @@ import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
@@ -33,17 +34,17 @@ public class InitialScreen implements Screen{
 	private BoundingBox helpClick;
 	private BoundingBox exitClick;
 	private Game game;
-	private SmartFoxServer sfsClient;
+	private BitmapFont font;
 	
-	public InitialScreen(Game game, GameSettings gSettings,SmartFoxServer sfsClient) {
+	public InitialScreen(Game game, GameSettings gSettings) {
 		this.game = game;
-		this.sfsClient = sfsClient;
 		this.gSettings = gSettings;
 		guiCam = new OrthographicCamera(420,380);
 		guiCam.position.set(210,190,0);
 		
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
+	    font = new BitmapFont();
 	    //Esquina inferior izq y superior derecha
 	    playClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
 	    settingsClick = new BoundingBox(new Vector3(245,300,0), new Vector3(395,320,0));
@@ -79,11 +80,14 @@ public class InitialScreen implements Screen{
       			
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (playClick.contains(touchPoint)){
-				MatchManager manager = new MatchManager(sfsClient);
+				/*Lanza partida
+				 * MatchManager manager = new MatchManager(sfsClient);
 				sfsClient.addManager(manager);
 				GameScreen gameScreen = new GameScreen(game,manager);
 				manager.setGameScreen(gameScreen);
-  				game.setScreen(gameScreen);
+  				game.setScreen(gameScreen);*/
+				MultiplayerScreen multiplayerScreen = new MultiplayerScreen(game, gSettings, this);
+				game.setScreen(multiplayerScreen);
       		}else{
       			//compruebo si he tocado settings
       			if(settingsClick.contains(touchPoint)){
@@ -134,16 +138,16 @@ public class InitialScreen implements Screen{
             batcher.end();
 
             //Dibujando elementos en pantalla activamos el Blending
-            batcher.enableBlending();
-            batcher.begin();
-	                
-	          batcher.draw(Assets.play, 25, 300);
-	          batcher.draw(Assets.settings, 225, 300);
-	          batcher.draw(Assets.help, 25, 240);
-	          batcher.draw(Assets.exit, 225, 240);
-	          
+            batcher.enableBlending();            
+            batcher.begin();      
+            font.draw(batcher, "hola", 150, 150);
+            batcher.draw(Assets.play, 25, 300);
+	        batcher.draw(Assets.settings, 225, 300);
+	        batcher.draw(Assets.help, 25, 240);
+	        batcher.draw(Assets.exit, 225, 240);
             batcher.end();
 
+            
 	}
 
 	@Override

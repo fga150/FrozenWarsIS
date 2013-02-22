@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LoadScreen implements Screen{
@@ -20,12 +21,12 @@ public class LoadScreen implements Screen{
 	private GameSettings gSettings;
 	private long t0, t1;
 	private boolean showed;
-	private SmartFoxServer sfsClient;
-	private String message;
+	private BitmapFont font;
 	 
 	public LoadScreen(Game game, GameSettings gSettings){
 		this.game = game;
 		this.showed = false;
+		font = new BitmapFont();
 		guiCam = new OrthographicCamera(420,380);
 		guiCam.position.set(210,190,0);
 		batcher = new SpriteBatch();
@@ -35,6 +36,7 @@ public class LoadScreen implements Screen{
 	
 	@Override
 	public void dispose() {
+		//font.dispose();
 		batcher.dispose();
 		Assets.music.dispose();
 		System.exit(0);			
@@ -60,22 +62,9 @@ public class LoadScreen implements Screen{
 		//en cuyo caso se abre la ventana de inicio
         if ((((t1 - t0) >= (5000)) || Gdx.input.justTouched()) && !showed) { 
         	showed = true;
-        	sfsClient = new SmartFoxServer();
-
-            Gdx.input.getTextInput(new TextInputListener() {
-                public void input(String text) {
-                  message = text;
-                  sfsClient.conectaSala(text);
-                  InitialScreen initialScreen = new InitialScreen(game,gSettings,sfsClient);
-                  game.setScreen(initialScreen);
-                }
-
-                public void canceled() {
-                    // TODO Auto-generated method stub
-
-                }
-              }, "Enter user: ","");
-			return;
+            InitialScreen initialScreen = new InitialScreen(game,gSettings);
+            game.setScreen(initialScreen);
+    	return;
         }
  
         GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0
@@ -92,6 +81,9 @@ public class LoadScreen implements Screen{
         batcher.draw(Assets.backConf,0,0,420,380);
         batcher.end();
    
+
+
+		// Begin our batch call
         batcher.enableBlending();
         //se elimina graficamente la transparencia ya que es un fondo
          switch ((int)((t1-t0)/1000)){ //Se mira el tiempo restante para cerrar la ventana para mostrarlo por pantalla
