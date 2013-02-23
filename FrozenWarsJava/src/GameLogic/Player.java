@@ -1,10 +1,13 @@
 package GameLogic;
 
+import Application.MatchManager.Direction;
+
 import com.badlogic.gdx.math.Vector3;
 
 public class Player {
 
 	private Vector3 position;
+	private Direction lookAt;
 	private int lifes;
 	private int speed;
 	private int range;
@@ -12,18 +15,35 @@ public class Player {
 	private boolean throwSkill;
 	
 	public Player(Vector3 position){
+		initialitePlayer();
+	}
+	
+	public Player(int i) {
+		initialitePlayer();
+		if (i == 0){
+			position = new Vector3(0,0,0);
+			setLookAt(Direction.right);			
+		}
+		else if (i == 1){
+			position = new Vector3(10,0,0);
+			setLookAt(Direction.left);
+		}
+		else if (i == 2){
+			position = new Vector3(0,10,0);
+			setLookAt(Direction.right);
+		}
+		else if (i == 3){
+			position = new Vector3(10,10,0);
+			setLookAt(Direction.left);
+		}
+	}
+	
+	public void initialitePlayer(){
 		this.lifes = 3;
 		this.speed = 1;
 		this.range = 1;
 		this.maxLancesAllow = 1;
 		this.throwSkill=false;
-	}
-	
-	public Player(int i) {
-		if (i == 0)	position = new Vector3(0,0,0);
-		else if (i == 1) position = new Vector3(10,0,0);
-		else if (i == 2) position = new Vector3(0,10,0);
-		else if (i == 3)position = new Vector3(10,10,0);
 	}
 
 	public void setPositionX(float newPositionX) {
@@ -71,6 +91,14 @@ public class Player {
 	}
 	public void setThrowSkill(boolean throwSkill) {
 		this.throwSkill = throwSkill;
+	}
+
+	public Direction getLookAt() {
+		return lookAt;
+	}
+
+	public void setLookAt(Direction lookAt) {
+		this.lookAt = lookAt;
 	}
 	
 }

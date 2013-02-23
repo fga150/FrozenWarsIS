@@ -17,23 +17,16 @@ backConf
   orig: 1303, 801
   offset: 0, 0
   index: -1
-PlayersList
-  rotate: false
-  xy: 1307, 2
-  size: 332, 302
-  orig: 332, 302
-  offset: 0, 0
-  index: -1
 Confirm
   rotate: false
-  xy: 1641, 2
+  xy: 1307, 2
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 MandoDirecciones
   rotate: false
-  xy: 1307, 306
+  xy: 1609, 2
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
@@ -52,13 +45,6 @@ barraverticalIzq
   orig: 81, 741
   offset: 0, 0
   index: -1
-Map
-  rotate: false
-  xy: 1565, 306
-  size: 300, 182
-  orig: 300, 182
-  offset: 0, 0
-  index: -1
 barraverticalDer
   rotate: false
   xy: 1390, 805
@@ -68,310 +54,177 @@ barraverticalDer
   index: -1
 BotonLanza
   rotate: false
-  xy: 1943, 2
+  xy: 1867, 2
   size: 93, 270
   orig: 93, 270
   offset: 0, 0
   index: -1
-MultiplayerGameTitle
-  rotate: false
-  xy: 1565, 490
-  size: 385, 65
-  orig: 385, 65
-  offset: 0, 0
-  index: -1
 unSec
   rotate: false
-  xy: 1565, 557
+  xy: 1307, 304
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
 tresSec
   rotate: false
-  xy: 1565, 634
+  xy: 1307, 381
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
 dosSec
   rotate: false
-  xy: 1565, 711
+  xy: 1307, 458
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
 cuatroSec
   rotate: false
-  xy: 2, 1680
+  xy: 1307, 535
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
-TeamPlayButton
-  rotate: false
-  xy: 308, 1680
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-SurvivalModeButton
-  rotate: false
-  xy: 308, 1737
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-NormalModeButton
-  rotate: false
-  xy: 308, 1794
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-BattleRoyalButton
-  rotate: false
-  xy: 308, 1851
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-1vsAllModeButton
-  rotate: false
-  xy: 308, 1908
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-CajaMapas
-  rotate: false
-  xy: 1307, 564
-  size: 151, 105
-  orig: 151, 105
-  offset: 0, 0
-  index: -1
 YesConfirm
   rotate: false
-  xy: 1307, 671
+  xy: 1307, 612
   size: 150, 100
   orig: 150, 100
   offset: 0, 0
   index: -1
 NoConfirm
   rotate: false
-  xy: 1867, 306
+  xy: 1459, 612
   size: 150, 100
   orig: 150, 100
   offset: 0, 0
   index: -1
-Pingu
-  rotate: false
-  xy: 1459, 671
-  size: 100, 120
-  orig: 100, 120
-  offset: 0, 0
-  index: -1
-PlayButton
-  rotate: false
-  xy: 2, 1757
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-InviteButton
-  rotate: false
-  xy: 2, 1800
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
 IndicadorVidas
   rotate: false
-  xy: 1460, 564
+  xy: 1962, 2
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
-MapRightArrow
-  rotate: false
-  xy: 1871, 557
-  size: 65, 85
-  orig: 65, 85
-  offset: 0, 0
-  index: -1
-MapLeftArrow
-  rotate: false
-  xy: 1938, 557
-  size: 65, 85
-  orig: 65, 85
-  offset: 0, 0
-  index: -1
 VibrationOn
   rotate: false
-  xy: 1867, 408
+  xy: 1609, 260
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 VibrationOff
   rotate: false
-  xy: 1867, 440
+  xy: 1613, 304
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 SoundOn
   rotate: false
-  xy: 1871, 644
+  xy: 1785, 304
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 SoundOff
   rotate: false
-  xy: 1871, 676
+  xy: 1613, 336
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Settings
   rotate: false
-  xy: 1871, 708
+  xy: 1785, 336
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Play
   rotate: false
-  xy: 1871, 740
+  xy: 1613, 368
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 LoggedOut
   rotate: false
-  xy: 1871, 772
+  xy: 1785, 368
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 LoggedIn
   rotate: false
-  xy: 2, 1843
+  xy: 1613, 400
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Help
   rotate: false
-  xy: 2, 1875
+  xy: 1785, 400
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Exit
   rotate: false
-  xy: 2, 1907
+  xy: 1613, 432
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 ConfirmedExitOn
   rotate: false
-  xy: 2, 1939
+  xy: 1785, 432
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 ConfirmedExitOff
   rotate: false
-  xy: 2, 1971
+  xy: 1613, 464
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Back
   rotate: false
-  xy: 2, 2003
+  xy: 1785, 464
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
-ExternalPlayersText
-  rotate: false
-  xy: 635, 1680
-  size: 190, 25
-  orig: 190, 25
-  offset: 0, 0
-  index: -1
 casilla
   rotate: false
-  xy: 1952, 490
+  xy: 1962, 84
   size: 46, 46
   orig: 46, 46
   offset: 0, 0
   index: -1
 ArponParaBomba
   rotate: false
-  xy: 2000, 490
+  xy: 1962, 132
   size: 32, 64
   orig: 32, 64
   offset: 0, 0
   index: -1
-StatusTick
+barril
   rotate: false
-  xy: 244, 1757
-  size: 45, 40
-  orig: 45, 40
-  offset: 0, 0
-  index: -1
-StatusInterrogation
-  rotate: false
-  xy: 2005, 557
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-StatusCancel
-  rotate: false
-  xy: 2005, 599
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-ModeRightArrow
-  rotate: false
-  xy: 174, 1907
-  size: 30, 44
-  orig: 30, 44
-  offset: 0, 0
-  index: -1
-ModeLeftArrow
-  rotate: false
-  xy: 174, 1953
-  size: 30, 44
-  orig: 30, 44
+  xy: 1781, 260
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 iglus
   rotate: false
-  xy: 244, 1800
+  xy: 1815, 260
   size: 31, 32
   orig: 31, 32
-  offset: 0, 0
-  index: -1
-TickExternalPlayers
-  rotate: false
-  xy: 1943, 274
-  size: 27, 24
-  orig: 27, 24
-  offset: 0, 0
-  index: -1
-ExternalPlayersButton
-  rotate: false
-  xy: 1972, 274
-  size: 27, 24
-  orig: 27, 24
   offset: 0, 0
   index: -1
 
@@ -398,17 +251,5 @@ barrahorizontalArriba
   xy: 2, 1606
   size: 921, 64
   orig: 921, 64
-  offset: 0, 0
-  index: -1
-
-image3.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-BackgroundMultiplayer
-  rotate: false
-  xy: 2, 2
-  size: 1024, 629
-  orig: 1024, 629
   offset: 0, 0
   index: -1

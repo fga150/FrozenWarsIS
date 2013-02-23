@@ -51,43 +51,14 @@ public class Assets {
 	    private static AtlasRegion mapBackground;
 	    private static AtlasRegion lifeIcon;
 	    private static AtlasRegion directionPanel;
-	    private static AtlasRegion buttonLance;
+	    private static AtlasRegion barrel;
+	    private static AtlasRegion buttonHarpoon;
 	    private static AtlasRegion box;
 	    private static AtlasRegion igloo;
 	    private static AtlasRegion VerticalBarLeft;
 	    private static AtlasRegion VerticalBarRigth;
 	    private static AtlasRegion HorizontalBarUP;
 	    private static AtlasRegion HorizontalBarDown;
-	    
-	    //Componentes de la pantalla de creacion de partida multiplayer
-	    public static AtlasRegion backMultiplayer;
-	    
-	    public static AtlasRegion _1vsAllMode;
-	    public static AtlasRegion battleRoyalMode;
-	    public static AtlasRegion normalRoyalMode;
-	    public static AtlasRegion survivalMode;
-	    public static AtlasRegion teamPlayMode;
-	    
-	    public static AtlasRegion externalPlayerButton;
-	    public static AtlasRegion externalPlayerText;
-	    public static AtlasRegion externalPlayerTick;
-	    
-	    public static AtlasRegion inviteButton;
-	    public static AtlasRegion playButton;
-	    
-	    public static AtlasRegion map;
-	    public static AtlasRegion multiplayerGameTitle;
-	    public static AtlasRegion pingu;
-	    
-	    public static AtlasRegion playerList;
-	    public static AtlasRegion statusCancel;
-	    public static AtlasRegion statusTick;
-	    public static AtlasRegion statusInterrogation;
-	    
-	    public static AtlasRegion mapLeftArrow;
-	    public static AtlasRegion mapRightArrow;
-	    public static AtlasRegion modeLeftArrow;
-	    public static AtlasRegion modeRightArrow;
 
 	    /**
 	     * Load.
@@ -139,64 +110,22 @@ public class Assets {
 			mapBackground = atlas.findRegion("fondoJuego");
 			lifeIcon = atlas.findRegion("IndicadorVidas");
 			directionPanel=(atlas.findRegion("MandoDirecciones"));
-			buttonLance=(atlas.findRegion("BotonLanza")); 
+			buttonHarpoon = atlas.findRegion("BotonLanza"); 
+			barrel = atlas.findRegion("barril");
 			box=((atlas.findRegion("casilla")));
 			VerticalBarLeft=((atlas.findRegion("barraverticalIzq")));
 			VerticalBarRigth=((atlas.findRegion("barraverticalDer")));
 			HorizontalBarUP=((atlas.findRegion("barrahorizontalArriba")));
 			HorizontalBarDown=((atlas.findRegion("barrahorizontalAbajo")));
-			
-			
-			
-		    //Componentes de la pantalla de creacion de partida multiplayer
-			backMultiplayer = atlas.findRegion("BackgroundMultiplayer");
-		    
-		    _1vsAllMode = atlas.findRegion("1vsAllModeButton");
-		    battleRoyalMode = atlas.findRegion("BattleRoyalButton");
-		    normalRoyalMode = atlas.findRegion("NormalModeButton");
-		    survivalMode = atlas.findRegion("SurvivalModeButton");
-		    teamPlayMode = atlas.findRegion("TeamPlayButton");
-		    
-		    externalPlayerButton = atlas.findRegion("ExternalPlayersButton");
-		    externalPlayerText = atlas.findRegion("ExternalPlayersText");
-		    externalPlayerTick = atlas.findRegion("TickExternalPlayers");
-		    
-		    inviteButton = atlas.findRegion("InviteButton");
-		    playButton = atlas.findRegion("PlayButton");
-		    
-		    map = atlas.findRegion("Map");
-		    multiplayerGameTitle = atlas.findRegion("MultiplayerGameTitle");
-		    pingu = atlas.findRegion("Pingu");
-		    
-		    playerList = atlas.findRegion("PlayersList");
-		    statusCancel = atlas.findRegion("StatusCancel");
-		    statusTick = atlas.findRegion("StatusTick");
-		    statusInterrogation = atlas.findRegion("StatusInterrogation");
-		    
-		    mapLeftArrow = atlas.findRegion("MapLeftArrow");
-		    mapRightArrow = atlas.findRegion("MapRightArrow");
-		    modeLeftArrow = atlas.findRegion("ModeLeftArrow");
-		    modeRightArrow = atlas.findRegion("ModeRightArrow");
 	    }
-	   
-	    
-	    public static AtlasRegion getLance() {
+	   	    
+	    public static AtlasRegion getHarpoon() {
 			return harpooon;
 		}
 
 
-		public static void setLance(AtlasRegion lance) {
-			Assets.harpooon = lance;
-		}
-
-
-		public static AtlasRegion getButtonLance() {
-			return buttonLance;
-		}
-
-
-		public static void setButtonLance(AtlasRegion buttonLance) {
-			Assets.buttonLance = buttonLance;
+		public static void setHarpoon(AtlasRegion harpooon) {
+			Assets.harpooon = harpooon;
 		}
 
 
@@ -214,6 +143,22 @@ public class Assets {
 			Assets.directionPanel = directionPanel;
 		}
 
+
+		public static AtlasRegion getButtonHarpoon() {
+			return buttonHarpoon;
+		}
+
+		public static void setButtonHarpoon(AtlasRegion buttonHarpoon) {
+			Assets.buttonHarpoon = buttonHarpoon;
+		}
+
+		public static AtlasRegion getBarrel() {
+			return barrel;
+		}
+
+		public static void setBarrel(AtlasRegion barrel) {
+			Assets.barrel = barrel;
+		}
 
 		public static AtlasRegion getMapBackground() {
 			return mapBackground;

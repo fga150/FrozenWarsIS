@@ -36,7 +36,10 @@ public class Match {
 	
 	public boolean isValidPlayerMovement(Direction dir, int myPlayerId) {
 		Player myPlayer = players[myPlayerId];
-		return isValidMovement(dir,myPlayer.getPosition());
+		boolean isValid = false;
+		if (!dir.equals(players[myPlayerId].getLookAt())) isValid = true;
+		else isValid = isValidMovement(dir,myPlayer.getPosition());
+		return isValid;
 	}
 	
 	/*** Check if an object which is moved in a direction(dir) from
@@ -61,12 +64,13 @@ public class Match {
 	
 	private boolean validNewSquare(Direction dir, Vector3 position){
 		
-		/* If valid means that the new position is inside the game board.
+		/* If valid means that the object located at position can move with direction dir.
 		   If player goes to a new square, we must check if that square
-		   doesn't containts objects that player can't go through. */
+		   doesn't contains objects that its collide with. */
 		
 		boolean valid = true;
-		boolean newSquare = false;
+		boolean newSquareV = false;
+		boolean newSquareH = false;
 		float oldPositionX = position.x;
 		float oldPositionY = position.y;
 		float newPositionX = position.x;
@@ -86,7 +90,7 @@ public class Match {
 		
 		/*Check if we moved to new square. If true we get the values of the new squares
 		 to check it. */
-		
+		/*
 		if (dir.equals(Direction.left)) 
 			newSquare = ((int)newPositionX) != ((int)oldPositionX);
 		else if (dir.equals(Direction.right)){
@@ -99,16 +103,19 @@ public class Match {
 		}
 		else if (dir.equals(Direction.down))
 			newSquare = ((int)newPositionY) != ((int)oldPositionY);
-		
+*/		
 		/*If moved to a new square, must check if there's any objects which can't
 		go through*/
-		
+		/*
 		if (newSquare){
+			
+			
+			
 			TypeSquare square = map.getposition(newSquareX,newSquareY);
 			valid = !(square.equals(TypeSquare.unbreakable)|| square.equals(TypeSquare.breakable) 
 					  ||square.equals(TypeSquare.Harpoon));
 		}
-		
+		*/
 		return valid;
 	
 	}
@@ -134,15 +141,19 @@ public class Match {
 		return valid;
 	}
 	
-	/*** ***/
+	/**
+	 * @param yPlayerPosition 
+	 * @param xPlayerPosition * ***/
 	
-	public void movePlayer(Direction dir, int playerId) {
+	public void movePlayer(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition) {
 		Player myPlayer = players[playerId];
-		Vector3 position = myPlayer.getPosition();
-		if (dir.equals(Direction.left)) myPlayer.setPositionX(position.x-minimalMove);
-		else if (dir.equals(Direction.right)) myPlayer.setPositionX(position.x+minimalMove);
-		else if (dir.equals(Direction.up)) myPlayer.setPositionY(position.y+minimalMove);
-		else if (dir.equals(Direction.down)) myPlayer.setPositionY(position.y-minimalMove);
+		if (!dir.equals(players[playerId].getLookAt())) players[playerId].setLookAt(dir);
+		else {
+			if (dir.equals(Direction.left)) myPlayer.setPositionX(xPlayerPosition-minimalMove);
+			else if (dir.equals(Direction.right)) myPlayer.setPositionX(xPlayerPosition+minimalMove);
+			else if (dir.equals(Direction.up)) myPlayer.setPositionY(yPlayerPosition+minimalMove);
+			else if (dir.equals(Direction.down)) myPlayer.setPositionY(yPlayerPosition-minimalMove);
+		}
 	}
 	
 	public void putLanceAt(int xLancePosition, int yLancePosition) {
@@ -214,5 +225,9 @@ public class Match {
 
 	public TypeSquare getSquare(int i, int j) {
 		return map.getposition(i,j);
+	}
+
+	public Direction getPlayerDirection(int i) {
+		return players[i].getLookAt();
 	}
 }

@@ -1,6 +1,7 @@
 package Application;
 import com.badlogic.gdx.math.Vector3;
 
+import Application.MatchManager.Direction;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Match;
 import Screens.GameScreen;
@@ -26,7 +27,7 @@ public class MatchManager {
 	public void movePlayer(Direction dir){
 		long currentTime = System.currentTimeMillis();
 		if (match.isValidPlayerMovement(dir,myPlayerId) && ((currentTime-lastMessage)>=200)){
-			sfsClient.sendMove(dir,myPlayerId);
+			sfsClient.sendMove(dir,myPlayerId,match.getMyPlayerPosition(myPlayerId));
 			this.lastMessage = System.currentTimeMillis();
 		}
 	}
@@ -39,10 +40,9 @@ public class MatchManager {
 		}
 	}
 	
-	public void movePlayerEvent(Direction dir,int playerId){
-		match.movePlayer(dir,playerId);
-		Vector3 position = match.getMyPlayerPosition(playerId);
-		gameScreen.movePlayer(dir,playerId,position);
+	public void movePlayerEvent(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition) {
+		match.movePlayer(dir,playerId,xPlayerPosition,yPlayerPosition);
+		gameScreen.movePlayer(dir,playerId,match.getMyPlayerPosition(playerId));
 	}
 	
 	public void putLanceEvent(int xLancePosition, int yLancePosition) {
@@ -90,6 +90,10 @@ public class MatchManager {
 
 	public TypeSquare getSquare(int i, int j) {
 		return match.getSquare(i,j);
+	}
+
+	public Direction getPlayerDirection(int i) {
+		return match.getPlayerDirection(i);
 	}
 	
 }
