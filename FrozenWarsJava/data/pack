@@ -353,9 +353,16 @@ ModeLeftArrow
   orig: 30, 44
   offset: 0, 0
   index: -1
-iglus
+barril
   rotate: false
   xy: 244, 1800
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+iglus
+  rotate: false
+  xy: 206, 1907
   size: 31, 32
   orig: 31, 32
   offset: 0, 0

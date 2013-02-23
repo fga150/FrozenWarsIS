@@ -46,7 +46,12 @@ public class MultiplayerScreen implements Screen{
     private  BoundingBox modeLeftArrowClick;
     private  BoundingBox modeRightArrowClick;
 	
+    private BoundingBox scrollDownPlayersClick;
+    private BoundingBox scrollUpPlayersClick;
     
+    // Settings
+    boolean externalPlayers;
+    int gameMode;
 
     public MultiplayerScreen(Game game, GameSettings gSettings,InitialScreen initialScreen) {
 		this.game = game;
@@ -73,17 +78,23 @@ public class MultiplayerScreen implements Screen{
           }, "Enter user: ","");
 	    
 	    //Esquina inferior izq y superior derecha
-	    externalPlayerButtonClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
-	    externalPlayerTextClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
-	    externalPlayerTickClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
+	    //externalPlayerButtonClick = new BoundingBox(new Vector3(130,380,0), new Vector3(290,400,0));
+	    //externalPlayerTextClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
+	    externalPlayerTickClick = new BoundingBox(new Vector3(120,370,0), new Vector3(170,410,0));
 	    
-	    inviteButtonClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
-	    playButtonClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
+	    inviteButtonClick = new BoundingBox(new Vector3(550,50,0), new Vector3(790,90,0));
+	    playButtonClick = new BoundingBox(new Vector3(200,50,0), new Vector3(440,90,0));
 	    
-	    mapLeftArrowClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
-	    mapRightArrowClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
-	    modeLeftArrowClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
-	    modeRightArrowClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
+	    mapLeftArrowClick = new BoundingBox(new Vector3(50,200,0), new Vector3(100,290,0));
+	    mapRightArrowClick = new BoundingBox(new Vector3(450,200,0), new Vector3(510,280,0));
+	    modeLeftArrowClick = new BoundingBox(new Vector3(80,450,0), new Vector3(120,500,0));
+	    modeRightArrowClick = new BoundingBox(new Vector3(425,450,0), new Vector3(460,500,0));
+	    
+	    scrollDownPlayersClick = new BoundingBox(new Vector3(900,190,0), new Vector3(950,405,0));
+	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,225,0));
+	    
+	    externalPlayers = false;
+	    gameMode = 0;
 	}
 
 	
@@ -110,15 +121,22 @@ public class MultiplayerScreen implements Screen{
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-      			
+      		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
-			if (externalPlayerButtonClick.contains(touchPoint)){
+			if (playButtonClick.contains(touchPoint)){
 				System.out.println("Entrando a partida");
 				MatchManager manager = new MatchManager(sfsClient);
 				sfsClient.addManager(manager);
 				GameScreen gameScreen = new GameScreen(game,manager);
 				manager.setGameScreen(gameScreen);
   				game.setScreen(gameScreen);
+      		} else if (externalPlayerTickClick.contains(touchPoint)){
+      			externalPlayers = !externalPlayers;
+      		} else if (modeLeftArrowClick.contains(touchPoint)){
+      			if (gameMode == 0) gameMode = 4;
+      			else gameMode--;
+      		} else if (modeRightArrowClick.contains(touchPoint)){
+      			gameMode = (gameMode + 1) % 5;
       		}
 			return;
 		}
@@ -142,12 +160,12 @@ public class MultiplayerScreen implements Screen{
             batcher.enableBlending();
             batcher.begin();
             batcher.draw(Assets.multiplayerGameTitle, 320, 540);
-            batcher.draw(Assets.normalRoyalMode, 100, 450);
+            drawMode(batcher);
             batcher.draw(Assets.modeLeftArrow, 85, 455);
             batcher.draw(Assets.modeRightArrow, 435, 455);   
             
             batcher.draw(Assets.externalPlayerButton, 130, 380);   
-            batcher.draw(Assets.externalPlayerTick, 130, 380);   
+            if (externalPlayers) batcher.draw(Assets.externalPlayerTick, 130, 380);   
             batcher.draw(Assets.externalPlayerText, 200, 380);   
             
             
@@ -179,6 +197,15 @@ public class MultiplayerScreen implements Screen{
             batcher.end();
 
 	}
+
+	private void drawMode(SpriteBatch batcher) {
+		if (gameMode == 0) batcher.draw(Assets.normalRoyalMode, 100, 450);
+		else if (gameMode == 1) batcher.draw(Assets.teamPlayMode, 100, 450);
+		else if (gameMode == 2) batcher.draw(Assets._1vsAllMode, 100, 450);
+		else if (gameMode == 3) batcher.draw(Assets.survivalMode, 100, 450);
+		else if (gameMode == 4) batcher.draw(Assets.battleRoyalMode, 100, 450);
+	}
+
 
 	@Override
 	public void resize(int arg0, int arg1) {
