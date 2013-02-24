@@ -34,7 +34,6 @@ public class InitialScreen implements Screen{
 	private BoundingBox helpClick;
 	private BoundingBox exitClick;
 	private Game game;
-	private BitmapFont font;
 	
 	public InitialScreen(Game game, GameSettings gSettings) {
 		this.game = game;
@@ -44,7 +43,6 @@ public class InitialScreen implements Screen{
 		
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
-	    font = new BitmapFont();
 	    //Esquina inferior izq y superior derecha
 	    playClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
 	    settingsClick = new BoundingBox(new Vector3(245,300,0), new Vector3(395,320,0));
@@ -140,7 +138,6 @@ public class InitialScreen implements Screen{
             //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();            
             batcher.begin();      
-            font.draw(batcher, "hola", 150, 150);
             batcher.draw(Assets.play, 25, 300);
 	        batcher.draw(Assets.settings, 225, 300);
 	        batcher.draw(Assets.help, 25, 240);

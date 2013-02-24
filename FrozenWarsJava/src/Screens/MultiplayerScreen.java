@@ -1,6 +1,7 @@
 package Screens;
 
 import java.io.IOException;
+import java.util.Vector;
 
 
 import Application.Assets;
@@ -12,8 +13,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -32,7 +35,7 @@ public class MultiplayerScreen implements Screen{
 	private String message;
 	private Game game;
 	private SmartFoxServer sfsClient;
-	
+	private BitmapFont font;
 	    
     private  BoundingBox externalPlayerButtonClick;
     private  BoundingBox externalPlayerTextClick;
@@ -52,7 +55,29 @@ public class MultiplayerScreen implements Screen{
     // Settings
     boolean externalPlayers;
     int gameMode;
-
+    
+    private class invitedInfo{
+    	private String userName;
+    	private String status;
+		public String getStatus() {
+			return status;
+		}
+		public void setStatus(String status) {
+			this.status = status;
+		}
+		public String getUserName() {
+			return userName;
+		}
+		public invitedInfo(String userName, String status) {
+			this.userName = userName;
+			this.status = status;
+		}
+    }	
+	
+    private Vector<invitedInfo> invited;
+	private int invitedScroll;
+    
+    
     public MultiplayerScreen(Game game, GameSettings gSettings,InitialScreen initialScreen) {
 		this.game = game;
 		//this.sfsClient = initialScreen;
@@ -62,6 +87,22 @@ public class MultiplayerScreen implements Screen{
 		
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
+	    font = new BitmapFont();
+	    font.setColor(Color.BLACK);
+	    
+	    invited = new Vector<invitedInfo>();
+	    //For testing
+	    invited.add(new invitedInfo("Me", "Accepted"));
+	    invited.add(new invitedInfo("Player1", "Waiting"));
+	    invited.add(new invitedInfo("Player2", "Cancelled"));
+	    invited.add(new invitedInfo("Player3", "Waiting"));
+	    invited.add(new invitedInfo("Player4", "Accepted"));
+	    invited.add(new invitedInfo("Player5", "Waiting"));
+	    invited.add(new invitedInfo("Player6", "Accepted"));
+	    invited.add(new invitedInfo("Player7", "Cancelled"));
+	    invited.add(new invitedInfo("Player8", "Cancelled"));
+	    
+	    invitedScroll = 0;
 	    
 	    sfsClient = new SmartFoxServer();
 
@@ -90,8 +131,8 @@ public class MultiplayerScreen implements Screen{
 	    modeLeftArrowClick = new BoundingBox(new Vector3(80,450,0), new Vector3(120,500,0));
 	    modeRightArrowClick = new BoundingBox(new Vector3(425,450,0), new Vector3(460,500,0));
 	    
-	    scrollDownPlayersClick = new BoundingBox(new Vector3(900,190,0), new Vector3(950,405,0));
-	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,225,0));
+	    scrollDownPlayersClick = new BoundingBox(new Vector3(900,190,0), new Vector3(950,225,0));
+	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,400,0));
 	    
 	    externalPlayers = false;
 	    gameMode = 0;
@@ -137,6 +178,10 @@ public class MultiplayerScreen implements Screen{
       			else gameMode--;
       		} else if (modeRightArrowClick.contains(touchPoint)){
       			gameMode = (gameMode + 1) % 5;
+      		} else if (scrollDownPlayersClick.contains(touchPoint)){
+      			if (invitedScroll < invited.size() - 5) invitedScroll++;
+      		} else if (scrollUpPlayersClick.contains(touchPoint)){
+      			if (invitedScroll != 0) invitedScroll--;
       		}
 			return;
 		}
@@ -160,7 +205,7 @@ public class MultiplayerScreen implements Screen{
             batcher.enableBlending();
             batcher.begin();
             batcher.draw(Assets.multiplayerGameTitle, 320, 540);
-            drawMode(batcher);
+            drawMode();
             batcher.draw(Assets.modeLeftArrow, 85, 455);
             batcher.draw(Assets.modeRightArrow, 435, 455);   
             
@@ -181,24 +226,26 @@ public class MultiplayerScreen implements Screen{
             
             batcher.draw(Assets.pingu, 565, 82);
             
-            batcher.draw(Assets.statusCancel, 648, 190);
-            batcher.draw(Assets.statusTick, 648, 232);
-            batcher.draw(Assets.statusInterrogation, 648, 278);
-            batcher.draw(Assets.statusTick, 648, 325);
-            batcher.draw(Assets.statusInterrogation, 648, 367);
-            
-
-	  
-	        
-	         // batcher.draw(Assets.settings, 225, 300);
-	         // batcher.draw(Assets.help, 25, 240);
-	         // batcher.draw(Assets.exit, 225, 240);
-	          
+            drawInvited();
+            	          
             batcher.end();
 
 	}
 
-	private void drawMode(SpriteBatch batcher) {
+	private void drawInvited() {
+		for (int i = 0; i < Math.min(invited.size(), 5); i++){
+			font.draw(batcher, invited.elementAt(i+invitedScroll).getUserName(), 700,(395-45*i));
+			if (invited.elementAt(i+invitedScroll).getStatus().equals("Accepted")) 
+				batcher.draw(Assets.statusTick, 650, (370-45*i));
+			else if (invited.elementAt(i+invitedScroll).getStatus().equals("Waiting")) 
+				batcher.draw(Assets.statusInterrogation, 650, (370-45*i));
+			else if (invited.elementAt(i+invitedScroll).getStatus().equals("Cancelled")) 
+			batcher.draw(Assets.statusCancel, 650, (370-45*i));
+		}
+	}
+
+
+	private void drawMode() {
 		if (gameMode == 0) batcher.draw(Assets.normalRoyalMode, 100, 450);
 		else if (gameMode == 1) batcher.draw(Assets.teamPlayMode, 100, 450);
 		else if (gameMode == 2) batcher.draw(Assets._1vsAllMode, 100, 450);

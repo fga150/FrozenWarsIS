@@ -21,12 +21,11 @@ public class LoadScreen implements Screen{
 	private GameSettings gSettings;
 	private long t0, t1;
 	private boolean showed;
-	private BitmapFont font;
+
 	 
 	public LoadScreen(Game game, GameSettings gSettings){
 		this.game = game;
 		this.showed = false;
-		font = new BitmapFont();
 		guiCam = new OrthographicCamera(420,380);
 		guiCam.position.set(210,190,0);
 		batcher = new SpriteBatch();
