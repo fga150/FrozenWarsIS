@@ -75,6 +75,7 @@ public class Assets {
 	    
 	    public static AtlasRegion inviteButton;
 	    public static AtlasRegion playButton;
+	    public static AtlasRegion backButton;
 	    
 	    public static AtlasRegion map;
 	    public static AtlasRegion multiplayerGameTitle;
@@ -165,6 +166,7 @@ public class Assets {
 		    
 		    inviteButton = atlas.findRegion("InviteButton");
 		    playButton = atlas.findRegion("PlayButton");
+		    backButton = atlas.findRegion("BackButton");
 		    
 		    map = atlas.findRegion("Map");
 		    multiplayerGameTitle = atlas.findRegion("MultiplayerGameTitle");

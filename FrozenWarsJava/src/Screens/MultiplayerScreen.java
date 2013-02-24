@@ -36,6 +36,7 @@ public class MultiplayerScreen implements Screen{
 	private Game game;
 	private SmartFoxServer sfsClient;
 	private BitmapFont font;
+	private InitialScreen initialScreen;
 	    
     private  BoundingBox externalPlayerButtonClick;
     private  BoundingBox externalPlayerTextClick;
@@ -43,6 +44,7 @@ public class MultiplayerScreen implements Screen{
     
     private  BoundingBox inviteButtonClick;
     private  BoundingBox playButtonClick;
+    private  BoundingBox backButtonClick;
     
     private  BoundingBox mapLeftArrowClick;
     private  BoundingBox mapRightArrowClick;
@@ -80,6 +82,7 @@ public class MultiplayerScreen implements Screen{
     
     public MultiplayerScreen(Game game, GameSettings gSettings,InitialScreen initialScreen) {
 		this.game = game;
+		this.initialScreen = initialScreen;
 		//this.sfsClient = initialScreen;
 		//this.gSettings = gSettings;
 		guiCam = new OrthographicCamera(1024,630);
@@ -123,8 +126,9 @@ public class MultiplayerScreen implements Screen{
 	    //externalPlayerTextClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
 	    externalPlayerTickClick = new BoundingBox(new Vector3(120,370,0), new Vector3(170,410,0));
 	    
-	    inviteButtonClick = new BoundingBox(new Vector3(550,50,0), new Vector3(790,90,0));
-	    playButtonClick = new BoundingBox(new Vector3(200,50,0), new Vector3(440,90,0));
+	    inviteButtonClick = new BoundingBox(new Vector3(550,80,0), new Vector3(790,120,0));
+	    playButtonClick = new BoundingBox(new Vector3(200,80,0), new Vector3(440,120,0));
+	    backButtonClick = new BoundingBox(new Vector3(370,20,0), new Vector3(610,60,0));
 	    
 	    mapLeftArrowClick = new BoundingBox(new Vector3(50,200,0), new Vector3(100,290,0));
 	    mapRightArrowClick = new BoundingBox(new Vector3(450,200,0), new Vector3(510,280,0));
@@ -181,7 +185,9 @@ public class MultiplayerScreen implements Screen{
       		} else if (scrollDownPlayersClick.contains(touchPoint)){
       			if (invitedScroll < invited.size() - 5) invitedScroll++;
       		} else if (scrollUpPlayersClick.contains(touchPoint)){
-      			if (invitedScroll != 0) invitedScroll--;
+      			if (invitedScroll != 0) invitedScroll--;     	
+			} else if (backButtonClick.contains(touchPoint)){
+      			game.setScreen(initialScreen);
       		}
 			return;
 		}
@@ -221,10 +227,11 @@ public class MultiplayerScreen implements Screen{
             
             batcher.draw(Assets.playerList, 630, 180); 
             
-            batcher.draw(Assets.playButton, 200, 50); 
-            batcher.draw(Assets.inviteButton, 550, 50); 
-            
-            batcher.draw(Assets.pingu, 565, 82);
+            batcher.draw(Assets.playButton, 200, 80); 
+            batcher.draw(Assets.inviteButton, 550, 80); 
+            batcher.draw(Assets.backButton, 370, 20); 
+           
+            batcher.draw(Assets.pingu, 565, 112);
             
             drawInvited();
             	          
