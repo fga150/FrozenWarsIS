@@ -20,8 +20,6 @@ public class LoadScreen implements Screen{
 	private GameSettings gSettings;
 	private long t0, t1;
 	private boolean showed;
-	private SmartFoxServer sfsClient;
-	private String message;
 	 
 	public LoadScreen(Game game, GameSettings gSettings){
 		this.game = game;
@@ -60,22 +58,10 @@ public class LoadScreen implements Screen{
 		//en cuyo caso se abre la ventana de inicio
         if ((((t1 - t0) >= (5000)) || Gdx.input.justTouched()) && !showed) { 
         	showed = true;
-        	sfsClient = new SmartFoxServer();
+        	InitialScreen initialScreen = new InitialScreen(game,gSettings);
+            game.setScreen(initialScreen);
+    	return;
 
-            Gdx.input.getTextInput(new TextInputListener() {
-                public void input(String text) {
-                  message = text;
-                  sfsClient.conectaSala(text);
-                  InitialScreen initialScreen = new InitialScreen(game,gSettings,sfsClient);
-                  game.setScreen(initialScreen);
-                }
-
-                public void canceled() {
-                    // TODO Auto-generated method stub
-
-                }
-              }, "Enter user: ","");
-			return;
         }
  
         GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0

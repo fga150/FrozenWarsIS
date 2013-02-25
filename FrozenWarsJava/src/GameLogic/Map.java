@@ -68,15 +68,15 @@ public class Map {
 	}
 
 	private void loadXML(String mapPath) {
-		xmlMap = "<Map> <Name>mapaGuay</Name> <Upgrades> <Boots>5</Boots> <MaxRange>4</MaxRange> <NumLances>6</NumLances> <Throw>4</Throw> </Upgrades>" +
+		/*xmlMap = "<Map> <Name>mapaGuay</Name> <Upgrades> <Boots>5</Boots> <MaxRange>4</MaxRange> <NumLances>6</NumLances> <Throw>4</Throw> </Upgrades>" +
 				" <Boxes> <Breakable>4-5</Breakable> <Breakable>1-4</Breakable> <Breakable>2-4</Breakable> <Breakable>5-6</Breakable> " +
-				"<Breakable>4-6</Breakable> <Breakable>8-5</Breakable> </Boxes> </Map>";
-		/*try {
-			FileHandle handle = Gdx.files.getFileHandle("data/".concat("mapaPrueba.xml"), FileType.External);
+				"<Breakable>4-6</Breakable> <Breakable>8-5</Breakable> </Boxes> </Map>";*/
+		try {
+			FileHandle handle = Gdx.files.internal("data/".concat(mapPath)); //Gdx.files.getFileHandle("data/".concat("mapaPrueba.xml"), FileType.External);
 			xmlMap = handle.readString();
 		} catch (Exception e) {
-			System.out.println("HHHH");
-		}*/
+			System.out.println("Error de carga de fichero");
+		}
 	}	
 	
 	private void loadName(){
@@ -100,7 +100,6 @@ public class Map {
 			box = getData(xmlBoxes, "Breakable");
 			loadBox(box, TypeSquare.breakable);
 			xmlBoxes = xmlBoxes.replaceFirst("<Breakable>".concat(box).concat("</Breakable>"), "");
-			System.out.println(xmlBoxes);
 		}
 		
 		while (xmlBoxes.contains("Unbreakable")){
@@ -120,8 +119,6 @@ public class Map {
 		int dash = box.indexOf("-");
 		int x = Integer.parseInt(box.substring(0, dash));
 		int y = Integer.parseInt(box.substring(dash+1, box.length()));
-		System.out.println(x);
-		System.out.println(y);
 		if (x <= length && y <= width) boardGame[x][y] = type;
 	}
 	

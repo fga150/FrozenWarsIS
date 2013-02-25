@@ -33,11 +33,9 @@ public class InitialScreen implements Screen{
 	private BoundingBox helpClick;
 	private BoundingBox exitClick;
 	private Game game;
-	private SmartFoxServer sfsClient;
 	
-	public InitialScreen(Game game, GameSettings gSettings,SmartFoxServer sfsClient) {
+	public InitialScreen(Game game, GameSettings gSettings) {
 		this.game = game;
-		this.sfsClient = sfsClient;
 		this.gSettings = gSettings;
 		guiCam = new OrthographicCamera(420,380);
 		guiCam.position.set(210,190,0);
@@ -79,11 +77,14 @@ public class InitialScreen implements Screen{
       			
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (playClick.contains(touchPoint)){
-				MatchManager manager = new MatchManager(sfsClient);
+				/*MatchManager manager = new MatchManager(sfsClient);
 				sfsClient.addManager(manager);
 				GameScreen gameScreen = new GameScreen(game,manager);
 				manager.setGameScreen(gameScreen);
-  				game.setScreen(gameScreen);
+  				game.setScreen(gameScreen);*/
+				MultiplayerScreen multiplayerScreen = new MultiplayerScreen(game, gSettings, this);
+				game.setScreen(multiplayerScreen);
+
       		}else{
       			//compruebo si he tocado settings
       			if(settingsClick.contains(touchPoint)){
