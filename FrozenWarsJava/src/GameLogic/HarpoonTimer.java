@@ -1,5 +1,12 @@
 package GameLogic;
 
-public class HarpoonTimer {
+public class HarpoonTimer extends Thread{
 
+	HarpoonTimer(){
+		
+	}
+	
+	public void Run(){
+		
+	}
 }

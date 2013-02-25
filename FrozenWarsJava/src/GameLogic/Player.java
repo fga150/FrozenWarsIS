@@ -13,6 +13,7 @@ public class Player {
 	private int range;
 	private int maxLancesAllow;
 	private boolean throwSkill;
+	private boolean specialMove;
 	
 	public Player(Vector3 position){
 		initialitePlayer();
@@ -44,6 +45,7 @@ public class Player {
 		this.range = 1;
 		this.maxLancesAllow = 1;
 		this.throwSkill=false;
+		this.specialMove=false;
 	}
 
 	public void setPositionX(float newPositionX) {
@@ -100,5 +102,11 @@ public class Player {
 	public void setLookAt(Direction lookAt) {
 		this.lookAt = lookAt;
 	}
-	
+	public boolean getSpecialMove() {
+		return specialMove;
+	}
+
+	public void setSpecialMove(boolean specialMove) {
+		this.specialMove = specialMove;
+	}
 }

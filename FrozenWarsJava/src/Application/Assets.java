@@ -49,7 +49,10 @@ public class Assets {
 	    
 	    private static AtlasRegion harpooon;
 	    private static AtlasRegion mapBackground;
-	    private static AtlasRegion lifeIcon;
+	    private static AtlasRegion lifeIconYellow;
+	    private static AtlasRegion lifeIconRed;
+	    private static AtlasRegion lifeIconGreen;
+	    private static AtlasRegion lifeIconBlue;
 	    private static AtlasRegion directionPanel;
 	    private static AtlasRegion barrel;
 		private static AtlasRegion buttonHarpoon;
@@ -139,7 +142,10 @@ public class Assets {
 		    harpooon = atlas.findRegion("ArponParaBomba");
 		    setIgloo(atlas.findRegion("iglus"));
 			mapBackground = atlas.findRegion("fondoJuego");
-			lifeIcon = atlas.findRegion("IndicadorVidas");
+			lifeIconYellow = atlas.findRegion("vidasJugadorAmarillo");
+			lifeIconRed = atlas.findRegion("vidasJugadorRojo");
+			lifeIconBlue = atlas.findRegion("vidasJugadorAzul");
+			lifeIconGreen = atlas.findRegion("vidasJugadorVerde");
 			directionPanel=(atlas.findRegion("MandoDirecciones"));
 			buttonHarpoon = atlas.findRegion("BotonLanza"); 
 			barrel = atlas.findRegion("barril");
@@ -236,13 +242,36 @@ public class Assets {
 		}
 
 
-		public static AtlasRegion getLifeIcon() {
-			return lifeIcon;
+		public static AtlasRegion getLifeIconYellow() {
+			return lifeIconYellow;
 		}
 
+		public static void setLifeIconYellow(AtlasRegion lifeIconYellow) {
+			Assets.lifeIconYellow = lifeIconYellow;
+		}
 
-		public static void setLifeIcon(AtlasRegion lifeIcon) {
-			Assets.lifeIcon = lifeIcon;
+		public static AtlasRegion getLifeIconRed() {
+			return lifeIconRed;
+		}
+
+		public static void setLifeIconRed(AtlasRegion lifeIconRed) {
+			Assets.lifeIconRed = lifeIconRed;
+		}
+
+		public static AtlasRegion getLifeIconGreen() {
+			return lifeIconGreen;
+		}
+
+		public static void setLifeIconGreen(AtlasRegion lifeIconGreen) {
+			Assets.lifeIconGreen = lifeIconGreen;
+		}
+
+		public static AtlasRegion getLifeIconBlue() {
+			return lifeIconBlue;
+		}
+
+		public static void setLifeIconBlue(AtlasRegion lifeIconBlue) {
+			Assets.lifeIconBlue = lifeIconBlue;
 		}
 
 		public static AtlasRegion getBox() {

@@ -13,7 +13,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -25,6 +24,7 @@ public class GameScreen implements Screen{
 	private OrthographicCamera guiCam;
 	private SpriteBatch batcher;
 	private Vector3 touchPoint;
+	private Vector3 touchPoint2;
 	private BoundingBox fdBounds;
 	private BoundingBox fiBounds;
 	private BoundingBox farBounds;
@@ -34,18 +34,17 @@ public class GameScreen implements Screen{
     private float stateTime;
 	private TextureRegion currentFrame;
 	private MatchManager manager;
-	private float posxb;
-	private float posyb;
-	private List<Harpoon> lanceList;
+	private List<Harpoon> harpoonList;
 	
 	public GameScreen(Game game, MatchManager manager){
 		this.game=game;
 		this.manager = manager;
-		this.lanceList = new ArrayList<Harpoon>();
+		this.harpoonList = new ArrayList<Harpoon>();
 		guiCam = new OrthographicCamera(21,13);
 		guiCam.position.set(21f/2,13f/2,0);
 		batcher = new SpriteBatch();
 		touchPoint = new Vector3();
+		touchPoint2 = new Vector3();
 		fdBounds= new BoundingBox(new Vector3(5.5f,2.5f,0), new Vector3(8,4.5f,0));
 		fiBounds= new BoundingBox(new Vector3(1,2.5f,0), new Vector3(3.5f,4.5f,0));
 		farBounds= new BoundingBox(new Vector3(3.5f,4.6f,0), new Vector3(5.5f,7,0));
@@ -57,8 +56,8 @@ public class GameScreen implements Screen{
 		penguinAnimations = new PenguinAnimation[4];
 		penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/pClarosRojo.png"),manager.getPlayerPosition(0),manager.getPlayerDirection(0));
 		penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"),manager.getPlayerPosition(1),manager.getPlayerDirection(1));
-		penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pOscurosAmarillo.png"),manager.getPlayerPosition(2),manager.getPlayerDirection(2));
-		penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pOscurosAzul.png"),manager.getPlayerPosition(3),manager.getPlayerDirection(3));
+		penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pClarosAmarillo.png"),manager.getPlayerPosition(2),manager.getPlayerDirection(2));
+		penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pClarosAzul.png"),manager.getPlayerPosition(3),manager.getPlayerDirection(3));
         stateTime = 0f;     
 
       //--------------------------------------------------------------
@@ -92,9 +91,22 @@ public class GameScreen implements Screen{
 		batcher.draw(Assets.getHorizontalBarUP(),8,12,11,1);
 		batcher.draw(Assets.getVerticalBarLeft(),7,0,1,13);
 		batcher.draw(Assets.getVerticalBarRigth(),19,0,1,13);
-		batcher.draw(Assets.getLifeIcon(),3,12,1,1);
-		batcher.draw(Assets.getLifeIcon(),3,10,1,1);
-		batcher.draw(Assets.getLifeIcon(),3,8,1,1);
+		
+		batcher.draw(Assets.getLifeIconRed(),5,10.805f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconRed(),3,10.805f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconRed(),1,10.805f,0.75f,0.75f);
+		
+		batcher.draw(Assets.getLifeIconGreen(),5,9.68f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconGreen(),3,9.68f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconGreen(),1,9.68f,0.75f,0.75f);
+		
+		batcher.draw(Assets.getLifeIconYellow(),5,8.55f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconYellow(),3,8.55f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconYellow(),1,8.55f,0.75f,0.75f);
+		
+		batcher.draw(Assets.getLifeIconBlue(),5,7.43f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconBlue(),3,7.43f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconBlue(),1,7.43f,0.75f,0.75f);
 		
 		for(int i=0;i<11;i++){
 			for (int j=0;j<11;j++){
@@ -115,12 +127,6 @@ public class GameScreen implements Screen{
 		batcher.draw(Assets.getDirectionPanel(),1,0,7,7);
 		batcher.draw(Assets.getButtonHarpoon(),19,0,2,4);
 		
-		
-		//Display position of the player
-		
-		Vector3 positionAux = manager.getPlayerPosition(manager.getMyIdPlayer());
-		String textToDisplay = "Postion of my player x: " + positionAux.x +" y: " + positionAux.y;
-		
 		for (int i=0;i<4;i++){
 			position = penguinAnimations[i].getPosition();
 			batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
@@ -132,25 +138,26 @@ public class GameScreen implements Screen{
 		//utilizo el istouched porque así no tengo k pulsar con deslizar me vale
 		if (Gdx.input.isTouched()){
 			//como no lo estamos haciendo con píxeles necesitamos utilizar la cam para ver las coordenadas exactas.
-			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-			
-			if (fdBounds.contains(touchPoint)){
+			guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
+			guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
+			if (fdBounds.contains(touchPoint)||fdBounds.contains(touchPoint2)){
 				//Derecha, llamar al gameManager
 				manager.movePlayer(Direction.right);      
 			}
-			else if (fiBounds.contains(touchPoint)){
+			else if (fiBounds.contains(touchPoint)||fiBounds.contains(touchPoint2)){
 				//izquierda, llamar al gameManager
 				manager.movePlayer(Direction.left);
 			}
-			else if (farBounds.contains(touchPoint)){
+			else if (farBounds.contains(touchPoint)||farBounds.contains(touchPoint2)){
 				//arriba, llamar al gameManager
 				manager.movePlayer(Direction.up);
 			}
-			else if (fabBounds.contains(touchPoint)){
+			else if (fabBounds.contains(touchPoint)|| fabBounds.contains(touchPoint2)){
 				//abajo, llamar al gameManager
 				manager.movePlayer(Direction.down);
 			}
-			if (harpoonBounds.contains(touchPoint)){
+			
+			if (harpoonBounds.contains(touchPoint)|| fabBounds.contains(touchPoint2)){
 				manager.putLance();
 			}
 		}	
@@ -168,7 +175,7 @@ public class GameScreen implements Screen{
 	
 	public void putLanceAt(int xLancePosition, int yLancePosition) {
 		Harpoon lance= new Harpoon(xLancePosition,yLancePosition);
-		lanceList.add(lance);		
+		harpoonList.add(lance);		
 	}
 
 	public Game getGame() {

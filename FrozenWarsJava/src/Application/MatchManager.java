@@ -1,7 +1,6 @@
 package Application;
 import com.badlogic.gdx.math.Vector3;
 
-import Application.MatchManager.Direction;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Match;
 import Screens.GameScreen;
@@ -20,15 +19,24 @@ public class MatchManager {
 	public MatchManager(SmartFoxServer sfs) {
 		this.sfsClient=sfs;
 		this.match = new Match();
-		this.myPlayerId = sfsClient.getMyPlayerId()-1;
+		this.myPlayerId = sfsClient.getMyPlayerId();
 		this.lastMessage = System.currentTimeMillis();
 	}
 	
 	public void movePlayer(Direction dir){
 		long currentTime = System.currentTimeMillis();
-		if (match.isValidPlayerMovement(dir,myPlayerId) && ((currentTime-lastMessage)>=200)){
-			sfsClient.sendMove(dir,myPlayerId,match.getMyPlayerPosition(myPlayerId));
-			this.lastMessage = System.currentTimeMillis();
+		if ((currentTime-lastMessage)>=200){
+			if(match.insideBoardMove(dir, match.getMyPlayerPosition(myPlayerId))){
+				if (match.isSpecialMove(dir,myPlayerId)){
+					
+				}else if(match.isNormalMove(dir,myPlayerId)){
+					sfsClient.sendMove(dir,myPlayerId,match.getMyPlayerPosition(myPlayerId));
+					this.lastMessage = System.currentTimeMillis();	
+				}
+			}
+			
+			
+			
 		}
 	}
 	
