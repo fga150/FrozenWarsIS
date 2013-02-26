@@ -1,5 +1,6 @@
 	package Application;
 
+import Screens.InitialScreen;
 import Screens.LoadScreen;
 
 import com.badlogic.gdx.Game;
@@ -20,6 +21,7 @@ public class LaunchFrozenWars extends Game {
 	    }
 		loadScreen = new LoadScreen(this, gSettings);
 		setScreen(loadScreen);
+
 	}
 
 }

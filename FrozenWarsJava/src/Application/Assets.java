@@ -64,7 +64,7 @@ public class Assets {
 	    private static AtlasRegion HorizontalBarDown;
 	    
 	    //Componentes de la pantalla de creacion de partida multiplayer
-	    public static AtlasRegion backMultiplayer;
+	    public static AtlasRegion backGrey;
 	    
 	    public static AtlasRegion _1vsAllMode;
 	    public static AtlasRegion battleRoyalMode;
@@ -93,6 +93,15 @@ public class Assets {
 	    public static AtlasRegion mapRightArrow;
 	    public static AtlasRegion modeLeftArrow;
 	    public static AtlasRegion modeRightArrow;
+	    
+	    public static AtlasRegion gameModesButtonHelp;
+	    public static AtlasRegion createButtonHelp;
+	    public static AtlasRegion controlButtonHelp;
+	    public static AtlasRegion backButtonHelp;
+	    public static AtlasRegion indexTitle;
+	    public static AtlasRegion introductionButtonHelp;
+	    public static AtlasRegion upgradesButtonHelp;
+
 
 	    /**
 	     * Load.
@@ -158,7 +167,7 @@ public class Assets {
 			
 			
 		    //Componentes de la pantalla de creacion de partida multiplayer
-			backMultiplayer = atlas.findRegion("BackgroundMultiplayer");
+			backGrey = atlas.findRegion("BackGrey");
 		    
 		    _1vsAllMode = atlas.findRegion("1vsAllModeButton");
 		    battleRoyalMode = atlas.findRegion("BattleRoyalButton");
@@ -186,7 +195,15 @@ public class Assets {
 		    mapLeftArrow = atlas.findRegion("MapLeftArrow");
 		    mapRightArrow = atlas.findRegion("MapRightArrow");
 		    modeLeftArrow = atlas.findRegion("ModeLeftArrow");
-		    modeRightArrow = atlas.findRegion("ModeRightArrow");
+		    modeRightArrow = atlas.findRegion("ModeRightArrow");    
+		    
+		    gameModesButtonHelp = atlas.findRegion("GameModesButtonHelp");
+		    createButtonHelp = atlas.findRegion("CreateButtonHelp");
+		    controlButtonHelp = atlas.findRegion("ControlButtonHelp");
+		    backButtonHelp = atlas.findRegion("BackButtonHelp");
+		    indexTitle = atlas.findRegion("IndexTitle");
+		    introductionButtonHelp = atlas.findRegion("IntroductionButtonHelp");
+		    upgradesButtonHelp = atlas.findRegion("UpgradesButtonHelp");
 	    }
 	    
 	    public static AtlasRegion getHarpoon() {
@@ -214,7 +231,6 @@ public class Assets {
 		public static void setBarrel(AtlasRegion barrel) {
 			Assets.barrel = barrel;
 		}
-
 
 
 		public static void dispose(){
