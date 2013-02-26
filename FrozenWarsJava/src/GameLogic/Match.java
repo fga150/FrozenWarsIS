@@ -41,63 +41,6 @@ public class Match {
 	 *   @return Returns if the object can move to the new square
 	 * ***/
 	
-	private boolean validNewSquare(Direction dir, Vector3 position){
-		
-		/* If valid means that the object located at position can move with direction dir.
-		   If player goes to a new square, we must check if that square
-		   doesn't contains objects that its collide with. */
-		
-		boolean valid = true;
-		boolean newSquareV = false;
-		boolean newSquareH = false;
-		float oldPositionX = position.x;
-		float oldPositionY = position.y;
-		float newPositionX = position.x;
-		float newPositionY = position.y;
-		
-		//Calculate new position
-		
-		if (dir.equals(Direction.left)) newPositionX -= minimalMove;
-		else if (dir.equals(Direction.right)) newPositionX += minimalMove;
-		else if (dir.equals(Direction.up)) newPositionY += minimalMove;
-		else if (dir.equals(Direction.down)) newPositionY -= minimalMove;
-		
-		// That truncate the newX and newY position to index on the boardGame
-		
-		int newSquareX = (int) newPositionX;
-		int newSquareY = (int) newPositionY;
-		
-		/*Check if we moved to new square. If true we get the values of the new squares
-		 to check it. */
-		/*
-		if (dir.equals(Direction.left)) 
-			newSquare = ((int)newPositionX) != ((int)oldPositionX);
-		else if (dir.equals(Direction.right)){
-			newSquareX = (int)(newPositionX + playerLength);
-			newSquare = newSquareX != ((int)oldPositionX);
-		}
-		else if (dir.equals(Direction.up)){
-			newSquareY = (int)(newPositionY + playerWidth);
-			newSquare = newSquareY != ((int)oldPositionY);
-		}
-		else if (dir.equals(Direction.down))
-			newSquare = ((int)newPositionY) != ((int)oldPositionY);
-*/		
-		/*If moved to a new square, must check if there's any objects which can't
-		go through*/
-		/*
-		if (newSquare){
-			
-			
-			
-			TypeSquare square = map.getposition(newSquareX,newSquareY);
-			valid = !(square.equals(TypeSquare.unbreakable)|| square.equals(TypeSquare.breakable) 
-					  ||square.equals(TypeSquare.Harpoon));
-		}
-		*/
-		return valid;
-	
-	}
 	
 	/*** ***/
 	private boolean newSquare(int x, int y){
@@ -107,9 +50,10 @@ public class Match {
 				  ||square.equals(TypeSquare.Harpoon));
 	}
 
-	public boolean insideBoardMove(Direction dir, Vector3 position) {
+	public boolean insideBoardMove(Direction dir, int playerId) {
 		boolean valid = false;
 		
+		Vector3 position = players[playerId].getPosition();
 		float limitX = map.getLength();
 		float limitY = map.getWidth();
 		float newPositionX = position.x;
@@ -120,11 +64,17 @@ public class Match {
 		else if (dir.equals(Direction.up)) newPositionY += minimalMove;
 		else if (dir.equals(Direction.down)) newPositionY -= minimalMove;
 		
-		valid = (newPositionX>=0.0) && (newPositionX<=(limitX-playerLength)) && 
-				(newPositionY>=0.0) && (newPositionY<=(limitY-playerWidth));
+		valid = ((newPositionX>=0.0) && (newPositionX<=(limitX-playerLength)) && 
+				(newPositionY>=0.0) && (newPositionY<=(limitY-playerWidth))) || 
+				(!dir.equals(players[playerId].getLookAt()));
 		
 		return valid;
 	}
+	
+	public Direction getSpecialMoveDir(int myPlayerId) {
+		return players[myPlayerId].getSpecialMoveDir();
+	}
+	
 	public boolean isSpecialMove(Direction dir, int myPlayerId) {
 		boolean valid=false;
 		Vector3 position=players[myPlayerId].getPosition();
@@ -174,12 +124,14 @@ public class Match {
 							if((newSquare((int)position.x-1,(int)position.y))&&!(newSquare((int)position.x-1,(int)position.y+1))){
 								valid=true;
 								players[myPlayerId].setSpecialMove(true);
+								players[myPlayerId].setSpecialMoveDir(Direction.down);
 							}					
 						}
 					if (((position.y-(int)position.y)==0.75f)||((position.y-(int)position.y)==0.5f)){
 						if((newSquare((int)position.x-1,(int)position.y+1))&&!(newSquare((int)position.x-1,(int)position.y))){
 							valid=true;
 							players[myPlayerId].setSpecialMove(true);
+							players[myPlayerId].setSpecialMoveDir(Direction.up);
 							}	
 						}
 					} else if(dir.equals(Direction.right)){
@@ -187,18 +139,51 @@ public class Match {
 							if((newSquare((int)position.x+1,(int)position.y))&&!(newSquare((int)position.x+1,(int)position.y+1))){
 								valid=true;
 								players[myPlayerId].setSpecialMove(true);
+								players[myPlayerId].setSpecialMoveDir(Direction.down);
 							}					
 						}
 					if (((position.y-(int)position.y)==0.75f)||((position.y-(int)position.y)==0.5f)){
 						if((newSquare((int)position.x+1,(int)position.y+1))&&!(newSquare((int)position.x+1,(int)position.y))){
 							valid=true;
 							players[myPlayerId].setSpecialMove(true);
+							players[myPlayerId].setSpecialMoveDir(Direction.up);
 							}	
 						}
-					} 
+					} else if(dir.equals(Direction.up)){
+					if(((position.x-(int)position.x)==0.5f)||((position.x-(int)position.x)==0.25f)){
+							if((newSquare((int)position.x,(int)position.y+1))&&!(newSquare((int)position.x+1,(int)position.y+1))){
+								valid=true;
+								players[myPlayerId].setSpecialMove(true);
+								players[myPlayerId].setSpecialMoveDir(Direction.left);
+							}					
+						}
+					if (((position.x-(int)position.x)==0.75f)||((position.x-(int)position.x)==0.5f)){
+						if((newSquare((int)position.x+1,(int)position.y+1))&&!(newSquare((int)position.x,(int)position.y+1))){
+							valid=true;
+							players[myPlayerId].setSpecialMove(true);
+							players[myPlayerId].setSpecialMoveDir(Direction.right);
+							}	
+						}
+					}else if(dir.equals(Direction.down)){
+					if(((position.x-(int)position.x)==0.5f)||((position.x-(int)position.x)==0.25f)){
+							if((newSquare((int)position.x,(int)position.y-1))&&!(newSquare((int)position.x+1,(int)position.y-1))){
+								valid=true;
+								players[myPlayerId].setSpecialMove(true);
+								players[myPlayerId].setSpecialMoveDir(Direction.left);
+							}					
+						}
+					if (((position.x-(int)position.x)==0.75f)||((position.x-(int)position.x)==0.5f)){
+						if((newSquare((int)position.x+1,(int)position.y-1))&&!(newSquare((int)position.x,(int)position.y-1))){
+							valid=true;
+							players[myPlayerId].setSpecialMove(true);
+							players[myPlayerId].setSpecialMoveDir(Direction.right);
+							}	
+						}
+					}
 			}
 		}
-		return false;
+		//System.out.print(valid);
+		return valid;
 		}
 
 	public boolean isNormalMove(Direction dir, int myPlayerId) {
@@ -320,6 +305,5 @@ public class Match {
 	public Direction getPlayerDirection(int i) {
 		return players[i].getLookAt();
 	}
-
 
 }
