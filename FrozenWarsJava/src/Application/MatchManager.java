@@ -19,16 +19,17 @@ public class MatchManager {
 	public MatchManager(SmartFoxServer sfs) {
 		this.sfsClient=sfs;
 		this.match = new Match();
-		this.myPlayerId = sfsClient.getMyPlayerId();
+		this.myPlayerId = sfsClient.getMyPlayerId()-1;
 		this.lastMessage = System.currentTimeMillis();
 	}
 	
 	public void movePlayer(Direction dir){
 		long currentTime = System.currentTimeMillis();
-		if ((currentTime-lastMessage)>=200){
-			if(match.insideBoardMove(dir, match.getMyPlayerPosition(myPlayerId))){
+		if ((currentTime-lastMessage)>=150){
+			if(match.insideBoardMove(dir,myPlayerId)){
 				if (match.isSpecialMove(dir,myPlayerId)){
-					
+					sfsClient.sendMove(match.getSpecialMoveDir(myPlayerId),myPlayerId,match.getMyPlayerPosition(myPlayerId));
+					this.lastMessage = System.currentTimeMillis();
 				}else if(match.isNormalMove(dir,myPlayerId)){
 					sfsClient.sendMove(dir,myPlayerId,match.getMyPlayerPosition(myPlayerId));
 					this.lastMessage = System.currentTimeMillis();	
