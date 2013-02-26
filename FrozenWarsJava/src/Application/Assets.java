@@ -62,6 +62,7 @@ public class Assets {
 	    private static AtlasRegion VerticalBarRigth;
 	    private static AtlasRegion HorizontalBarUP;
 	    private static AtlasRegion HorizontalBarDown;
+	    private static AtlasRegion background;
 	    
 	    //Componentes de la pantalla de creacion de partida multiplayer
 	    public static AtlasRegion backMultiplayer;
@@ -154,6 +155,7 @@ public class Assets {
 			VerticalBarRigth=((atlas.findRegion("barraverticalDer")));
 			HorizontalBarUP=((atlas.findRegion("barrahorizontalArriba")));
 			HorizontalBarDown=((atlas.findRegion("barrahorizontalAbajo")));
+			background=atlas.findRegion("fondo");
 			
 			
 			
@@ -189,7 +191,15 @@ public class Assets {
 		    modeRightArrow = atlas.findRegion("ModeRightArrow");
 	    }
 	    
-	    public static AtlasRegion getHarpoon() {
+	    public static AtlasRegion getBackground() {
+			return background;
+		}
+
+		public static void setBackground(AtlasRegion background) {
+			Assets.background = background;
+		}
+
+		public static AtlasRegion getHarpoon() {
 			return harpooon;
 		}
 

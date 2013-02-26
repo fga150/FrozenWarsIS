@@ -86,27 +86,28 @@ public class GameScreen implements Screen{
 		batcher.setProjectionMatrix(guiCam.combined);
 		batcher.enableBlending();
 		batcher.begin();
+		batcher.draw(Assets.getBackground(),0,0,21,13);
 		
 		batcher.draw(Assets.getHorizontalBarDown(),8,0,11,1);
 		batcher.draw(Assets.getHorizontalBarUP(),8,12,11,1);
 		batcher.draw(Assets.getVerticalBarLeft(),7,0,1,13);
 		batcher.draw(Assets.getVerticalBarRigth(),19,0,1,13);
 		
-		batcher.draw(Assets.getLifeIconRed(),5,10.805f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconRed(),3,10.805f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconRed(),1,10.805f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconRed(),6,10.805f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconRed(),4,10.805f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconRed(),2,10.805f,0.75f,0.75f);
 		
-		batcher.draw(Assets.getLifeIconGreen(),5,9.68f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconGreen(),3,9.68f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconGreen(),1,9.68f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconGreen(),6,9.68f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconGreen(),4,9.68f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconGreen(),2,9.68f,0.75f,0.75f);
 		
-		batcher.draw(Assets.getLifeIconYellow(),5,8.55f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconYellow(),3,8.55f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconYellow(),1,8.55f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconYellow(),6,8.55f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconYellow(),4,8.55f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconYellow(),2,8.55f,0.75f,0.75f);
 		
-		batcher.draw(Assets.getLifeIconBlue(),5,7.43f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconBlue(),3,7.43f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconBlue(),1,7.43f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconBlue(),6,7.43f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconBlue(),4,7.43f,0.75f,0.75f);
+		batcher.draw(Assets.getLifeIconBlue(),2,7.43f,0.75f,0.75f);
 		
 		for(int i=0;i<11;i++){
 			for (int j=0;j<11;j++){

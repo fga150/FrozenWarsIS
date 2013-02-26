@@ -19,7 +19,10 @@ public class Match {
 	private int numPlayers;
 	private int numUpgrades;
 	private long time;
+	private Vector3 coord;
 	
+
+
 	/*** ***/
 	
 	public Match(){
@@ -28,6 +31,7 @@ public class Match {
 		for (int i=0;i<4;i++){
 			players[i] = new Player(i);
 		}
+		coord=new Vector3();
 		this.numPlayers = 4;
 		this.numUpgrades = 0;
 	}
@@ -236,9 +240,41 @@ public class Match {
 	}
 	
 	public boolean canPutLance(int myPlayerId){
-		int x = getIntegerCoordX(myPlayerId);
-		int y = getIntegerCoordY(myPlayerId);
-		return (map.isEmptySquare(x,y));
+		Vector3 position=players[myPlayerId].getPosition();
+		if(players[myPlayerId].getLookAt().equals(Direction.right)){
+			if ((position.x-(int)position.x)==0){
+				coord.x=position.x;
+				coord.y=position.y;
+			}else{
+				coord.x=position.x+1;
+				coord.y=position.y;
+			}
+		}else if(players[myPlayerId].getLookAt().equals(Direction.left)){
+			/*if ((position.x-(int)position.x)==0){
+				coord.x=position.x;
+				coord.y=position.y;
+			}else{*/
+				coord.x=position.x;
+				coord.y=position.y;
+			//}
+		}else if(players[myPlayerId].getLookAt().equals(Direction.up)){
+			if ((position.y-(int)position.y)==0){
+				coord.x=position.x;
+				coord.y=position.y;
+			}else{
+				coord.x=position.x;
+				coord.y=position.y+1;
+			}
+		}else if(players[myPlayerId].getLookAt().equals(Direction.down)){
+			/*if ((position.y-(int)position.y)<0.5){
+				coord.x=position.x;
+				coord.y=position.y-1;
+			}else{*/
+				coord.x=position.x;
+				coord.y=position.y;
+			//}
+		}
+		return (map.isEmptySquare((int)coord.x,(int)coord.y));
 	}	
 
 	public int getIntegerCoordX(int myPlayerId) {
@@ -304,6 +340,13 @@ public class Match {
 
 	public Direction getPlayerDirection(int i) {
 		return players[i].getLookAt();
+	}
+	public Vector3 getCoord() {
+		return coord;
+	}
+
+	public void setCoord(Vector3 coord) {
+		this.coord = coord;
 	}
 
 }

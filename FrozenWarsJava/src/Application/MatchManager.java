@@ -43,9 +43,9 @@ public class MatchManager {
 	
 	public void putLance(){
 		if (match.canPutLance(myPlayerId)){
-			int x = match.getIntegerCoordX(myPlayerId);
-			int y = match.getIntegerCoordY(myPlayerId);
-			sfsClient.sendLance(x, y);
+			Vector3 coord=match.getCoord();
+			sfsClient.sendLance((int)coord.x, (int)coord.y);
+			
 		}
 	}
 	
