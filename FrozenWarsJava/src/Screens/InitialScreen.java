@@ -95,9 +95,6 @@ public class InitialScreen implements Screen{
       				//compruebo si he tocado help (Se abre ventana de ayuda)
       				if (helpClick.contains(touchPoint)){
       					System.out.println("Pulsado help");
-      					IndexScreen indexScreen = new IndexScreen(game,this);
-      					game.setScreen(indexScreen);
-      					
       				}else{
       					//compruebo si he tocado exit (Se abre ventana de confirmacion)
       					if(exitClick.contains(touchPoint)){

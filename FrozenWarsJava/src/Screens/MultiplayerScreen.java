@@ -204,7 +204,7 @@ public class MultiplayerScreen implements Screen{
             batcher.disableBlending();
             //se elimina graficamente la transparencia ya que es un fondo
             batcher.begin();
-            batcher.draw(Assets.backGrey,0,0,1024,630);
+            batcher.draw(Assets.backMultiplayer,0,0,1024,630);
             batcher.end();
 
             //Dibujando elementos en pantalla activamos el Blending

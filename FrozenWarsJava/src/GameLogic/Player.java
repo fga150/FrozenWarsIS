@@ -14,6 +14,7 @@ public class Player {
 	private int maxLancesAllow;
 	private boolean throwSkill;
 	private boolean specialMove;
+	private Direction specialMoveDir;
 	
 	public Player(Vector3 position){
 		initialitePlayer();
@@ -23,19 +24,19 @@ public class Player {
 		initialitePlayer();
 		if (i == 0){
 			position = new Vector3(0,0,0);
-			setLookAt(Direction.right);			
+			this.lookAt = Direction.right;	
 		}
 		else if (i == 1){
 			position = new Vector3(10,0,0);
-			setLookAt(Direction.left);
+			this.lookAt = Direction.left;	
 		}
 		else if (i == 2){
 			position = new Vector3(0,10,0);
-			setLookAt(Direction.right);
+			this.lookAt = Direction.right;	
 		}
 		else if (i == 3){
 			position = new Vector3(10,10,0);
-			setLookAt(Direction.left);
+			this.lookAt = Direction.left;	
 		}
 	}
 	
@@ -108,5 +109,13 @@ public class Player {
 
 	public void setSpecialMove(boolean specialMove) {
 		this.specialMove = specialMove;
+	}
+
+	public Direction getSpecialMoveDir() {
+		return specialMoveDir;
+	}
+
+	public void setSpecialMoveDir(Direction specialMoveDir) {
+		this.specialMoveDir = specialMoveDir;
 	}
 }
