@@ -137,30 +137,55 @@ public class GameScreen implements Screen{
 		guiCam.update();
 		
 		//utilizo el istouched porque así no tengo k pulsar con deslizar me vale
-		if (Gdx.input.isTouched()){
-			//como no lo estamos haciendo con píxeles necesitamos utilizar la cam para ver las coordenadas exactas.
-			guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
-			guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
-			if (fdBounds.contains(touchPoint)||fdBounds.contains(touchPoint2)){
+		if (Gdx.input.isTouched(0)){
+ 			guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
+			//como no lo estamos haciendo con pixeles necesitamos utilizar la cam para ver las coordenadas exactas.
+			if (fdBounds.contains(touchPoint)){
 				//Derecha, llamar al gameManager
 				manager.movePlayer(Direction.right);      
 			}
-			else if (fiBounds.contains(touchPoint)||fiBounds.contains(touchPoint2)){
+			else if (fiBounds.contains(touchPoint)){
 				//izquierda, llamar al gameManager
 				manager.movePlayer(Direction.left);
 			}
-			else if (farBounds.contains(touchPoint)||farBounds.contains(touchPoint2)){
+			else if (farBounds.contains(touchPoint)){
 				//arriba, llamar al gameManager
 				manager.movePlayer(Direction.up);
 			}
-			else if (fabBounds.contains(touchPoint)|| fabBounds.contains(touchPoint2)){
+			else if (fabBounds.contains(touchPoint)){
 				//abajo, llamar al gameManager
 				manager.movePlayer(Direction.down);
 			}
 			
-			if (harpoonBounds.contains(touchPoint)|| fabBounds.contains(touchPoint2)){
+			if (harpoonBounds.contains(touchPoint)){
 				manager.putLance();
 			}
+		}
+		
+		if (Gdx.input.isTouched(1)){
+ 			guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
+			if (fdBounds.contains(touchPoint)||fdBounds.contains(touchPoint2)){
+			//como no lo estamos haciendo con pixeles necesitamos utilizar la cam para ver las coordenadas exactas.
+			if (fdBounds.contains(touchPoint2)){
+				//Derecha, llamar al gameManager
+ 				manager.movePlayer(Direction.right);      
+ 			}
+			else if (fiBounds.contains(touchPoint2)){
+ 				//izquierda, llamar al gameManager
+ 				manager.movePlayer(Direction.left);
+ 			}
+			else if (farBounds.contains(touchPoint2)){
+				//arriba, llamar al gameManager
+ 				manager.movePlayer(Direction.up);
+ 			}
+			else if (fabBounds.contains(touchPoint2)){
+ 				//abajo, llamar al gameManager
+ 				manager.movePlayer(Direction.down);
+ 			}
+			if (harpoonBounds.contains(touchPoint2)){
+ 				manager.putLance();
+				}
+ 			}
 		}	
 	}
 	
