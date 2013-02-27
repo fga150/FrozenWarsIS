@@ -30,7 +30,9 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("meter1", Put1Handler.class); //handlers to introduce players into de queues
 		this.addRequestHandler("meter2", Put2Handler.class);
 		this.addRequestHandler("meter3", Put3Handler.class);
-		this.addRequestHandler("conectarse", Connect.class); // handler fired when a user connects
+		this.addEventHandler(SFSEventType.USER_JOIN_ZONE, ZoneJoinEventHandler.class); // handler fired when a user connects
+		this.addRequestHandler("db",DataBase.class); // handler fired when we want to know information of the database
+		this.addEventHandler(SFSEventType.USER_LOGIN, LoginEventHandler.class);
 		this.addEventHandler(SFSEventType.USER_DISCONNECT, Disconnect.class); // handler fired after a user disconnects
 
 		nRooms=0;
