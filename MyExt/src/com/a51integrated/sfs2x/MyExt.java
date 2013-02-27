@@ -34,6 +34,7 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("db",DataBase.class); // handler fired when we want to know information of the database
 		this.addEventHandler(SFSEventType.USER_LOGIN, LoginEventHandler.class);
 		this.addEventHandler(SFSEventType.USER_DISCONNECT, Disconnect.class); // handler fired after a user disconnects
+		this.addRequestHandler("getTime", GetTime.class); // handler that sends the server time.
 
 		nRooms=0;
 	}
