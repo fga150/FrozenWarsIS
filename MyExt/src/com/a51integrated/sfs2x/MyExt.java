@@ -35,6 +35,7 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("meter2", Put2Handler.class);
 		this.addRequestHandler("meter3", Put3Handler.class);
 		this.addRequestHandler("putHarpoon", PutHarpoon.class); // handler to put an harpoon in the game.
+		this.addRequestHandler("GetConnectedFriends", GetConnectedFriends.class); // handler fired when a user wants to see the connected friends
 
 		nRooms=0;
 	}
