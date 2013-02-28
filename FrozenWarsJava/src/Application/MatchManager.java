@@ -106,4 +106,13 @@ public class MatchManager {
 		return match.getPlayerDirection(i);
 	}
 	
+	public int getPlayerLifes(int i) {
+			return match.getPlayerLifes(i);
+	}
+		
+	public String getMyNamePlayer() {
+			return sfsClient.getMyName();		
+	}
+
+	
 }

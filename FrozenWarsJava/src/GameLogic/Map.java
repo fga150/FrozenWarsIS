@@ -324,4 +324,13 @@ return posiciones;
 	public boolean isEmptySquare(int x, int y) {
 		return (boardGame[x][y]==TypeSquare.empty);
 	}	
+	
+	public String getMapName() {
+		return mapName;
+	}
+		
+	public void setMapName(String mapName) {
+		this.mapName = mapName;
+	}
+
 }

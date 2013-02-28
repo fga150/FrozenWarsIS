@@ -186,7 +186,6 @@ public class Match {
 					}
 			}
 		}
-		//System.out.print(valid);
 		return valid;
 		}
 
@@ -260,13 +259,9 @@ public class Match {
 				coord.y=position.y;
 			}
 		}else if(players[myPlayerId].getLookAt().equals(Direction.left)){
-			/*if ((position.x-(int)position.x)==0){
 				coord.x=position.x;
 				coord.y=position.y;
-			}else{*/
-				coord.x=position.x;
-				coord.y=position.y;
-			//}
+			
 		}else if(players[myPlayerId].getLookAt().equals(Direction.up)){
 			if ((position.y-(int)position.y)==0){
 				coord.x=position.x;
@@ -276,13 +271,9 @@ public class Match {
 				coord.y=position.y+1;
 			}
 		}else if(players[myPlayerId].getLookAt().equals(Direction.down)){
-			/*if ((position.y-(int)position.y)<0.5){
-				coord.x=position.x;
-				coord.y=position.y-1;
-			}else{*/
 				coord.x=position.x;
 				coord.y=position.y;
-			//}
+			
 		}
 		return (map.isEmptySquare((int)coord.x,(int)coord.y));
 	}	
@@ -358,5 +349,9 @@ public class Match {
 	public void setCoord(Vector3 coord) {
 		this.coord = coord;
 	}
+	public int getPlayerLifes(int i) {
+		return players[i].getLifes();
+	}
+
 
 }

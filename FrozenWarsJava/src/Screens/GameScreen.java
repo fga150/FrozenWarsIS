@@ -13,6 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -35,20 +36,28 @@ public class GameScreen implements Screen{
 	private TextureRegion currentFrame;
 	private MatchManager manager;
 	private List<Harpoon> harpoonList;
+	private String name;
+	private BitmapFont font;
+	private int numPlayer;
+
 	
 	public GameScreen(Game game, MatchManager manager){
 		this.game=game;
+		this.name = manager.getMyNamePlayer();
+		numPlayer=manager.getMyIdPlayer();
 		this.manager = manager;
+		this.font = new BitmapFont();
 		this.harpoonList = new ArrayList<Harpoon>();
 		guiCam = new OrthographicCamera(21,13);
 		guiCam.position.set(21f/2,13f/2,0);
 		batcher = new SpriteBatch();
 		touchPoint = new Vector3();
 		touchPoint2 = new Vector3();
-		fdBounds= new BoundingBox(new Vector3(5.5f,2.5f,0), new Vector3(8,4.5f,0));
-		fiBounds= new BoundingBox(new Vector3(1,2.5f,0), new Vector3(3.5f,4.5f,0));
-		farBounds= new BoundingBox(new Vector3(3.5f,4.6f,0), new Vector3(5.5f,7,0));
-		fabBounds= new BoundingBox(new Vector3(3.5f,0,0), new Vector3(5.5f,2.4f,0));
+		fdBounds= new BoundingBox(new Vector3(4.75f,2.5f,0), new Vector3(7.25f,4.5f,0));
+		fiBounds= new BoundingBox(new Vector3(0.25f,2.5f,0), new Vector3(2.75f,4.5f,0));
+		farBounds= new BoundingBox(new Vector3(2.75f,4.6f,0), new Vector3(4.75f,7,0));
+		fabBounds= new BoundingBox(new Vector3(2.75f,0,0), new Vector3(4.75f,2.4f,0));
+
 		harpoonBounds= new BoundingBox(new Vector3(19,0,0), new Vector3(21,4,0));
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
@@ -93,21 +102,6 @@ public class GameScreen implements Screen{
 		batcher.draw(Assets.getVerticalBarLeft(),7,0,1,13);
 		batcher.draw(Assets.getVerticalBarRigth(),19,0,1,13);
 		
-		batcher.draw(Assets.getLifeIconRed(),6,10.805f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconRed(),4,10.805f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconRed(),2,10.805f,0.75f,0.75f);
-		
-		batcher.draw(Assets.getLifeIconGreen(),6,9.68f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconGreen(),4,9.68f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconGreen(),2,9.68f,0.75f,0.75f);
-		
-		batcher.draw(Assets.getLifeIconYellow(),6,8.55f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconYellow(),4,8.55f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconYellow(),2,8.55f,0.75f,0.75f);
-		
-		batcher.draw(Assets.getLifeIconBlue(),6,7.43f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconBlue(),4,7.43f,0.75f,0.75f);
-		batcher.draw(Assets.getLifeIconBlue(),2,7.43f,0.75f,0.75f);
 		
 		for(int i=0;i<11;i++){
 			for (int j=0;j<11;j++){
@@ -143,7 +137,7 @@ public class GameScreen implements Screen{
 			}
 		}	
 		
-		batcher.draw(Assets.getDirectionPanel(),1,0,7,7);
+		batcher.draw(Assets.getDirectionPanel(),0.25f,0,7,7);
 		batcher.draw(Assets.getButtonHarpoon(),19,0,2,4);
 		
 		for (int i=0;i<4;i++){
@@ -151,60 +145,69 @@ public class GameScreen implements Screen{
 			batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
 		}
 		
+		paintPlayer();
+		paintLifes();
+		
+		
+		
 		batcher.end();
 		guiCam.update();
-		
-		//utilizo el istouched porque así no tengo k pulsar con deslizar me vale
-		if (Gdx.input.isTouched(0)){
- 			guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
-			//como no lo estamos haciendo con pixeles necesitamos utilizar la cam para ver las coordenadas exactas.
-			if (fdBounds.contains(touchPoint)){
-				//Derecha, llamar al gameManager
+		if (Gdx.input.isTouched()){
+			if (Gdx.input.isTouched(0))guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
+			if (Gdx.input.isTouched(1))guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
+			if (fdBounds.contains(touchPoint)||fdBounds.contains(touchPoint2)){
+
 				manager.movePlayer(Direction.right);      
 			}
-			else if (fiBounds.contains(touchPoint)){
-				//izquierda, llamar al gameManager
+			else if (fiBounds.contains(touchPoint)||fiBounds.contains(touchPoint2)){
 				manager.movePlayer(Direction.left);
 			}
-			else if (farBounds.contains(touchPoint)){
-				//arriba, llamar al gameManager
+			else if (farBounds.contains(touchPoint)||farBounds.contains(touchPoint2)){
 				manager.movePlayer(Direction.up);
 			}
-			else if (fabBounds.contains(touchPoint)){
-				//abajo, llamar al gameManager
+			else if (fabBounds.contains(touchPoint)||fabBounds.contains(touchPoint2)){
 				manager.movePlayer(Direction.down);
 			}
 			
-			if (harpoonBounds.contains(touchPoint)){
+			if (harpoonBounds.contains(touchPoint)||harpoonBounds.contains(touchPoint2)){
 				manager.putLance();
 			}
 		}
 		
-		if (Gdx.input.isTouched(1)){
- 			guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
-			if (fdBounds.contains(touchPoint)||fdBounds.contains(touchPoint2)){
-			//como no lo estamos haciendo con pixeles necesitamos utilizar la cam para ver las coordenadas exactas.
-			if (fdBounds.contains(touchPoint2)){
-				//Derecha, llamar al gameManager
- 				manager.movePlayer(Direction.right);      
- 			}
-			else if (fiBounds.contains(touchPoint2)){
- 				//izquierda, llamar al gameManager
- 				manager.movePlayer(Direction.left);
- 			}
-			else if (farBounds.contains(touchPoint2)){
-				//arriba, llamar al gameManager
- 				manager.movePlayer(Direction.up);
- 			}
-			else if (fabBounds.contains(touchPoint2)){
- 				//abajo, llamar al gameManager
- 				manager.movePlayer(Direction.down);
- 			}
-			if (harpoonBounds.contains(touchPoint2)){
- 				manager.putLance();
-				}
- 			}
-		}	
+	}
+	private void paintPlayer(){
+			/*font.setColor(255,255,255,1);
+			float textWidth = font.getBounds(name).width;
+			float textHeight = font.getBounds(name).height;
+			font.draw(batcher,name,1-textWidth/2,14-textHeight/2);*/
+		if (numPlayer==0){
+			batcher.draw(Assets.getLifeIconRed(),6,12,0.75f,0.75f);
+		}else if(numPlayer==1){
+			batcher.draw(Assets.getLifeIconGreen(),6,12,0.75f,0.75f);
+		}else if(numPlayer==2){
+			batcher.draw(Assets.getLifeIconYellow(),6,12,0.75f,0.75f);
+		}else if(numPlayer==3){
+			batcher.draw(Assets.getLifeIconBlue(),6,12,0.75f,0.75f);
+		}
+		
+			
+		
+			}
+			
+	private void paintLifes() {
+			for (int i=0;i<manager.getPlayerLifes(0);i++){
+				batcher.draw(Assets.getLifeIconRed(),1+2*i,10.805f,0.75f,0.75f);
+			}
+			for (int i=0;i<manager.getPlayerLifes(1);i++){		
+				batcher.draw(Assets.getLifeIconGreen(),1+2*i,9.68f,0.75f,0.75f);
+			}
+			for (int i=0;i<manager.getPlayerLifes(2);i++){
+				batcher.draw(Assets.getLifeIconYellow(),1+2*i,8.55f,0.75f,0.75f);
+			}
+			for (int i=0;i<manager.getPlayerLifes(3);i++){
+				batcher.draw(Assets.getLifeIconBlue(),1+2*i,7.43f,0.75f,0.75f);
+			}
+
 	}
 	
 	public void movePlayer(Direction dir, int playerId, Vector3 position) {                                     
@@ -257,5 +260,18 @@ public class GameScreen implements Screen{
 	public void setPreguinAnimations(PenguinAnimation[] preguinAnimations) {
 		this.penguinAnimations = preguinAnimations;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public BitmapFont getFont() {
+		return font;
+	}
+	public void setFont(BitmapFont font) {
+		this.font = font;
+	}
+
 
 }

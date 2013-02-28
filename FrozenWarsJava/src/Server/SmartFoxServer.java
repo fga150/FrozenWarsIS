@@ -143,4 +143,8 @@ public class SmartFoxServer implements IEventListener {
 	public void sendLance(int x,int y) {
 		sfsClient.send(new PublicMessageRequest("H"+"X"+x+"Y"+y));	
 	}
+	public String getMyName() {
+		return sfsClient.getMySelf().getName();		
+	}
+
 }

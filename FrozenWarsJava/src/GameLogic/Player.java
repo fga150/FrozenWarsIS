@@ -16,6 +16,8 @@ public class Player {
 	private boolean specialMove;
 	private Direction specialMoveDir;
 	
+	
+	
 	public Player(Vector3 position){
 		initialitePlayer();
 	}
