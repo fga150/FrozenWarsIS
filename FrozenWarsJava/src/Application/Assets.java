@@ -48,6 +48,31 @@ public class Assets {
 	    public static AtlasRegion volver;
 	    
 	    private static AtlasRegion harpooon;
+	    
+	    private static AtlasRegion fissureCenter;
+	    private static AtlasRegion fissureSideX;
+	    private static AtlasRegion fissureSideY;
+	    
+	    private static AtlasRegion water1SideOpenE;
+	    private static AtlasRegion water1SideOpenW;
+	    private static AtlasRegion water1SideOpenN;
+	    private static AtlasRegion water1SideOpenS;
+	    
+	    private static AtlasRegion water2SideOpenCornerEN;
+	    private static AtlasRegion water2SideOpenCornerNW;
+	    private static AtlasRegion water2SideOpenCornerSE;
+	    private static AtlasRegion water2SideOpenCornerWS;
+	    
+	    private static AtlasRegion water2SideOpenBridgeX;
+	    private static AtlasRegion water2SideOpenBridgeY;
+	    
+	    private static AtlasRegion water3SideEOpen;
+	    private static AtlasRegion water3SideWOpen;
+	    private static AtlasRegion water3SideNOpen;
+	    private static AtlasRegion water3SideSOpen;
+	    
+	    private static AtlasRegion water4SideOpen;
+	    
 	    private static AtlasRegion mapBackground;
 	    private static AtlasRegion lifeIconYellow;
 	    private static AtlasRegion lifeIconRed;
@@ -141,6 +166,32 @@ public class Assets {
 		    volver = atlas.findRegion("Back");
 		    
 		    harpooon = atlas.findRegion("ArponParaBomba");
+		    //Fissures
+		    fissureCenter =  atlas.findRegion("fissureCenter");
+		    fissureSideX =  atlas.findRegion("fissureSideX");
+		    fissureSideY =  atlas.findRegion("fissureSideY");
+		    //Water 1 Open Side 4 positions
+		    water1SideOpenE =  atlas.findRegion("Water1SideOpenEast");
+		    water1SideOpenW =  atlas.findRegion("Water1SideOpenWest");
+		    water1SideOpenS =  atlas.findRegion("Water1SideOpenSouth");
+		    water1SideOpenN =  atlas.findRegion("Water1SideOpenNorth");
+		   //Water 2 Open Sides Corner mode 4 positions
+		    water2SideOpenCornerEN =  atlas.findRegion("Water2SideOpenCornerEN");
+		    water2SideOpenCornerNW =  atlas.findRegion("Water2SideOpenCornerNW");
+		    water2SideOpenCornerSE =  atlas.findRegion("Water2SideOpenCornerSE");
+		    water2SideOpenCornerWS =  atlas.findRegion("Water2SideOpenCornerWS");
+		    //Water 2 open sides bridge mode 2 positions
+		    water2SideOpenBridgeX =  atlas.findRegion("Water2SideOpenBridgeX");
+		    water2SideOpenBridgeY =  atlas.findRegion("Water2SideOpenBridgeY");
+		    //Water 3 open side 4 position (the position is the unconnected side)
+		    water3SideEOpen =  atlas.findRegion("Water3SideEastOpen");
+		    water3SideWOpen =  atlas.findRegion("Water3SideWestOpen");
+		    water3SideNOpen =  atlas.findRegion("Water3SideNorthOpen");
+		    water3SideSOpen =  atlas.findRegion("Water3SideSouthOpen");
+		    //water 4 open sides
+		    water4SideOpen =  atlas.findRegion("Water4SideOpen");
+		    //
+		    
 		    setIgloo(atlas.findRegion("iglus"));
 			mapBackground = atlas.findRegion("fondoJuego");
 			lifeIconYellow = atlas.findRegion("vidasJugadorAmarillo");
@@ -208,6 +259,80 @@ public class Assets {
 			Assets.harpooon = harpooon;
 		}
 
+		
+
+
+		public static AtlasRegion getFissureCenter() {
+			return fissureCenter;
+		}
+
+		public static AtlasRegion getFissureSideX() {
+			return fissureSideX;
+		}
+
+		public static AtlasRegion getFissureSideY() {
+			return fissureSideY;
+		}
+
+		public static AtlasRegion getWater1SideOpenE() {
+			return water1SideOpenE;
+		}
+
+		public static AtlasRegion getWater1SideOpenW() {
+			return water1SideOpenW;
+		}
+
+		public static AtlasRegion getWater1SideOpenN() {
+			return water1SideOpenN;
+		}
+
+		public static AtlasRegion getWater1SideOpenS() {
+			return water1SideOpenS;
+		}
+
+		public static AtlasRegion getWater2SideOpenCornerEN() {
+			return water2SideOpenCornerEN;
+		}
+
+		public static AtlasRegion getWater2SideOpenCornerNW() {
+			return water2SideOpenCornerNW;
+		}
+
+		public static AtlasRegion getWater2SideOpenCornerSE() {
+			return water2SideOpenCornerSE;
+		}
+
+		public static AtlasRegion getWater2SideOpenCornerWS() {
+			return water2SideOpenCornerWS;
+		}
+
+		public static AtlasRegion getWater2SideOpenBridgeX() {
+			return water2SideOpenBridgeX;
+		}
+
+		public static AtlasRegion getWater2SideOpenBridgeY() {
+			return water2SideOpenBridgeY;
+		}
+
+		public static AtlasRegion getWater3SideEOpen() {
+			return water3SideEOpen;
+		}
+
+		public static AtlasRegion getWater3SideWOpen() {
+			return water3SideWOpen;
+		}
+
+		public static AtlasRegion getWater3SideNOpen() {
+			return water3SideNOpen;
+		}
+
+		public static AtlasRegion getWater3SideSOpen() {
+			return water3SideSOpen;
+		}
+
+		public static AtlasRegion getWater4SideOpen() {
+			return water4SideOpen;
+		}
 
 		public static AtlasRegion getButtonHarpoon() {
 			return buttonHarpoon;

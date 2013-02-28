@@ -239,6 +239,16 @@ public class Match {
 		map.putLanceAt(xLancePosition,yLancePosition);		
 	}
 	
+	public void putWater(int xLancePosition,int yLancePosition,int playerId){
+		int fissureRange = players[playerId].getRange();
+		map.putWaterAt(xLancePosition, yLancePosition,fissureRange);
+	}
+	
+	public void putFissure(int xLancePosition,int yLancePosition,int playerId){
+		int fissureRange = players[playerId].getRange();
+		map.putfissureAt(xLancePosition, yLancePosition,fissureRange);
+	}
+	
 	public boolean canPutLance(int myPlayerId){
 		Vector3 position=players[myPlayerId].getPosition();
 		if(players[myPlayerId].getLookAt().equals(Direction.right)){

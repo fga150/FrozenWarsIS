@@ -11,6 +11,7 @@ public class Harpoon {
 	
 	public Harpoon(int xLancePosition, int yLancePosition) {
 		this.position = new Vector3(xLancePosition,yLancePosition,0);
+		this.range =1;
 	}
 	public Vector3 getPosition() {
 		return position;

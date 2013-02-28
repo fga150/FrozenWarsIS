@@ -55,9 +55,10 @@ public class MatchManager {
 	}
 	
 	public void putLanceEvent(int xLancePosition, int yLancePosition) {
-		match.putLanceAt(xLancePosition,yLancePosition);	
+		match.putLanceAt(xLancePosition,yLancePosition);
 		gameScreen.putLanceAt(xLancePosition,yLancePosition);
-	}	
+		match.putFissure(xLancePosition,yLancePosition,myPlayerId);
+	}
 	
 	// Getters and Setters
 	

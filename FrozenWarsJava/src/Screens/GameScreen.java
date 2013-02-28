@@ -119,6 +119,24 @@ public class GameScreen implements Screen{
 					if (type.equals(TypeSquare.unbreakable)) texture = Assets.getIgloo();
 					else if (type.equals(TypeSquare.Harpoon)) texture = Assets.getHarpoon();				
 					else if (type.equals(TypeSquare.breakable)) texture  = Assets.getBarrel();
+					else if (type.equals(TypeSquare.fissureC)) texture  = Assets.getFissureCenter();
+					else if (type.equals(TypeSquare.fissureSX)) texture  = Assets.getFissureSideX();
+					else if (type.equals(TypeSquare.fissureSY)) texture  = Assets.getFissureSideY();
+					else if (type.equals(TypeSquare.water1SOpN)) texture  = Assets.getWater1SideOpenN();
+					else if (type.equals(TypeSquare.water1SOpS)) texture  = Assets.getWater1SideOpenS();
+					else if (type.equals(TypeSquare.water1SOpE)) texture  = Assets.getWater1SideOpenE();
+					else if (type.equals(TypeSquare.water1SOpW)) texture  = Assets.getWater1SideOpenW();
+					else if (type.equals(TypeSquare.water2SOpCornerNW)) texture  = Assets.getWater2SideOpenCornerNW();
+					else if (type.equals(TypeSquare.water2SOpCornerSE)) texture  = Assets.getWater2SideOpenCornerSE();
+					else if (type.equals(TypeSquare.water2SOpCornerWS)) texture  = Assets.getWater2SideOpenCornerWS();
+					else if (type.equals(TypeSquare.water2SOpCornerEN)) texture  = Assets.getWater2SideOpenCornerEN();
+					else if (type.equals(TypeSquare.water2SOpBridgeX)) texture  = Assets.getWater2SideOpenBridgeX();
+					else if (type.equals(TypeSquare.water2SOpBridgeY)) texture  = Assets.getWater2SideOpenBridgeY();
+					else if (type.equals(TypeSquare.water3SOpN)) texture  = Assets.getWater3SideNOpen();
+					else if (type.equals(TypeSquare.water3SOpS)) texture  = Assets.getWater3SideSOpen();
+					else if (type.equals(TypeSquare.water3SOpE)) texture  = Assets.getWater3SideEOpen();
+					else if (type.equals(TypeSquare.water3SOpW)) texture  = Assets.getWater3SideWOpen();
+					else if (type.equals(TypeSquare.water4SOp)) texture  = Assets.getWater4SideOpen();
 					
 					 batcher.draw(texture,i+8,j+1,1,1);
 				}				
