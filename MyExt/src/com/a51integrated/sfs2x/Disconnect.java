@@ -32,13 +32,13 @@ public class Disconnect extends BaseServerEventHandler {
 			List<User> list=room.getUserList(); // list with all the players of the room he was joined
 			Iterator<User> iterator=list.iterator();
 			ISFSObject rtn = new SFSObject();
-			rtn.putUtfString("res", player.getName()+" got disconnected2");
+			rtn.putUtfString("res", player.getName()+" got disconnected");
 			while (iterator.hasNext()){
 				parentEx.send("meter1", rtn, iterator.next());
 			}
 		}
 		
-		Set<String> names= users.keySet();
+		/*Set<String> names= users.keySet(); //TODO tell friends he was disconected
 		Iterator<String> it=names.iterator();
 		if (it.hasNext()){				// here we tell to another user the disconection of this player (TO DO "tell" friends got disconnected)
 			 String otherplayer=it.next();
@@ -46,7 +46,7 @@ public class Disconnect extends BaseServerEventHandler {
 			 ISFSObject rtn = new SFSObject();
 			 rtn.putUtfString("res", player.getName()+" got disconnected");
 			 parentEx.send("meter1", rtn, oplayer);
-		}
+		}*/
 		parentEx.setUsers(users);
 
 	}

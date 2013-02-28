@@ -27,14 +27,14 @@ public class MyExt extends SFSExtension {
 		queue2 = new LinkedList<User[]>();
 		queue3 = new LinkedList<User[]>();
 		users=new HashMap<String,User>();
+		this.addRequestHandler("db",DataBase.class); // handler fired when we want to know information of the database
+		this.addEventHandler(SFSEventType.USER_JOIN_ZONE, ZoneJoinEventHandler.class); // handler fired when checked the pword
+		this.addEventHandler(SFSEventType.USER_LOGIN, LoginEventHandler.class); // handler fired when a user want to connect
+		this.addEventHandler(SFSEventType.USER_DISCONNECT, Disconnect.class); // handler fired after a user disconnects
 		this.addRequestHandler("meter1", Put1Handler.class); //handlers to introduce players into de queues
 		this.addRequestHandler("meter2", Put2Handler.class);
 		this.addRequestHandler("meter3", Put3Handler.class);
-		this.addEventHandler(SFSEventType.USER_JOIN_ZONE, ZoneJoinEventHandler.class); // handler fired when a user connects
-		this.addRequestHandler("db",DataBase.class); // handler fired when we want to know information of the database
-		this.addEventHandler(SFSEventType.USER_LOGIN, LoginEventHandler.class);
-		this.addEventHandler(SFSEventType.USER_DISCONNECT, Disconnect.class); // handler fired after a user disconnects
-		this.addRequestHandler("getTime", GetTime.class); // handler that sends the server time.
+		this.addRequestHandler("putHarpoon", PutHarpoon.class); // handler to put an harpoon in the game.
 
 		nRooms=0;
 	}
