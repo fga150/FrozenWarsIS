@@ -82,6 +82,7 @@ public class Assets {
 	    
 	    public static AtlasRegion map;
 	    public static AtlasRegion multiplayerGameTitle;
+	    public static AtlasRegion inviteGameTitle;
 	    public static AtlasRegion pingu;
 	    
 	    public static AtlasRegion playerList;
@@ -101,6 +102,9 @@ public class Assets {
 	    public static AtlasRegion indexTitle;
 	    public static AtlasRegion introductionButtonHelp;
 	    public static AtlasRegion upgradesButtonHelp;
+
+	    public static AtlasRegion add;
+	    public static AtlasRegion minus;
 
 
 	    /**
@@ -185,6 +189,8 @@ public class Assets {
 		    
 		    map = atlas.findRegion("Map");
 		    multiplayerGameTitle = atlas.findRegion("MultiplayerGameTitle");
+		    inviteGameTitle = atlas.findRegion("InviteGameTitle");
+		    
 		    pingu = atlas.findRegion("Pingu");
 		    
 		    playerList = atlas.findRegion("PlayersList");
@@ -204,6 +210,10 @@ public class Assets {
 		    indexTitle = atlas.findRegion("IndexTitle");
 		    introductionButtonHelp = atlas.findRegion("IntroductionButtonHelp");
 		    upgradesButtonHelp = atlas.findRegion("UpgradesButtonHelp");
+		    
+		    add = atlas.findRegion("Add");
+		    minus = atlas.findRegion("Minus");
+		    
 	    }
 	    
 	    public static AtlasRegion getHarpoon() {

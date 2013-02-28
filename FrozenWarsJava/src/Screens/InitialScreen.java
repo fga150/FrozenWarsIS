@@ -5,12 +5,8 @@ import java.io.IOException;
 
 import Application.Assets;
 import Application.GameSettings;
-import Application.MatchManager;
-import Server.SmartFoxServer;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;

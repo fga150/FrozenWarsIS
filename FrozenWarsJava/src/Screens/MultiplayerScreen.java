@@ -94,16 +94,6 @@ public class MultiplayerScreen implements Screen{
 	    font.setColor(Color.BLACK);
 	    
 	    invited = new Vector<invitedInfo>();
-	    //For testing
-	    invited.add(new invitedInfo("Me", "Accepted"));
-	    invited.add(new invitedInfo("Player1", "Waiting"));
-	    invited.add(new invitedInfo("Player2", "Cancelled"));
-	    invited.add(new invitedInfo("Player3", "Waiting"));
-	    invited.add(new invitedInfo("Player4", "Accepted"));
-	    invited.add(new invitedInfo("Player5", "Waiting"));
-	    invited.add(new invitedInfo("Player6", "Accepted"));
-	    invited.add(new invitedInfo("Player7", "Cancelled"));
-	    invited.add(new invitedInfo("Player8", "Cancelled"));
 	    
 	    invitedScroll = 0;
 	    
@@ -175,7 +165,10 @@ public class MultiplayerScreen implements Screen{
 				GameScreen gameScreen = new GameScreen(game,manager);
 				manager.setGameScreen(gameScreen);
   				game.setScreen(gameScreen);
-      		} else if (externalPlayerTickClick.contains(touchPoint)){
+      		} else if (inviteButtonClick.contains(touchPoint)) {
+      			InviteScreen inviteScreen = new InviteScreen(game, sfsClient, this);
+      			game.setScreen(inviteScreen);
+      		}else if (externalPlayerTickClick.contains(touchPoint)){
       			externalPlayers = !externalPlayers;
       		} else if (modeLeftArrowClick.contains(touchPoint)){
       			if (gameMode == 0) gameMode = 4;
@@ -204,7 +197,7 @@ public class MultiplayerScreen implements Screen{
             batcher.disableBlending();
             //se elimina graficamente la transparencia ya que es un fondo
             batcher.begin();
-            batcher.draw(Assets.backMultiplayer,0,0,1024,630);
+            batcher.draw(Assets.backGrey,0,0,1024,630);
             batcher.end();
 
             //Dibujando elementos en pantalla activamos el Blending
@@ -224,9 +217,6 @@ public class MultiplayerScreen implements Screen{
             batcher.draw(Assets.mapLeftArrow, 45, 200);   
             batcher.draw(Assets.mapRightArrow, 450, 200);   
             
-            
-            batcher.draw(Assets.playerList, 630, 180); 
-            
             batcher.draw(Assets.playButton, 200, 80); 
             batcher.draw(Assets.inviteButton, 550, 80); 
             batcher.draw(Assets.backButton, 370, 20); 
@@ -240,6 +230,7 @@ public class MultiplayerScreen implements Screen{
 	}
 
 	private void drawInvited() {
+		batcher.draw(Assets.playerList, 630, 180); 
 		for (int i = 0; i < Math.min(invited.size(), 5); i++){
 			font.draw(batcher, invited.elementAt(i+invitedScroll).getUserName(), 700,(395-45*i));
 			if (invited.elementAt(i+invitedScroll).getStatus().equals("Accepted")) 
@@ -261,6 +252,12 @@ public class MultiplayerScreen implements Screen{
 	}
 
 
+	public void inviteFriends(Vector<String> users) {
+		for (int i = 0; i < users.size(); i++){
+			invited.add(new invitedInfo(users.elementAt(i), "Waiting"));
+		}	    		
+	}
+	
 	@Override
 	public void resize(int arg0, int arg1) {
 		// TODO Auto-generated method stub
@@ -278,5 +275,8 @@ public class MultiplayerScreen implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	
 
 }

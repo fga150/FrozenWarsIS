@@ -73,6 +73,13 @@ BotonLanza
   orig: 93, 270
   offset: 0, 0
   index: -1
+InviteGameTitle
+  rotate: false
+  xy: 1565, 490
+  size: 385, 65
+  orig: 385, 65
+  offset: 0, 0
+  index: -1
 MultiplayerGameTitle
   rotate: false
   xy: 1565, 490
@@ -108,37 +115,79 @@ cuatroSec
   orig: 304, 75
   offset: 0, 0
   index: -1
-TeamPlayButton
+UpgradesButtonHelp
   rotate: false
   xy: 308, 1680
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+IntroductionButtonHelp
+  rotate: false
+  xy: 308, 1739
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+GameModesButtonHelp
+  rotate: false
+  xy: 308, 1798
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+CreateButtonHelp
+  rotate: false
+  xy: 308, 1857
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+ControlButtonHelp
+  rotate: false
+  xy: 308, 1916
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+BackButtonHelp
+  rotate: false
+  xy: 308, 1975
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+TeamPlayButton
+  rotate: false
+  xy: 922, 1608
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 SurvivalModeButton
   rotate: false
-  xy: 308, 1737
+  xy: 922, 1665
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 NormalModeButton
   rotate: false
-  xy: 308, 1794
+  xy: 922, 1722
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 BattleRoyalButton
   rotate: false
-  xy: 308, 1851
+  xy: 922, 1779
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 1vsAllModeButton
   rotate: false
-  xy: 308, 1908
+  xy: 922, 1836
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
@@ -192,6 +241,13 @@ BackButton
   orig: 240, 41
   offset: 0, 0
   index: -1
+IndexTitle
+  rotate: false
+  xy: 1867, 408
+  size: 140, 60
+  orig: 140, 60
+  offset: 0, 0
+  index: -1
 IndicadorVidas
   rotate: false
   xy: 1460, 564
@@ -215,98 +271,98 @@ MapLeftArrow
   index: -1
 VibrationOn
   rotate: false
-  xy: 1867, 408
+  xy: 1871, 644
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 VibrationOff
   rotate: false
-  xy: 1867, 440
+  xy: 1871, 676
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 SoundOn
   rotate: false
-  xy: 1871, 644
+  xy: 1871, 708
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 SoundOff
   rotate: false
-  xy: 1871, 676
+  xy: 1871, 740
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Settings
   rotate: false
-  xy: 1871, 708
+  xy: 1871, 772
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Play
   rotate: false
-  xy: 1871, 740
+  xy: 2, 1886
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 LoggedOut
   rotate: false
-  xy: 1871, 772
+  xy: 2, 1918
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 LoggedIn
   rotate: false
-  xy: 2, 1886
+  xy: 2, 1950
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Help
   rotate: false
-  xy: 2, 1918
+  xy: 2, 1982
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Exit
   rotate: false
-  xy: 2, 1950
+  xy: 2, 2014
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 ConfirmedExitOn
   rotate: false
-  xy: 2, 1982
+  xy: 626, 1680
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 ConfirmedExitOff
   rotate: false
-  xy: 2, 2014
+  xy: 626, 1739
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Back
   rotate: false
-  xy: 635, 1680
+  xy: 626, 1771
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 ExternalPlayersText
   rotate: false
-  xy: 308, 1965
+  xy: 626, 1803
   size: 190, 25
   orig: 190, 25
   offset: 0, 0
@@ -320,14 +376,14 @@ casilla
   index: -1
 ArponParaBomba
   rotate: false
-  xy: 2000, 490
+  xy: 2009, 408
   size: 32, 64
   orig: 32, 64
   offset: 0, 0
   index: -1
 StatusTick
   rotate: false
-  xy: 244, 1757
+  xy: 2000, 490
   size: 45, 40
   orig: 45, 40
   offset: 0, 0
@@ -342,6 +398,20 @@ StatusInterrogation
 StatusCancel
   rotate: false
   xy: 2005, 599
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+Minus
+  rotate: false
+  xy: 244, 1757
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+Add
+  rotate: false
+  xy: 244, 1800
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
@@ -362,35 +432,35 @@ ModeLeftArrow
   index: -1
 vidasJugadorVerde
   rotate: false
-  xy: 244, 1800
+  xy: 244, 1843
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 vidasJugadorRojo
   rotate: false
-  xy: 244, 1843
+  xy: 238, 1886
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 vidasJugadorAzul
   rotate: false
-  xy: 238, 1886
+  xy: 272, 1886
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 vidasJugadorAmarillo
   rotate: false
-  xy: 272, 1886
+  xy: 174, 1932
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 barril
   rotate: false
-  xy: 174, 1932
+  xy: 174, 1966
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -447,6 +517,13 @@ image3.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+BackGrey
+  rotate: false
+  xy: 2, 2
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
 BackgroundMultiplayer
   rotate: false
   xy: 2, 2

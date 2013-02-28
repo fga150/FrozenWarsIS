@@ -1,25 +1,13 @@
 
 package Screens;
 
-import java.io.IOException;
-import java.util.Vector;
-
-
 import Application.Assets;
-import Application.GameSettings;
-import Application.MatchManager;
-import Server.SmartFoxServer;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
@@ -34,8 +22,8 @@ public class HelpScreen implements Screen{
 	private Vector3 touchPoint;
 	private IndexScreen indexScreen;
     
-    private  BoundingBox modeLeftArrowClick;
-    private  BoundingBox modeRightArrowClick;
+    private  BoundingBox leftArrowClick;
+    private  BoundingBox rightArrowClick;
     
     private  BoundingBox backButtonClick;
    
@@ -58,11 +46,12 @@ public class HelpScreen implements Screen{
 	    
 	    //Esquina inferior izq y superior derecha
 	    
-	    modeLeftArrowClick = new BoundingBox(new Vector3(320, 543,0), new Vector3(790,120,0));
-	    modeRightArrowClick = new BoundingBox(new Vector3(670, 543,0), new Vector3(790,120,0));
+	    rightArrowClick = new BoundingBox(new Vector3(655,540,0), new Vector3(700,600,0));
+	    leftArrowClick = new BoundingBox(new Vector3(310, 530,0), new Vector3(365,595,0));
 	    
-	    backButtonClick = new BoundingBox(new Vector3(395, 50,0), new Vector3(635,91,0));
-
+	    backButtonClick = new BoundingBox(new Vector3(375, 50,0), new Vector3(615,90,0));
+	    
+	    window = 0;
 	}
 
 	
@@ -89,11 +78,15 @@ public class HelpScreen implements Screen{
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-
+      		
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (backButtonClick.contains(touchPoint)){
 				game.setScreen(indexScreen);
-      		} 
+      		} else if (leftArrowClick.contains(touchPoint)){
+      			window = Math.max(0, window - 1);
+      		} else if (rightArrowClick.contains(touchPoint)){
+      			window = Math.min(4, window + 1);
+      		}
 			return;
 		}
 		//crear solamente un batcher por pantalla y eliminarlo cuando no se use
@@ -130,9 +123,7 @@ public class HelpScreen implements Screen{
             
             batcher.draw(Assets.modeLeftArrow, 320, 543);            
             batcher.draw(Assets.modeRightArrow, 670, 543);    
-            
-            batcher.draw(Assets.backButton, 395, 50);   
-          
+            batcher.draw(Assets.backButton, 375, 50);   
             	          
             batcher.end();
 

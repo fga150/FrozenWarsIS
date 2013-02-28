@@ -1,25 +1,13 @@
 
 package Screens;
 
-import java.io.IOException;
-import java.util.Vector;
-
-
 import Application.Assets;
-import Application.GameSettings;
-import Application.MatchManager;
-import Server.SmartFoxServer;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
@@ -42,7 +30,8 @@ public class IndexScreen implements Screen{
     private  BoundingBox gameModesButtonHelpClick;
  
     private  BoundingBox backButtonHelpClick;
-        
+    
+    int window;
 
     public IndexScreen(Game game, InitialScreen initialScreen) {
 		this.game = game;
@@ -64,7 +53,7 @@ public class IndexScreen implements Screen{
 	    gameModesButtonHelpClick = new BoundingBox(new Vector3(320, 175,0), new Vector3(636,290,0));
 	
 	    backButtonHelpClick = new BoundingBox(new Vector3(320, 50,0), new Vector3(636,107,0));
-  
+	    
 	}
 
 	
@@ -91,35 +80,29 @@ public class IndexScreen implements Screen{
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-			int window = 0;
+			
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (introductionButtonHelpClick.contains(touchPoint)){
-				System.out.println("introduccion");
 				HelpScreen indexScreen = new HelpScreen(game,this,0);
 				game.setScreen(indexScreen);
 				
 			} else if (upgradesButtonHelpClick.contains(touchPoint)){
-				System.out.println("upgrades");
 				HelpScreen indexScreen = new HelpScreen(game,this,1);
 				game.setScreen(indexScreen);
 				
 			} else if (controlButtonHelpClick.contains(touchPoint)){
-				System.out.println("control");
 				HelpScreen indexScreen = new HelpScreen(game,this,2);
 				game.setScreen(indexScreen);
 				
 			} else if (createButtonHelpClick.contains(touchPoint)){
-				System.out.println("create");
 				HelpScreen indexScreen = new HelpScreen(game,this,3);
 				game.setScreen(indexScreen);
 				
 			} else if (gameModesButtonHelpClick.contains(touchPoint)){
-				System.out.println("gamemode");
 				HelpScreen indexScreen = new HelpScreen(game,this,4);
 				game.setScreen(indexScreen);
 				
 			} else if (backButtonHelpClick.contains(touchPoint)){
-				System.out.println("back");
 				game.setScreen(this.initialScreen);
 			}
 
