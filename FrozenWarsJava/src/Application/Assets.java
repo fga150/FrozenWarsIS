@@ -49,6 +49,8 @@ public class Assets {
 	    
 	    private static AtlasRegion harpooon;
 	    
+	    private static AtlasRegion barrelWithFissure;
+	    
 	    private static AtlasRegion fissureCenter;
 	    private static AtlasRegion fissureSideX;
 	    private static AtlasRegion fissureSideY;
@@ -167,6 +169,7 @@ public class Assets {
 		    
 		    harpooon = atlas.findRegion("ArponParaBomba");
 		    //Fissures
+		    barrelWithFissure =  atlas.findRegion("barrelWithFissure");
 		    fissureCenter =  atlas.findRegion("fissureCenter");
 		    fissureSideX =  atlas.findRegion("fissureSideX");
 		    fissureSideY =  atlas.findRegion("fissureSideY");
@@ -242,7 +245,11 @@ public class Assets {
 		    modeRightArrow = atlas.findRegion("ModeRightArrow");
 	    }
 	    
-	    public static AtlasRegion getBackground() {
+	    public static AtlasRegion getBarrelWithFissure() {
+			return barrelWithFissure;
+		}
+
+		public static AtlasRegion getBackground() {
 			return background;
 		}
 

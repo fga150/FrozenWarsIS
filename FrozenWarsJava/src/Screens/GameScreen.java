@@ -113,7 +113,12 @@ public class GameScreen implements Screen{
 					if (type.equals(TypeSquare.unbreakable)) texture = Assets.getIgloo();
 					else if (type.equals(TypeSquare.Harpoon)) texture = Assets.getHarpoon();				
 					else if (type.equals(TypeSquare.breakable)) texture  = Assets.getBarrel();
-					else if (type.equals(TypeSquare.fissureC)) texture  = Assets.getFissureCenter();
+					else if (type.equals(TypeSquare.barrelWithFissure)) texture  = Assets.getBarrelWithFissure();
+					else if (type.equals(TypeSquare.fissureC)){
+						texture  = Assets.getFissureCenter();
+						batcher.draw(texture,i+8,j+1,1,1);
+						texture = Assets.getHarpoon();
+					}
 					else if (type.equals(TypeSquare.fissureSX)) texture  = Assets.getFissureSideX();
 					else if (type.equals(TypeSquare.fissureSY)) texture  = Assets.getFissureSideY();
 					else if (type.equals(TypeSquare.water1SOpN)) texture  = Assets.getWater1SideOpenN();

@@ -9,7 +9,7 @@ public class Map {
 	//Type of a square in the boardGame
 	
 	public enum TypeSquare{empty,unbreakable,breakable,bootUpgrade,rangeUpgrade,numHarpoonUpgrade,
-		throwUpgrade,Harpoon, fissureC, fissureSX, fissureSY, water1SOpN, water1SOpS, water1SOpE, 
+		throwUpgrade,Harpoon,barrelWithFissure, fissureC, fissureSX, fissureSY, water1SOpN, water1SOpS, water1SOpE, 
 		water1SOpW, water2SOpCornerEN, water2SOpCornerNW, water2SOpCornerSE, water2SOpCornerWS,
 		water2SOpBridgeX, water2SOpBridgeY, water3SOpN, water3SOpS, water3SOpE, water3SOpW, water4SOp}
 	
@@ -35,8 +35,8 @@ public class Map {
 		this.length=lenght;
 		this.width=width;
 		this.boardGame = new TypeSquare[lenght][width];
-		for (int i=0;i<lenght;i++){
-			for (int j=0;j<width;j++){
+		for (int i=0;i<width;i++){
+			for (int j=0;j<length;j++){
 				if ((i % 2 == 1) && (j % 2 == 1)) boardGame[i][j] = TypeSquare.unbreakable;
 				else boardGame[i][j] = TypeSquare.empty;
 			}
@@ -121,7 +121,7 @@ public class Map {
 		int dash = box.indexOf("-");
 		int x = Integer.parseInt(box.substring(0, dash));
 		int y = Integer.parseInt(box.substring(dash+1, box.length()));
-		if (x <= length && y <= width) boardGame[x][y] = type;
+		if (x < width && y < length && x >= 0 && y >=0) boardGame[x][y] = type;
 	}
 	
 	public TypeSquare getposition(int squareX,int squareY) {
@@ -143,34 +143,35 @@ public class Map {
 		int i = 1;
 		boolean blocked = false;
 		//NORTH
-		while (!blocked && yLancePosition-i>=0 && i<=fissureRange && canIputFissure(xLancePosition,yLancePosition-i)){
-				if (boardGame[xLancePosition][yLancePosition-i] == TypeSquare.empty){
-					boardGame[xLancePosition][yLancePosition-i] = TypeSquare.fissureSY;
-				}
-				else if (boardGame[xLancePosition][yLancePosition-i] == TypeSquare.breakable){
-					boardGame[xLancePosition][yLancePosition-i] = TypeSquare.empty;
-					blocked = true;
-				}
-		i++;
+		while (!blocked && (yLancePosition+i<length) && i<=fissureRange && canIputFissure(xLancePosition,yLancePosition+i)){
+			if (boardGame[xLancePosition][yLancePosition+i] == TypeSquare.empty)
+				boardGame[xLancePosition][yLancePosition+i] = TypeSquare.fissureSY;
+			else if (boardGame[xLancePosition][yLancePosition+i] == TypeSquare.breakable){
+				boardGame[xLancePosition][yLancePosition+i] = TypeSquare.barrelWithFissure;
+				blocked = true;
+			}
+			i++;
 		}
 		i = 1; blocked = false;
+		
 		//SOUTH
-		while (!blocked && (yLancePosition+i<11) && i<=fissureRange && canIputFissure(xLancePosition,yLancePosition+i)){
-					if (boardGame[xLancePosition][yLancePosition+i] == TypeSquare.empty)
-						boardGame[xLancePosition][yLancePosition+i] = TypeSquare.fissureSY;
-					else if (boardGame[xLancePosition][yLancePosition+i] == TypeSquare.breakable){
-						boardGame[xLancePosition][yLancePosition+i] = TypeSquare.empty;
-						blocked = true;
-					}
+		while (!blocked && yLancePosition-i>=0 && i<=fissureRange && canIputFissure(xLancePosition,yLancePosition-i)){
+			if (boardGame[xLancePosition][yLancePosition-i] == TypeSquare.empty){
+				boardGame[xLancePosition][yLancePosition-i] = TypeSquare.fissureSY;
+			}
+			else if (boardGame[xLancePosition][yLancePosition-i] == TypeSquare.breakable){
+				boardGame[xLancePosition][yLancePosition-i] = TypeSquare.barrelWithFissure;
+				blocked = true;
+			}
 		i++;
 		}
 		i = 1; blocked = false;
 		//EAST
-		while (!blocked && (xLancePosition+i<11) && i<=fissureRange && canIputFissure(xLancePosition+i,yLancePosition)){
+		while (!blocked && (xLancePosition+i<width) && i<=fissureRange && canIputFissure(xLancePosition+i,yLancePosition)){
 					if (boardGame[xLancePosition+i][yLancePosition] == TypeSquare.empty)
 						boardGame[xLancePosition+i][yLancePosition] = TypeSquare.fissureSX;
 					else if (boardGame[xLancePosition+i][yLancePosition] == TypeSquare.breakable){
-						boardGame[xLancePosition+i][yLancePosition] = TypeSquare.empty;
+						boardGame[xLancePosition+i][yLancePosition] = TypeSquare.barrelWithFissure;
 						blocked = true;
 					}
 		i++;
@@ -181,53 +182,86 @@ public class Map {
 					if (boardGame[xLancePosition-i][yLancePosition] == TypeSquare.empty)
 						boardGame[xLancePosition-i][yLancePosition] = TypeSquare.fissureSX;
 					else if (boardGame[xLancePosition-i][yLancePosition] == TypeSquare.breakable){
-						boardGame[xLancePosition-i][yLancePosition] = TypeSquare.empty;
+						boardGame[xLancePosition-i][yLancePosition] = TypeSquare.barrelWithFissure;
 						blocked = true;
 					}
 		i++;
 		}
+
 }
 	
-	
+	/*FIXME* Water isn't drawing correctly. Maybe the problem is in the harpoon position */
 	public void putWaterAt(int xLancePosition, int yLancePosition, int fissureRange) {
 		
 	// Fissure center <= Water Center
 	String connectingSidesPos = ConnectingSidesPosition(xLancePosition, yLancePosition, fissureRange);
 	boardGame[xLancePosition][yLancePosition] = getWaterPiece(connectingSidesPos);
 		
-	int i = 1;
+	int i = 1; boolean blocked = false;
+	//
 	//NORTH
-	while (yLancePosition-i>=0 && i<=fissureRange && (boardGame[xLancePosition][yLancePosition-i] == TypeSquare.fissureSY)){
-		connectingSidesPos = ConnectingSidesPosition(xLancePosition, yLancePosition, fissureRange);
-		boardGame[xLancePosition][yLancePosition-i] = getWaterPiece(connectingSidesPos);
+	blocked = false;
+	while (!blocked && (yLancePosition+i<length) && i<=fissureRange && ((boardGame[xLancePosition][yLancePosition+i] == TypeSquare.fissureSY)
+			||(boardGame[xLancePosition][yLancePosition+i] == TypeSquare.barrelWithFissure))){
+		if (boardGame[xLancePosition][yLancePosition+i] == TypeSquare.fissureSY){
+			connectingSidesPos = ConnectingSidesPosition(xLancePosition, yLancePosition+i, fissureRange);
+			boardGame[xLancePosition][yLancePosition+i] = getWaterPiece(connectingSidesPos);
+		}else if (boardGame[xLancePosition][yLancePosition+i] == TypeSquare.barrelWithFissure){
+			// Upgrades not included yet. Barrel will be empty.
+			boardGame[xLancePosition][yLancePosition+i] = TypeSquare.empty;
+			blocked = true;
+		}
 	i++;
-	}
+	} 
 	i = 1;
+	
 	//SOUTH
-	while ((yLancePosition+i<11) && i<=fissureRange && (boardGame[xLancePosition][yLancePosition+i] == TypeSquare.fissureSY)){
-		connectingSidesPos = ConnectingSidesPosition(xLancePosition, yLancePosition, fissureRange);
-		boardGame[xLancePosition][yLancePosition+i] = getWaterPiece(connectingSidesPos);
-	i++;
-	}
-	i = 1;
+	while (!blocked && yLancePosition-i>=0 && i<=fissureRange && ((boardGame[xLancePosition][yLancePosition-i] == TypeSquare.fissureSY)
+			||(boardGame[xLancePosition][yLancePosition-i] == TypeSquare.barrelWithFissure))){
+			if (boardGame[xLancePosition][yLancePosition-i] == TypeSquare.fissureSY){
+				connectingSidesPos = ConnectingSidesPosition(xLancePosition, yLancePosition-i, fissureRange);
+				boardGame[xLancePosition][yLancePosition-i] = getWaterPiece(connectingSidesPos);
+			}else if (boardGame[xLancePosition][yLancePosition-i] == TypeSquare.barrelWithFissure){
+				// Upgrades not included yet. Barrel will be empty.
+				boardGame[xLancePosition][yLancePosition-i] = TypeSquare.empty;
+				blocked = true;
+			}
+		i++;
+		}
+		i = 1;
+	
 	//EAST
-	while ((xLancePosition+i<11) && i<=fissureRange	&&  (boardGame[xLancePosition+i][yLancePosition] == TypeSquare.fissureSX)){
-		connectingSidesPos = ConnectingSidesPosition(xLancePosition, yLancePosition, fissureRange);
-		boardGame[xLancePosition+i][yLancePosition] = getWaterPiece(connectingSidesPos);
+	blocked = false;
+	while (!blocked && (xLancePosition+i<width) && i<=fissureRange	&& ((boardGame[xLancePosition+i][yLancePosition] == TypeSquare.fissureSX)
+			||(boardGame[xLancePosition+i][yLancePosition] == TypeSquare.barrelWithFissure))){
+		if (boardGame[xLancePosition+i][yLancePosition] == TypeSquare.fissureSX){
+			connectingSidesPos = ConnectingSidesPosition(xLancePosition+i, yLancePosition, fissureRange);
+			boardGame[xLancePosition+i][yLancePosition] = getWaterPiece(connectingSidesPos);
+		}else if (boardGame[xLancePosition+i][yLancePosition] == TypeSquare.barrelWithFissure){
+			// Upgrades not included yet. Barrel will be empty.
+			boardGame[xLancePosition+i][yLancePosition] = TypeSquare.empty;
+			blocked = true;
+		}
 	i++;
 	}
 	i = 1;
 	//WEST
-	while ((xLancePosition-i>=0) && i<=fissureRange &&  (boardGame[xLancePosition-i][yLancePosition] == TypeSquare.fissureSX)){
-		connectingSidesPos = ConnectingSidesPosition(xLancePosition, yLancePosition, fissureRange);
-		boardGame[xLancePosition-i][yLancePosition] = getWaterPiece(connectingSidesPos);
+	blocked = false;
+	while (!blocked && (xLancePosition-i>=0) && i<=fissureRange	&& ((boardGame[xLancePosition-i][yLancePosition] == TypeSquare.fissureSX)
+			||(boardGame[xLancePosition-i][yLancePosition] == TypeSquare.barrelWithFissure))){
+		if (boardGame[xLancePosition-i][yLancePosition] == TypeSquare.fissureSX){
+			connectingSidesPos = ConnectingSidesPosition(xLancePosition-i, yLancePosition, fissureRange);
+			boardGame[xLancePosition-i][yLancePosition] = getWaterPiece(connectingSidesPos);
+		}else if (boardGame[xLancePosition-i][yLancePosition] == TypeSquare.barrelWithFissure){
+			// Upgrades not included yet. Barrel will be empty.
+			boardGame[xLancePosition-i][yLancePosition] = TypeSquare.empty;
+			blocked = true;
+		}
 	i++;
-	}
-}
-	
-	
-	
 
+	}
+	
+}
 
 private TypeSquare getWaterPiece (String connectingSidesPos){	
 		if (connectingSidesPos.equals("N")){return TypeSquare.water1SOpN;}
@@ -249,10 +283,36 @@ return TypeSquare.empty;
 }
 
 
-private boolean canIputWater(int xLancePosition,	int yLancePosition){
-	return (boardGame[xLancePosition][yLancePosition] == TypeSquare.fissureSY 
-			|| boardGame[xLancePosition][yLancePosition] == TypeSquare.fissureSX
-			|| boardGame[xLancePosition][yLancePosition] == TypeSquare.fissureC);
+private boolean canIputWater(int xIni,int yIni,int xFin,int yFin){	
+	//The new field is in the East. we have to check that this field is a fissure or is a water block with a connection in the west side
+	if(xIni < xFin){
+		return(boardGame[xFin][yFin] == TypeSquare.fissureSX || boardGame[xFin][yFin] == TypeSquare.water1SOpW 
+				|| boardGame[xFin][yFin] == TypeSquare.water2SOpCornerNW || boardGame[xFin][yFin] == TypeSquare.water2SOpCornerWS
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpE || boardGame[xFin][yFin] == TypeSquare.water3SOpN
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpS || boardGame[xFin][yFin] == TypeSquare.water4SOp);
+	
+	//The new field is in the West. we have to check that this field is a fissure or is a water block with a connection in the east side
+	}else if(xIni > xFin){
+		return(boardGame[xFin][yFin] == TypeSquare.fissureSX || boardGame[xFin][yFin] == TypeSquare.water1SOpE 
+				|| boardGame[xFin][yFin] == TypeSquare.water2SOpCornerEN || boardGame[xFin][yFin] == TypeSquare.water2SOpCornerSE
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpW || boardGame[xFin][yFin] == TypeSquare.water3SOpN
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpS || boardGame[xFin][yFin] == TypeSquare.water4SOp);
+			
+	//The new field is in the South. we have to check that this field is a fissure or is a water block with a connection in the north side
+	}else if(yIni > yFin){
+		return(boardGame[xFin][yFin] == TypeSquare.fissureSY || boardGame[xFin][yFin] == TypeSquare.water1SOpN
+				|| boardGame[xFin][yFin] == TypeSquare.water2SOpCornerNW || boardGame[xFin][yFin] == TypeSquare.water2SOpCornerEN
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpE || boardGame[xFin][yFin] == TypeSquare.water3SOpW
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpS || boardGame[xFin][yFin] == TypeSquare.water4SOp);
+
+	//The new field is in the North. we have to check that this field is a fissure or is a water block with a connection in the south side
+	}else if(yIni < yFin){
+		return(boardGame[xFin][yFin] == TypeSquare.fissureSY || boardGame[xFin][yFin] == TypeSquare.water1SOpS
+				|| boardGame[xFin][yFin] == TypeSquare.water2SOpCornerSE || boardGame[xFin][yFin] == TypeSquare.water2SOpCornerWS
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpE || boardGame[xFin][yFin] == TypeSquare.water3SOpW
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpN || boardGame[xFin][yFin] == TypeSquare.water4SOp);
+	}		
+return true;
 }
 
 private boolean canIputFissure(int xLancePosition,	int yLancePosition){
@@ -263,13 +323,17 @@ private boolean canIputFissure(int xLancePosition,	int yLancePosition){
 private String ConnectingSidesPosition(int xLancePosition,	int yLancePosition, int fissureRange) {
 	String posiciones = "";
 	//NORTH
-	if(yLancePosition-1>=0 && canIputWater(xLancePosition, yLancePosition-1)) posiciones = posiciones.concat("N");
+	if(yLancePosition+1<length && canIputWater(xLancePosition, yLancePosition, xLancePosition, yLancePosition+1)) 
+		posiciones = posiciones.concat("N");
 	//SOUTH
-	if(yLancePosition+1<length && canIputWater(xLancePosition, yLancePosition+1)) posiciones = posiciones.concat("S");
+	if(yLancePosition-1>=0 && canIputWater(xLancePosition, yLancePosition, xLancePosition, yLancePosition-1)) 
+		posiciones = posiciones.concat("S");
 	//EAST
-	if(xLancePosition-1>=0 && canIputWater(xLancePosition+1, yLancePosition)) posiciones = posiciones.concat("E");
+	if(xLancePosition+1>=0 && canIputWater(xLancePosition, yLancePosition, xLancePosition+1, yLancePosition))
+		posiciones = posiciones.concat("E");
 	//WEST
-	if(xLancePosition+1<width && canIputWater(xLancePosition-1, yLancePosition)) posiciones = posiciones.concat("W");
+	if(xLancePosition-1<width && canIputWater(xLancePosition, yLancePosition, xLancePosition-1, yLancePosition))
+		posiciones = posiciones.concat("W");
 	
 return posiciones;
 }
