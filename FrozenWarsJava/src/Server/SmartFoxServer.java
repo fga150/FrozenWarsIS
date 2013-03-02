@@ -53,6 +53,7 @@ public class SmartFoxServer implements IEventListener {
 		try {
 			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
 			ip = address.getHostAddress();
+	
 		} catch (Exception e){
 			
 		}

@@ -444,7 +444,7 @@ fissureSideY
   orig: 32, 32
   offset: 0, 0
   index: -1
-fissureSideX 
+fissureSideX
   rotate: false
   xy: 584, 1999
   size: 32, 32
