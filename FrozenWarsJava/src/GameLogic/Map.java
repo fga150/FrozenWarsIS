@@ -132,6 +132,8 @@ public class Map {
 		boardGame[xLancePosition][yLancePosition]= TypeSquare.Harpoon;
 	}
 
+	
+	/*TODO Fissures of different harpoon should cross between them*/
 	public void putfissureAt(int xLancePosition, int yLancePosition, int fissureRange) {
 		//The fissure center is in the same position that the harpoon
 		
@@ -187,10 +189,11 @@ public class Map {
 					}
 		i++;
 		}
+		putWaterAt(xLancePosition, yLancePosition, fissureRange);
 
 }
 	
-	/*FIXME* Water isn't drawing correctly. Maybe the problem is in the harpoon position */
+	/*TODO the barrelWithFissure has to be an empty field*/
 	public void putWaterAt(int xLancePosition, int yLancePosition, int fissureRange) {
 		
 	// Fissure center <= Water Center
@@ -216,6 +219,7 @@ public class Map {
 	i = 1;
 	
 	//SOUTH
+	blocked = false;
 	while (!blocked && yLancePosition-i>=0 && i<=fissureRange && ((boardGame[xLancePosition][yLancePosition-i] == TypeSquare.fissureSY)
 			||(boardGame[xLancePosition][yLancePosition-i] == TypeSquare.barrelWithFissure))){
 			if (boardGame[xLancePosition][yLancePosition-i] == TypeSquare.fissureSY){
@@ -288,29 +292,33 @@ private boolean canIputWater(int xIni,int yIni,int xFin,int yFin){
 	if(xIni < xFin){
 		return(boardGame[xFin][yFin] == TypeSquare.fissureSX || boardGame[xFin][yFin] == TypeSquare.water1SOpW 
 				|| boardGame[xFin][yFin] == TypeSquare.water2SOpCornerNW || boardGame[xFin][yFin] == TypeSquare.water2SOpCornerWS
-				|| boardGame[xFin][yFin] == TypeSquare.water3SOpE || boardGame[xFin][yFin] == TypeSquare.water3SOpN
-				|| boardGame[xFin][yFin] == TypeSquare.water3SOpS || boardGame[xFin][yFin] == TypeSquare.water4SOp);
+				|| boardGame[xFin][yFin] == TypeSquare.water2SOpBridgeX || boardGame[xFin][yFin] == TypeSquare.water3SOpE 
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpN || boardGame[xFin][yFin] == TypeSquare.water3SOpS 
+				|| boardGame[xFin][yFin] == TypeSquare.water4SOp);
 	
 	//The new field is in the West. we have to check that this field is a fissure or is a water block with a connection in the east side
 	}else if(xIni > xFin){
 		return(boardGame[xFin][yFin] == TypeSquare.fissureSX || boardGame[xFin][yFin] == TypeSquare.water1SOpE 
 				|| boardGame[xFin][yFin] == TypeSquare.water2SOpCornerEN || boardGame[xFin][yFin] == TypeSquare.water2SOpCornerSE
-				|| boardGame[xFin][yFin] == TypeSquare.water3SOpW || boardGame[xFin][yFin] == TypeSquare.water3SOpN
-				|| boardGame[xFin][yFin] == TypeSquare.water3SOpS || boardGame[xFin][yFin] == TypeSquare.water4SOp);
+				|| boardGame[xFin][yFin] == TypeSquare.water2SOpBridgeX || boardGame[xFin][yFin] == TypeSquare.water3SOpW 
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpN || boardGame[xFin][yFin] == TypeSquare.water3SOpS 
+				|| boardGame[xFin][yFin] == TypeSquare.water4SOp);
 			
 	//The new field is in the South. we have to check that this field is a fissure or is a water block with a connection in the north side
 	}else if(yIni > yFin){
 		return(boardGame[xFin][yFin] == TypeSquare.fissureSY || boardGame[xFin][yFin] == TypeSquare.water1SOpN
 				|| boardGame[xFin][yFin] == TypeSquare.water2SOpCornerNW || boardGame[xFin][yFin] == TypeSquare.water2SOpCornerEN
-				|| boardGame[xFin][yFin] == TypeSquare.water3SOpE || boardGame[xFin][yFin] == TypeSquare.water3SOpW
-				|| boardGame[xFin][yFin] == TypeSquare.water3SOpS || boardGame[xFin][yFin] == TypeSquare.water4SOp);
+				|| boardGame[xFin][yFin] == TypeSquare.water2SOpBridgeY || boardGame[xFin][yFin] == TypeSquare.water3SOpE 
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpW || boardGame[xFin][yFin] == TypeSquare.water3SOpS 
+				|| boardGame[xFin][yFin] == TypeSquare.water4SOp);
 
 	//The new field is in the North. we have to check that this field is a fissure or is a water block with a connection in the south side
 	}else if(yIni < yFin){
 		return(boardGame[xFin][yFin] == TypeSquare.fissureSY || boardGame[xFin][yFin] == TypeSquare.water1SOpS
 				|| boardGame[xFin][yFin] == TypeSquare.water2SOpCornerSE || boardGame[xFin][yFin] == TypeSquare.water2SOpCornerWS
-				|| boardGame[xFin][yFin] == TypeSquare.water3SOpE || boardGame[xFin][yFin] == TypeSquare.water3SOpW
-				|| boardGame[xFin][yFin] == TypeSquare.water3SOpN || boardGame[xFin][yFin] == TypeSquare.water4SOp);
+				|| boardGame[xFin][yFin] == TypeSquare.water2SOpBridgeY || boardGame[xFin][yFin] == TypeSquare.water3SOpE 
+				|| boardGame[xFin][yFin] == TypeSquare.water3SOpW || boardGame[xFin][yFin] == TypeSquare.water3SOpN 
+				|| boardGame[xFin][yFin] == TypeSquare.water4SOp);
 	}		
 return true;
 }
@@ -329,10 +337,10 @@ private String ConnectingSidesPosition(int xLancePosition,	int yLancePosition, i
 	if(yLancePosition-1>=0 && canIputWater(xLancePosition, yLancePosition, xLancePosition, yLancePosition-1)) 
 		posiciones = posiciones.concat("S");
 	//EAST
-	if(xLancePosition+1>=0 && canIputWater(xLancePosition, yLancePosition, xLancePosition+1, yLancePosition))
+	if(xLancePosition+1 < width && canIputWater(xLancePosition, yLancePosition, xLancePosition+1, yLancePosition))
 		posiciones = posiciones.concat("E");
 	//WEST
-	if(xLancePosition-1<width && canIputWater(xLancePosition, yLancePosition, xLancePosition-1, yLancePosition))
+	if(xLancePosition-1>=0 && canIputWater(xLancePosition, yLancePosition, xLancePosition-1, yLancePosition))
 		posiciones = posiciones.concat("W");
 	
 return posiciones;
