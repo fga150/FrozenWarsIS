@@ -95,6 +95,16 @@ public class Assets {
 	    public static AtlasRegion modeLeftArrow;
 	    public static AtlasRegion modeRightArrow;
 	    
+	    public static AtlasRegion playersText;
+	    public static AtlasRegion inviteListText;
+	    public static AtlasRegion availablePlayersText;
+	    
+
+	    public static AtlasRegion add;
+	    public static AtlasRegion minus;
+	    
+	    //Componentes de la pantalla de ayuda
+	    
 	    public static AtlasRegion gameModesButtonHelp;
 	    public static AtlasRegion createButtonHelp;
 	    public static AtlasRegion controlButtonHelp;
@@ -103,13 +113,13 @@ public class Assets {
 	    public static AtlasRegion introductionButtonHelp;
 	    public static AtlasRegion upgradesButtonHelp;
 	    
-	    public static AtlasRegion playersText;
-	    public static AtlasRegion inviteListText;
-	    public static AtlasRegion availablePlayersText;
+	    public static AtlasRegion introductionHelpText;
+	    public static AtlasRegion upgradesHelpText;
+	    public static AtlasRegion controlHelpText;
+	    public static AtlasRegion createGameHelpText;
+	    public static AtlasRegion gameModesHelpText;
 	    
 
-	    public static AtlasRegion add;
-	    public static AtlasRegion minus;
 
 
 	    /**
@@ -207,6 +217,15 @@ public class Assets {
 		    mapRightArrow = atlas.findRegion("MapRightArrow");
 		    modeLeftArrow = atlas.findRegion("ModeLeftArrow");
 		    modeRightArrow = atlas.findRegion("ModeRightArrow");    
+		  		    
+		    playersText = atlas.findRegion("PlayersText");
+		    inviteListText = atlas.findRegion("InviteListText");
+		    availablePlayersText = atlas.findRegion("AvailablePlayersText");	    
+		    
+		    add = atlas.findRegion("Add");
+		    minus = atlas.findRegion("Minus");
+		    
+		    //Componentes de la pantalla de ayuda
 		    
 		    gameModesButtonHelp = atlas.findRegion("GameModesButtonHelp");
 		    createButtonHelp = atlas.findRegion("CreateButtonHelp");
@@ -216,12 +235,12 @@ public class Assets {
 		    introductionButtonHelp = atlas.findRegion("IntroductionButtonHelp");
 		    upgradesButtonHelp = atlas.findRegion("UpgradesButtonHelp");
 		    
-		    playersText = atlas.findRegion("PlayersText");
-		    inviteListText = atlas.findRegion("InviteListText");
-		    availablePlayersText = atlas.findRegion("AvailablePlayersText");	    
 		    
-		    add = atlas.findRegion("Add");
-		    minus = atlas.findRegion("Minus");
+		    introductionHelpText = atlas.findRegion("IntroductionHelpText");
+		    upgradesHelpText = atlas.findRegion("UpgradesHelpText");
+		    controlHelpText = atlas.findRegion("ControlHelpText");
+		    createGameHelpText = atlas.findRegion("CreateGameHelpText");
+		    gameModesHelpText = atlas.findRegion("GameModesHelpText");
 		    
 	    }
 	    

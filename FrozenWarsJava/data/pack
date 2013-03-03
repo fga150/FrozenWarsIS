@@ -531,16 +531,56 @@ image3.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-BackGrey
+UpgradesHelpText
   rotate: false
   xy: 2, 2
   size: 1024, 629
   orig: 1024, 629
   offset: 0, 0
   index: -1
-BackgroundMultiplayer
+IntroductionHelpText
+  rotate: false
+  xy: 2, 633
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+GameModesHelpText
+  rotate: false
+  xy: 2, 1264
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+
+image4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+CreateGameHelpText
   rotate: false
   xy: 2, 2
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+ControlHelpText
+  rotate: false
+  xy: 2, 633
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+BackGrey
+  rotate: false
+  xy: 2, 1264
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+BackgroundMultiplayer
+  rotate: false
+  xy: 2, 1264
   size: 1024, 629
   orig: 1024, 629
   offset: 0, 0

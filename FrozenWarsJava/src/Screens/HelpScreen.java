@@ -111,14 +111,19 @@ public class HelpScreen implements Screen{
             
             if (this.window == 0) {
             	batcher.draw(Assets.introductionButtonHelp, 340, 540);
+            	batcher.draw(Assets.introductionHelpText, 0, 0);
             } else if (this.window == 1){
             	batcher.draw(Assets.upgradesButtonHelp, 340, 540);
+            	batcher.draw(Assets.upgradesHelpText, 0, 0);
             } else if (this.window == 2){
             	batcher.draw(Assets.controlButtonHelp, 340, 540);
+            	batcher.draw(Assets.controlHelpText, 0, 0);
             } else if (this.window == 3){
             	batcher.draw(Assets.createButtonHelp, 340, 540);
+            	batcher.draw(Assets.createGameHelpText, 0, 0);
             } else if (this.window == 4){
             	batcher.draw(Assets.gameModesButtonHelp, 340, 540);
+            	batcher.draw(Assets.gameModesHelpText, 0, 0);
             }
             
             batcher.draw(Assets.modeLeftArrow, 320, 543);            
