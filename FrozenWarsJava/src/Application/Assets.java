@@ -85,7 +85,7 @@ public class Assets {
 	    public static AtlasRegion inviteGameTitle;
 	    public static AtlasRegion pingu;
 	    
-	    public static AtlasRegion playerList;
+	    public static AtlasRegion list;
 	    public static AtlasRegion statusCancel;
 	    public static AtlasRegion statusTick;
 	    public static AtlasRegion statusInterrogation;
@@ -102,6 +102,11 @@ public class Assets {
 	    public static AtlasRegion indexTitle;
 	    public static AtlasRegion introductionButtonHelp;
 	    public static AtlasRegion upgradesButtonHelp;
+	    
+	    public static AtlasRegion playersText;
+	    public static AtlasRegion inviteListText;
+	    public static AtlasRegion availablePlayersText;
+	    
 
 	    public static AtlasRegion add;
 	    public static AtlasRegion minus;
@@ -193,7 +198,7 @@ public class Assets {
 		    
 		    pingu = atlas.findRegion("Pingu");
 		    
-		    playerList = atlas.findRegion("PlayersList");
+		    list = atlas.findRegion("List");
 		    statusCancel = atlas.findRegion("StatusCancel");
 		    statusTick = atlas.findRegion("StatusTick");
 		    statusInterrogation = atlas.findRegion("StatusInterrogation");
@@ -210,6 +215,10 @@ public class Assets {
 		    indexTitle = atlas.findRegion("IndexTitle");
 		    introductionButtonHelp = atlas.findRegion("IntroductionButtonHelp");
 		    upgradesButtonHelp = atlas.findRegion("UpgradesButtonHelp");
+		    
+		    playersText = atlas.findRegion("PlayersText");
+		    inviteListText = atlas.findRegion("InviteListText");
+		    availablePlayersText = atlas.findRegion("AvailablePlayersText");	    
 		    
 		    add = atlas.findRegion("Add");
 		    minus = atlas.findRegion("Minus");

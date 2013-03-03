@@ -230,7 +230,8 @@ public class MultiplayerScreen implements Screen{
 	}
 
 	private void drawInvited() {
-		batcher.draw(Assets.playerList, 630, 180); 
+		batcher.draw(Assets.list, 630, 180); 
+		batcher.draw(Assets.playersText, 720, 407); 
 		for (int i = 0; i < Math.min(invited.size(), 5); i++){
 			font.draw(batcher, invited.elementAt(i+invitedScroll).getUserName(), 700,(395-45*i));
 			if (invited.elementAt(i+invitedScroll).getStatus().equals("Accepted")) 

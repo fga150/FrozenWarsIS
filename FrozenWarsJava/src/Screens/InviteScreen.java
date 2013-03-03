@@ -210,7 +210,8 @@ public class InviteScreen implements Screen{
 
 
 	private void drawNotInvited() {
-		batcher.draw(Assets.playerList, 160, 180); 
+		batcher.draw(Assets.list, 160, 180); 
+		batcher.draw(Assets.availablePlayersText, 163, 407); 
 		for (int i = 0; i < Math.min(notInvited.size(), 5); i++){
 			batcher.draw(Assets.add, 175, (368-45*i));
 			font.draw(batcher, notInvited.elementAt(i+notInvitedScroll), 230,(395-45*i));
@@ -218,7 +219,8 @@ public class InviteScreen implements Screen{
 	}
 	
 	private void drawInvited() {
-		batcher.draw(Assets.playerList, 530, 180); 
+		batcher.draw(Assets.list, 530, 180); 
+		batcher.draw(Assets.inviteListText, 590, 407); 
 		for (int i = 0; i < Math.min(invited.size(), 5); i++){
 			batcher.draw(Assets.minus, 540, (368-45*i));
 			font.draw(batcher, invited.elementAt(i+invitedScroll), 600,(395-45*i));
