@@ -46,6 +46,25 @@ public class SmartFoxServer implements IEventListener {
 		sfsClient.addEventListener(SFSEvent.USER_ENTER_ROOM, this);
 		sfsClient.addEventListener(SFSEvent.USER_EXIT_ROOM, this);
 		sfsClient.addEventListener(SFSEvent.PUBLIC_MESSAGE,this);
+		sfsClient.addEventListener(SFSEvent.EXTENSION_RESPONSE, new IEventListener(){
+
+			@Override
+			public void dispatch(BaseEvent event) throws SFSException {
+				Map<String, Object> r = event.getArguments();
+				ISFSObject response = (ISFSObject)r.get("params"); //Gets the ISFSObject fro the BaseEvent
+				String cmd = (String) r.get("cmd"); 
+				
+				switch (cmd){ //Executes the responses methods according to the request sent.
+				case "GetConnectedFriends":
+					getConnectedFriendsResponse(response);
+					break;
+				default: break;
+					
+				}
+				
+			}
+			
+		});
 	}
 
 	private String getServerIP() {
@@ -142,5 +161,18 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void sendLance(int x,int y) {
 		sfsClient.send(new PublicMessageRequest("H"+"X"+x+"Y"+y));	
+	}
+	
+	public void getConnectedFriendsResponse(ISFSObject params){
+		Vector<String> friends = new Vector<String>();
+		for(int i= 0;i<params.getSFSArray("ConnectedFriends").size();i++)
+			friends.add((String) params.getSFSArray("ConnectedFriends").getElementAt(i));//Builds the friends array.
+		
+		InviteScreen.getInstance().setNotInvited(friends); //Sends the array to the InviteScreen instance.
+	}
+	
+	public void getConnectedFriendsRequest(){
+		 ExtensionRequest request = new ExtensionRequest("GetConnectedFriends",null);
+		 sfsClient.send(request);//Executes the request.
 	}
 }
