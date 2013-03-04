@@ -27,6 +27,7 @@ public class MyExt extends SFSExtension {
 		queue2 = new LinkedList<User[]>();
 		queue3 = new LinkedList<User[]>();
 		users=new HashMap<String,User>();
+		this.addRequestHandler("conectarse", Connect.class); // handler fired when a user connects
 		this.addRequestHandler("db",DataBase.class); // handler fired when we want to know information of the database
 		this.addEventHandler(SFSEventType.USER_JOIN_ZONE, ZoneJoinEventHandler.class); // handler fired when checked the pword
 		this.addEventHandler(SFSEventType.USER_LOGIN, LoginEventHandler.class); // handler fired when a user want to connect

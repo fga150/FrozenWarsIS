@@ -22,21 +22,21 @@ public class GetConnectedFriends extends BaseClientRequestHandler {
 		ISFSObject rtn = new SFSObject();
 		ISFSArray connectedFriends = new SFSArray();
 		
-		HashMap<String,User> users = parentEx.getUsers(); //Get the hasmap which contains the connected users.
+		HashMap<String,User> users = parentEx.getUsers(); //Gets the hasmap which contains the connected users.
 		@SuppressWarnings("rawtypes")
 		Set set = users.entrySet();
 
 		@SuppressWarnings("rawtypes")
 		Iterator iter = set.iterator();
 
-		while (iter.hasNext()) { //Get the keys of the hasmap. This keys are the user names
+		while (iter.hasNext()) { //Gets the keys of the hasmap. This keys are the user names
 		@SuppressWarnings("rawtypes")
 		Map.Entry entry = (Map.Entry) iter.next();
 		connectedFriends.addUtfString((String) entry.getKey());
 		}
 		
 		rtn.putSFSArray("ConnectedFriends", connectedFriends);
-		parentEx.send("GetConnectedFriends", rtn, player);
+		parentEx.send("GetConnectedFriends", rtn, player); //Sends the object which contains the connected users
 		
 		
 		

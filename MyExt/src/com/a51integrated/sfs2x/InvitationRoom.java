@@ -16,7 +16,7 @@ public class InvitationRoom {
 		gameMode = 0;
 		enableExternalPlayers = false;
 		
-		Player p1= new Player(leaderName);
+		Player p1= new Player(leaderName); //The player who create the game is accepted by default.
 		p1.setState("Accepted");
 		players.add(p1);
 		
