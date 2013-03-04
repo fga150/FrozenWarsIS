@@ -1,5 +1,6 @@
 package Screens;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import Application.Assets;
 import Application.MatchManager;
@@ -38,6 +39,9 @@ public class GameScreen implements Screen{
 	private TextureRegion currentFrame;
 	private MatchManager manager;
 	private HarpoonManager harpoonManager;
+	ArrayList<Harpoon> harpoonList;
+	private HarpoonManager sunkenHarpoonManager;
+	ArrayList<Harpoon> sunkenHarpoonList;
 	private String name;
 	private BitmapFont font;
 	private int numPlayer;
@@ -49,7 +53,12 @@ public class GameScreen implements Screen{
 		numPlayer=manager.getMyIdPlayer();
 		this.manager = manager;
 		this.font = new BitmapFont();
+		harpoonList = new ArrayList<Harpoon>();	
 		this.harpoonManager = new HarpoonManager();
+		harpoonManager.setHarpoonList(harpoonList);	
+		sunkenHarpoonList = new ArrayList<Harpoon>();	
+		this.sunkenHarpoonManager = new HarpoonManager();
+		sunkenHarpoonManager.setHarpoonList(sunkenHarpoonList);		
 		guiCam = new OrthographicCamera(21,13);
 		guiCam.position.set(21f/2,13f/2,0);
 		batcher = new SpriteBatch();
@@ -115,9 +124,11 @@ public class GameScreen implements Screen{
 				//First we draw fissures matrix
 				if(!typeFissureMatrix.equals(FissuresTypes.empty)){
 					if(typeFissureMatrix.equals(FissuresTypes.barrelWithFissure)) texture  = Assets.getBarrelWithFissure();
+					else if (typeFissureMatrix.equals(FissuresTypes.crossingFissures)) texture  = Assets.getFissureCrossing();
 					else if (typeFissureMatrix.equals(FissuresTypes.fissureC))	texture  = Assets.getFissureCenter();
 					else if (typeFissureMatrix.equals(FissuresTypes.fissureSX)) texture  = Assets.getFissureSideX();
 					else if (typeFissureMatrix.equals(FissuresTypes.fissureSY)) texture  = Assets.getFissureSideY();
+					
 					batcher.draw(texture,i+8,j+1,1,1);
 				}
 				if (!typeBasicMatrix.equals(TypeSquare.empty)){
@@ -159,15 +170,12 @@ public class GameScreen implements Screen{
 		paintPlayer();
 		paintLifes();
 		
-		
-		
 		batcher.end();
 		guiCam.update();
 		if (Gdx.input.isTouched()){
 			if (Gdx.input.isTouched(0))guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
 			if (Gdx.input.isTouched(1))guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
 			if (fdBounds.contains(touchPoint)||fdBounds.contains(touchPoint2)){
-
 				manager.movePlayer(Direction.right);      
 			}
 			else if (fiBounds.contains(touchPoint)||fiBounds.contains(touchPoint2)){
@@ -179,18 +187,19 @@ public class GameScreen implements Screen{
 			else if (fabBounds.contains(touchPoint)||fabBounds.contains(touchPoint2)){
 				manager.movePlayer(Direction.down);
 			}
-			
-			if (harpoonBounds.contains(touchPoint)||harpoonBounds.contains(touchPoint2)){
-				manager.putLance();
-			}
 		}
 		
+		//This has to be jus touched else the code of put harpoon run 2 times
+		if (Gdx.input.justTouched() &&(harpoonBounds.contains(touchPoint)||harpoonBounds.contains(touchPoint2))){
+				manager.putHarpoon();
+		}
 }
+	
 	private void paintPlayer(){
-			/*font.setColor(255,255,255,1);
-			float textWidth = font.getBounds(name).width;
-			float textHeight = font.getBounds(name).height;
-			font.draw(batcher,name,1-textWidth/2,14-textHeight/2);*/
+		/*font.setColor(255,255,255,1);
+		float textWidth = font.getBounds(name).width;
+		float textHeight = font.getBounds(name).height;
+		font.draw(batcher,name,1-textWidth/2,14-textHeight/2);*/
 		if (numPlayer==0){
 			batcher.draw(Assets.getLifeIconRed(),6,12,0.75f,0.75f);
 		}else if(numPlayer==1){
@@ -200,25 +209,21 @@ public class GameScreen implements Screen{
 		}else if(numPlayer==3){
 			batcher.draw(Assets.getLifeIconBlue(),6,12,0.75f,0.75f);
 		}
-		
-			
-		
-			}
+}
 			
 	private void paintLifes() {
-			for (int i=0;i<manager.getPlayerLifes(0);i++){
-				batcher.draw(Assets.getLifeIconRed(),1+2*i,10.805f,0.75f,0.75f);
-			}
-			for (int i=0;i<manager.getPlayerLifes(1);i++){		
-				batcher.draw(Assets.getLifeIconGreen(),1+2*i,9.68f,0.75f,0.75f);
-			}
-			for (int i=0;i<manager.getPlayerLifes(2);i++){
-				batcher.draw(Assets.getLifeIconYellow(),1+2*i,8.55f,0.75f,0.75f);
-			}
-			for (int i=0;i<manager.getPlayerLifes(3);i++){
-				batcher.draw(Assets.getLifeIconBlue(),1+2*i,7.43f,0.75f,0.75f);
-			}
-
+		for (int i=0;i<manager.getPlayerLifes(0);i++){
+			batcher.draw(Assets.getLifeIconRed(),1+2*i,10.805f,0.75f,0.75f);
+		}
+		for (int i=0;i<manager.getPlayerLifes(1);i++){		
+			batcher.draw(Assets.getLifeIconGreen(),1+2*i,9.68f,0.75f,0.75f);
+		}
+		for (int i=0;i<manager.getPlayerLifes(2);i++){
+			batcher.draw(Assets.getLifeIconYellow(),1+2*i,8.55f,0.75f,0.75f);
+		}
+		for (int i=0;i<manager.getPlayerLifes(3);i++){
+			batcher.draw(Assets.getLifeIconBlue(),1+2*i,7.43f,0.75f,0.75f);
+		}
 	}
 	
 	public void movePlayer(Direction dir, int playerId, Vector3 position) {                                     
@@ -231,11 +236,22 @@ public class GameScreen implements Screen{
         penguinAnimations[playerId].setCurrentFrame(currentFrame);     
 	}
 	
-	public void putLanceAt(int xLancePosition, int yLancePosition, int playerId) {
-		Harpoon myHarpoon= new Harpoon(xLancePosition,yLancePosition, manager.getGame().getPlayers(playerId).getRange());
-		ArrayList<Harpoon> arra = harpoonManager.getHarpoonList();
-		arra.add(myHarpoon);
-		harpoonManager.setHarpoonList(arra);		
+	public void putHarpoonAt(int xHarpoonPosition, int yHarpoonPosition, int playerId) {
+		Harpoon myHarpoon= new Harpoon(xHarpoonPosition,yHarpoonPosition, manager.getGame().getPlayers(playerId).getRange());
+		harpoonList = harpoonManager.getHarpoonList();
+		harpoonList.add(myHarpoon);
+	}
+	
+	public void putSunkenHarpoonAt(int xHarpoonPosition, int yHarpoonPosition, int playerId) {
+		Harpoon myHarpoon= new Harpoon(xHarpoonPosition,yHarpoonPosition, manager.getGame().getPlayers(playerId).getRange());
+		Iterator<Harpoon> it = harpoonList.iterator();
+		while(it.hasNext()){
+			Harpoon myHarpoonAux = (Harpoon) it.next();
+			if(myHarpoonAux.getPosition().x == xHarpoonPosition && myHarpoonAux.getPosition().y == yHarpoonPosition)
+				harpoonList.remove(myHarpoonAux);
+		}
+		sunkenHarpoonList = sunkenHarpoonManager.getHarpoonList();
+		sunkenHarpoonList.add(myHarpoon);
 	}
 
 	public Game getGame() {
@@ -249,6 +265,10 @@ public class GameScreen implements Screen{
 	}
 	public ArrayList<Harpoon> getHarpoonList() {
 		return harpoonManager.getHarpoonList();
+	}
+	
+	public ArrayList<Harpoon> getSunkenHarpoonList() {
+		return sunkenHarpoonManager.getHarpoonList();
 	}
 	
 	public void setManager(MatchManager manager) {

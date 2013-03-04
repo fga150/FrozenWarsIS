@@ -1,9 +1,7 @@
 package Screens;
 
-import java.io.IOException;
+
 import java.util.Vector;
-
-
 import Application.Assets;
 import Application.GameSettings;
 import Application.MatchManager;
@@ -18,7 +16,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 

@@ -9,8 +9,8 @@ public class Harpoon {
 	
 	//Getters and Setters
 	
-	public Harpoon(int xLancePosition, int yLancePosition, int range) {
-		this.position = new Vector3(xLancePosition,yLancePosition,0);
+	public Harpoon(int xHarpoonPosition, int yHarpoonPosition, int range) {
+		this.position = new Vector3(xHarpoonPosition,yHarpoonPosition,0);
 		this.range =range;
 	}
 	public Vector3 getPosition() {

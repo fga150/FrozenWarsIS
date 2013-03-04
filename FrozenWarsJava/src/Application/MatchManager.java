@@ -40,8 +40,8 @@ public class MatchManager {
 		}
 	}
 	
-	public void putLance(){
-		if (match.canPutLance(myPlayerId)){
+	public void putHarpoon(){
+		if (match.canPutHarpoon(myPlayerId)){
 			Vector3 coord=match.getCoord();
 			sfsClient.sendLance((int)coord.x, (int)coord.y);
 			
@@ -53,13 +53,19 @@ public class MatchManager {
 		gameScreen.movePlayer(dir,playerId,match.getMyPlayerPosition(playerId));
 	}
 	
-	public void putLanceEvent(int xLancePosition, int yLancePosition, int myPlayerId) {
-		match.putLanceAt(xLancePosition,yLancePosition);
-		gameScreen.putLanceAt(xLancePosition,yLancePosition, myPlayerId);
+	public void putHarpoonEvent(int xHarpoonPosition, int yHarpoonPosition, int myPlayerId) {
+		match.putHarpoonAt(xHarpoonPosition,yHarpoonPosition);
+		gameScreen.putHarpoonAt(xHarpoonPosition,yHarpoonPosition, myPlayerId);
 		match.paintAllFissures(gameScreen.getHarpoonList());
-		// match.putFissure(xLancePosition,yLancePosition,myPlayerId);
 	}
 	
+	public void putSunkenHarpoonEvent(int xHarpoonPosition, int yHarpoonPosition,int myIdPlayer) {
+		match.putSunkenHarpoonAt(xHarpoonPosition,yHarpoonPosition);
+		gameScreen.putSunkenHarpoonAt(xHarpoonPosition,yHarpoonPosition, myPlayerId);
+		match.paintAllWater(gameScreen.getSunkenHarpoonList());
+		
+	}
+
 	// Getters and Setters
 	
 	public SmartFoxServer getSfsClient() {
@@ -121,6 +127,7 @@ public class MatchManager {
 	public String getMyNamePlayer() {
 			return sfsClient.getMyName();		
 	}
+
 
 	
 }

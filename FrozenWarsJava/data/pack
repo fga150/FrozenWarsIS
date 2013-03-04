@@ -325,30 +325,23 @@ casilla
   orig: 46, 46
   offset: 0, 0
   index: -1
-ArponParaBomba
-  rotate: false
-  xy: 1952, 490
-  size: 32, 64
-  orig: 32, 64
-  offset: 0, 0
-  index: -1
 StatusTick
   rotate: false
-  xy: 1986, 490
+  xy: 1952, 490
   size: 45, 40
   orig: 45, 40
   offset: 0, 0
   index: -1
 StatusInterrogation
   rotate: false
-  xy: 2, 1961
+  xy: 1999, 490
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
 StatusCancel
   rotate: false
-  xy: 2, 2003
+  xy: 2, 1961
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
@@ -369,103 +362,110 @@ ModeLeftArrow
   index: -1
 barrelWithFissure
   rotate: false
-  xy: 44, 2007
+  xy: 2, 2003
   size: 36, 36
   orig: 36, 36
   offset: 0, 0
   index: -1
 Water4SideOpen
   rotate: false
-  xy: 308, 2008
+  xy: 44, 2007
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Water3SideWestOpen
   rotate: false
-  xy: 342, 2008
+  xy: 308, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Water3SideSouthOpen
   rotate: false
-  xy: 376, 2008
+  xy: 342, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Water3SideNorthOpen
   rotate: false
-  xy: 410, 2008
+  xy: 376, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Water3SideEastOpen
   rotate: false
-  xy: 444, 2008
+  xy: 410, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 vidasJugadorVerde
   rotate: false
-  xy: 478, 2008
+  xy: 444, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 vidasJugadorRojo
   rotate: false
-  xy: 512, 2008
+  xy: 478, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 vidasJugadorAzul
   rotate: false
-  xy: 550, 1965
+  xy: 512, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 vidasJugadorAmarillo
   rotate: false
-  xy: 550, 1999
+  xy: 550, 1965
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 fissureSideY
   rotate: false
-  xy: 584, 1965
+  xy: 550, 1999
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 fissureSideX
   rotate: false
-  xy: 584, 1999
+  xy: 584, 1965
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 fissureCrossing
   rotate: false
-  xy: 877, 1737
+  xy: 584, 1999
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 fissureCenter
   rotate: false
-  xy: 635, 1780
+  xy: 877, 1737
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 barril
+  rotate: false
+  xy: 635, 1780
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+ArponParaBomba
   rotate: false
   xy: 635, 1814
   size: 32, 32

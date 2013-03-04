@@ -238,24 +238,23 @@ public class Match {
 		}
 	}
 	
-	public void putLanceAt(int xLancePosition, int yLancePosition) {
-		map.putLanceAt(xLancePosition,yLancePosition);		
+	public void putHarpoonAt(int xHarpoonPosition, int yHarpoonPosition) {
+		map.putHarpoonAt(xHarpoonPosition,yHarpoonPosition);		
 	}
 	
-	public void putWater(int xLancePosition,int yLancePosition,int playerId){
-	//	int fissureRange = players[playerId].getRange();
-	//	map.putWaterAt(xLancePosition, yLancePosition,fissureRange);
+	public void putSunkenHarpoonAt(int xHarpoonPosition, int yHarpoonPosition) {
+		map.putSunkenHarpoonAt(xHarpoonPosition,yHarpoonPosition);			
 	}
 	
 	public void paintAllFissures(ArrayList<Harpoon> harpoonList){
 		map.paintAllFissures(harpoonList);
 	}
-	public void putFissure(int xLancePosition,int yLancePosition,int playerId){
-		int fissureRange = players[playerId].getRange();
-		map.putfissureAt(xLancePosition, yLancePosition,fissureRange);
-	}
 	
-	public boolean canPutLance(int myPlayerId){
+	public void paintAllWater(ArrayList<Harpoon> harpoonList){
+		map.paintAllWaters(harpoonList);
+	}
+		
+	public boolean canPutHarpoon(int myPlayerId){
 		Vector3 position=players[myPlayerId].getPosition();
 		if(players[myPlayerId].getLookAt().equals(Direction.right)){
 			if ((position.x-(int)position.x)==0){
@@ -374,6 +373,8 @@ public class Match {
 	public int getPlayerLifes(int i) {
 		return players[i].getLifes();
 	}
+
+	
 
 
 }

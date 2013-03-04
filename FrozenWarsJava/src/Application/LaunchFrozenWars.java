@@ -21,7 +21,4 @@ public class LaunchFrozenWars extends Game {
 		loadScreen = new LoadScreen(this, gSettings);
 		setScreen(loadScreen);
 	}
-	
-	
-
 }

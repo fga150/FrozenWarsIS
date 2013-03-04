@@ -53,9 +53,7 @@ public class SmartFoxServer implements IEventListener {
 		try {
 			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
 			ip = address.getHostAddress();
-	
 		} catch (Exception e){
-			
 		}
 		return ip;
 	}
@@ -111,11 +109,37 @@ public class SmartFoxServer implements IEventListener {
 					else i++;
 				}
 				xPosition++;
-				int xLancePosition = Integer.parseInt(message.substring(xPosition, yPosition));
+				int xHarpoonPosition = Integer.parseInt(message.substring(xPosition, yPosition));
 				yPosition++;
-				int yLancePosition = Integer.parseInt(message.substring(yPosition));
-				manager.putLanceEvent(xLancePosition,yLancePosition, manager.getMyIdPlayer());
+				int yHarpoonPosition = Integer.parseInt(message.substring(yPosition));
+				manager.putHarpoonEvent(xHarpoonPosition,yHarpoonPosition, manager.getMyIdPlayer());
+			}else if(message.charAt(0)== 'W'){
+				//when the message of sunken harpoon CALL putSunkenHarpoonEvent
+				//Copy to (message.charAt(0)=='H')
+				//Replace when sunken harpoon is implement
+				int xPosition = 0;
+				int yPosition = 0;
+				boolean found = false;
+				int i = 1;
+				while (i<message.length() & !found){
+					found = (message.charAt(i)=='X');
+					if (found) xPosition = i;
+					else i++;
+				}
+				found = false;
+				while (i<message.length() & !found){
+					found = (message.charAt(i)=='Y');
+					if (found) yPosition = i;
+					else i++;
+				}
+				xPosition++;
+				int xHarpoonPosition = Integer.parseInt(message.substring(xPosition, yPosition));
+				yPosition++;
+				int yHarpoonPosition = Integer.parseInt(message.substring(yPosition));
+				manager.putSunkenHarpoonEvent(xHarpoonPosition,yHarpoonPosition, manager.getMyIdPlayer());
 			}
+			
+			
 		}
 		else if(event.getType().equalsIgnoreCase(SFSEvent.LOGIN))
 		{					

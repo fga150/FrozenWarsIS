@@ -2,11 +2,10 @@ package Screens;
 
 import Application.Assets;
 import Application.GameSettings;
-import Server.SmartFoxServer;
+
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;

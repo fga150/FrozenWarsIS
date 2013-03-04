@@ -11,7 +11,7 @@ public class Player {
 	private int lifes;
 	private int speed;
 	private int range;
-	private int maxLancesAllow;
+	private int maxHarpoonsAllow;
 	private boolean throwSkill;
 	private boolean specialMove;
 	private Direction specialMoveDir;
@@ -46,7 +46,7 @@ public class Player {
 		this.lifes = 3;
 		this.speed = 1;
 		this.range = 1;
-		this.maxLancesAllow = 1;
+		this.maxHarpoonsAllow = 1;
 		this.throwSkill=false;
 		this.specialMove=false;
 	}
@@ -85,11 +85,11 @@ public class Player {
 	public void setRange(int range) {
 		this.range = range;
 	}
-	public int getMaxLancesAllow() {
-		return maxLancesAllow;
+	public int getMaxHarpoonsAllow() {
+		return maxHarpoonsAllow;
 	}
-	public void setMaxLancesAllow(int maxLancesAllow) {
-		this.maxLancesAllow = maxLancesAllow;
+	public void setMaxHarpoonsAllow(int maxHarpoonsAllow) {
+		this.maxHarpoonsAllow = maxHarpoonsAllow;
 	}
 	public boolean isThrowSkill() {
 		return throwSkill;
