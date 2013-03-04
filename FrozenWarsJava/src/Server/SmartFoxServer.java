@@ -2,17 +2,22 @@ package Server;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.Map;
+import java.util.Vector;
 
 
 import Application.MatchManager;
 import Application.MatchManager.Direction;
+import Screens.InviteScreen;
 
 import com.badlogic.gdx.math.Vector3;
+import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.exceptions.SFSException;
 import sfs2x.client.SmartFox;
 import sfs2x.client.core.BaseEvent;
 import sfs2x.client.core.IEventListener;
 import sfs2x.client.core.SFSEvent;
+import sfs2x.client.requests.ExtensionRequest;
 import sfs2x.client.requests.JoinRoomRequest;
 import sfs2x.client.requests.LoginRequest;
 import sfs2x.client.requests.PublicMessageRequest;
@@ -51,18 +56,15 @@ public class SmartFoxServer implements IEventListener {
 			@Override
 			public void dispatch(BaseEvent event) throws SFSException {
 				Map<String, Object> r = event.getArguments();
-				ISFSObject response = (ISFSObject)r.get("params"); //Gets the ISFSObject fro the BaseEvent
+				ISFSObject response = (ISFSObject)r.get("params"); //Gets the ISFSObject from the BaseEvent
 				String cmd = (String) r.get("cmd"); 
 				
-				switch (cmd){ //Executes the responses methods according to the request sent.
-				case "GetConnectedFriends":
+				//Executes the response methods according to the requests sent.
+				if(cmd.equals("GetConnectedFriends"))
 					getConnectedFriendsResponse(response);
-					break;
-				default: break;
 					
 				}
 				
-			}
 			
 		});
 	}
@@ -168,7 +170,7 @@ public class SmartFoxServer implements IEventListener {
 		for(int i= 0;i<params.getSFSArray("ConnectedFriends").size();i++)
 			friends.add((String) params.getSFSArray("ConnectedFriends").getElementAt(i));//Builds the friends array.
 		
-		InviteScreen.getInstance().setNotInvited(friends); //Sends the array to the InviteScreen instance.
+		 InviteScreen.getInstance().setNotInvited(friends); //Sends the array to the InviteScreen instance.
 	}
 	
 	public void getConnectedFriendsRequest(){

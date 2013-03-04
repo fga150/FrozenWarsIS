@@ -246,4 +246,14 @@ public class InviteScreen implements Screen{
 		
 	}
 
+
+	public static InviteScreen getInstance() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void setNotInvited(Vector<String> friends){
+		// TODO Auto-generated method stub
+	}
+
 }
