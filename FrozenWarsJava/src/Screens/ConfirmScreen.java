@@ -25,8 +25,8 @@ public class ConfirmScreen implements Screen{
 	public ConfirmScreen() {
 		this.game = LaunchFrozenWars.getGame();
 		this.initialScreen = InitialScreen.getInstance();
-		guiCam = new OrthographicCamera(420,380);
-		guiCam.position.set(210,190,0);
+		guiCam = new OrthographicCamera(1024,629);
+		guiCam.position.set(512,315,0);
 
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
@@ -84,15 +84,15 @@ public class ConfirmScreen implements Screen{
             batcher.disableBlending();
             //se elimina graficamente la transparencia ya que es un fondo
             batcher.begin();
-            batcher.draw(Assets.backConf,0,0,420,380);
+            batcher.draw(Assets.backGrey,0,0);
             batcher.end();
 
           //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();    
-            batcher.draw(Assets.panelConf, 50, 100);
-            batcher.draw(Assets.yesConf, 70, 180);
-            batcher.draw(Assets.noConf, 175, 180);
+            batcher.draw(Assets.window, 330, 300);
+            batcher.draw(Assets.exitText, 330, 300);
+           // batcher.draw(Assets.noConf, 175, 180);
             batcher.end();	
 	}
 

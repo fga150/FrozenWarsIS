@@ -24,9 +24,9 @@ public class Assets {
 	    public static AtlasRegion exit;
 
 	    //Componentes de la pantalla de confirmacion
-	    public static AtlasRegion panelConf;
-	    public static AtlasRegion yesConf;
-	    public static AtlasRegion noConf;
+	    public static AtlasRegion window;
+	    public static AtlasRegion exitText;
+
 	    
 	    //Componentes de la pantalla de carga
 	    public static AtlasRegion cincoSec;
@@ -142,9 +142,8 @@ public class Assets {
 	        
 	        
 		    //Componentes de la pantalla de confirmacion
-		    panelConf = atlas.findRegion("Confirm");
-		    yesConf = atlas.findRegion("YesConfirm");
-		    noConf = atlas.findRegion("NoConfirm");
+		    window = atlas.findRegion("Window");
+		    exitText = atlas.findRegion("ExitText");
 		        
 		    //Componentes de la pantalla de carga
 		    cincoSec = atlas.findRegion("cincoSec");
