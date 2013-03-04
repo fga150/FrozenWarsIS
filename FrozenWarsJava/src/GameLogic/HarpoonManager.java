@@ -1,26 +1,30 @@
 package GameLogic;
 
-import java.util.List;
+import java.util.ArrayList;
+
 
 public class HarpoonManager {
 	
 	private int[] currentHarpoon;
-	private List<Harpoon> listHarpoon;
+	private ArrayList<Harpoon> listHarpoon;
+	
 	
 	// Getters and Setters
 	
-	public int[] getCurrentLances() {
+	public int[] getCurrentHarpoon() {
 		return currentHarpoon;
 	}
-	public void setCurrentLances(int[] currentLances) {
-		this.currentHarpoon = currentLances;
+	public void setCurrentHarpoon(int[] currentHarpoon) {
+		this.currentHarpoon = currentHarpoon;
 	}
-	public List<Harpoon> getListLances() {
-		return listHarpoon;
+	public ArrayList<Harpoon> getHarpoonList() {
+		if(this.listHarpoon == null) return new ArrayList<Harpoon>();
+		else return this.listHarpoon;
 	}
-	public void setListLances(List<Harpoon> listLances) {
-		this.listHarpoon = listLances;
+	public void setHarpoonList(ArrayList<Harpoon> harpoonList) {
+		this.listHarpoon = harpoonList;
 	}
+	
 	
 	
 	

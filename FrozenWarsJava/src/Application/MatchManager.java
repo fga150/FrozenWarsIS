@@ -1,7 +1,9 @@
 package Application;
 import com.badlogic.gdx.math.Vector3;
 
+import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.TypeSquare;
+import GameLogic.Map.WaterTypes;
 import GameLogic.Match;
 import Screens.GameScreen;
 import Server.SmartFoxServer;
@@ -34,10 +36,7 @@ public class MatchManager {
 					sfsClient.sendMove(dir,myPlayerId,match.getMyPlayerPosition(myPlayerId));
 					this.lastMessage = System.currentTimeMillis();	
 				}
-			}
-			
-			
-			
+			}	
 		}
 	}
 	
@@ -54,10 +53,11 @@ public class MatchManager {
 		gameScreen.movePlayer(dir,playerId,match.getMyPlayerPosition(playerId));
 	}
 	
-	public void putLanceEvent(int xLancePosition, int yLancePosition) {
+	public void putLanceEvent(int xLancePosition, int yLancePosition, int myPlayerId) {
 		match.putLanceAt(xLancePosition,yLancePosition);
-		gameScreen.putLanceAt(xLancePosition,yLancePosition);
-		match.putFissure(xLancePosition,yLancePosition,myPlayerId);
+		gameScreen.putLanceAt(xLancePosition,yLancePosition, myPlayerId);
+		match.paintAllFissures(gameScreen.getHarpoonList());
+		// match.putFissure(xLancePosition,yLancePosition,myPlayerId);
 	}
 	
 	// Getters and Setters
@@ -98,8 +98,16 @@ public class MatchManager {
 		return match.getMyPlayerPosition(playerId);
 	}
 
-	public TypeSquare getSquare(int i, int j) {
-		return match.getSquare(i,j);
+	public TypeSquare getBasicMatrixSquare(int i, int j) {
+		return match.getBasicMatrixSquare(i,j);
+	}
+	
+	public FissuresTypes getFissureMatrixSquare(int i, int j) {
+		return match.getFissureMatrixSquare(i,j);
+	}
+	
+	public WaterTypes getWaterMatrixSquare(int i, int j) {
+		return match.getWaterMatrixSquare(i,j);
 	}
 
 	public Direction getPlayerDirection(int i) {

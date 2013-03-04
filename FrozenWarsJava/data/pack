@@ -451,44 +451,51 @@ fissureSideX
   orig: 32, 32
   offset: 0, 0
   index: -1
-fissureCenter
+fissureCrossing
   rotate: false
   xy: 877, 1737
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-barril
+fissureCenter
   rotate: false
   xy: 635, 1780
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-Water2SideOpenCornerSE
+barril
   rotate: false
   xy: 635, 1814
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Water2SideOpenCornerSE
+  rotate: false
+  xy: 635, 1848
   size: 32, 31
   orig: 32, 31
   offset: 0, 0
   index: -1
 Water2SideOpenCornerNW
   rotate: false
-  xy: 635, 1847
+  xy: 635, 1881
   size: 32, 31
   orig: 32, 31
   offset: 0, 0
   index: -1
 Water2SideOpenCornerWS
   rotate: false
-  xy: 635, 1880
+  xy: 635, 1914
   size: 31, 32
   orig: 31, 32
   offset: 0, 0
   index: -1
 Water2SideOpenCornerEN
   rotate: false
-  xy: 635, 1914
+  xy: 635, 1948
   size: 31, 32
   orig: 31, 32
   offset: 0, 0
@@ -502,7 +509,7 @@ Water2SideOpenBridgeX
   index: -1
 Water2SideOpenBridgeY
   rotate: false
-  xy: 635, 1948
+  xy: 635, 1982
   size: 30, 32
   orig: 30, 32
   offset: 0, 0
@@ -523,21 +530,21 @@ Water1SideOpenNorth
   index: -1
 Water1SideOpenWest
   rotate: false
-  xy: 635, 1982
+  xy: 669, 1780
   size: 30, 31
   orig: 30, 31
   offset: 0, 0
   index: -1
 Water1SideOpenEast
   rotate: false
-  xy: 635, 2015
+  xy: 701, 1780
   size: 30, 31
   orig: 30, 31
   offset: 0, 0
   index: -1
 iglus
   rotate: false
-  xy: 669, 1780
+  xy: 635, 2016
   size: 31, 25
   orig: 31, 25
   offset: 0, 0

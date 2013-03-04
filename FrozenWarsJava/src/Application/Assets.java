@@ -54,6 +54,7 @@ public class Assets {
 	    private static AtlasRegion fissureCenter;
 	    private static AtlasRegion fissureSideX;
 	    private static AtlasRegion fissureSideY;
+	    private static AtlasRegion fissureCrossing;
 	    
 	    private static AtlasRegion water1SideOpenE;
 	    private static AtlasRegion water1SideOpenW;
@@ -173,6 +174,7 @@ public class Assets {
 		    fissureCenter =  atlas.findRegion("fissureCenter");
 		    fissureSideX =  atlas.findRegion("fissureSideX");
 		    fissureSideY =  atlas.findRegion("fissureSideY");
+		    fissureCrossing = atlas.findRegion("fissureCrossing");
 		    //Water 1 Open Side 4 positions
 		    water1SideOpenE =  atlas.findRegion("Water1SideOpenEast");
 		    water1SideOpenW =  atlas.findRegion("Water1SideOpenWest");
@@ -279,6 +281,10 @@ public class Assets {
 
 		public static AtlasRegion getFissureSideY() {
 			return fissureSideY;
+		}
+		
+		public static AtlasRegion getFissureCrossing() {
+			return fissureCrossing;
 		}
 
 		public static AtlasRegion getWater1SideOpenE() {

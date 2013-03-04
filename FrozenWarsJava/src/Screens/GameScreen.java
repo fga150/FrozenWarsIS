@@ -1,12 +1,14 @@
 package Screens;
 import java.util.ArrayList;
-import java.util.List;
 
 import Application.Assets;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
 import GameLogic.Harpoon;
 import GameLogic.Map.TypeSquare;
+import GameLogic.Map.FissuresTypes;
+import GameLogic.Map.WaterTypes;
+import GameLogic.HarpoonManager;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -35,7 +37,7 @@ public class GameScreen implements Screen{
     private float stateTime;
 	private TextureRegion currentFrame;
 	private MatchManager manager;
-	private List<Harpoon> harpoonList;
+	private HarpoonManager harpoonManager;
 	private String name;
 	private BitmapFont font;
 	private int numPlayer;
@@ -47,7 +49,7 @@ public class GameScreen implements Screen{
 		numPlayer=manager.getMyIdPlayer();
 		this.manager = manager;
 		this.font = new BitmapFont();
-		this.harpoonList = new ArrayList<Harpoon>();
+		this.harpoonManager = new HarpoonManager();
 		guiCam = new OrthographicCamera(21,13);
 		guiCam.position.set(21f/2,13f/2,0);
 		batcher = new SpriteBatch();
@@ -102,45 +104,49 @@ public class GameScreen implements Screen{
 		batcher.draw(Assets.getVerticalBarLeft(),7,0,1,13);
 		batcher.draw(Assets.getVerticalBarRigth(),19,0,1,13);
 		
-		
 		for(int i=0;i<11;i++){
 			for (int j=0;j<11;j++){
 				TextureRegion texture= null;
-				TypeSquare type = manager.getSquare(i,j);
+				TypeSquare typeBasicMatrix = manager.getBasicMatrixSquare(i,j);
+				FissuresTypes typeFissureMatrix = manager.getFissureMatrixSquare(i,j);
+				WaterTypes typeWaterMatrix = manager.getWaterMatrixSquare(i,j);
 				texture = Assets.getBox(); 
 				batcher.draw(texture,i+8,j+1,1,1);
-				if (!type.equals(TypeSquare.empty)){
-					if (type.equals(TypeSquare.unbreakable)) texture = Assets.getIgloo();
-					else if (type.equals(TypeSquare.Harpoon)) texture = Assets.getHarpoon();				
-					else if (type.equals(TypeSquare.breakable)) texture  = Assets.getBarrel();
-					else if (type.equals(TypeSquare.barrelWithFissure)) texture  = Assets.getBarrelWithFissure();
-					else if (type.equals(TypeSquare.fissureC)){
-						texture  = Assets.getFissureCenter();
-						batcher.draw(texture,i+8,j+1,1,1);
-						texture = Assets.getHarpoon();
-					}
-					else if (type.equals(TypeSquare.fissureSX)) texture  = Assets.getFissureSideX();
-					else if (type.equals(TypeSquare.fissureSY)) texture  = Assets.getFissureSideY();
-					else if (type.equals(TypeSquare.water1SOpN)) texture  = Assets.getWater1SideOpenN();
-					else if (type.equals(TypeSquare.water1SOpS)) texture  = Assets.getWater1SideOpenS();
-					else if (type.equals(TypeSquare.water1SOpE)) texture  = Assets.getWater1SideOpenE();
-					else if (type.equals(TypeSquare.water1SOpW)) texture  = Assets.getWater1SideOpenW();
-					else if (type.equals(TypeSquare.water2SOpCornerNW)) texture  = Assets.getWater2SideOpenCornerNW();
-					else if (type.equals(TypeSquare.water2SOpCornerSE)) texture  = Assets.getWater2SideOpenCornerSE();
-					else if (type.equals(TypeSquare.water2SOpCornerWS)) texture  = Assets.getWater2SideOpenCornerWS();
-					else if (type.equals(TypeSquare.water2SOpCornerEN)) texture  = Assets.getWater2SideOpenCornerEN();
-					else if (type.equals(TypeSquare.water2SOpBridgeX)) texture  = Assets.getWater2SideOpenBridgeX();
-					else if (type.equals(TypeSquare.water2SOpBridgeY)) texture  = Assets.getWater2SideOpenBridgeY();
-					else if (type.equals(TypeSquare.water3SOpN)) texture  = Assets.getWater3SideNOpen();
-					else if (type.equals(TypeSquare.water3SOpS)) texture  = Assets.getWater3SideSOpen();
-					else if (type.equals(TypeSquare.water3SOpE)) texture  = Assets.getWater3SideEOpen();
-					else if (type.equals(TypeSquare.water3SOpW)) texture  = Assets.getWater3SideWOpen();
-					else if (type.equals(TypeSquare.water4SOp)) texture  = Assets.getWater4SideOpen();
-					
-					 batcher.draw(texture,i+8,j+1,1,1);
-				}				
+				//First we draw fissures matrix
+				if(!typeFissureMatrix.equals(FissuresTypes.empty)){
+					if(typeFissureMatrix.equals(FissuresTypes.barrelWithFissure)) texture  = Assets.getBarrelWithFissure();
+					else if (typeFissureMatrix.equals(FissuresTypes.fissureC))	texture  = Assets.getFissureCenter();
+					else if (typeFissureMatrix.equals(FissuresTypes.fissureSX)) texture  = Assets.getFissureSideX();
+					else if (typeFissureMatrix.equals(FissuresTypes.fissureSY)) texture  = Assets.getFissureSideY();
+					batcher.draw(texture,i+8,j+1,1,1);
+				}
+				if (!typeBasicMatrix.equals(TypeSquare.empty)){
+					if (typeBasicMatrix.equals(TypeSquare.unbreakable)) texture = Assets.getIgloo();
+					else if (typeBasicMatrix.equals(TypeSquare.Harpoon)) texture = Assets.getHarpoon();				
+					else if (typeBasicMatrix.equals(TypeSquare.breakable)) texture  = Assets.getBarrel();
+					batcher.draw(texture,i+8,j+1,1,1);
+				}
+				if(!typeWaterMatrix.equals(WaterTypes.empty)){
+					if (typeWaterMatrix.equals(WaterTypes.water1SOpN)) texture  = Assets.getWater1SideOpenN();
+					else if (typeWaterMatrix.equals(WaterTypes.water1SOpS)) texture  = Assets.getWater1SideOpenS();
+					else if (typeWaterMatrix.equals(WaterTypes.water1SOpE)) texture  = Assets.getWater1SideOpenE();
+					else if (typeWaterMatrix.equals(WaterTypes.water1SOpW)) texture  = Assets.getWater1SideOpenW();
+					else if (typeWaterMatrix.equals(WaterTypes.water2SOpCornerNW)) texture  = Assets.getWater2SideOpenCornerNW();
+					else if (typeWaterMatrix.equals(WaterTypes.water2SOpCornerSE)) texture  = Assets.getWater2SideOpenCornerSE();
+					else if (typeWaterMatrix.equals(WaterTypes.water2SOpCornerWS)) texture  = Assets.getWater2SideOpenCornerWS();
+					else if (typeWaterMatrix.equals(WaterTypes.water2SOpCornerEN)) texture  = Assets.getWater2SideOpenCornerEN();
+					else if (typeWaterMatrix.equals(WaterTypes.water2SOpBridgeX)) texture  = Assets.getWater2SideOpenBridgeX();
+					else if (typeWaterMatrix.equals(WaterTypes.water2SOpBridgeY)) texture  = Assets.getWater2SideOpenBridgeY();
+					else if (typeWaterMatrix.equals(WaterTypes.water3SOpN)) texture  = Assets.getWater3SideNOpen();
+					else if (typeWaterMatrix.equals(WaterTypes.water3SOpS)) texture  = Assets.getWater3SideSOpen();
+					else if (typeWaterMatrix.equals(WaterTypes.water3SOpE)) texture  = Assets.getWater3SideEOpen();
+					else if (typeWaterMatrix.equals(WaterTypes.water3SOpW)) texture  = Assets.getWater3SideWOpen();
+					else if (typeWaterMatrix.equals(WaterTypes.water4SOp)) texture  = Assets.getWater4SideOpen();
+					batcher.draw(texture,i+8,j+1,1,1);		
+				}
 			}
-		}	
+		}
+		
 		
 		batcher.draw(Assets.getDirectionPanel(),0.25f,0,7,7);
 		batcher.draw(Assets.getButtonHarpoon(),19,0,2,4);
@@ -179,7 +185,7 @@ public class GameScreen implements Screen{
 			}
 		}
 		
-	}
+}
 	private void paintPlayer(){
 			/*font.setColor(255,255,255,1);
 			float textWidth = font.getBounds(name).width;
@@ -225,9 +231,11 @@ public class GameScreen implements Screen{
         penguinAnimations[playerId].setCurrentFrame(currentFrame);     
 	}
 	
-	public void putLanceAt(int xLancePosition, int yLancePosition) {
-		Harpoon lance= new Harpoon(xLancePosition,yLancePosition);
-		harpoonList.add(lance);		
+	public void putLanceAt(int xLancePosition, int yLancePosition, int playerId) {
+		Harpoon myHarpoon= new Harpoon(xLancePosition,yLancePosition, manager.getGame().getPlayers(playerId).getRange());
+		ArrayList<Harpoon> arra = harpoonManager.getHarpoonList();
+		arra.add(myHarpoon);
+		harpoonManager.setHarpoonList(arra);		
 	}
 
 	public Game getGame() {
@@ -239,6 +247,10 @@ public class GameScreen implements Screen{
 	public MatchManager getManager() {
 		return manager;
 	}
+	public ArrayList<Harpoon> getHarpoonList() {
+		return harpoonManager.getHarpoonList();
+	}
+	
 	public void setManager(MatchManager manager) {
 		this.manager = manager;
 	}

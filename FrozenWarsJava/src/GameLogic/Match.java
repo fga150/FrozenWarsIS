@@ -1,9 +1,13 @@
 package GameLogic;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector3;
 
 import Application.MatchManager.Direction;
+import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.TypeSquare;
+import GameLogic.Map.WaterTypes;
 
 public class Match {
 	
@@ -47,13 +51,13 @@ public class Match {
 	
 	
 	/*** ***/
+	// CHANGEST
 	private boolean newSquare(int x, int y){
-
-		TypeSquare square = map.getposition(x,y);
+		TypeSquare square = map.getBasicMatrixSquare(x,y);
 		return !(square.equals(TypeSquare.unbreakable)|| square.equals(TypeSquare.breakable) 
 				  ||square.equals(TypeSquare.Harpoon));
 	}
-
+	//END
 	public boolean insideBoardMove(Direction dir, int playerId) {
 		boolean valid = false;
 		
@@ -239,10 +243,13 @@ public class Match {
 	}
 	
 	public void putWater(int xLancePosition,int yLancePosition,int playerId){
-		int fissureRange = players[playerId].getRange();
-		map.putWaterAt(xLancePosition, yLancePosition,fissureRange);
+	//	int fissureRange = players[playerId].getRange();
+	//	map.putWaterAt(xLancePosition, yLancePosition,fissureRange);
 	}
 	
+	public void paintAllFissures(ArrayList<Harpoon> harpoonList){
+		map.paintAllFissures(harpoonList);
+	}
 	public void putFissure(int xLancePosition,int yLancePosition,int playerId){
 		int fissureRange = players[playerId].getRange();
 		map.putfissureAt(xLancePosition, yLancePosition,fissureRange);
@@ -307,6 +314,11 @@ public class Match {
 	public Player[] getPlayers() {
 		return players;
 	}
+	
+	public Player getPlayers(int i) {
+		return players[i];
+	}
+	
 	public void setPlayers(Player[] players) {
 		this.players = players;
 	}
@@ -335,9 +347,19 @@ public class Match {
 		return currentPosition;
 	}
 
-	public TypeSquare getSquare(int i, int j) {
-		return map.getposition(i,j);
+	public TypeSquare getBasicMatrixSquare(int i, int j) {
+		return map.getBasicMatrixSquare(i,j);
 	}
+	
+	public FissuresTypes getFissureMatrixSquare(int i, int j) {
+		return map.getFissureMatrixSquare(i,j);
+	}
+
+	
+	public WaterTypes getWaterMatrixSquare(int i, int j) {
+		return map.getWaterMatrixSquare(i,j);
+	}
+
 
 	public Direction getPlayerDirection(int i) {
 		return players[i].getLookAt();

@@ -114,7 +114,7 @@ public class SmartFoxServer implements IEventListener {
 				int xLancePosition = Integer.parseInt(message.substring(xPosition, yPosition));
 				yPosition++;
 				int yLancePosition = Integer.parseInt(message.substring(yPosition));
-				manager.putLanceEvent(xLancePosition,yLancePosition);
+				manager.putLanceEvent(xLancePosition,yLancePosition, manager.getMyIdPlayer());
 			}
 		}
 		else if(event.getType().equalsIgnoreCase(SFSEvent.LOGIN))
