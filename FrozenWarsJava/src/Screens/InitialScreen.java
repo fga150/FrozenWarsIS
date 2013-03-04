@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import Application.Assets;
 import Application.GameSettings;
+import Application.LaunchFrozenWars;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -15,7 +17,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class InitialScreen implements Screen{
-
+	private static InitialScreen instance;
+	
+	public static InitialScreen getInstance(){
+		if (instance == null) instance = new InitialScreen();
+		return instance;
+	}
 
 	    /** The gui cam. */
 	private OrthographicCamera guiCam;
@@ -30,9 +37,15 @@ public class InitialScreen implements Screen{
 	private BoundingBox exitClick;
 	private Game game;
 	
-	public InitialScreen(Game game, GameSettings gSettings) {
-		this.game = game;
-		this.gSettings = gSettings;
+	public InitialScreen() {
+		instance = this;
+		this.game = LaunchFrozenWars.getGame();
+		gSettings = new GameSettings("settings.xml");
+	    if (gSettings.isSoundOn()){
+			Assets.music.setVolume(0.5f);
+			//  Assets.music.play();
+			Assets.music.setLooping(true);
+	    }
 		guiCam = new OrthographicCamera(420,380);
 		guiCam.position.set(210,190,0);
 		
@@ -73,47 +86,40 @@ public class InitialScreen implements Screen{
       			
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (playClick.contains(touchPoint)){
-				/*MatchManager manager = new MatchManager(sfsClient);
-				sfsClient.addManager(manager);
-				GameScreen gameScreen = new GameScreen(game,manager);
-				manager.setGameScreen(gameScreen);
-  				game.setScreen(gameScreen);*/
-				MultiplayerScreen multiplayerScreen = new MultiplayerScreen(game, gSettings, this);
-				game.setScreen(multiplayerScreen);
+				game.setScreen(MultiplayerScreen.getInstance());
 
       		}else{
       			//compruebo si he tocado settings
       			if(settingsClick.contains(touchPoint)){
       				System.out.println("Pulsado settings");
-      				SettingsScreen settingsScreen = new SettingsScreen(game, gSettings, this);
+      				SettingsScreen settingsScreen = new SettingsScreen();
       				game.setScreen(settingsScreen);
-      			}else{
+      		}else{
       				//compruebo si he tocado help (Se abre ventana de ayuda)
-      				if (helpClick.contains(touchPoint)){
-      					System.out.println("Pulsado help");
-      					IndexScreen indexScreen = new IndexScreen(game,this);
-      					game.setScreen(indexScreen);
-      					
-      				}else{
-      					//compruebo si he tocado exit (Se abre ventana de confirmacion)
-      					if(exitClick.contains(touchPoint)){
-      						try {
-								gSettings.saveSettings();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-								return;
-							}
-      						if (!gSettings.isConfirmedExitOn()) {
-      							this.dispose();
-      						} else{
-	      	      				Screen gameScreen = new ConfirmScreen(game, this);   
-	      	      				game.setScreen(gameScreen);
-	      	      				return;
-      						}
-      					}
+      			if (helpClick.contains(touchPoint)){
+      				IndexScreen indexScreen = new IndexScreen();
+      				game.setScreen(indexScreen);
+      				
+      		}else{
+      				//compruebo si he tocado exit (Se abre ventana de confirmacion)
+      			if(exitClick.contains(touchPoint)){
+      				try {
+						gSettings.saveSettings();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return;
+					}
+      				if (!gSettings.isConfirmedExitOn()) {
+      					this.dispose();
+      				} else{
+	      	   			Screen confirmScreen = new ConfirmScreen();   
+	      	     		game.setScreen(confirmScreen);
+	      	     		return;
       				}
       			}
+      		}
+      		}
       		}
 			return;
 		}
@@ -137,10 +143,10 @@ public class InitialScreen implements Screen{
             batcher.enableBlending();
             batcher.begin();
 	                
-	          batcher.draw(Assets.play, 25, 300);
-	          batcher.draw(Assets.settings, 225, 300);
-	          batcher.draw(Assets.help, 25, 240);
-	          batcher.draw(Assets.exit, 225, 240);
+	        batcher.draw(Assets.play, 25, 300);
+	        batcher.draw(Assets.settings, 225, 300);
+	        batcher.draw(Assets.help, 25, 240);
+	        batcher.draw(Assets.exit, 225, 240);
 	          
             batcher.end();
 
@@ -163,5 +169,4 @@ public class InitialScreen implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
-
 }

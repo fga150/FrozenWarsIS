@@ -27,8 +27,15 @@ public class SmartFoxServer implements IEventListener {
 	private static final String SFS_ZONE = "BasicExamples";
 	private SmartFox sfsClient;
 	private MatchManager manager;
+	private static SmartFoxServer instance;
+	
+	public static SmartFoxServer getInstance() {
+		if (instance == null) instance = new SmartFoxServer();
+		return instance;
+	}
 	
 	public SmartFoxServer(){
+		instance = this;
 		String ip = getServerIP();
 		sfsClient = new SmartFox(false);
 		sfsClient.connect(ip,9933);
@@ -150,6 +157,8 @@ public class SmartFoxServer implements IEventListener {
 	public void conectaSala(String user){
 		sfsClient.send(new LoginRequest(user,"", SFS_ZONE));
 		System.currentTimeMillis();
+		ExtensionRequest request = new ExtensionRequest("conectarse", null);
+		sfsClient.send(request);
 	}
 
 	public void sendMove(Direction dir, int myPlayerId,Vector3 position) {
@@ -169,12 +178,13 @@ public class SmartFoxServer implements IEventListener {
 		Vector<String> friends = new Vector<String>();
 		for(int i= 0;i<params.getSFSArray("ConnectedFriends").size();i++)
 			friends.add((String) params.getSFSArray("ConnectedFriends").getElementAt(i));//Builds the friends array.
-		
-		 InviteScreen.getInstance().setNotInvited(friends); //Sends the array to the InviteScreen instance.
+		InviteScreen.getInstance().setNotInvited(friends); //Sends the array to the InviteScreen instance.
 	}
 	
 	public void getConnectedFriendsRequest(){
 		 ExtensionRequest request = new ExtensionRequest("GetConnectedFriends",null);
 		 sfsClient.send(request);//Executes the request.
 	}
+
+	
 }

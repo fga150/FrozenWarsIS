@@ -2,6 +2,8 @@
 package Screens;
 
 import Application.Assets;
+import Application.LaunchFrozenWars;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -33,9 +35,9 @@ public class IndexScreen implements Screen{
     
     int window;
 
-    public IndexScreen(Game game, InitialScreen initialScreen) {
-		this.game = game;
-		this.initialScreen = initialScreen;
+    public IndexScreen() {
+		this.game = LaunchFrozenWars.getGame();
+		this.initialScreen = InitialScreen.getInstance();
 
 		guiCam = new OrthographicCamera(1024,630);
 		guiCam.position.set(512,315,0);
@@ -83,27 +85,27 @@ public class IndexScreen implements Screen{
 			
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (introductionButtonHelpClick.contains(touchPoint)){
-				HelpScreen indexScreen = new HelpScreen(game,this,0);
-				game.setScreen(indexScreen);
+				HelpScreen helpScreen = new HelpScreen(this,0);
+				game.setScreen(helpScreen);
 				
 			} else if (upgradesButtonHelpClick.contains(touchPoint)){
-				HelpScreen indexScreen = new HelpScreen(game,this,1);
-				game.setScreen(indexScreen);
+				HelpScreen helpScreen = new HelpScreen(this,1);
+				game.setScreen(helpScreen);
 				
 			} else if (controlButtonHelpClick.contains(touchPoint)){
-				HelpScreen indexScreen = new HelpScreen(game,this,2);
-				game.setScreen(indexScreen);
+				HelpScreen helpScreen = new HelpScreen(this,2);
+				game.setScreen(helpScreen);
 				
 			} else if (createButtonHelpClick.contains(touchPoint)){
-				HelpScreen indexScreen = new HelpScreen(game,this,3);
-				game.setScreen(indexScreen);
+				HelpScreen helpScreen = new HelpScreen(this,3);
+				game.setScreen(helpScreen);
 				
 			} else if (gameModesButtonHelpClick.contains(touchPoint)){
-				HelpScreen indexScreen = new HelpScreen(game,this,4);
-				game.setScreen(indexScreen);
+				HelpScreen helpScreen = new HelpScreen(this,4);
+				game.setScreen(helpScreen);
 				
 			} else if (backButtonHelpClick.contains(touchPoint)){
-				game.setScreen(this.initialScreen);
+				game.setScreen(	initialScreen);
 			}
 
 			return;

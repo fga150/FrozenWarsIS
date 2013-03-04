@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import Application.Assets;
 import Application.GameSettings;
+import Application.LaunchFrozenWars;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -35,10 +36,10 @@ public class SettingsScreen implements Screen{
 	private Game game;
 	private boolean confirm;
 
-	public SettingsScreen(Game game, GameSettings gSettings, InitialScreen initialScreen) {
-		this.game = game;
-		this.gSettings = gSettings;
-		this.initialScreen = initialScreen;
+	public SettingsScreen() {
+		this.game = LaunchFrozenWars.getGame();
+		this.gSettings = GameSettings.getInstance();
+		this.initialScreen = InitialScreen.getInstance();
 		guiCam = new OrthographicCamera(420,380);
 		guiCam.position.set(210,190,0);
 		

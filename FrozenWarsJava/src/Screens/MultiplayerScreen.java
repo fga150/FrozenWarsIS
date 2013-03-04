@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import Application.Assets;
 import Application.GameSettings;
+import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Server.SmartFoxServer;
 
@@ -25,8 +26,15 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 public class MultiplayerScreen implements Screen{
 
 
+	private static MultiplayerScreen instance;
+
+	public static MultiplayerScreen getInstance() {
+		if (instance == null) instance = new MultiplayerScreen();
+		return instance;
+	}
+	
 	    /** The gui cam. */
-	private OrthographicCamera guiCam;
+	private OrthographicCamera guiCam;	
 	
 	/** Se utiliza para dibujar y optimizar las imagenes en el renderizado de la pantalla. */
 	private SpriteBatch batcher;
@@ -80,11 +88,11 @@ public class MultiplayerScreen implements Screen{
 	private int invitedScroll;
     
     
-    public MultiplayerScreen(Game game, GameSettings gSettings,InitialScreen initialScreen) {
-		this.game = game;
-		this.initialScreen = initialScreen;
-		//this.sfsClient = initialScreen;
-		//this.gSettings = gSettings;
+    public MultiplayerScreen() {
+		instance = this;
+    	this.game = LaunchFrozenWars.getGame();
+		this.initialScreen = InitialScreen.getInstance();
+
 		guiCam = new OrthographicCamera(1024,630);
 		guiCam.position.set(512,315,0);
 		
@@ -166,7 +174,7 @@ public class MultiplayerScreen implements Screen{
 				manager.setGameScreen(gameScreen);
   				game.setScreen(gameScreen);
       		} else if (inviteButtonClick.contains(touchPoint)) {
-      			InviteScreen inviteScreen = new InviteScreen(game, sfsClient, this);
+      			InviteScreen inviteScreen = new InviteScreen();
       			game.setScreen(inviteScreen);
       		}else if (externalPlayerTickClick.contains(touchPoint)){
       			externalPlayers = !externalPlayers;
@@ -276,6 +284,8 @@ public class MultiplayerScreen implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
+
+
 
 
 	

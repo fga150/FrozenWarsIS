@@ -4,6 +4,7 @@ import java.util.Vector;
 
 
 import Application.Assets;
+import Application.LaunchFrozenWars;
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
@@ -18,7 +19,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class InviteScreen implements Screen{
-
+	
+	private static InviteScreen instance;
+	
+	public static InviteScreen getInstance() {
+		if (instance == null) instance = new InviteScreen();
+		return instance;
+	}
+	
 	Game game;
 	    /** The gui cam. */
 	private OrthographicCamera guiCam;
@@ -48,10 +56,14 @@ public class InviteScreen implements Screen{
     private int notInvitedScroll;
 	private int invitedScroll;
     
+	public void setNotInvited(Vector<String> friends){
+		notInvited = friends;
+	}
     
-    public InviteScreen(Game game, SmartFoxServer sfsClient, MultiplayerScreen multiplayerScreen) {
-		this.multiplayerScreen = multiplayerScreen;
-		this.game = game;
+    public InviteScreen() {
+    	instance = this;
+		this.multiplayerScreen = MultiplayerScreen.getInstance();
+		this.game = LaunchFrozenWars.getGame();
 		
 		guiCam = new OrthographicCamera(1024,630);
 		guiCam.position.set(512,315,0);
@@ -61,20 +73,11 @@ public class InviteScreen implements Screen{
 	    font = new BitmapFont();
 	    font.setColor(Color.BLACK);
 	    
-	    this.sfsClient = sfsClient;
+	    this.sfsClient = SmartFoxServer.getInstance();
 	    
 	    invited = new Vector<String>();
 	    notInvited = new Vector<String>();
-	    //For testing
-	    notInvited.add("Me");
-	    notInvited.add("Player1");
-	    notInvited.add("Player2");
-	    notInvited.add("Player3");
-	    notInvited.add("Player4");
-	    notInvited.add("Player5");
-	    notInvited.add("Player6");
-	    notInvited.add("Player7");
-	    notInvited.add("Player8");
+	    sfsClient.getConnectedFriendsRequest();
 	    
 	    notInvitedScroll = 0;
 	    invitedScroll = 0;
@@ -247,13 +250,6 @@ public class InviteScreen implements Screen{
 	}
 
 
-	public static InviteScreen getInstance() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
-	public void setNotInvited(Vector<String> friends){
-		// TODO Auto-generated method stub
-	}
 
 }

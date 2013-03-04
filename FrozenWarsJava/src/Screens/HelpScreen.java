@@ -2,6 +2,8 @@
 package Screens;
 
 import Application.Assets;
+import Application.LaunchFrozenWars;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -32,8 +34,8 @@ public class HelpScreen implements Screen{
 	private Game game;
     
 
-    public HelpScreen(Game game, IndexScreen indexScreen, int window) {
-		this.game = game;
+    public HelpScreen(IndexScreen indexScreen, int window) {
+		this.game = LaunchFrozenWars.getGame();
 		this.indexScreen = indexScreen;
 		this.window = window;
 

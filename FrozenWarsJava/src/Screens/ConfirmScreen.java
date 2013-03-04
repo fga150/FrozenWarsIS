@@ -1,6 +1,7 @@
 package Screens;
 
 import Application.Assets;
+import Application.LaunchFrozenWars;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -21,9 +22,9 @@ public class ConfirmScreen implements Screen{
 	private Game game;
 	
 
-	public ConfirmScreen(Game game, InitialScreen inScreen) {
-		this.game = game;
-		this.initialScreen = inScreen;
+	public ConfirmScreen() {
+		this.game = LaunchFrozenWars.getGame();
+		this.initialScreen = InitialScreen.getInstance();
 		guiCam = new OrthographicCamera(420,380);
 		guiCam.position.set(210,190,0);
 
