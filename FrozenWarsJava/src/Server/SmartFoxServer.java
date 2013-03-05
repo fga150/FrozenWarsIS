@@ -230,32 +230,31 @@ public class SmartFoxServer implements IEventListener {
 	}
 	 
 
-	public void InsertInQueues(Vector<String> names){//Pasamos sólo los amigos, no el usuario que la lanza.
-		if(names.size()==0){
+	public void InsertInQueues(Vector<String> names, boolean externalPlayers){//Pasamos todos los amigos, incluido el que la lanza.
+		if(names.size()==1){												  //El que lanza la partida debe estar en la posicion 0 del vector.
 			  ExtensionRequest request2 = new ExtensionRequest("meter1",new SFSObject());
 			  sfsClient.send(request2);
 		}
-		else if(names.size()==1){
-			  String friend=names.get(0);
+		else if(names.size()==2){
+			  String friend=names.get(1);
 			  SFSObject params = new SFSObject();
 			  params.putUtfString("pfriend1",friend);
 			  ExtensionRequest request2 = new ExtensionRequest("meter2",params);
 			  sfsClient.send(request2);
 		}
-		else if(names.size()==2){
-			  String friend1=names.get(0);
-			  String friend2=names.get(1);
+		else if(names.size()==3){
+			  String friend1=names.get(1);
+			  String friend2=names.get(2);
 			  SFSObject params = new SFSObject();
-			  //User sender = (User)evt.getArguments().get("sender"); evt es un baseEvent mirar private message 
 			  params.putUtfString("pfriend1", friend1);
 			  params.putUtfString("pfriend2", friend2);
 			  ExtensionRequest request2 = new ExtensionRequest("meter3",params);
 			  sfsClient.send(request2);
 		}
-		else if(names.size()==3){
-			  String friend1=names.get(0);
-			  String friend2=names.get(1);
-			  String friend3=names.get(2);
+		else if(names.size()==4){
+			  String friend1=names.get(1);
+			  String friend2=names.get(2);
+			  String friend3=names.get(3);
 			  SFSObject params = new SFSObject();
 			  //User sender = (User)evt.getArguments().get("sender"); evt es un baseEvent mirar private message 
 			  params.putUtfString("pfriend1", friend1);
