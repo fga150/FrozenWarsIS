@@ -20,6 +20,7 @@ public class MyExt extends SFSExtension {
 	private Queue<User[]> queue2;
 	private Queue<User[]> queue3;
 	private HashMap<String,User> users; // users connected
+	private HashMap<String,InvitationRoom> gamesInCreation; // String: leader name, games in creation.
 
 	@Override
 	public void init() {				// here we initialize the queues,the hash of the users connected, and set handslers
@@ -27,6 +28,7 @@ public class MyExt extends SFSExtension {
 		queue2 = new LinkedList<User[]>();
 		queue3 = new LinkedList<User[]>();
 		users=new HashMap<String,User>();
+		gamesInCreation=new HashMap<String,InvitationRoom>();
 		this.addRequestHandler("conectarse", Connect.class); // handler fired when a user connects
 		this.addRequestHandler("db",DataBase.class); // handler fired when we want to know information of the database
 		this.addEventHandler(SFSEventType.USER_JOIN_ZONE, ZoneJoinEventHandler.class); // handler fired when checked the pword
@@ -38,6 +40,9 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("putHarpoon", PutHarpoon.class); // handler to put an harpoon in the game.
 		this.addRequestHandler("GetConnectedFriends", GetConnectedFriends.class); // handler fired when a user wants to see the connected friends
 		this.addRequestHandler("asignImprovements", AsignImprovementsHandler.class);
+		this.addRequestHandler("Invite", Invite.class); // handler fired when a user invite someone.
+		this.addRequestHandler("Accept", Accept.class); // handler fired when a user accept an invitation.
+		this.addRequestHandler("GetAcceptedPlayers", GetAcceptedPlayers.class); // handler fired when a user request the accepted players of his game.
 		nRooms=0;
 	}
 
