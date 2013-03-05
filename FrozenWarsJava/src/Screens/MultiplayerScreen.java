@@ -65,28 +65,24 @@ public class MultiplayerScreen implements Screen{
     // Settings
     boolean externalPlayers;
     int gameMode;
+
+    private int invitedScroll;
     
-    private class invitedInfo{
-    	private String userName;
-    	private String status;
-		public String getStatus() {
-			return status;
-		}
-		public void setStatus(String status) {
-			this.status = status;
-		}
-		public String getUserName() {
-			return userName;
-		}
-		public invitedInfo(String userName, String status) {
-			this.userName = userName;
-			this.status = status;
-		}
-    }	
-	
-    private Vector<invitedInfo> invited;
-	private int invitedScroll;
+    private Vector<String> acceptedPlayers;
+    private Vector<String> refusedPlayers;
+    private Vector<String> waitingPlayers;
     
+    public void setAcceptedPlayers(Vector<String> acceptedPlayers) {
+		this.acceptedPlayers = acceptedPlayers;
+	}
+    
+    public void setRefusedPlayers(Vector<String> refusedPlayers) {
+		this.refusedPlayers = refusedPlayers;
+	}
+    
+    public void setWaitingPlayers(Vector<String> waitingPlayers) {
+		this.waitingPlayers = waitingPlayers;
+	}
     
     public MultiplayerScreen() {
 		instance = this;
@@ -101,7 +97,9 @@ public class MultiplayerScreen implements Screen{
 	    font = new BitmapFont();
 	    font.setColor(Color.BLACK);
 	    
-	    invited = new Vector<invitedInfo>();
+	    acceptedPlayers = new Vector<String>();
+	    refusedPlayers = new Vector<String>();
+	    waitingPlayers = new Vector<String>();
 	    
 	    invitedScroll = 0;
 	    
@@ -184,7 +182,7 @@ public class MultiplayerScreen implements Screen{
       		} else if (modeRightArrowClick.contains(touchPoint)){
       			gameMode = (gameMode + 1) % 5;
       		} else if (scrollDownPlayersClick.contains(touchPoint)){
-      			if (invitedScroll < invited.size() - 5) invitedScroll++;
+      			if (invitedScroll < (acceptedPlayers.size() + refusedPlayers.size() + waitingPlayers.size()) - 5) invitedScroll++;
       		} else if (scrollUpPlayersClick.contains(touchPoint)){
       			if (invitedScroll != 0) invitedScroll--;     	
 			} else if (backButtonClick.contains(touchPoint)){
@@ -240,17 +238,21 @@ public class MultiplayerScreen implements Screen{
 	private void drawInvited() {
 		batcher.draw(Assets.list, 630, 180); 
 		batcher.draw(Assets.playersText, 720, 407); 
-		for (int i = 0; i < Math.min(invited.size(), 5); i++){
-			font.draw(batcher, invited.elementAt(i+invitedScroll).getUserName(), 700,(395-45*i));
-			if (invited.elementAt(i+invitedScroll).getStatus().equals("Accepted")) 
-				batcher.draw(Assets.statusTick, 650, (370-45*i));
-			else if (invited.elementAt(i+invitedScroll).getStatus().equals("Waiting")) 
-				batcher.draw(Assets.statusInterrogation, 650, (370-45*i));
-			else if (invited.elementAt(i+invitedScroll).getStatus().equals("Cancelled")) 
+		for (int i = 0; i < Math.min(acceptedPlayers.size(), 5); i++){
+			font.draw(batcher, acceptedPlayers.elementAt(i+invitedScroll), 700,(395-45*i));
+			batcher.draw(Assets.statusTick, 650, (370-45*i));
+		}
+		
+		for (int i = 0; i < Math.min(waitingPlayers.size(), 5); i++){
+			font.draw(batcher, waitingPlayers.elementAt(i+invitedScroll), 700,(395-45*i));
+			batcher.draw(Assets.statusInterrogation, 650, (370-45*i));
+		}
+		
+		for (int i = 0; i < Math.min(refusedPlayers.size(), 5); i++){
+			font.draw(batcher, refusedPlayers.elementAt(i+invitedScroll), 700,(395-45*i));
 			batcher.draw(Assets.statusCancel, 650, (370-45*i));
 		}
 	}
-
 
 	private void drawMode() {
 		if (gameMode == 0) batcher.draw(Assets.normalRoyalMode, 100, 450);
@@ -262,9 +264,7 @@ public class MultiplayerScreen implements Screen{
 
 
 	public void inviteFriends(Vector<String> users) {
-		for (int i = 0; i < users.size(); i++){
-			invited.add(new invitedInfo(users.elementAt(i), "Waiting"));
-		}	    		
+		waitingPlayers = users;    		
 	}
 	
 	@Override
@@ -284,10 +284,5 @@ public class MultiplayerScreen implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
-
-	
 
 }

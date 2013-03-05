@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 public class InitialScreen implements Screen{
 	private static InitialScreen instance;
@@ -40,7 +41,7 @@ public class InitialScreen implements Screen{
 	public InitialScreen() {
 		instance = this;
 		this.game = LaunchFrozenWars.getGame();
-		gSettings = new GameSettings("settings.xml");
+		gSettings = GameSettings.getInstance();
 	    if (gSettings.isSoundOn()){
 			Assets.music.setVolume(0.5f);
 			//  Assets.music.play();
@@ -52,10 +53,10 @@ public class InitialScreen implements Screen{
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 	    //Esquina inferior izq y superior derecha
-	    playClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
-	    settingsClick = new BoundingBox(new Vector3(245,300,0), new Vector3(395,320,0));
-	    helpClick = new BoundingBox(new Vector3(45,240,0), new Vector3(195,260,0));
-	    exitClick = new BoundingBox(new Vector3(245,240,0), new Vector3(395,260,0));
+	    playClick = new BoundingBox(new Vector3(30,290,0), new Vector3(200,340,0));
+	    settingsClick = new BoundingBox(new Vector3(230,290,0), new Vector3(400,340,0));
+	    helpClick = new BoundingBox(new Vector3(30,230,0), new Vector3(200,280,0));
+	    exitClick = new BoundingBox(new Vector3(230,225,0), new Vector3(400,275,0));
 	              
 	}
 
@@ -83,7 +84,7 @@ public class InitialScreen implements Screen{
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-      			
+	
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (playClick.contains(touchPoint)){
 				game.setScreen(MultiplayerScreen.getInstance());
@@ -91,7 +92,6 @@ public class InitialScreen implements Screen{
       		}else{
       			//compruebo si he tocado settings
       			if(settingsClick.contains(touchPoint)){
-      				System.out.println("Pulsado settings");
       				SettingsScreen settingsScreen = new SettingsScreen();
       				game.setScreen(settingsScreen);
       		}else{
@@ -113,15 +113,13 @@ public class InitialScreen implements Screen{
       				if (!gSettings.isConfirmedExitOn()) {
       					this.dispose();
       				} else{
-	      	   			Screen confirmScreen = new ConfirmScreen();   
+      					Screen confirmScreen = new ConfirmScreen(this, ScreenUtils.getFrameBufferTexture(), "Exit", "");   
 	      	     		game.setScreen(confirmScreen);
-	      	     		return;
       				}
       			}
       		}
       		}
       		}
-			return;
 		}
 		//crear solamente un batcher por pantalla y eliminarlo cuando no se use
 

@@ -6,12 +6,16 @@ import java.util.Map;
 import java.util.Vector;
 
 
+import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
+import Screens.ConfirmScreen;
 import Screens.InviteScreen;
 import Screens.MultiplayerScreen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.SFSException;
@@ -202,8 +206,11 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void inviteResponse(ISFSObject response){
-		String Inviter = response.getUtfString("Inviter");
+		String inviter = response.getUtfString("Inviter");
 		// TODO : Aqui se recibe la invitacion, el nombre del lider esta en inviter.
+		Game game = LaunchFrozenWars.getGame();
+		ConfirmScreen confirmScreen = new ConfirmScreen(game.getScreen(), ScreenUtils.getFrameBufferTexture(), "InviteGame", inviter);
+		game.setScreen(confirmScreen);
 	}
 
 
@@ -230,8 +237,8 @@ public class SmartFoxServer implements IEventListener {
 	}
 	 
 
-	public void InsertInQueues(Vector<String> names, boolean externalPlayers){//Pasamos todos los amigos, incluido el que la lanza.
-		if(names.size()==1){												  //El que lanza la partida debe estar en la posicion 0 del vector.
+	public void InsertInQueues(Vector<String> names, boolean externalPlayers){
+		if(names.size()==1){		  //El que lanza la partida debe estar en la posicion 0 del vector.
 			  ExtensionRequest request2 = new ExtensionRequest("meter1",new SFSObject());
 			  sfsClient.send(request2);
 		}
@@ -263,6 +270,11 @@ public class SmartFoxServer implements IEventListener {
 			  ExtensionRequest request2 = new ExtensionRequest("meter4",params);
 			  sfsClient.send(request2);
 		}
+	}
+	
+	public void refuseRequest(String user) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

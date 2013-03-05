@@ -3,37 +3,54 @@ package Screens;
 import Application.Assets;
 import Application.LaunchFrozenWars;
 
+import Server.SmartFoxServer;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class ConfirmScreen implements Screen{
-	private InitialScreen initialScreen;
+	private Screen ancestor;
 	private OrthographicCamera guiCam;
 	private SpriteBatch batcher; 
 	private Vector3 touchPoint;
 	private BoundingBox yesClick;
 	private BoundingBox noClick;
 	private Game game;
+	private BitmapFont font;
+	private TextureRegion background;
+	private String screenMode;
+	private String user;
+	
 	
 
-	public ConfirmScreen() {
+	public ConfirmScreen(Screen ancestor, TextureRegion background, String screenMode, String user) {
 		this.game = LaunchFrozenWars.getGame();
-		this.initialScreen = InitialScreen.getInstance();
+		this.ancestor = ancestor;
+		
 		guiCam = new OrthographicCamera(1024,629);
 		guiCam.position.set(512,315,0);
-
+		
+		this.background = background;
+		this.screenMode = screenMode;
+		this.user = user;
+		
+		font = new BitmapFont();
+	    font.setColor(Color.BLACK);
+		
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 	    //Esquina inferior izq y superior derecha
-	    yesClick = new BoundingBox(new Vector3(120,200,0), new Vector3(200,245,0));
-	    noClick = new BoundingBox(new Vector3(225,200,0), new Vector3(305,245,0));
-	              
+	    yesClick = new BoundingBox(new Vector3(350,340,0), new Vector3(500,400,0));
+	    noClick = new BoundingBox(new Vector3(510,340,0), new Vector3(660,660,0));        
 	}
 
 	@Override
@@ -56,21 +73,23 @@ public class ConfirmScreen implements Screen{
 	@Override
 	public void render(float arg0) { 
       //detectamos si se ha tocado la pantalla
-      		if (Gdx.input.justTouched()){
-      			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-      			
-      			//compruebo si he tocado yes (para cerrar la aplicacion)
-      			if (yesClick.contains(touchPoint)){
-      				
-      				this.dispose();
-      			}else{
-      				//compruebo si he tocado no (volvemos a la pantalla de inicio)
-      				if(noClick.contains(touchPoint)){
-      					game.setScreen(initialScreen);
-      					return;	
-      				}
+      if (Gdx.input.justTouched()){
+      		guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
+
+      		//compruebo si he tocado yes 
+      		if (yesClick.contains(touchPoint)){
+      			if (screenMode.equals("Exit")) this.dispose();
+      			else if (screenMode.equals("InviteGame")) {
+      				SmartFoxServer.getInstance().acceptRequest(user);
+      				game.setScreen(MultiplayerScreen.getInstance());
       			}
-      		return;
+      		} else if(noClick.contains(touchPoint)){ //compruebo si he tocado no
+      			if (screenMode.equals("Exit")) game.setScreen(ancestor);
+      			else if (screenMode.equals("InviteGame")) {
+      				SmartFoxServer.getInstance().refuseRequest(user);
+      				game.setScreen(ancestor);
+      			}
+      		}
       }
       //crear solamente un batcher por pantalla y eliminarlo cuando no se use
         	GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0
@@ -84,14 +103,18 @@ public class ConfirmScreen implements Screen{
             batcher.disableBlending();
             //se elimina graficamente la transparencia ya que es un fondo
             batcher.begin();
-            batcher.draw(Assets.backGrey,0,0);
+            batcher.draw(background,0,0);
             batcher.end();
 
           //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();    
             batcher.draw(Assets.window, 330, 300);
-            batcher.draw(Assets.exitText, 330, 300);
+            if (screenMode.equals("Exit")) batcher.draw(Assets.exitText, 330, 300);
+            if (screenMode.equals("InviteGame")) {
+            	String message = user.concat(" wants you to join his game");
+            	font.draw(batcher, message, 415, 465);
+            }
            // batcher.draw(Assets.noConf, 175, 180);
             batcher.end();	
 	}

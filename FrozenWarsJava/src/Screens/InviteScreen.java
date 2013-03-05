@@ -133,7 +133,6 @@ public class InviteScreen implements Screen{
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-			System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (scrollDownNotInvitedClick.contains(touchPoint)){
       			if (notInvitedScroll < notInvited.size() - 5) notInvitedScroll++;
@@ -146,7 +145,10 @@ public class InviteScreen implements Screen{
 			} else if (backButtonClick.contains(touchPoint)){
       			game.setScreen(multiplayerScreen);
       		} else if (inviteButtonClick.contains(touchPoint)){
-      			multiplayerScreen.inviteFriends(invited);
+      			for (int i = 0; i < invited.size(); i++) {
+      				System.out.println("Invitado: ".concat(invited.elementAt(i)));
+      				sfsClient.inviteRequest(invited.elementAt(i));
+      			}
       			game.setScreen(multiplayerScreen);
       		} else if (moveInvited.contains(touchPoint)){
       			moveToUninvite();
@@ -248,8 +250,4 @@ public class InviteScreen implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
-
-
-	
-
 }
