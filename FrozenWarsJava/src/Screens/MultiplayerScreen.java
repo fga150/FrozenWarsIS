@@ -110,7 +110,7 @@ public class MultiplayerScreen implements Screen{
         Gdx.input.getTextInput(new TextInputListener() {
             public void input(String text) {
               message = text;
-              sfsClient.conectaSala(text);
+              sfsClient.conectaSala(text,"");//TODO pass the password
             }
 
             public void canceled() {
