@@ -9,6 +9,7 @@ import java.util.Vector;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
 import Screens.InviteScreen;
+import Screens.MultiplayerScreen;
 
 import com.badlogic.gdx.math.Vector3;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
@@ -70,6 +71,12 @@ public class SmartFoxServer implements IEventListener {
 				//Executes the response methods according to the requests sent.
 				if(cmd.equals("GetConnectedFriends"))
 					getConnectedFriendsResponse(response);
+				else if (cmd.equals("Invite"))
+					inviteResponse(response);
+				else if (cmd.equals("InviteFail"))
+					inviteFail(response);
+				else if (cmd.equals("GetAcceptedPlayers"))
+					getAcceptedPlayersResponse(response);
 					
 				}
 				
@@ -186,6 +193,42 @@ public class SmartFoxServer implements IEventListener {
 		 ExtensionRequest request = new ExtensionRequest("GetConnectedFriends",null);
 		 sfsClient.send(request);//Executes the request.
 	}
+	
+	public void inviteRequest(String name){
+		 ISFSObject params = new SFSObject();
+		 params.putUtfString("Invited", name);
+		 ExtensionRequest request = new ExtensionRequest("Invite",params);
+		 sfsClient.send(request);
+	}
+	
+	public void inviteResponse(ISFSObject response){
+		String Inviter = response.getUtfString("Inviter");
+		// TODO : Aqui se recibe la invitacion, el nombre del lider esta en inviter.
+	}
+
+
+	public void inviteFail(ISFSObject response){
+		// TODO : Aqui se recibe mensaje de que el usuario invitado no esta conectado.
+	}
+	
+	public void acceptRequest(String inviter) {
+		ISFSObject params = new SFSObject();
+		params.putUtfString("Inviter", inviter);
+		ExtensionRequest request = new ExtensionRequest("Accept",params);
+		sfsClient.send(request);
+		
+	}
+	
+	
+	public void getAcceptedPlayersResponse(ISFSObject params) {
+		Vector<String> acceptedPlayers = new Vector<String>();
+		for(int i= 0;i<params.getSFSArray("acceptedPlayers").size();i++)
+			acceptedPlayers.add((String) params.getSFSArray("acceptedPlayers").getElementAt(i));//Builds the accepted players array.
+		
+		MultiplayerScreen.getInstance().setAcceptedPlayers(acceptedPlayers);
+		
+	}
+	 
 
 	public void InsertInQueues(Vector<String> names){//Pasamos sólo los amigos, no el usuario que la lanza.
 		if(names.size()==0){
