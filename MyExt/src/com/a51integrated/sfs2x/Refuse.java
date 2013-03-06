@@ -10,7 +10,7 @@ import com.smartfoxserver.v2.entities.data.SFSArray;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 
-public class Accept extends BaseClientRequestHandler {
+public class Refuse extends BaseClientRequestHandler {
 
 	@Override
 	public void handleClientRequest(User player, ISFSObject params) {
@@ -20,13 +20,13 @@ public class Accept extends BaseClientRequestHandler {
 		HashMap<String,User> users = parentEx.getUsers();
 		String player2 = params.getUtfString("Inviter"); //Gets the name of the player who invited you.
 		
-		gamesInCreation.get(player2).putAccepted(player.getName());
+		gamesInCreation.get(player2).putRefused(player.getName());
 		parentEx.setGamesInCreation(gamesInCreation);
 
-		ISFSArray accepted = new SFSArray();
-		Vector<Player> acceptedPlayers = gamesInCreation.get(player2).getAcceptedPlayers();
-		for(int i=0; i<acceptedPlayers.size();i++){
-				accepted.addUtfString(acceptedPlayers.get(i).getName()); //Adds the player who accepted the invitation
+		ISFSArray refused = new SFSArray();
+		Vector<Player> refusedPlayers = gamesInCreation.get(player2).getRefusedPlayers();
+		for(int i=0; i<refusedPlayers.size();i++){
+				refused.addUtfString(refusedPlayers.get(i).getName()); //Adds the player who refused the invitation
 		}
 		
 		ISFSArray waiting = new SFSArray();
@@ -36,11 +36,12 @@ public class Accept extends BaseClientRequestHandler {
 		}
 		
         ISFSObject rtn = new SFSObject();
-        rtn.putSFSArray("acceptedPlayers", accepted);
+        rtn.putSFSArray("refusedPlayers", refused);
         rtn.putSFSArray("waitingPlayers", waiting);
-        Vector<Player> user = gamesInCreation.get(player2).getAcceptedPlayers();
-        for (int j=0; j<user.size();j++){ //Sends the response to the joinned players.
-        	parentEx.send("AcceptedWaiting", rtn, user.get(j).getUser());
+       
+	   Vector<Player> user = gamesInCreation.get(player2).getAcceptedPlayers();
+	   for (int j=0; j<user.size();j++){ //Sends the refuse to the joinned players.
+        	parentEx.send("RefusedWaiting", rtn, user.get(j).getUser());
         }
 		
         

@@ -1,13 +1,18 @@
 package com.a51integrated.sfs2x;
 
+import com.smartfoxserver.v2.entities.User;
+
 public class Player {
 
 	private String name;
 	private String state;
+	private User user;
 	
-	Player(String name){
+	Player(String name, User user){
 		this.name = name;
-		state = "Waiting";
+		state = "Waiting"; //The users starts waiting by default
+		this.user = user;
+		
 	}
 	
 	public String getName() {
@@ -24,6 +29,16 @@ public class Player {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public void setUser(User user){
+		this.user = user;
+		
+	}
+	
+	public User getUser() {
+		
+		return user;
 	}
 
 }

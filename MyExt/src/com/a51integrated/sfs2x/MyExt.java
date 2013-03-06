@@ -42,8 +42,8 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("GetConnectedFriends", GetConnectedFriends.class); // handler fired when a user wants to see the connected friends
 		this.addRequestHandler("asignImprovements", AsignImprovementsHandler.class);
 		this.addRequestHandler("Invite", Invite.class); // handler fired when a user invite someone.
-		this.addRequestHandler("Accept", Accept.class); // handler fired when a user accept an invitation.
-		this.addRequestHandler("GetAcceptedPlayers", GetAcceptedPlayers.class); // handler fired when a user request the accepted players of his game.
+		this.addRequestHandler("Accept", Accept.class); // handler fired when a user accepts an invitation.
+		this.addRequestHandler("Refuse", Refuse.class); // handler fired when a user refuses an invitation.
 		nRooms=0;
 	}
 
