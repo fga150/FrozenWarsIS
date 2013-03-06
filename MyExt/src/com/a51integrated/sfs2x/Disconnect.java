@@ -4,7 +4,6 @@ package com.a51integrated.sfs2x;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import com.smartfoxserver.v2.core.ISFSEvent;
 import com.smartfoxserver.v2.core.SFSEventParam;
@@ -24,6 +23,7 @@ public class Disconnect extends BaseServerEventHandler {
 		User player=(User) event.getParameter(SFSEventParam.USER); // get the player that fired the event
 		users.remove(player.getName());	//remove the player from the hashmap
 		
+		@SuppressWarnings("unchecked")
 		List<Room> rooms= (List<Room>) event.getParameter(SFSEventParam.JOINED_ROOMS); // list of all the rooms he was joinend
 		Iterator<Room> itrooms=rooms.iterator();
 		Room room= itrooms.next();

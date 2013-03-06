@@ -39,9 +39,9 @@ public class Refuse extends BaseClientRequestHandler {
         rtn.putSFSArray("refusedPlayers", refused);
         rtn.putSFSArray("waitingPlayers", waiting);
        
-	   Vector<Player> user = gamesInCreation.get(player2).getAcceptedPlayers();
-	   for (int j=0; j<user.size();j++){ //Sends the refuse to the joinned players.
-        	parentEx.send("RefusedWaiting", rtn, user.get(j).getUser());
+        Vector<Player> accplayer = gamesInCreation.get(player2).getAcceptedPlayers();
+        for (int j=0; j<accplayer.size();j++){ //Sends the response to the joinned players.
+        	parentEx.send("AcceptedWaiting", rtn, users.get(accplayer.get(j).getName()));
         }
 		
         

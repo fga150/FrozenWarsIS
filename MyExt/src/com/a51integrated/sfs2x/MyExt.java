@@ -47,6 +47,14 @@ public class MyExt extends SFSExtension {
 		nRooms=0;
 	}
 
+	public HashMap<String, InvitationRoom> getGamesInCreation() {
+		return gamesInCreation;
+	}
+
+	public void setGamesInCreation(HashMap<String, InvitationRoom> gamesInCreation) {
+		this.gamesInCreation = gamesInCreation;
+	}
+
 	public Queue<User> getQueue1() {
 		return queue1;
 	}

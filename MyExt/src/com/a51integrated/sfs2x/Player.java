@@ -8,11 +8,9 @@ public class Player {
 	private String state;
 	private User user;
 	
-	Player(String name, User user){
+	Player(String name){
 		this.name = name;
 		state = "Waiting"; //The users starts waiting by default
-		this.user = user;
-		
 	}
 	
 	public String getName() {

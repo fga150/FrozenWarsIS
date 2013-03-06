@@ -2,8 +2,6 @@ package com.a51integrated.sfs2x;
 
 import java.util.Vector;
 
-import com.smartfoxserver.v2.entities.User;
-
 public class InvitationRoom {
 	
 	private String leaderName;
@@ -18,7 +16,7 @@ public class InvitationRoom {
 	private boolean enableExternalPlayers;
 	private int numPlayers;
 	
-	InvitationRoom(String leaderName, User user){
+	InvitationRoom(String leaderName){
 		this.leaderName = leaderName;
 		acceptedPlayers = new Vector<Player>();
 		refusedPlayers = new Vector<Player>();
@@ -26,7 +24,7 @@ public class InvitationRoom {
 		gameMode = 0;
 		enableExternalPlayers = false;
 		
-		Player p1= new Player(leaderName, user); //The player who create the game is accepted by default.
+		Player p1= new Player(leaderName); //The player who create the game is accepted by default.
 		p1.setState("Accepted");
 		acceptedPlayers.add(p1);
 		
@@ -66,8 +64,8 @@ public class InvitationRoom {
 		}
 	}
 	
-	public void putWaiting(String name, User user){
-		Player player = new Player(name, user); //Adds a new user who needs to answer the invitation.
+	public void putWaiting(String name){
+		Player player = new Player(name); //Adds a new user who needs to answer the invitation.
 		waitingPlayers.add(player);
 	}
 
