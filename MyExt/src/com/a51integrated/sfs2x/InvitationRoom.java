@@ -46,12 +46,14 @@ public class InvitationRoom {
 			}
 			i++;
 		}
+		
 	}
 	
 	public void putRefused(String name){
 		Player player;
 		boolean found = false;
 		int i = 0;
+		
 		while (!found && i<waitingPlayers.size()) //Searches the player on the vector of the invitation room.
 		{
 			if (waitingPlayers.get(i).getName().equals(name)){
@@ -62,11 +64,35 @@ public class InvitationRoom {
 			}
 			i++;
 		}
+		if (found == false){
+		i=0;
+		while (!found && i<acceptedPlayers.size()) //Searches the player on the vector of the invitation room.
+		{
+			if (acceptedPlayers.get(i).getName().equals(name)){
+				player = acceptedPlayers.get(i); 
+				refusedPlayers.add(player); //Adds the player to the refusedPlayers vector
+				acceptedPlayers.remove(i); //Removes that player from the waitingPlayers vector
+				found = true;
+			}
+			i++;
+		}
+	    }
 	}
 	
 	public void putWaiting(String name){
 		Player player = new Player(name); //Adds a new user who needs to answer the invitation.
 		waitingPlayers.add(player);
+		boolean found = false;
+		int i=0;
+		
+		while (!found && i<refusedPlayers.size()) //Searches the player on the vector of the invitation room.
+		{
+			if (refusedPlayers.get(i).getName().equals(name)){
+				refusedPlayers.remove(i);
+				found = true;
+			}
+			i++;
+		}
 	}
 
 	public String getLeaderName() {

@@ -41,7 +41,7 @@ public class Refuse extends BaseClientRequestHandler {
        
         Vector<Player> accplayer = gamesInCreation.get(player2).getAcceptedPlayers();
         for (int j=0; j<accplayer.size();j++){ //Sends the response to the joinned players.
-        	parentEx.send("AcceptedWaiting", rtn, users.get(accplayer.get(j).getName()));
+        	parentEx.send("RefusedWaiting", rtn, users.get(accplayer.get(j).getName()));
         }
 		
         
