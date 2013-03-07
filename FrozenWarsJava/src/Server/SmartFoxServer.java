@@ -30,7 +30,7 @@ import sfs2x.client.requests.PublicMessageRequest;
 
 public class SmartFoxServer implements IEventListener {
 
-	private static final String SFS_ZONE = "BasicExamples";
+	private static final String SFS_ZONE = "FrozenWars";
 	private SmartFox sfsClient;
 	private MatchManager manager;
 	private static SmartFoxServer instance;
@@ -79,11 +79,14 @@ public class SmartFoxServer implements IEventListener {
 					inviteResponse(response);
 				else if (cmd.equals("InviteFail"))
 					inviteFail(response);
-				else if (cmd.equals("GetAcceptedPlayers"))
-					getAcceptedPlayersResponse(response);
+				else if (cmd.equals("AcceptedWaiting"))
+					acceptedWaiting(response);
+				else if (cmd.equals("RefusedWaiting"))
+					refusedWaiting(response);
 					
 				}
-				
+
+	
 			
 		});
 	}
@@ -227,14 +230,36 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	
-	public void getAcceptedPlayersResponse(ISFSObject params) {
-		Vector<String> acceptedPlayers = new Vector<String>();
+	private void acceptedWaiting(ISFSObject params) {
+	
+		Vector<String> accepted = new Vector<String>();
 		for(int i= 0;i<params.getSFSArray("acceptedPlayers").size();i++)
-			acceptedPlayers.add((String) params.getSFSArray("acceptedPlayers").getElementAt(i));//Builds the accepted players array.
+			accepted.add((String) params.getSFSArray("acceptedPlayers").getElementAt(i));//Builds the friends array.
 		
-		MultiplayerScreen.getInstance().setAcceptedPlayers(acceptedPlayers);
+		Vector<String> waiting = new Vector<String>();
+		for(int i= 0;i<params.getSFSArray("waitingPlayers").size();i++)
+			waiting.add((String) params.getSFSArray("waitingPlayers").getElementAt(i));//Builds the friends array.
+		
+		MultiplayerScreen.getInstance().setAcceptedPlayers(accepted);
+		MultiplayerScreen.getInstance().setWaitingPlayers(waiting);
 		
 	}
+	
+	private void refusedWaiting(ISFSObject response) {
+		
+		Vector<String> refused = new Vector<String>();
+		for(int i= 0;i<response.getSFSArray("refusedPlayers").size();i++)
+			refused.add((String) response.getSFSArray("refusedPlayers").getElementAt(i));//Builds the friends array.
+		
+		Vector<String> waiting = new Vector<String>();
+		for(int i= 0;i<response.getSFSArray("waitingPlayers").size();i++)
+			waiting.add((String) response.getSFSArray("waitingPlayers").getElementAt(i));//Builds the friends array.
+		
+		MultiplayerScreen.getInstance().setRefusedPlayers(refused);
+		MultiplayerScreen.getInstance().setWaitingPlayers(waiting);
+		
+	}
+		
 	 
 
 	public void InsertInQueues(Vector<String> names, boolean externalPlayers){
@@ -280,8 +305,11 @@ public class SmartFoxServer implements IEventListener {
 		}
 	}
 	
-	public void refuseRequest(String user) {
-		// TODO Auto-generated method stub
+	public void refuseRequest(String inviter) {
+		ISFSObject params = new SFSObject();
+		params.putUtfString("Inviter", inviter);
+		ExtensionRequest request = new ExtensionRequest("Refuse",params);
+		sfsClient.send(request);
 		
 	}
 	
