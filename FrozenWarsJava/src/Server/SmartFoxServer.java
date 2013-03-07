@@ -238,18 +238,18 @@ public class SmartFoxServer implements IEventListener {
 	 
 
 	public void InsertInQueues(Vector<String> names, boolean externalPlayers){
-		if(names.size()==1){		  //El que lanza la partida debe estar en la posicion 0 del vector.
+		if(names.size()==1 && externalPlayers==true){		  //El que lanza la partida debe estar en la posicion 0 del vector.
 			  ExtensionRequest request2 = new ExtensionRequest("meter1",new SFSObject());
 			  sfsClient.send(request2);
 		}
-		else if(names.size()==2){
+		else if(names.size()==2 && externalPlayers==true){
 			  String friend=names.get(1);
 			  SFSObject params = new SFSObject();
 			  params.putUtfString("pfriend1",friend);
 			  ExtensionRequest request2 = new ExtensionRequest("meter2",params);
 			  sfsClient.send(request2);
 		}
-		else if(names.size()==3){
+		else if(names.size()==3 && externalPlayers==true){
 			  String friend1=names.get(1);
 			  String friend2=names.get(2);
 			  SFSObject params = new SFSObject();
@@ -258,16 +258,24 @@ public class SmartFoxServer implements IEventListener {
 			  ExtensionRequest request2 = new ExtensionRequest("meter3",params);
 			  sfsClient.send(request2);
 		}
-		else if(names.size()==4){
-			  String friend1=names.get(1);
-			  String friend2=names.get(2);
-			  String friend3=names.get(3);
-			  SFSObject params = new SFSObject();
-			  //User sender = (User)evt.getArguments().get("sender"); evt es un baseEvent mirar private message 
-			  params.putUtfString("pfriend1", friend1);
-			  params.putUtfString("pfriend2", friend2);
-			  params.putUtfString("pfriend3", friend3);
-			  ExtensionRequest request2 = new ExtensionRequest("meter4",params);
+		else if(names.size()==4 || externalPlayers==false){
+			String friend1;
+			String friend2;
+			String friend3;
+			SFSObject params = new SFSObject();
+			if(names.size()>1){
+				friend1=names.get(1);
+				params.putUtfString("pfriend1", friend1);
+			}
+			if(names.size()>2){
+				friend2=names.get(2);
+				params.putUtfString("pfriend2", friend2);
+			}
+			if(names.size()>3){
+				friend3=names.get(3);
+				params.putUtfString("pfriend3", friend3);
+			}
+			  ExtensionRequest request2 = new ExtensionRequest("lanzarPartida",params);
 			  sfsClient.send(request2);
 		}
 	}
