@@ -1,15 +1,10 @@
 package Screens;
-import java.util.ArrayList;
-import java.util.Iterator;
 
-import Application.Assets;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
-import GameLogic.Harpoon;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.WaterTypes;
-import GameLogic.HarpoonManager;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -38,10 +33,6 @@ public class GameScreen implements Screen{
     private float stateTime;
 	private TextureRegion currentFrame;
 	private MatchManager manager;
-	private HarpoonManager harpoonManager;
-	ArrayList<Harpoon> harpoonList;
-	private HarpoonManager sunkenHarpoonManager;
-	ArrayList<Harpoon> sunkenHarpoonList;
 	private String name;
 	private BitmapFont font;
 	private int numPlayer;
@@ -53,12 +44,6 @@ public class GameScreen implements Screen{
 		numPlayer=manager.getMyIdPlayer();
 		this.manager = manager;
 		this.font = new BitmapFont();
-		harpoonList = new ArrayList<Harpoon>();	
-		this.harpoonManager = new HarpoonManager();
-		harpoonManager.setHarpoonList(harpoonList);	
-		sunkenHarpoonList = new ArrayList<Harpoon>();	
-		this.sunkenHarpoonManager = new HarpoonManager();
-		sunkenHarpoonManager.setHarpoonList(sunkenHarpoonList);		
 		guiCam = new OrthographicCamera(21,13);
 		guiCam.position.set(21f/2,13f/2,0);
 		batcher = new SpriteBatch();
@@ -167,7 +152,7 @@ public class GameScreen implements Screen{
 			batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
 		}
 		
-		paintPlayer();
+		paintPlayerStatus();
 		paintLifes();
 		
 		batcher.end();
@@ -195,7 +180,7 @@ public class GameScreen implements Screen{
 		}
 }
 	
-	private void paintPlayer(){
+	private void paintPlayerStatus(){
 		/*font.setColor(255,255,255,1);
 		float textWidth = font.getBounds(name).width;
 		float textHeight = font.getBounds(name).height;
@@ -235,24 +220,6 @@ public class GameScreen implements Screen{
         penguinAnimations[playerId].setlookAt(dir);
         penguinAnimations[playerId].setCurrentFrame(currentFrame);     
 	}
-	
-	public void putHarpoonAt(int xHarpoonPosition, int yHarpoonPosition, int playerId) {
-		Harpoon myHarpoon= new Harpoon(xHarpoonPosition,yHarpoonPosition, manager.getGame().getPlayers(playerId).getRange());
-		harpoonList = harpoonManager.getHarpoonList();
-		harpoonList.add(myHarpoon);
-	}
-	
-	public void putSunkenHarpoonAt(int xHarpoonPosition, int yHarpoonPosition, int playerId) {
-		Harpoon myHarpoon= new Harpoon(xHarpoonPosition,yHarpoonPosition, manager.getGame().getPlayers(playerId).getRange());
-		Iterator<Harpoon> it = harpoonList.iterator();
-		while(it.hasNext()){
-			Harpoon myHarpoonAux = (Harpoon) it.next();
-			if(myHarpoonAux.getPosition().x == xHarpoonPosition && myHarpoonAux.getPosition().y == yHarpoonPosition)
-				harpoonList.remove(myHarpoonAux);
-		}
-		sunkenHarpoonList = sunkenHarpoonManager.getHarpoonList();
-		sunkenHarpoonList.add(myHarpoon);
-	}
 
 	public Game getGame() {
 		return game;
@@ -262,13 +229,6 @@ public class GameScreen implements Screen{
 	}
 	public MatchManager getManager() {
 		return manager;
-	}
-	public ArrayList<Harpoon> getHarpoonList() {
-		return harpoonManager.getHarpoonList();
-	}
-	
-	public ArrayList<Harpoon> getSunkenHarpoonList() {
-		return sunkenHarpoonManager.getHarpoonList();
 	}
 	
 	public void setManager(MatchManager manager) {

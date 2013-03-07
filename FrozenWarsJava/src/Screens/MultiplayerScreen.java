@@ -2,7 +2,6 @@ package Screens;
 
 
 import java.util.Vector;
-import Application.Assets;
 import Application.GameSettings;
 import Application.MatchManager;
 import Server.SmartFoxServer;

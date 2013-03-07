@@ -3,7 +3,6 @@ package Screens;
 import java.io.IOException;
 
 
-import Application.Assets;
 import Application.GameSettings;
 
 import com.badlogic.gdx.Game;

@@ -1,6 +1,5 @@
 package Screens;
 
-import Application.Assets;
 import Application.GameSettings;
 
 

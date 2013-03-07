@@ -10,7 +10,8 @@ import Server.SmartFoxServer;
 
 public class MatchManager {
 	
-	public enum Direction{left,right,up,down}
+	//FIXME: Do a class for sharing with all classes of the project
+	public enum Direction{left,right,up,down} 
 	
 	private SmartFoxServer sfsClient;
 	private Match match;
@@ -43,8 +44,7 @@ public class MatchManager {
 	public void putHarpoon(){
 		if (match.canPutHarpoon(myPlayerId)){
 			Vector3 coord=match.getCoord();
-			sfsClient.putHarpoon((int)coord.x, (int)coord.y,0);//TODO send the range of the harpoon
-			
+			sfsClient.putHarpoon((int)coord.x, (int)coord.y,match.getMyPlayerRange(myPlayerId));
 		}
 	}
 	
@@ -53,19 +53,10 @@ public class MatchManager {
 		gameScreen.movePlayer(dir,playerId,match.getMyPlayerPosition(playerId));
 	}
 	
-	public void putHarpoonEvent(int xHarpoonPosition, int yHarpoonPosition, int myPlayerId) {
-		match.putHarpoonAt(xHarpoonPosition,yHarpoonPosition);
-		gameScreen.putHarpoonAt(xHarpoonPosition,yHarpoonPosition, myPlayerId);
-		match.paintAllFissures(gameScreen.getHarpoonList());
+	public void putHarpoonEvent(int x, int y, int range, long time) {
+		match.putHarpoonAt(x,y,range,time);
 	}
 	
-	public void putSunkenHarpoonEvent(int xHarpoonPosition, int yHarpoonPosition,int myIdPlayer) {
-		match.putSunkenHarpoonAt(xHarpoonPosition,yHarpoonPosition);
-		gameScreen.putSunkenHarpoonAt(xHarpoonPosition,yHarpoonPosition, myPlayerId);
-		match.paintAllWater(gameScreen.getSunkenHarpoonList());
-		
-	}
-
 	// Getters and Setters
 	
 	public SmartFoxServer getSfsClient() {

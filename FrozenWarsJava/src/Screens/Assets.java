@@ -1,4 +1,4 @@
-package Application;
+package Screens;
 
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;

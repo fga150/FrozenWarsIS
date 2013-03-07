@@ -13,42 +13,31 @@ public class Match {
 	
 	enum TypeGame {Normal}
 	
+	private final int numPlayers = 4;
 	private final float playerWidth = 1;
 	private final float playerLength = 1;
 	private final float minimalMove = 0.25f;
 	
 	private Map map;
+	private HarpoonManager harpoonManager;
 	private TypeGame type;
 	private Player[] players;
-	private int numPlayers;
 	private int numUpgrades;
-	private long time;
+	private long matchTime;
 	private Vector3 coord;
-	
-
 
 	/*** ***/
 	
 	public Match(){
 		this.map = new Map(11,11,"mapaPrueba.xml");
-		this.players = new Player[4];
-		for (int i=0;i<4;i++){
+		this.harpoonManager = new HarpoonManager(numPlayers);
+		this.players = new Player[numPlayers];
+		for (int i=0;i<numPlayers;i++){
 			players[i] = new Player(i);
 		}
 		coord=new Vector3();
-		this.numPlayers = 4;
 		this.numUpgrades = 0;
 	}
-
-	/*** Check if a movement made in a direction(dir) from a position
-	 *   made the object going to a new square on the boardGame. If
-	 *   the object goes to new one, it check if square's object can or
-	 *   not go through it.
-	 *   @param dir - direction of the object
-	 *   @param position - position of the object
-	 *   @return Returns if the object can move to the new square
-	 * ***/
-	
 	
 	/*** ***/
 	// CHANGEST
@@ -82,6 +71,8 @@ public class Match {
 	public Direction getSpecialMoveDir(int myPlayerId) {
 		return players[myPlayerId].getSpecialMoveDir();
 	}
+	
+
 	
 	public boolean isSpecialMove(Direction dir, int myPlayerId) {
 		boolean valid=false;
@@ -238,16 +229,14 @@ public class Match {
 		}
 	}
 	
-	public void putHarpoonAt(int xHarpoonPosition, int yHarpoonPosition) {
-		map.putHarpoonAt(xHarpoonPosition,yHarpoonPosition);		
+	public void putHarpoonAt(int x, int y, int range, long time){
+		harpoonManager.addHarpoon(x, y, range, time);
+		map.putHarpoonAt(x,y);
+		map.paintAllFissures(harpoonManager.getActiveHarpoonList());
 	}
 	
 	public void putSunkenHarpoonAt(int xHarpoonPosition, int yHarpoonPosition) {
 		map.putSunkenHarpoonAt(xHarpoonPosition,yHarpoonPosition);			
-	}
-	
-	public void paintAllFissures(ArrayList<Harpoon> harpoonList){
-		map.paintAllFissures(harpoonList);
 	}
 	
 	public void paintAllWater(ArrayList<Harpoon> harpoonList){
@@ -295,6 +284,10 @@ public class Match {
 		Vector3 position = myPlayer.getPosition();
 		return (int)position.y;
 	}
+
+	public int getMyPlayerRange(int myPlayerId) {
+		return players[myPlayerId].getRange();
+	}
 	
 	//Getters and Setters
 
@@ -324,9 +317,6 @@ public class Match {
 	public int getNumPlayers() {
 		return numPlayers;
 	}
-	public void setNumPlayers(int numPlayers) {
-		this.numPlayers = numPlayers;
-	}
 	public int getNumUpgrades() {
 		return numUpgrades;
 	}
@@ -334,10 +324,10 @@ public class Match {
 		this.numUpgrades = numUpgrades;
 	}
 	public long getTime() {
-		return time;
+		return matchTime;
 	}
 	public void setTime(long time) {
-		this.time = time;
+		this.matchTime = time;
 	}
 
 	public Vector3 getMyPlayerPosition(int playerId) {
@@ -374,7 +364,17 @@ public class Match {
 		return players[i].getLifes();
 	}
 
-	
+	public HarpoonManager getHarpoonManager() {
+		return harpoonManager;
+	}
 
+	public void setHarpoonManager(HarpoonManager harpoonManager) {
+		this.harpoonManager = harpoonManager;
+	}
+
+	public void sunkHarpoon(Object object) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

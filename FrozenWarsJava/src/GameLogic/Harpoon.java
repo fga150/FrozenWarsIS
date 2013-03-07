@@ -2,7 +2,7 @@ package GameLogic;
 
 import com.badlogic.gdx.math.Vector3;
 
-public class Harpoon {
+public class Harpoon{
 	
 	private Vector3 position;
 	private int range;
@@ -10,10 +10,10 @@ public class Harpoon {
 	//Getters and Setters
 	
 	public Harpoon(int xHarpoonPosition, int yHarpoonPosition, int range) {
-		this.position = new Vector3(xHarpoonPosition,yHarpoonPosition,0);
+		this.position = new Vector3(xHarpoonPosition,yHarpoonPosition,range);
 		this.range =range;
 	}
-	public Vector3 getPosition() {
+	public Vector3 getPosition(){
 		return position;
 	}
 	public void setPosition(Vector3 position) {
@@ -25,6 +25,4 @@ public class Harpoon {
 	public void setRange(int range) {
 		this.range = range;
 	}
-	
-	
 }

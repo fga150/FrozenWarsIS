@@ -1,5 +1,6 @@
 package Application;
 
+import Screens.Assets;
 import Screens.LoadScreen;
 
 import com.badlogic.gdx.Game;
