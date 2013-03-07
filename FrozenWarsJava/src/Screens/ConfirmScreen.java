@@ -48,7 +48,7 @@ public class ConfirmScreen implements Screen{
 		
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
-	    //Esquina inferior izq y superior derecha
+
 	    yesClick = new BoundingBox(new Vector3(350,340,0), new Vector3(500,400,0));
 	    noClick = new BoundingBox(new Vector3(510,340,0), new Vector3(660,660,0));        
 	}

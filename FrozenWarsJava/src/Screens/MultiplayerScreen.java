@@ -33,6 +33,23 @@ public class MultiplayerScreen implements Screen{
 		return instance;
 	}
 	
+	private class InvitedInfo{
+		private String userName;
+		private String status;
+		public String getStatus() {
+			return status;
+		}
+		public void setStatus(String status) {
+			this.status = status;
+		}
+		public String getUserName() {
+			return userName;
+		}
+		public InvitedInfo(String userName, String status) {
+			this.userName = userName;
+			this.status = status;
+		}
+	}	
 	    /** The gui cam. */
 	private OrthographicCamera guiCam;	
 	
@@ -40,11 +57,9 @@ public class MultiplayerScreen implements Screen{
 	private SpriteBatch batcher;
 	private GameSettings gSettings;
 	private Vector3 touchPoint;
-	private String message;
 	private Game game;
 	private SmartFoxServer sfsClient;
 	private BitmapFont font;
-	private InitialScreen initialScreen;
 	    
     private  BoundingBox externalPlayerButtonClick;
     private  BoundingBox externalPlayerTextClick;
@@ -63,31 +78,72 @@ public class MultiplayerScreen implements Screen{
     private BoundingBox scrollUpPlayersClick;
     
     // Settings
-    boolean externalPlayers;
-    int gameMode;
+    private boolean externalPlayers;
+	private int gameMode;
+	private String myName = "";
+	
 
-    private int invitedScroll;
+	private String gameAdmin = "";
+	private int invitedScroll;
     
     private Vector<String> acceptedPlayers;
     private Vector<String> refusedPlayers;
     private Vector<String> waitingPlayers;
     
+    private Vector<InvitedInfo> drawPlayers;
+    
     public void setAcceptedPlayers(Vector<String> acceptedPlayers) {
 		this.acceptedPlayers = acceptedPlayers;
+		drawPlayers = new Vector<InvitedInfo>();
+		for (int i = 0; i < acceptedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(acceptedPlayers.elementAt(i), "Accepted"));
+		for (int i = 0; i < waitingPlayers.size(); i++) drawPlayers.add(new InvitedInfo(waitingPlayers.elementAt(i), "Waiting"));		
+		for (int i = 0; i < refusedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(refusedPlayers.elementAt(i), "Cancelled"));
+		
 	}
     
     public void setRefusedPlayers(Vector<String> refusedPlayers) {
 		this.refusedPlayers = refusedPlayers;
+		drawPlayers = new Vector<InvitedInfo>();
+		for (int i = 0; i < acceptedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(acceptedPlayers.elementAt(i), "Accepted"));
+		for (int i = 0; i < waitingPlayers.size(); i++) drawPlayers.add(new InvitedInfo(waitingPlayers.elementAt(i), "Waiting"));		
+		for (int i = 0; i < refusedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(refusedPlayers.elementAt(i), "Cancelled"));
+		
 	}
     
     public void setWaitingPlayers(Vector<String> waitingPlayers) {
 		this.waitingPlayers = waitingPlayers;
+		drawPlayers = new Vector<InvitedInfo>();
+		for (int i = 0; i < acceptedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(acceptedPlayers.elementAt(i), "Accepted"));
+		for (int i = 0; i < waitingPlayers.size(); i++) drawPlayers.add(new InvitedInfo(waitingPlayers.elementAt(i), "Waiting"));		
+		for (int i = 0; i < refusedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(refusedPlayers.elementAt(i), "Cancelled"));
+		
+	}
+    
+    public void setExternalPlayers(boolean externalPlayers) {
+		this.externalPlayers = externalPlayers;
+	}
+
+	public void setGameMode(int gameMode) {
+		this.gameMode = gameMode;
+	}
+	
+	public boolean amIAdmin(){
+		return myName.equals(gameAdmin);
+	}
+	
+	public void setMyName(String myName) {
+		this.myName = myName;
+		acceptedPlayers.add(myName);
+		gameAdmin = myName;
+	}
+	
+	public void setGameAdmin(String gameAdmin){
+		this.gameAdmin = gameAdmin;
 	}
     
     public MultiplayerScreen() {
 		instance = this;
     	this.game = LaunchFrozenWars.getGame();
-		this.initialScreen = InitialScreen.getInstance();
 
 		guiCam = new OrthographicCamera(1024,630);
 		guiCam.position.set(512,315,0);
@@ -100,26 +156,25 @@ public class MultiplayerScreen implements Screen{
 	    acceptedPlayers = new Vector<String>();
 	    refusedPlayers = new Vector<String>();
 	    waitingPlayers = new Vector<String>();
+	    drawPlayers = new Vector<InvitedInfo>();
 	    
 	    invitedScroll = 0;
 	    
-	    sfsClient = new SmartFoxServer();
-
-        Gdx.input.getTextInput(new TextInputListener() {
-            public void input(String text) {
-              message = text;
-              sfsClient.conectaSala(text);
-            }
-
-            public void canceled() {
-                // TODO Auto-generated method stub
-
-            }
-          }, "Enter user: ","");
+	    sfsClient = SmartFoxServer.getInstance();
 	    
-	    //Esquina inferior izq y superior derecha
-	    //externalPlayerButtonClick = new BoundingBox(new Vector3(130,380,0), new Vector3(290,400,0));
-	    //externalPlayerTextClick = new BoundingBox(new Vector3(45,300,0), new Vector3(195,320,0));
+	    Gdx.input.getTextInput(new TextInputListener() {
+	         public void input(String text) {
+	             sfsClient.conectaSala(text);
+	             
+	         }
+	
+	         public void canceled() {
+	        	 String user = "user".concat(Long.toString(Math.round(Math.random()*1000)));
+	          	 sfsClient.conectaSala(user);
+	         }
+	    }, "Enter user: ","");
+
+	    
 	    externalPlayerTickClick = new BoundingBox(new Vector3(120,370,0), new Vector3(170,410,0));
 	    
 	    inviteButtonClick = new BoundingBox(new Vector3(550,80,0), new Vector3(790,120,0));
@@ -134,6 +189,8 @@ public class MultiplayerScreen implements Screen{
 	    scrollDownPlayersClick = new BoundingBox(new Vector3(900,190,0), new Vector3(950,225,0));
 	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,400,0));
 	    
+	    
+	    gameAdmin = myName;
 	    externalPlayers = false;
 	    gameMode = 0;
 	}
@@ -164,31 +221,30 @@ public class MultiplayerScreen implements Screen{
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
       		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
-			if (playButtonClick.contains(touchPoint)){
+			if (playButtonClick.contains(touchPoint) && amIAdmin()){
 				System.out.println("Entrando a partida");
 				MatchManager manager = new MatchManager(sfsClient);
 				sfsClient.addManager(manager);
 				GameScreen gameScreen = new GameScreen(game,manager);
 				manager.setGameScreen(gameScreen);
   				game.setScreen(gameScreen);
-      		} else if (inviteButtonClick.contains(touchPoint)) {
+      		} else if (inviteButtonClick.contains(touchPoint) && amIAdmin()) {
       			InviteScreen inviteScreen = new InviteScreen();
       			game.setScreen(inviteScreen);
-      		}else if (externalPlayerTickClick.contains(touchPoint)){
+      		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin()){
       			externalPlayers = !externalPlayers;
-      		} else if (modeLeftArrowClick.contains(touchPoint)){
+      		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin()){
       			if (gameMode == 0) gameMode = 4;
       			else gameMode--;
-      		} else if (modeRightArrowClick.contains(touchPoint)){
+      		} else if (modeRightArrowClick.contains(touchPoint) && amIAdmin()){
       			gameMode = (gameMode + 1) % 5;
       		} else if (scrollDownPlayersClick.contains(touchPoint)){
       			if (invitedScroll < (acceptedPlayers.size() + refusedPlayers.size() + waitingPlayers.size()) - 5) invitedScroll++;
       		} else if (scrollUpPlayersClick.contains(touchPoint)){
       			if (invitedScroll != 0) invitedScroll--;     	
 			} else if (backButtonClick.contains(touchPoint)){
-      			game.setScreen(initialScreen);
+      			game.setScreen(InitialScreen.getInstance());
       		}
-			return;
 		}
 		//crear solamente un batcher por pantalla y eliminarlo cuando no se use
 	
@@ -211,8 +267,8 @@ public class MultiplayerScreen implements Screen{
             batcher.begin();
             batcher.draw(Assets.multiplayerGameTitle, 320, 540);
             drawMode();
-            batcher.draw(Assets.modeLeftArrow, 85, 455);
-            batcher.draw(Assets.modeRightArrow, 435, 455);   
+            if (amIAdmin()) batcher.draw(Assets.modeLeftArrow, 85, 455);
+            if (amIAdmin()) batcher.draw(Assets.modeRightArrow, 435, 455);   
             
             batcher.draw(Assets.externalPlayerButton, 130, 380);   
             if (externalPlayers) batcher.draw(Assets.externalPlayerTick, 130, 380);   
@@ -220,11 +276,11 @@ public class MultiplayerScreen implements Screen{
             
             
             batcher.draw(Assets.map, 130, 150);   
-            batcher.draw(Assets.mapLeftArrow, 45, 200);   
-            batcher.draw(Assets.mapRightArrow, 450, 200);   
+            if (amIAdmin()) batcher.draw(Assets.mapLeftArrow, 45, 200);   
+            if (amIAdmin()) batcher.draw(Assets.mapRightArrow, 450, 200);   
             
-            batcher.draw(Assets.playButton, 200, 80); 
-            batcher.draw(Assets.inviteButton, 550, 80); 
+            if (amIAdmin()) batcher.draw(Assets.playButton, 200, 80); 
+            if (amIAdmin()) batcher.draw(Assets.inviteButton, 550, 80); 
             batcher.draw(Assets.backButton, 370, 20); 
            
             batcher.draw(Assets.pingu, 565, 112);
@@ -238,19 +294,15 @@ public class MultiplayerScreen implements Screen{
 	private void drawInvited() {
 		batcher.draw(Assets.list, 630, 180); 
 		batcher.draw(Assets.playersText, 720, 407); 
-		for (int i = 0; i < Math.min(acceptedPlayers.size(), 5); i++){
-			font.draw(batcher, acceptedPlayers.elementAt(i+invitedScroll), 700,(395-45*i));
-			batcher.draw(Assets.statusTick, 650, (370-45*i));
-		}
 		
-		for (int i = 0; i < Math.min(waitingPlayers.size(), 5); i++){
-			font.draw(batcher, waitingPlayers.elementAt(i+invitedScroll), 700,(395-45*i));
-			batcher.draw(Assets.statusInterrogation, 650, (370-45*i));
-		}
-		
-		for (int i = 0; i < Math.min(refusedPlayers.size(), 5); i++){
-			font.draw(batcher, refusedPlayers.elementAt(i+invitedScroll), 700,(395-45*i));
-			batcher.draw(Assets.statusCancel, 650, (370-45*i));
+		for (int i = 0; i < Math.min(drawPlayers.size(), 5); i++){
+			font.draw(batcher, drawPlayers.elementAt(i+invitedScroll).getUserName(), 700,(395-45*i));
+			if (drawPlayers.elementAt(i+invitedScroll).getStatus().equals("Accepted")) 
+				batcher.draw(Assets.statusTick, 650, (370-45*i));
+			else if (drawPlayers.elementAt(i+invitedScroll).getStatus().equals("Waiting")) 
+				batcher.draw(Assets.statusInterrogation, 650, (370-45*i));
+			else if (drawPlayers.elementAt(i+invitedScroll).getStatus().equals("Cancelled"))
+				batcher.draw(Assets.statusCancel, 650, (370-45*i));
 		}
 	}
 

@@ -171,6 +171,7 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void conectaSala(String user){
 		sfsClient.send(new LoginRequest(user,"", SFS_ZONE));
+		MultiplayerScreen.getInstance().setMyName(user);
 		System.currentTimeMillis();
 		ExtensionRequest request = new ExtensionRequest("conectarse", null);
 		sfsClient.send(request);
