@@ -37,7 +37,7 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("meter1", Put1Handler.class); //handlers to introduce players into de queues
 		this.addRequestHandler("meter2", Put2Handler.class);
 		this.addRequestHandler("meter3", Put3Handler.class);
-		this.addRequestHandler("meter4", Put4Handler.class);
+		this.addRequestHandler("lanzarPartida", ThrowGameHandler.class);
 		this.addRequestHandler("putHarpoon", PutHarpoon.class); // handler to put an harpoon in the game.
 		this.addRequestHandler("GetConnectedFriends", GetConnectedFriends.class); // handler fired when a user wants to see the connected friends
 		this.addRequestHandler("asignImprovements", AsignImprovementsHandler.class);
@@ -87,35 +87,35 @@ public class MyExt extends SFSExtension {
 		this.users = users;
 	}
 	
-	public Room creatGame(User a, User b,User c,User d){ // funtion to create a room for 4 users
+	public Room creatGame(User a, User b,User c,User d){
 		ISFSObject rtn = new SFSObject();
 		try {
 			CreateRoomSettings settings= new CreateRoomSettings();
 			settings.setMaxUsers(4);
 			settings.setGame(true);
-			settings.setName("sala"+ nRooms);
-			nRooms=nRooms+1;
-			Room room = this.getApi().createRoom(this.getParentZone(), settings, a,true,a.getLastJoinedRoom()); // room created and user a added to the room
-			b.getLastJoinedRoom().removeUser(b); // here we add the other users to the room
-			room.addUser(b);
-			c.getLastJoinedRoom().removeUser(c);
-			room.addUser(c);
-			d.getLastJoinedRoom().removeUser(d);
-			room.addUser(d);
-			rtn.putUtfString("res", "Game starting up with the following players: "+a.getName()+", "+b.getName()+", "+c.getName()+", "+d.getName()+", ");
-			this.send("meter1", rtn, a); // we send a message to all the users of the room
-			this.send("meter1", rtn, b);
-			this.send("meter1", rtn, c);
-			this.send("meter1", rtn, d);
+			settings.setName("sala"+ this.getNumero());
+			this.setNumero(this.getNumero()+1);
+			Room room = this.getApi().createRoom(this.getParentZone(), settings, a,true,a.getLastJoinedRoom());
+			try{
+				b.getLastJoinedRoom().removeUser(b);
+				room.addUser(b);
+				c.getLastJoinedRoom().removeUser(c);
+				room.addUser(c);
+				d.getLastJoinedRoom().removeUser(d);
+				room.addUser(d);
+			}catch(Exception e){};
+			try{
+				rtn.putUtfString("res", "Partida en marcha con los siguientes jugadores: "+a.getName()+", "+b.getName()+", "+c.getName()+", "+d.getName()+", ");
+				this.send("meter1", rtn, a);
+				this.send("meter1", rtn, b);
+				this.send("meter1", rtn, c);
+				this.send("meter1", rtn, d);
+			}catch(Exception e){};
 			return room;
 		} catch (SFSCreateRoomException e) {
 			e.printStackTrace();
-			rtn.putUtfString("ras", "Game couldn't start up with the following players: "+a.getName()+", "+b.getName()+", "+c.getName()+", "+d.getName()+", ");
+			rtn.putUtfString("ras", "No se ha podido crear la sala");
 			this.send("meter1", rtn, a);
-			return null;
-		} catch (SFSJoinRoomException e) {
-			rtn.putUtfString("ras", "Game couldn't start up with the following players: "+a.getName()+", "+b.getName()+", "+c.getName()+", "+d.getName()+", ");
-			e.printStackTrace();
 			return null;
 		}	
 
