@@ -70,8 +70,7 @@ public class InviteScreen implements Screen{
 		
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
-	    font = new BitmapFont();
-	    font.setColor(Color.BLACK);
+	    font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);
 	    
 	    this.sfsClient = SmartFoxServer.getInstance();
 	    
@@ -146,7 +145,6 @@ public class InviteScreen implements Screen{
       			game.setScreen(multiplayerScreen);
       		} else if (inviteButtonClick.contains(touchPoint)){
       			for (int i = 0; i < invited.size(); i++) {
-      				System.out.println("Invitado: ".concat(invited.elementAt(i)));
       				sfsClient.inviteRequest(invited.elementAt(i));
       			}
       			game.setScreen(multiplayerScreen);
@@ -217,9 +215,16 @@ public class InviteScreen implements Screen{
 	private void drawNotInvited() {
 		batcher.draw(Assets.list, 160, 180); 
 		batcher.draw(Assets.availablePlayersText, 163, 407); 
+		
 		for (int i = 0; i < Math.min(notInvited.size(), 5); i++){
 			batcher.draw(Assets.add, 175, (368-45*i));
-			font.draw(batcher, notInvited.elementAt(i+notInvitedScroll), 230,(395-45*i));
+			
+			String name = notInvited.elementAt(i+notInvitedScroll);
+			if (font.getBounds(name).width > 195){
+				int j = 6;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				font.draw(batcher, name.substring(0, j)+"...", 230,(402-45*i));
+			} else font.draw(batcher, name, 230,(402-45*i));
 		}
 	}
 	
@@ -227,8 +232,14 @@ public class InviteScreen implements Screen{
 		batcher.draw(Assets.list, 530, 180); 
 		batcher.draw(Assets.inviteListText, 590, 407); 
 		for (int i = 0; i < Math.min(invited.size(), 5); i++){
-			batcher.draw(Assets.minus, 540, (368-45*i));
-			font.draw(batcher, invited.elementAt(i+invitedScroll), 600,(395-45*i));
+			batcher.draw(Assets.minus, 550, (368-45*i));
+			
+			String name = invited.elementAt(i+invitedScroll);
+			if (font.getBounds(name).width > 195){
+				int j = 6;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				font.draw(batcher, name.substring(0, j)+"...", 600,(402-45*i));
+			} else font.draw(batcher, name, 600,(402-45*i));
 		}
 	}
 

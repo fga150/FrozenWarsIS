@@ -174,8 +174,6 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void conectaSala(String user){
 		sfsClient.send(new LoginRequest(user,"", SFS_ZONE));
-		MultiplayerScreen.getInstance().setMyName(user);
-		System.currentTimeMillis();
 		ExtensionRequest request = new ExtensionRequest("conectarse", null);
 		sfsClient.send(request);
 	}
@@ -314,36 +312,30 @@ public class SmartFoxServer implements IEventListener {
 		params.putUtfString("Inviter", inviter);
 		ExtensionRequest request = new ExtensionRequest("Refuse",params);
 		sfsClient.send(request);
-		
 	}
 	
 	public void modeChangeRequest(int mode){
-		
 		ISFSObject params = new SFSObject();
 		params.putInt("mode", mode);
 		ExtensionRequest request = new ExtensionRequest("ModeChange",params);
 		sfsClient.send(request);
-		
 	}
+	
 	public void modeChangeResponse(ISFSObject response){
-		
 		int mode = response.getInt("mode");
-		MultiplayerScreen.getInstance().setGameMode(mode);
-		
+		MultiplayerScreen.getInstance().setGameMode(mode);	
 	}
+	
 	public void modExternalPlayersRequest(boolean external){
-		
 		ISFSObject params = new SFSObject();
 		params.putBool("externalPlayers", external);
 		ExtensionRequest request = new ExtensionRequest("ModExternalPlayers",params);
 		sfsClient.send(request);
-		
 	}
+	
 	public void modExternalPlayersResponse(ISFSObject response){
-		
 		Boolean external = response.getBool("externalPlayers");
 		MultiplayerScreen.getInstance().setExternalPlayers(external);
-		
 	}
 	
 	

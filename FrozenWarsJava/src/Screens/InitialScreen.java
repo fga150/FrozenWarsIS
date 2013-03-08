@@ -66,6 +66,7 @@ public class InitialScreen implements Screen{
 		batcher.dispose();
 		Assets.music.dispose();
 		System.exit(0);	
+
 	}
 
 	@Override
@@ -104,12 +105,11 @@ public class InitialScreen implements Screen{
       				//compruebo si he tocado exit (Se abre ventana de confirmacion)
       			if(exitClick.contains(touchPoint)){
       				try {
-						gSettings.saveSettings();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						return;
-					}
+      					gSettings.saveSettings();
+      				} catch (IOException e) {
+      					// TODO Auto-generated catch block
+      					e.printStackTrace();
+      				}
       				if (!gSettings.isConfirmedExitOn()) {
       					this.dispose();
       				} else{

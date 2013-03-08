@@ -1,7 +1,6 @@
 package Screens;
 
 import Application.Assets;
-import Application.GameSettings;
 import Application.LaunchFrozenWars;
 
 import com.badlogic.gdx.Game;

@@ -1,6 +1,5 @@
 package Screens;
 
-import java.io.IOException;
 import java.util.Vector;
 
 
@@ -19,9 +18,10 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MultiplayerScreen implements Screen{
 
@@ -38,9 +38,6 @@ public class MultiplayerScreen implements Screen{
 		private String status;
 		public String getStatus() {
 			return status;
-		}
-		public void setStatus(String status) {
-			this.status = status;
 		}
 		public String getUserName() {
 			return userName;
@@ -61,8 +58,6 @@ public class MultiplayerScreen implements Screen{
 	private SmartFoxServer sfsClient;
 	private BitmapFont font;
 	    
-    private  BoundingBox externalPlayerButtonClick;
-    private  BoundingBox externalPlayerTextClick;
     private  BoundingBox externalPlayerTickClick;
     
     private  BoundingBox inviteButtonClick;
@@ -83,7 +78,7 @@ public class MultiplayerScreen implements Screen{
 	private String myName = "";
 	
 
-	private String gameAdmin = "";
+	private String gameAdmin;
 	private int invitedScroll;
     
     private Vector<String> acceptedPlayers;
@@ -116,7 +111,6 @@ public class MultiplayerScreen implements Screen{
 		for (int i = 0; i < acceptedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(acceptedPlayers.elementAt(i), "Accepted"));
 		for (int i = 0; i < waitingPlayers.size(); i++) drawPlayers.add(new InvitedInfo(waitingPlayers.elementAt(i), "Waiting"));		
 		for (int i = 0; i < refusedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(refusedPlayers.elementAt(i), "Cancelled"));
-		
 	}
     
     public void setExternalPlayers(boolean externalPlayers) {
@@ -134,6 +128,7 @@ public class MultiplayerScreen implements Screen{
 	public void setMyName(String myName) {
 		this.myName = myName;
 		acceptedPlayers.add(myName);
+		drawPlayers.add(new InvitedInfo(myName, "Accepted"));
 		gameAdmin = myName;
 	}
 	
@@ -150,8 +145,7 @@ public class MultiplayerScreen implements Screen{
 		
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
-	    font = new BitmapFont();
-	    font.setColor(Color.BLACK);
+	    font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);
 	    
 	    acceptedPlayers = new Vector<String>();
 	    refusedPlayers = new Vector<String>();
@@ -164,13 +158,14 @@ public class MultiplayerScreen implements Screen{
 	    
 	    Gdx.input.getTextInput(new TextInputListener() {
 	         public void input(String text) {
-	             sfsClient.conectaSala(text);
-	             
+	        	 MultiplayerScreen.getInstance().setMyName(text);
+	        	 sfsClient.conectaSala(text);
 	         }
 	
 	         public void canceled() {
 	        	 String user = "user".concat(Long.toString(Math.round(Math.random()*1000)));
-	          	 sfsClient.conectaSala(user);
+	        	 MultiplayerScreen.getInstance().setMyName(user);
+	        	 sfsClient.conectaSala(user);
 	         }
 	    }, "Enter user: ","");
 
@@ -189,8 +184,6 @@ public class MultiplayerScreen implements Screen{
 	    scrollDownPlayersClick = new BoundingBox(new Vector3(900,190,0), new Vector3(950,225,0));
 	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,400,0));
 	    
-	    
-	    gameAdmin = myName;
 	    externalPlayers = false;
 	    gameMode = 0;
 	}
@@ -205,12 +198,10 @@ public class MultiplayerScreen implements Screen{
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
@@ -233,11 +224,14 @@ public class MultiplayerScreen implements Screen{
       			game.setScreen(inviteScreen);
       		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin()){
       			externalPlayers = !externalPlayers;
+      			sfsClient.modExternalPlayersRequest(externalPlayers);
       		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin()){
       			if (gameMode == 0) gameMode = 4;
       			else gameMode--;
+      			sfsClient.modeChangeRequest(gameMode);
       		} else if (modeRightArrowClick.contains(touchPoint) && amIAdmin()){
       			gameMode = (gameMode + 1) % 5;
+      			sfsClient.modeChangeRequest(gameMode);
       		} else if (scrollDownPlayersClick.contains(touchPoint)){
       			if (invitedScroll < (acceptedPlayers.size() + refusedPlayers.size() + waitingPlayers.size()) - 5) invitedScroll++;
       		} else if (scrollUpPlayersClick.contains(touchPoint)){
@@ -274,13 +268,13 @@ public class MultiplayerScreen implements Screen{
             if (externalPlayers) batcher.draw(Assets.externalPlayerTick, 130, 380);   
             batcher.draw(Assets.externalPlayerText, 200, 380);   
             
-            
             batcher.draw(Assets.map, 130, 150);   
             if (amIAdmin()) batcher.draw(Assets.mapLeftArrow, 45, 200);   
             if (amIAdmin()) batcher.draw(Assets.mapRightArrow, 450, 200);   
             
             if (amIAdmin()) batcher.draw(Assets.playButton, 200, 80); 
             if (amIAdmin()) batcher.draw(Assets.inviteButton, 550, 80); 
+            
             batcher.draw(Assets.backButton, 370, 20); 
            
             batcher.draw(Assets.pingu, 565, 112);
@@ -296,13 +290,20 @@ public class MultiplayerScreen implements Screen{
 		batcher.draw(Assets.playersText, 720, 407); 
 		
 		for (int i = 0; i < Math.min(drawPlayers.size(), 5); i++){
-			font.draw(batcher, drawPlayers.elementAt(i+invitedScroll).getUserName(), 700,(395-45*i));
+			String name = drawPlayers.elementAt(i+invitedScroll).getUserName();
+			
+			if (font.getBounds(name).width > 195){
+				int j = 6;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				font.draw(batcher, name.substring(0, j)+"...", 700,(402-45*i));
+			} else font.draw(batcher, name, 700,(402-45*i));
+			
 			if (drawPlayers.elementAt(i+invitedScroll).getStatus().equals("Accepted")) 
-				batcher.draw(Assets.statusTick, 650, (370-45*i));
+				batcher.draw(Assets.statusTick, 650, (367-45*i));
 			else if (drawPlayers.elementAt(i+invitedScroll).getStatus().equals("Waiting")) 
-				batcher.draw(Assets.statusInterrogation, 650, (370-45*i));
+				batcher.draw(Assets.statusInterrogation, 650, (367-45*i));
 			else if (drawPlayers.elementAt(i+invitedScroll).getStatus().equals("Cancelled"))
-				batcher.draw(Assets.statusCancel, 650, (370-45*i));
+				batcher.draw(Assets.statusCancel, 650, (367-45*i));
 		}
 	}
 
@@ -313,27 +314,19 @@ public class MultiplayerScreen implements Screen{
 		else if (gameMode == 3) batcher.draw(Assets.survivalMode, 100, 450);
 		else if (gameMode == 4) batcher.draw(Assets.battleRoyalMode, 100, 450);
 	}
-
-
-	public void inviteFriends(Vector<String> users) {
-		waitingPlayers = users;    		
-	}
 	
 	@Override
 	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 		
 	}
 

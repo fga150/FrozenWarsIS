@@ -8,7 +8,6 @@ import Server.SmartFoxServer;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -43,9 +42,8 @@ public class ConfirmScreen implements Screen{
 		this.screenMode = screenMode;
 		this.user = user;
 		
-		font = new BitmapFont();
-	    font.setColor(Color.BLACK);
-		
+		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);;
+
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 
@@ -75,12 +73,13 @@ public class ConfirmScreen implements Screen{
       //detectamos si se ha tocado la pantalla
       if (Gdx.input.justTouched()){
       		guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-
+      		
       		//compruebo si he tocado yes 
       		if (yesClick.contains(touchPoint)){
       			if (screenMode.equals("Exit")) this.dispose();
       			else if (screenMode.equals("InviteGame")) {
       				SmartFoxServer.getInstance().acceptRequest(user);
+      				MultiplayerScreen.getInstance().setGameAdmin(user);
       				game.setScreen(MultiplayerScreen.getInstance());
       			}
       		} else if(noClick.contains(touchPoint)){ //compruebo si he tocado no
@@ -112,10 +111,10 @@ public class ConfirmScreen implements Screen{
             batcher.draw(Assets.window, 330, 300);
             if (screenMode.equals("Exit")) batcher.draw(Assets.exitText, 330, 300);
             if (screenMode.equals("InviteGame")) {
-            	String message = user.concat(" wants you to join his game");
-            	font.draw(batcher, message, 415, 465);
+            	String message = user.concat(" has invited you to join his game.");
+            	font.drawWrapped(batcher, message, 350, 525, 330);
+            	font.draw(batcher, "Do you want to join him?", 350, 450);
             }
-           // batcher.draw(Assets.noConf, 175, 180);
             batcher.end();	
 	}
 
