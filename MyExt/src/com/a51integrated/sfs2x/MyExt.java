@@ -10,7 +10,6 @@ import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.SFSCreateRoomException;
-import com.smartfoxserver.v2.exceptions.SFSJoinRoomException;
 import com.smartfoxserver.v2.extensions.SFSExtension;
 
 public class MyExt extends SFSExtension {
@@ -95,8 +94,8 @@ public class MyExt extends SFSExtension {
 			CreateRoomSettings settings= new CreateRoomSettings();
 			settings.setMaxUsers(4);
 			settings.setGame(true);
-			settings.setName("sala"+ this.getNumero());
-			this.setNumero(this.getNumero()+1);
+			settings.setName("sala"+ nRooms);
+			nRooms++;
 			Room room = this.getApi().createRoom(this.getParentZone(), settings, a,true,a.getLastJoinedRoom());
 			try{
 				b.getLastJoinedRoom().removeUser(b);
