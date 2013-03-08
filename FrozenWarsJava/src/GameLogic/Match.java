@@ -234,24 +234,25 @@ public class Match {
 	public void putHarpoonAt(int x, int y, int range, long time){
 		Harpoon harpoon = new Harpoon(x,y,range);
 		harpoonManager.addHarpoon(harpoon);
-		timeEventsManager.addHarpoonEvent(harpoon,time);
+		timeEventsManager.sinkHarpoonEvent(harpoon,time);
 		map.putHarpoonAt(x,y);
 		map.addAllFissures(harpoonManager.getActiveHarpoonList());
 	}
 	
 	public void sinkHarpoon(Harpoon harpoon) {
 		Vector3 position = harpoon.getPosition();
+		harpoonManager.sinkHarpoon(harpoon);
+		timeEventsManager.freezeWaterEvent(harpoon);
 		map.putSunkenHarpoonAt((int)position.x,(int)position.y);
+		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
+		map.addAllFissures(harpoonManager.getActiveHarpoonList());
 	}
 	
-	public void putSunkenHarpoonAt(int xHarpoonPosition, int yHarpoonPosition) {
-		map.putSunkenHarpoonAt(xHarpoonPosition,yHarpoonPosition);			
+	public void freezeWater(Harpoon harpoon) {
+		harpoonManager.removeHarpoon(harpoon);
+		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
 	}
 	
-	public void paintAllWater(ArrayList<Harpoon> harpoonList){
-		map.paintAllWaters(harpoonList);
-	}
-		
 	public boolean canPutHarpoon(int myPlayerId){
 		Vector3 position=players[myPlayerId].getPosition();
 		if(players[myPlayerId].getLookAt().equals(Direction.right)){

@@ -16,6 +16,15 @@ public class HarpoonManager{
 		this.sunkenHarpoonList = new ArrayList<Harpoon>(arrayListSize);
 	}
 	
+	public void sinkHarpoon(Harpoon harpoon) {
+		activeHarpoonList.remove(harpoon);
+		sunkenHarpoonList.add(harpoon);
+	}
+	
+	public void removeHarpoon(Harpoon harpoon) {
+		sunkenHarpoonList.remove(harpoon);
+	}
+	
 	public void addHarpoon(Harpoon harpoon) {
 		activeHarpoonList.add(harpoon);
 	}

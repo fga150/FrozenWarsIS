@@ -151,6 +151,7 @@ public class Map {
 	}
 
 	public void addAllFissures(ArrayList<Harpoon> harpoonList){
+		removeAllFissures();
 		Iterator<Harpoon> it = harpoonList.iterator(); 
 		while (it.hasNext()){
 			Harpoon myHarpoon = (Harpoon) it.next();
@@ -221,180 +222,197 @@ public class Map {
 		}
 }
 	
-private boolean canIputFissure(int xHarpoonPosition,	int yHarpoonPosition){
-	return (boardGame[xHarpoonPosition][yHarpoonPosition] == TypeSquare.empty 
-			|| boardGame[xHarpoonPosition][yHarpoonPosition] == TypeSquare.breakable);
-}
-
-// END METHODS OF PUT FISSURE
-
-
-//METHODS OF PUT WATER
+	private boolean canIputFissure(int xHarpoonPosition,	int yHarpoonPosition){
+		return (boardGame[xHarpoonPosition][yHarpoonPosition] == TypeSquare.empty 
+				|| boardGame[xHarpoonPosition][yHarpoonPosition] == TypeSquare.breakable);
+	}
 	
-public void putSunkenHarpoonAt(int xHarpoonPosition, int yHarpoonPosition) {
-	boardGame[xHarpoonPosition][yHarpoonPosition]= TypeSquare.empty;
-}
-
-public void paintAllWaters(ArrayList<Harpoon> sunkenHarpoonList){
-	Iterator<Harpoon> it = sunkenHarpoonList.iterator(); 
-	while (it.hasNext()){
-		Harpoon mySunkenHarpoon = (Harpoon) it.next();
-		putWaterAt((int)mySunkenHarpoon.getPosition().x,(int)mySunkenHarpoon.getPosition().y,mySunkenHarpoon.getRange());
+	// END METHODS OF PUT FISSURE
+	
+	
+	//METHODS OF PUT WATER
+		
+	public void putSunkenHarpoonAt(int xHarpoonPosition, int yHarpoonPosition) {
+		boardGame[xHarpoonPosition][yHarpoonPosition]= TypeSquare.empty;
 	}
-}	
-
-public void putWaterAt(int xHarpoonPosition, int yHarpoonPosition, int fissureRange) {
-	String connectingSidesPos;
-	// Fissure center <= Water Center
-	if(fissuresBoard[xHarpoonPosition][yHarpoonPosition] == FissuresTypes.fissureC){
-		connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition, yHarpoonPosition, fissureRange);
-		waterBoard[xHarpoonPosition][yHarpoonPosition] = getWaterPiece(connectingSidesPos);
-	}
-	int i = 1; boolean blocked = false;
-	//
-	//NORTH
-	blocked = false;
-	while (!blocked && (yHarpoonPosition+i<length) && i<=fissureRange && ((fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.fissureSY)
-			||(fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.barrelWithFissure))){
-		if (fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.fissureSY){
-			connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition, yHarpoonPosition+i, fissureRange);
-			waterBoard[xHarpoonPosition][yHarpoonPosition+i] = getWaterPiece(connectingSidesPos);
-		}else if (fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.barrelWithFissure){
-			// Upgrades not included yet. Barrel will be empty.
-			fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.empty;
-			//When upgrades are implemented boardGame = upgrade
-			boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.empty;
-			blocked = true;
+	
+	public void paintAllWaters(ArrayList<Harpoon> sunkenHarpoonList){
+		removeAllWater();
+		Iterator<Harpoon> it = sunkenHarpoonList.iterator(); 
+		while (it.hasNext()){
+			Harpoon mySunkenHarpoon = (Harpoon) it.next();
+			putWaterAt((int)mySunkenHarpoon.getPosition().x,(int)mySunkenHarpoon.getPosition().y,mySunkenHarpoon.getRange());
 		}
-		i++;
-	} 
-	i = 1;
+	}	
 	
-	//SOUTH
-	blocked = false;
-	while (!blocked && yHarpoonPosition-i>=0 && i<=fissureRange && ((fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.fissureSY)
-			||(fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.barrelWithFissure))){
-			if (fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.fissureSY){
-				connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition, yHarpoonPosition-i, fissureRange);
-				waterBoard[xHarpoonPosition][yHarpoonPosition-i] = getWaterPiece(connectingSidesPos);
-			}else if (fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.barrelWithFissure){
+	private void removeAllFissures(){
+		for (int i=0;i<length;i++){
+			for (int j=0;j<width;j++){
+				fissuresBoard[i][j]=FissuresTypes.empty;
+			}
+		}
+	}
+
+	private void removeAllWater() {
+		for (int i=0;i<length;i++){
+			for (int j=0;j<width;j++){
+				waterBoard[i][j]=WaterTypes.empty;
+			}
+		}
+	}
+	
+	public void putWaterAt(int xHarpoonPosition, int yHarpoonPosition, int fissureRange) {
+		String connectingSidesPos;
+		// Fissure center <= Water Center
+		if(fissuresBoard[xHarpoonPosition][yHarpoonPosition] == FissuresTypes.fissureC){
+			connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition, yHarpoonPosition, fissureRange);
+			waterBoard[xHarpoonPosition][yHarpoonPosition] = getWaterPiece(connectingSidesPos);
+		}
+		int i = 1; boolean blocked = false;
+		//
+		//NORTH
+		blocked = false;
+		while (!blocked && (yHarpoonPosition+i<length) && i<=fissureRange && ((fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.fissureSY)
+				||(fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.barrelWithFissure))){
+			if (fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.fissureSY){
+				connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition, yHarpoonPosition+i, fissureRange);
+				waterBoard[xHarpoonPosition][yHarpoonPosition+i] = getWaterPiece(connectingSidesPos);
+			}else if (fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.barrelWithFissure){
 				// Upgrades not included yet. Barrel will be empty.
-				fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.empty;
+				fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.empty;
 				//When upgrades are implemented boardGame = upgrade
-				boardGame[xHarpoonPosition][yHarpoonPosition-i] = TypeSquare.empty;
+				boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.empty;
+				blocked = true;
+			}
+			i++;
+		} 
+		i = 1;
+		
+		//SOUTH
+		blocked = false;
+		while (!blocked && yHarpoonPosition-i>=0 && i<=fissureRange && ((fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.fissureSY)
+				||(fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.barrelWithFissure))){
+				if (fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.fissureSY){
+					connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition, yHarpoonPosition-i, fissureRange);
+					waterBoard[xHarpoonPosition][yHarpoonPosition-i] = getWaterPiece(connectingSidesPos);
+				}else if (fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.barrelWithFissure){
+					// Upgrades not included yet. Barrel will be empty.
+					fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.empty;
+					//When upgrades are implemented boardGame = upgrade
+					boardGame[xHarpoonPosition][yHarpoonPosition-i] = TypeSquare.empty;
+					blocked = true;
+				}
+				i++;
+			}
+			i = 1;
+		
+		//EAST
+		blocked = false;
+		while (!blocked && (xHarpoonPosition+i<width) && i<=fissureRange	&& ((fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.fissureSX)
+				||(fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.barrelWithFissure))){
+			if (fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.fissureSX){
+				connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition+i, yHarpoonPosition, fissureRange);
+				waterBoard[xHarpoonPosition+i][yHarpoonPosition] = getWaterPiece(connectingSidesPos);
+			}else if (fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.barrelWithFissure){
+				// Upgrades not included yet. Barrel will be empty.
+				fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.empty;
+				//When upgrades are implemented boardGame = upgrade
+				boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.empty;
 				blocked = true;
 			}
 			i++;
 		}
 		i = 1;
-	
-	//EAST
-	blocked = false;
-	while (!blocked && (xHarpoonPosition+i<width) && i<=fissureRange	&& ((fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.fissureSX)
-			||(fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.barrelWithFissure))){
-		if (fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.fissureSX){
-			connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition+i, yHarpoonPosition, fissureRange);
-			waterBoard[xHarpoonPosition+i][yHarpoonPosition] = getWaterPiece(connectingSidesPos);
-		}else if (fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.barrelWithFissure){
-			// Upgrades not included yet. Barrel will be empty.
-			fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.empty;
-			//When upgrades are implemented boardGame = upgrade
-			boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.empty;
-			blocked = true;
-		}
-		i++;
+		//WEST
+		blocked = false;
+		while (!blocked && (xHarpoonPosition-i>=0) && i<=fissureRange	&& ((fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.fissureSX)
+				||(fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.barrelWithFissure))){
+			if (fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.fissureSX){
+				connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition-i, yHarpoonPosition, fissureRange);
+				waterBoard[xHarpoonPosition-i][yHarpoonPosition] = getWaterPiece(connectingSidesPos);
+			}else if (fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.barrelWithFissure){
+				// Upgrades not included yet. Barrel will be empty.
+				fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.empty;
+				//When upgrades are implemented boardGame = upgrade
+				boardGame[xHarpoonPosition-i][yHarpoonPosition] = TypeSquare.empty;
+				blocked = true;
+			}
+			i++;
+		}	
 	}
-	i = 1;
-	//WEST
-	blocked = false;
-	while (!blocked && (xHarpoonPosition-i>=0) && i<=fissureRange	&& ((fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.fissureSX)
-			||(fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.barrelWithFissure))){
-		if (fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.fissureSX){
-			connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition-i, yHarpoonPosition, fissureRange);
-			waterBoard[xHarpoonPosition-i][yHarpoonPosition] = getWaterPiece(connectingSidesPos);
-		}else if (fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.barrelWithFissure){
-			// Upgrades not included yet. Barrel will be empty.
-			fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.empty;
-			//When upgrades are implemented boardGame = upgrade
-			boardGame[xHarpoonPosition-i][yHarpoonPosition] = TypeSquare.empty;
-			blocked = true;
-		}
-		i++;
-	}	
-}
-
-private WaterTypes getWaterPiece (String connectingSidesPos){	
-		if (connectingSidesPos.equals("N")){return WaterTypes.water1SOpN;}
-		else if (connectingSidesPos.equals("S")){return WaterTypes.water1SOpS;}
-		else if (connectingSidesPos.equals("E")){return WaterTypes.water1SOpE;}
-		else if (connectingSidesPos.equals("W")){return WaterTypes.water1SOpW;}
-		else if (connectingSidesPos.equals("EW")){return WaterTypes.water2SOpBridgeX;}
-		else if (connectingSidesPos.equals("NS")){return WaterTypes.water2SOpBridgeY;}
-		else if (connectingSidesPos.equals("NE")){return WaterTypes.water2SOpCornerEN;}
-		else if (connectingSidesPos.equals("NW")){return WaterTypes. water2SOpCornerNW;}
-		else if (connectingSidesPos.equals("SE")){return WaterTypes.water2SOpCornerSE;}
-		else if (connectingSidesPos.equals("SW")){return WaterTypes.water2SOpCornerWS;}
-		else if (connectingSidesPos.equals("NSW")){return WaterTypes.water3SOpE;}
-		else if (connectingSidesPos.equals("SEW")){return WaterTypes.water3SOpN;}
-		else if (connectingSidesPos.equals("NEW")){return WaterTypes.water3SOpS;}
-		else if (connectingSidesPos.equals("NSE")){return WaterTypes.water3SOpW;}
-		else if (connectingSidesPos.equals("NSEW")){return WaterTypes.water4SOp;}		
-return WaterTypes.empty;
-}
-
-
-private boolean canIputWater(int xIni,int yIni,int xFin,int yFin){	
-	//The new field is in the East. we have to check that this field is a fissure or is a water block with a connection in the west side
-	if(xIni < xFin){
-		return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSX || waterBoard[xFin][yFin] == WaterTypes.water1SOpW 
-				|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerNW || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerWS
-				|| waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeX || waterBoard[xFin][yFin] == WaterTypes.water3SOpE 
-				|| waterBoard[xFin][yFin] == WaterTypes.water3SOpN || waterBoard[xFin][yFin] == WaterTypes.water3SOpS 
-				|| waterBoard[xFin][yFin] == WaterTypes.water4SOp);
 	
-	//The new field is in the West. we have to check that this field is a fissure or is a water block with a connection in the east side
-	}else if(xIni > xFin){
-		return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSX || waterBoard[xFin][yFin] == WaterTypes.water1SOpE 
-				|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerEN || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerSE
-				|| waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeX || waterBoard[xFin][yFin] == WaterTypes.water3SOpW 
-				|| waterBoard[xFin][yFin] == WaterTypes.water3SOpN || waterBoard[xFin][yFin] == WaterTypes.water3SOpS 
-				|| waterBoard[xFin][yFin] == WaterTypes.water4SOp);
-			
-	//The new field is in the South. we have to check that this field is a fissure or is a water block with a connection in the north side
-	}else if(yIni > yFin){
-		return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSY || waterBoard[xFin][yFin] == WaterTypes.water1SOpN
-				|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerNW || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerEN
-				|| waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeY || waterBoard[xFin][yFin] == WaterTypes.water3SOpE 
-				|| waterBoard[xFin][yFin] == WaterTypes.water3SOpW || waterBoard[xFin][yFin] == WaterTypes.water3SOpS 
-				|| waterBoard[xFin][yFin] == WaterTypes.water4SOp);
+	private WaterTypes getWaterPiece (String connectingSidesPos){	
+			if (connectingSidesPos.equals("N")){return WaterTypes.water1SOpN;}
+			else if (connectingSidesPos.equals("S")){return WaterTypes.water1SOpS;}
+			else if (connectingSidesPos.equals("E")){return WaterTypes.water1SOpE;}
+			else if (connectingSidesPos.equals("W")){return WaterTypes.water1SOpW;}
+			else if (connectingSidesPos.equals("EW")){return WaterTypes.water2SOpBridgeX;}
+			else if (connectingSidesPos.equals("NS")){return WaterTypes.water2SOpBridgeY;}
+			else if (connectingSidesPos.equals("NE")){return WaterTypes.water2SOpCornerEN;}
+			else if (connectingSidesPos.equals("NW")){return WaterTypes. water2SOpCornerNW;}
+			else if (connectingSidesPos.equals("SE")){return WaterTypes.water2SOpCornerSE;}
+			else if (connectingSidesPos.equals("SW")){return WaterTypes.water2SOpCornerWS;}
+			else if (connectingSidesPos.equals("NSW")){return WaterTypes.water3SOpE;}
+			else if (connectingSidesPos.equals("SEW")){return WaterTypes.water3SOpN;}
+			else if (connectingSidesPos.equals("NEW")){return WaterTypes.water3SOpS;}
+			else if (connectingSidesPos.equals("NSE")){return WaterTypes.water3SOpW;}
+			else if (connectingSidesPos.equals("NSEW")){return WaterTypes.water4SOp;}		
+	return WaterTypes.empty;
+	}
 
-	//The new field is in the North. we have to check that this field is a fissure or is a water block with a connection in the south side
-	}else if(yIni < yFin){
-		return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSY || waterBoard[xFin][yFin] == WaterTypes.water1SOpS
-				|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerSE || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerWS
-				|| waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeY || waterBoard[xFin][yFin] == WaterTypes.water3SOpE 
-				|| waterBoard[xFin][yFin] == WaterTypes.water3SOpW || waterBoard[xFin][yFin] == WaterTypes.water3SOpN 
-				|| waterBoard[xFin][yFin] == WaterTypes.water4SOp);
-	}		
-return true;
-}
 
-private String ConnectingSidesPosition(int xHarpoonPosition, int yHarpoonPosition, int fissureRange) {
-	String positions = "";
-	//NORTH
-	if(yHarpoonPosition+1<length && canIputWater(xHarpoonPosition, yHarpoonPosition, xHarpoonPosition, yHarpoonPosition+1)) 
-		positions = positions.concat("N");
-	//SOUTH
-	if(yHarpoonPosition-1>=0 && canIputWater(xHarpoonPosition, yHarpoonPosition, xHarpoonPosition, yHarpoonPosition-1)) 
-		positions = positions.concat("S");
-	//EAST
-	if(xHarpoonPosition+1 < width && canIputWater(xHarpoonPosition, yHarpoonPosition, xHarpoonPosition+1, yHarpoonPosition))
-		positions = positions.concat("E");
-	//WEST
-	if(xHarpoonPosition-1>=0 && canIputWater(xHarpoonPosition, yHarpoonPosition, xHarpoonPosition-1, yHarpoonPosition))
-		positions = positions.concat("W");
-return positions;
-}
+	private boolean canIputWater(int xIni,int yIni,int xFin,int yFin){	
+		//The new field is in the East. we have to check that this field is a fissure or is a water block with a connection in the west side
+		if(xIni < xFin){
+			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSX || waterBoard[xFin][yFin] == WaterTypes.water1SOpW 
+					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerNW || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerWS
+					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeX || waterBoard[xFin][yFin] == WaterTypes.water3SOpE 
+					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpN || waterBoard[xFin][yFin] == WaterTypes.water3SOpS 
+					|| waterBoard[xFin][yFin] == WaterTypes.water4SOp);
+		
+		//The new field is in the West. we have to check that this field is a fissure or is a water block with a connection in the east side
+		}else if(xIni > xFin){
+			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSX || waterBoard[xFin][yFin] == WaterTypes.water1SOpE 
+					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerEN || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerSE
+					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeX || waterBoard[xFin][yFin] == WaterTypes.water3SOpW 
+					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpN || waterBoard[xFin][yFin] == WaterTypes.water3SOpS 
+					|| waterBoard[xFin][yFin] == WaterTypes.water4SOp);
+				
+		//The new field is in the South. we have to check that this field is a fissure or is a water block with a connection in the north side
+		}else if(yIni > yFin){
+			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSY || waterBoard[xFin][yFin] == WaterTypes.water1SOpN
+					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerNW || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerEN
+					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeY || waterBoard[xFin][yFin] == WaterTypes.water3SOpE 
+					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpW || waterBoard[xFin][yFin] == WaterTypes.water3SOpS 
+					|| waterBoard[xFin][yFin] == WaterTypes.water4SOp);
+	
+		//The new field is in the North. we have to check that this field is a fissure or is a water block with a connection in the south side
+		}else if(yIni < yFin){
+			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSY || waterBoard[xFin][yFin] == WaterTypes.water1SOpS
+					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerSE || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerWS
+					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeY || waterBoard[xFin][yFin] == WaterTypes.water3SOpE 
+					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpW || waterBoard[xFin][yFin] == WaterTypes.water3SOpN 
+					|| waterBoard[xFin][yFin] == WaterTypes.water4SOp);
+		}		
+	return true;
+	}
+
+	private String ConnectingSidesPosition(int xHarpoonPosition, int yHarpoonPosition, int fissureRange) {
+		String positions = "";
+		//NORTH
+		if(yHarpoonPosition+1<length && canIputWater(xHarpoonPosition, yHarpoonPosition, xHarpoonPosition, yHarpoonPosition+1)) 
+			positions = positions.concat("N");
+		//SOUTH
+		if(yHarpoonPosition-1>=0 && canIputWater(xHarpoonPosition, yHarpoonPosition, xHarpoonPosition, yHarpoonPosition-1)) 
+			positions = positions.concat("S");
+		//EAST
+		if(xHarpoonPosition+1 < width && canIputWater(xHarpoonPosition, yHarpoonPosition, xHarpoonPosition+1, yHarpoonPosition))
+			positions = positions.concat("E");
+		//WEST
+		if(xHarpoonPosition-1>=0 && canIputWater(xHarpoonPosition, yHarpoonPosition, xHarpoonPosition-1, yHarpoonPosition))
+			positions = positions.concat("W");
+	return positions;
+	}
 //END OF METHODS PUT WATER
 
 

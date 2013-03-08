@@ -8,6 +8,7 @@ import GameLogic.Map.WaterTypes;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -157,6 +158,10 @@ public class GameScreen implements Screen{
 		
 		batcher.end();
 		guiCam.update();
+		if ((Gdx.input.isKeyPressed(Keys.W))||(Gdx.input.isKeyPressed(Keys.UP))){manager.movePlayer(Direction.up);}
+		if ((Gdx.input.isKeyPressed(Keys.S))||(Gdx.input.isKeyPressed(Keys.DOWN))){manager.movePlayer(Direction.down);}
+		if ((Gdx.input.isKeyPressed(Keys.A))||(Gdx.input.isKeyPressed(Keys.LEFT))){manager.movePlayer(Direction.left);}
+		if ((Gdx.input.isKeyPressed(Keys.D))||(Gdx.input.isKeyPressed(Keys.RIGHT))){manager.movePlayer(Direction.right);}
 		if (Gdx.input.isTouched()){
 			if (Gdx.input.isTouched(0))guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
 			if (Gdx.input.isTouched(1))guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
@@ -173,6 +178,7 @@ public class GameScreen implements Screen{
 				manager.movePlayer(Direction.down);
 			}
 		}
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) manager.putHarpoon();
 		
 		//This has to be jus touched else the code of put harpoon run 2 times
 		if (Gdx.input.justTouched() &&(harpoonBounds.contains(touchPoint)||harpoonBounds.contains(touchPoint2))){
