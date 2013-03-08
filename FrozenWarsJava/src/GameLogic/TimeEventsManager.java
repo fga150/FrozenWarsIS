@@ -17,10 +17,17 @@ public class TimeEventsManager implements ActionListener {
 	private Match match;
 	private HashMap<Timer,Object> timeEventObject;
 	
+	public TimeEventsManager(Match match){
+		this.match = match;
+		this.timeEventObject = new HashMap<Timer,Object>();
+	}
+	
 	public void addHarpoonEvent(Harpoon harpoon,long time){
-		int waitTime = (int)(time - System.currentTimeMillis());
-		Timer t = new Timer(waitTime,this);
-		timeEventObject.put(t,harpoon);
+		long currentTime = System.currentTimeMillis();
+		long waitTime = (time - currentTime);
+		Timer timer = new Timer((int)waitTime,this);
+		timeEventObject.put(timer,harpoon);
+		timer.start();
 	}
 	
 	/**
@@ -28,8 +35,8 @@ public class TimeEventsManager implements ActionListener {
 	 */
 	
 	public void actionPerformed(ActionEvent e){
-		Timer t = (Timer)e.getSource();
-		match.sunkHarpoon((Harpoon)timeEventObject.get(t));
+		Timer timer = (Timer)e.getSource();
+		match.sinkHarpoon((Harpoon)timeEventObject.get(timer));
 	}
 	
 }

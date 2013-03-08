@@ -19,6 +19,7 @@ public class Match {
 	private final float minimalMove = 0.25f;
 	
 	private Map map;
+	private TimeEventsManager timeEventsManager;
 	private HarpoonManager harpoonManager;
 	private TypeGame type;
 	private Player[] players;
@@ -32,6 +33,7 @@ public class Match {
 		this.map = new Map(11,11,"mapaPrueba.xml");
 		this.harpoonManager = new HarpoonManager(numPlayers);
 		this.players = new Player[numPlayers];
+		this.timeEventsManager = new TimeEventsManager(this);
 		for (int i=0;i<numPlayers;i++){
 			players[i] = new Player(i);
 		}
@@ -230,9 +232,16 @@ public class Match {
 	}
 	
 	public void putHarpoonAt(int x, int y, int range, long time){
-		harpoonManager.addHarpoon(x, y, range, time);
+		Harpoon harpoon = new Harpoon(x,y,range);
+		harpoonManager.addHarpoon(harpoon);
+		timeEventsManager.addHarpoonEvent(harpoon,time);
 		map.putHarpoonAt(x,y);
-		map.paintAllFissures(harpoonManager.getActiveHarpoonList());
+		map.addAllFissures(harpoonManager.getActiveHarpoonList());
+	}
+	
+	public void sinkHarpoon(Harpoon harpoon) {
+		Vector3 position = harpoon.getPosition();
+		map.putSunkenHarpoonAt((int)position.x,(int)position.y);
 	}
 	
 	public void putSunkenHarpoonAt(int xHarpoonPosition, int yHarpoonPosition) {
@@ -372,9 +381,12 @@ public class Match {
 		this.harpoonManager = harpoonManager;
 	}
 
-	public void sunkHarpoon(Object object) {
-		// TODO Auto-generated method stub
-		
+	public TimeEventsManager getTimeEventsManager() {
+		return timeEventsManager;
+	}
+
+	public void setTimeEventsManager(TimeEventsManager timeEventsManager) {
+		this.timeEventsManager = timeEventsManager;
 	}
 
 }

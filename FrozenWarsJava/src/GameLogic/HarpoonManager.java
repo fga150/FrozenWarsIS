@@ -16,9 +16,8 @@ public class HarpoonManager{
 		this.sunkenHarpoonList = new ArrayList<Harpoon>(arrayListSize);
 	}
 	
-	public void addHarpoon(int x, int y, int range, long time) {
-		Harpoon h = new Harpoon(x,y,range);
-		activeHarpoonList.add(h);
+	public void addHarpoon(Harpoon harpoon) {
+		activeHarpoonList.add(harpoon);
 	}
 	
 	// Getters and Setters

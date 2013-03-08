@@ -150,7 +150,7 @@ public class Map {
 		boardGame[xHarpoonPosition][yHarpoonPosition]= TypeSquare.Harpoon;
 	}
 
-	public void paintAllFissures(ArrayList<Harpoon> harpoonList){
+	public void addAllFissures(ArrayList<Harpoon> harpoonList){
 		Iterator<Harpoon> it = harpoonList.iterator(); 
 		while (it.hasNext()){
 			Harpoon myHarpoon = (Harpoon) it.next();

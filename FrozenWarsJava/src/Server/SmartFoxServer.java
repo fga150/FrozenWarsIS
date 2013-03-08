@@ -101,10 +101,10 @@ public class SmartFoxServer implements IEventListener {
 	}
 
 	private String getServerIP() {
-		String ip = "";
+		String ip = "127.0.0.1";
 		try {
-			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
-			ip = address.getHostAddress();
+			/*InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			ip = address.getHostAddress();*/
 		} catch (Exception e){
 
 		}
@@ -141,7 +141,7 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void getHarpoon(ISFSObject params){
-		long time=params.getLong("time")/1000;
+		long time=params.getLong("time");
 		int x=params.getInt("x");
 		int y=params.getInt("y");
 		int range=params.getInt("range");

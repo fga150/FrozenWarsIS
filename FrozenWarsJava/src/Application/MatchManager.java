@@ -44,7 +44,7 @@ public class MatchManager {
 	public void putHarpoon(){
 		if (match.canPutHarpoon(myPlayerId)){
 			Vector3 coord=match.getCoord();
-			sfsClient.putHarpoon((int)coord.x, (int)coord.y,match.getMyPlayerRange(myPlayerId));
+			sfsClient.putHarpoon((int)coord.x,(int)coord.y,match.getMyPlayerRange(myPlayerId));
 		}
 	}
 	
