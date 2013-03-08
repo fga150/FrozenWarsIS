@@ -83,7 +83,10 @@ public class SmartFoxServer implements IEventListener {
 					acceptedWaiting(response);
 				else if (cmd.equals("RefusedWaiting"))
 					refusedWaiting(response);
-					
+				else if (cmd.equals("ModExternalPlayers"))
+					modExternalPlayersResponse(response);
+				else if (cmd.equals("ModeChange"))
+					modeChangeResponse(response);					
 				}
 
 	
@@ -311,6 +314,35 @@ public class SmartFoxServer implements IEventListener {
 		params.putUtfString("Inviter", inviter);
 		ExtensionRequest request = new ExtensionRequest("Refuse",params);
 		sfsClient.send(request);
+		
+	}
+	
+	public void modeChangeRequest(int mode){
+		
+		ISFSObject params = new SFSObject();
+		params.putInt("mode", mode);
+		ExtensionRequest request = new ExtensionRequest("ModeChange",params);
+		sfsClient.send(request);
+		
+	}
+	public void modeChangeResponse(ISFSObject response){
+		
+		int mode = response.getInt("mode");
+		MultiplayerScreen.getInstance().setGameMode(mode);
+		
+	}
+	public void modExternalPlayersRequest(boolean external){
+		
+		ISFSObject params = new SFSObject();
+		params.putBool("externalPlayers", external);
+		ExtensionRequest request = new ExtensionRequest("ModExternalPlayers",params);
+		sfsClient.send(request);
+		
+	}
+	public void modExternalPlayersResponse(ISFSObject response){
+		
+		Boolean external = response.getBool("externalPlayers");
+		MultiplayerScreen.getInstance().setExternalPlayers(external);
 		
 	}
 	
