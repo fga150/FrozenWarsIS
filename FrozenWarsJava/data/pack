@@ -367,135 +367,142 @@ barrelWithFissure
   orig: 36, 36
   offset: 0, 0
   index: -1
-Water4SideOpen
+sunkenObject
   rotate: false
   xy: 44, 2007
-  size: 32, 32
-  orig: 32, 32
+  size: 33, 33
+  orig: 33, 33
   offset: 0, 0
   index: -1
-Water3SideWestOpen
+Water4SideOpen
   rotate: false
   xy: 308, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-Water3SideSouthOpen
+Water3SideWestOpen
   rotate: false
   xy: 342, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-Water3SideNorthOpen
+Water3SideSouthOpen
   rotate: false
   xy: 376, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-Water3SideEastOpen
+Water3SideNorthOpen
   rotate: false
   xy: 410, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-vidasJugadorVerde
+Water3SideEastOpen
   rotate: false
   xy: 444, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-vidasJugadorRojo
+vidasJugadorVerde
   rotate: false
   xy: 478, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-vidasJugadorAzul
+vidasJugadorRojo
   rotate: false
   xy: 512, 2008
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-vidasJugadorAmarillo
+vidasJugadorAzul
   rotate: false
   xy: 550, 1965
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-fissureSideY
+vidasJugadorAmarillo
   rotate: false
   xy: 550, 1999
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-fissureSideX
+fissureSideY
   rotate: false
   xy: 584, 1965
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-fissureCrossing
+fissureSideX
   rotate: false
   xy: 584, 1999
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-fissureCenter
+fissureCrossing
   rotate: false
   xy: 877, 1737
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-barril
+fissureCenter
   rotate: false
   xy: 635, 1780
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-ArponParaBomba
+barril
   rotate: false
   xy: 635, 1814
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-Water2SideOpenCornerSE
+ArponParaBomba
   rotate: false
   xy: 635, 1848
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Water2SideOpenCornerSE
+  rotate: false
+  xy: 635, 1882
   size: 32, 31
   orig: 32, 31
   offset: 0, 0
   index: -1
 Water2SideOpenCornerNW
   rotate: false
-  xy: 635, 1881
+  xy: 635, 1915
   size: 32, 31
   orig: 32, 31
   offset: 0, 0
   index: -1
 Water2SideOpenCornerWS
   rotate: false
-  xy: 635, 1914
+  xy: 635, 1948
   size: 31, 32
   orig: 31, 32
   offset: 0, 0
   index: -1
 Water2SideOpenCornerEN
   rotate: false
-  xy: 635, 1948
+  xy: 635, 1982
   size: 31, 32
   orig: 31, 32
   offset: 0, 0
@@ -509,7 +516,7 @@ Water2SideOpenBridgeX
   index: -1
 Water2SideOpenBridgeY
   rotate: false
-  xy: 635, 1982
+  xy: 669, 1780
   size: 30, 32
   orig: 30, 32
   offset: 0, 0
@@ -530,14 +537,14 @@ Water1SideOpenNorth
   index: -1
 Water1SideOpenWest
   rotate: false
-  xy: 669, 1780
+  xy: 701, 1780
   size: 30, 31
   orig: 30, 31
   offset: 0, 0
   index: -1
 Water1SideOpenEast
   rotate: false
-  xy: 701, 1780
+  xy: 733, 1780
   size: 30, 31
   orig: 30, 31
   offset: 0, 0

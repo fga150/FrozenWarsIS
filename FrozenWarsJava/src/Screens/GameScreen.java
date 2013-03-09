@@ -5,6 +5,7 @@ import Application.MatchManager.Direction;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.WaterTypes;
+import GameLogic.Map.SunkenTypes;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -105,6 +106,7 @@ public class GameScreen implements Screen{
 				TypeSquare typeBasicMatrix = manager.getBasicMatrixSquare(i,j);
 				FissuresTypes typeFissureMatrix = manager.getFissureMatrixSquare(i,j);
 				WaterTypes typeWaterMatrix = manager.getWaterMatrixSquare(i,j);
+				SunkenTypes typeSunkenMatrix = manager.getSunkenMatrixSquare(i,j);
 				texture = Assets.getBox(); 
 				batcher.draw(texture,i+8,j+1,1,1);
 				//First we draw fissures matrix
@@ -140,6 +142,10 @@ public class GameScreen implements Screen{
 					else if (typeWaterMatrix.equals(WaterTypes.water3SOpW)) texture  = Assets.getWater3SideWOpen();
 					else if (typeWaterMatrix.equals(WaterTypes.water4SOp)) texture  = Assets.getWater4SideOpen();
 					batcher.draw(texture,i+8,j+1,1,1);		
+				}
+				if(!typeSunkenMatrix.equals(SunkenTypes.empty)){
+					 texture  = Assets.getSunkenObject();
+					 batcher.draw(texture,i+8,j+1,1,1);		
 				}
 			}
 		}

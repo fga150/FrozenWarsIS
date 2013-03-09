@@ -49,6 +49,27 @@ public class Player {
 		this.specialMove=false;
 	}
 
+	
+	public Vector3 getInitialPosition(int myPlayerId) {
+		if (myPlayerId == 0){
+			position = new Vector3(0,0,0);
+			this.lookAt = Direction.right;	
+		}
+		else if (myPlayerId == 1){
+			position = new Vector3(10,0,0);
+			this.lookAt = Direction.left;	
+		}
+		else if (myPlayerId == 2){
+			position = new Vector3(0,10,0);
+			this.lookAt = Direction.right;	
+		}
+		else if (myPlayerId == 3){
+			position = new Vector3(10,10,0);
+			this.lookAt = Direction.left;	
+		}
+		return position;
+	}
+	
 	public void setPositionX(float newPositionX) {
 		this.position.x=newPositionX;
 	}

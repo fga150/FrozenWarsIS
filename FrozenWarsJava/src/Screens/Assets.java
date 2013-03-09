@@ -51,11 +51,13 @@ public class Assets {
 	    
 	    private static AtlasRegion barrelWithFissure;
 	    
+	    
 	    private static AtlasRegion fissureCenter;
 	    private static AtlasRegion fissureSideX;
 	    private static AtlasRegion fissureSideY;
 	    private static AtlasRegion fissureCrossing;
 	    
+	    private static AtlasRegion sunkenObject;
 	    private static AtlasRegion water1SideOpenE;
 	    private static AtlasRegion water1SideOpenW;
 	    private static AtlasRegion water1SideOpenN;
@@ -175,6 +177,8 @@ public class Assets {
 		    fissureSideX =  atlas.findRegion("fissureSideX");
 		    fissureSideY =  atlas.findRegion("fissureSideY");
 		    fissureCrossing = atlas.findRegion("fissureCrossing");
+		    //Sunken objects in water
+		    sunkenObject = atlas.findRegion("sunkenObject");
 		    //Water 1 Open Side 4 positions
 		    water1SideOpenE =  atlas.findRegion("Water1SideOpenEast");
 		    water1SideOpenW =  atlas.findRegion("Water1SideOpenWest");
@@ -457,6 +461,14 @@ public class Assets {
 
 		public static void setIgloo(AtlasRegion igloo) {
 			Assets.igloo = igloo;
+		}
+
+		public static AtlasRegion getSunkenObject() {
+			return sunkenObject;
+		}
+
+		public static void setSunkenObject(AtlasRegion sunkenObject) {
+			Assets.sunkenObject = sunkenObject;
 		}
 
 	

@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector3;
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Map.WaterTypes;
+import GameLogic.Map.SunkenTypes;
 import GameLogic.Match;
 import Screens.GameScreen;
 import Server.SmartFoxServer;
@@ -106,6 +107,11 @@ public class MatchManager {
 	public WaterTypes getWaterMatrixSquare(int i, int j) {
 		return match.getWaterMatrixSquare(i,j);
 	}
+	
+	public SunkenTypes getSunkenMatrixSquare(int i, int j) {
+		return match.getSunkenMatrixSquare(i,j);
+		
+	}
 
 	public Direction getPlayerDirection(int i) {
 		return match.getPlayerDirection(i);
@@ -118,6 +124,8 @@ public class MatchManager {
 	public String getMyNamePlayer() {
 			return sfsClient.getMyName();		
 	}
+
+
 
 
 	

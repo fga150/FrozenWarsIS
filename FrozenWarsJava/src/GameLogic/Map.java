@@ -9,6 +9,9 @@ import com.badlogic.gdx.files.FileHandle;
 
 public class Map {
 	
+	//Type of sunken Square in the sunkenBoard
+	public enum SunkenTypes{empty,sunkenObject}
+	
 	//Type of Fissure Square in the fissuresBoard
 	public enum FissuresTypes{empty,barrelWithFissure, fissureC, fissureSX, fissureSY, crossingFissures}
 	
@@ -36,6 +39,7 @@ public class Map {
 	private TypeSquare[][] boardGame;
 	private FissuresTypes[][] fissuresBoard;
 	private WaterTypes[][] waterBoard;
+	private SunkenTypes[][] sunkenBoard;
 	
 	//LoadFile
 	private String xmlMap;
@@ -47,7 +51,7 @@ public class Map {
 		this.boardGame = new TypeSquare[lenght][width];
 		this.fissuresBoard = new FissuresTypes[lenght][width];
 		this.waterBoard = new WaterTypes[lenght][width];
-		
+		this.sunkenBoard = new SunkenTypes[lenght][width];
 		//Initialize the 3 board with empty square.
 		//Only basic board has another type square unbreakeable square
 		for (int i=0;i<width;i++){
@@ -56,6 +60,7 @@ public class Map {
 				else boardGame[i][j] = TypeSquare.empty;
 				fissuresBoard[i][j] = FissuresTypes.empty;
 				waterBoard[i][j] = WaterTypes.empty;
+				sunkenBoard[i][j] = SunkenTypes.empty;
 			}	
 		}
 		//load atributes of a XML map
@@ -416,6 +421,11 @@ public class Map {
 //END OF METHODS PUT WATER
 
 
+	public void sunkenObject(int x, int y){
+		sunkenBoard[x][y]= SunkenTypes.sunkenObject;
+	}	
+	
+	
 // Getters and Setters
 	
 	public TypeSquare getBasicMatrixSquare(int x,int y) {
@@ -429,6 +439,12 @@ public class Map {
 	public WaterTypes getWaterMatrixSquare(int x,int y) {
 		return waterBoard[x][y];
 	}
+	
+
+	public SunkenTypes getSunkenMatrixSquare(int x, int y) {
+		return sunkenBoard[x][y];
+	}
+	
 
 	public int getMaxBootUpgrades() {
 		return maxBootUpgrades;
@@ -469,5 +485,7 @@ public class Map {
 	public void setMapName(String mapName) {
 		this.mapName = mapName;
 	}
+
+
 
 }

@@ -1,10 +1,9 @@
 package GameLogic;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.math.Vector3;
 
 import Application.MatchManager.Direction;
+import GameLogic.Map.SunkenTypes;
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Map.WaterTypes;
@@ -231,6 +230,20 @@ public class Match {
 		}
 	}
 	
+	public void isSunkenPenguin(int x, int y, int myPlayerId){
+		if(map.getWaterMatrixSquare(x, y)!=WaterTypes.empty){
+			map.sunkenObject(x, y);
+			if(players[myPlayerId].getLifes()>=1){
+				players[myPlayerId].setLifes(players[myPlayerId].getLifes()-1);
+				players[myPlayerId].setPosition(players[myPlayerId].getInitialPosition(myPlayerId));
+			}
+			if(players[myPlayerId].getLifes()==0){
+				/*TODO: Delete penguin image, Delete player*/
+			}
+		}
+	}
+	
+	
 	public void putHarpoonAt(int x, int y, int range, long time){
 		Harpoon harpoon = new Harpoon(x,y,range);
 		harpoonManager.addHarpoon(harpoon);
@@ -358,7 +371,11 @@ public class Match {
 	public WaterTypes getWaterMatrixSquare(int i, int j) {
 		return map.getWaterMatrixSquare(i,j);
 	}
-
+	
+	public SunkenTypes getSunkenMatrixSquare(int i, int j) {
+		return map.getSunkenMatrixSquare(i,j);
+	}
+	
 
 	public Direction getPlayerDirection(int i) {
 		return players[i].getLookAt();
@@ -389,5 +406,7 @@ public class Match {
 	public void setTimeEventsManager(TimeEventsManager timeEventsManager) {
 		this.timeEventsManager = timeEventsManager;
 	}
+
+	
 
 }
