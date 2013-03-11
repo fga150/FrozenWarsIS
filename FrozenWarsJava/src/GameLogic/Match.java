@@ -213,6 +213,10 @@ public class Match {
 			}
 		}else valid=true;
 		players[myPlayerId].setSpecialMove(false);
+		//Commented method is for test sunkObject image when penguin is sunk
+		// and dead player this method is called for check if there are a collision
+		// between player and water.
+		//isSunkenPenguin((int)players[myPlayerId].getPosition().x, (int)players[myPlayerId].getPosition().y, myPlayerId);
 		return valid;
 	}
 	/**
@@ -237,12 +241,8 @@ public class Match {
 				players[myPlayerId].setLifes(players[myPlayerId].getLifes()-1);
 				players[myPlayerId].setPosition(players[myPlayerId].getInitialPosition(myPlayerId));
 			}
-			if(players[myPlayerId].getLifes()==0){
-				/*TODO: Delete penguin image, Delete player*/
-			}
 		}
 	}
-	
 	
 	public void putHarpoonAt(int x, int y, int range, long time){
 		Harpoon harpoon = new Harpoon(x,y,range);
@@ -262,6 +262,7 @@ public class Match {
 	}
 	
 	public void freezeWater(Harpoon harpoon) {
+		map.emptyHarpoonPosInSunkenMatrix(harpoon);
 		harpoonManager.removeHarpoon(harpoon);
 		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
 	}

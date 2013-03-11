@@ -1,6 +1,5 @@
 package GameLogic;
 
-
 import com.badlogic.gdx.Gdx;
 
 import java.util.ArrayList;
@@ -43,7 +42,6 @@ public class Map {
 	
 	//LoadFile
 	private String xmlMap;
-	
 	
 	public Map(int lenght, int width, String mapPath) {
 		this.length=lenght;
@@ -420,6 +418,47 @@ public class Map {
 	}
 //END OF METHODS PUT WATER
 
+	
+//METHOD DELETE SUNKEN OBJECT
+	/**
+	 * This method delete sunkenObjects image in sunkenBoard
+	 * along harpoon range only if waterBoard isn't empty.
+	 * @param harpoon
+	 */
+		public void emptyHarpoonPosInSunkenMatrix(Harpoon harpoon) {
+		//Parameters declaration for simplify the code
+			//Harpoon Range
+			int range = harpoon.getRange();
+			//West Delimiter: 
+				//If the harpoon center - range is less than bound of board game
+				//the X initial position range in board will be 0
+			int xIni = (int)harpoon.getPosition().x-range;
+			if (xIni < 0) xIni = 0;
+			//North Delimiter: 
+				//If the harpoon center - range is less than bound of board game
+				//the Y initial position range in board will be 0
+			int yIni = (int)harpoon.getPosition().y-range;
+			if (yIni < 0) yIni = 0;
+			//East Delimiter: 
+				//If the harpoon center + range is great than bound of board game
+				//the X initial position range in board will be width
+			int xFin = (int)harpoon.getPosition().x+range;
+			if (xFin > width) xFin = width;
+			//South Delimiter: 
+				//If the harpoon center + range is great than bound of board game
+				//the Y initial position range in board will be length
+			int yFin = (int)harpoon.getPosition().y+range;
+			if (yFin > length) yFin = length;
+			
+			//Range harpoon spanning when I delete sunkenObject image of sunkenBoard
+			//only if there are water in waterBoard in the same position
+			for(int i=xIni; i<=xFin; i++)
+				for(int j=yIni; j<=yFin; j++)
+					if(waterBoard[i][j] != WaterTypes.empty && sunkenBoard[i][j] == SunkenTypes.sunkenObject)
+						sunkenBoard[i][j] = SunkenTypes.empty;
+		}
+	
+//END OF METHOD DELETE SUNKEN OBJECT
 
 	public void sunkenObject(int x, int y){
 		sunkenBoard[x][y]= SunkenTypes.sunkenObject;
@@ -445,7 +484,6 @@ public class Map {
 		return sunkenBoard[x][y];
 	}
 	
-
 	public int getMaxBootUpgrades() {
 		return maxBootUpgrades;
 	}
@@ -485,7 +523,4 @@ public class Map {
 	public void setMapName(String mapName) {
 		this.mapName = mapName;
 	}
-
-
-
 }
