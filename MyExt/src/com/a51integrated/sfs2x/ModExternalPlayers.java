@@ -24,9 +24,9 @@ public class ModExternalPlayers extends BaseClientRequestHandler {
 		
         ISFSObject rtn = new SFSObject();
         rtn.putBool("externalPlayers", externalPlayers);
-        Vector<Player> accplayer = gamesInCreation.get(player.getName()).getAcceptedPlayers();
+        Vector<String> accplayer = gamesInCreation.get(player.getName()).getAcceptedPlayers();
         for (int j=0; j<accplayer.size();j++){ //Sends the response to the joinned players.
-        	parentEx.send("ModExternalPlayers", rtn, users.get(accplayer.get(j).getName()));
+        	parentEx.send("ModExternalPlayers", rtn, users.get(accplayer.get(j)));
         }
 		
         

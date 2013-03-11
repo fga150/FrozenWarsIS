@@ -18,6 +18,7 @@ public class GetConnectedFriends extends BaseClientRequestHandler {
 	public void handleClientRequest(User player, ISFSObject params) {
 		
 		MyExt parentEx = (MyExt) getParentExtension();
+		HashMap<String,InvitationRoom> gamesInCreation = parentEx.getGamesInCreation();
 		ISFSObject rtn = new SFSObject();
 		ISFSArray connectedFriends = new SFSArray();
 		
@@ -28,12 +29,16 @@ public class GetConnectedFriends extends BaseClientRequestHandler {
 		@SuppressWarnings("rawtypes")
 		Iterator iter = set.iterator();
 
-		while (iter.hasNext()) { //Gets the keys of the hasmap. This keys are the user names
+		while (iter.hasNext()) { //Gets the keys of the hashmap. This keys are the user names
 		@SuppressWarnings("rawtypes")
 		Map.Entry entry = (Map.Entry) iter.next();
-		connectedFriends.addUtfString((String) entry.getKey());
+		if(gamesInCreation.containsKey(player.getName())){
+		if(!gamesInCreation.get(player.getName()).getAcceptedPlayers().contains(entry.getKey()) && !gamesInCreation.get(player.getName()).getWaitingPlayers().contains(entry.getKey()))
+			connectedFriends.addUtfString((String) entry.getKey());
+		}else 
+			if(!player.getName().equals(entry.getKey()))
+			connectedFriends.addUtfString((String) entry.getKey());
 		}
-		
 		rtn.putSFSArray("ConnectedFriends", connectedFriends);
 		parentEx.send("GetConnectedFriends", rtn, player); //Sends the object which contains the connected users
 		

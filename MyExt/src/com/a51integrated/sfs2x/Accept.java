@@ -24,23 +24,23 @@ public class Accept extends BaseClientRequestHandler {
 		parentEx.setGamesInCreation(gamesInCreation);
 
 		ISFSArray accepted = new SFSArray();
-		Vector<Player> acceptedPlayers = gamesInCreation.get(player2).getAcceptedPlayers();
+		Vector<String> acceptedPlayers = gamesInCreation.get(player2).getAcceptedPlayers();
 		for(int i=0; i<acceptedPlayers.size();i++){
-				accepted.addUtfString(acceptedPlayers.get(i).getName()); //Adds the player who accepted the invitation
+				accepted.addUtfString(acceptedPlayers.get(i)); //Adds the player who accepted the invitation
 		}
 		
 		ISFSArray waiting = new SFSArray();
-		Vector<Player> waitingPlayers = gamesInCreation.get(player2).getWaitingPlayers();
+		Vector<String> waitingPlayers = gamesInCreation.get(player2).getWaitingPlayers();
 		for(int i=0; i<waitingPlayers.size();i++){
-				waiting.addUtfString(waitingPlayers.get(i).getName()); //Adds the players who are waiting.
+				waiting.addUtfString(waitingPlayers.get(i)); //Adds the players who are waiting.
 		}
 		
         ISFSObject rtn = new SFSObject();
         rtn.putSFSArray("acceptedPlayers", accepted);
         rtn.putSFSArray("waitingPlayers", waiting);
-        Vector<Player> accplayer = gamesInCreation.get(player2).getAcceptedPlayers();
+        Vector<String> accplayer = gamesInCreation.get(player2).getAcceptedPlayers();
         for (int j=0; j<accplayer.size();j++){ //Sends the response to the joinned players.
-        	parentEx.send("AcceptedWaiting", rtn, users.get(accplayer.get(j).getName()));
+        	parentEx.send("AcceptedWaiting", rtn, users.get(accplayer.get(j)));
         }
 		
         

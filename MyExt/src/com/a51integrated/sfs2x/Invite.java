@@ -35,24 +35,24 @@ public class Invite extends BaseClientRequestHandler {
 			
 			ISFSArray waiting = new SFSArray();
 			
-			Vector<Player> waitingPlayers = gamesInCreation.get(player.getName()).getWaitingPlayers();
+			Vector<String> waitingPlayers = gamesInCreation.get(player.getName()).getWaitingPlayers();
 			for(int i=0; i<waitingPlayers.size();i++){
-					waiting.addUtfString(waitingPlayers.get(i).getName()); //Adds the players who are waiting.
+					waiting.addUtfString(waitingPlayers.get(i)); //Adds the players who are waiting.
 			}
 			
 			ISFSArray refused = new SFSArray();
-			Vector<Player> refusedPlayers = gamesInCreation.get(player.getName()).getRefusedPlayers();
+			Vector<String> refusedPlayers = gamesInCreation.get(player.getName()).getRefusedPlayers();
 			for(int i=0; i<refusedPlayers.size();i++){
-					refused.addUtfString(refusedPlayers.get(i).getName()); //Adds the player who accepted the invitation
+					refused.addUtfString(refusedPlayers.get(i)); //Adds the player who accepted the invitation
 			}
 			
 			
 			ISFSObject rtn2 = new SFSObject();
 			rtn2.putSFSArray("waitingPlayers", waiting);
 			rtn2.putSFSArray("refusedPlayers", refused);
-			  Vector<Player> accplayer = gamesInCreation.get(player.getName()).getAcceptedPlayers();
+			  Vector<String> accplayer = gamesInCreation.get(player.getName()).getAcceptedPlayers();
 		        for (int j=0; j<accplayer.size();j++){ //Sends the response to the joinned players.
-		        	parentEx.send("RefusedWaiting",rtn2 , users.get(accplayer.get(j).getName()));//Sends the waiting players to all the joinned ones.
+		        	parentEx.send("RefusedWaiting",rtn2 , users.get(accplayer.get(j)));//Sends the waiting players to all the joinned ones.
 		        }
 		}
 		else{

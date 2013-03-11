@@ -5,42 +5,33 @@ import java.util.Vector;
 public class InvitationRoom {
 	
 	private String leaderName;
-	private Vector<Player> acceptedPlayers;	
-	public Vector<Player> getAcceptedPlayers() {
-		return acceptedPlayers;
-	}
-
-	private Vector<Player> refusedPlayers;
-	private Vector<Player> waitingPlayers;
+	private Vector<String> acceptedPlayers;	
+	private Vector<String> refusedPlayers;
+	private Vector<String> waitingPlayers;
 	private int gameMode;
 	private boolean enableExternalPlayers;
 	private int numPlayers;
 	
 	InvitationRoom(String leaderName){
 		this.leaderName = leaderName;
-		acceptedPlayers = new Vector<Player>();
-		refusedPlayers = new Vector<Player>();
-		waitingPlayers = new Vector<Player>();
+		acceptedPlayers = new Vector<String>();
+		refusedPlayers = new Vector<String>();
+		waitingPlayers = new Vector<String>();
 		gameMode = 0;
 		enableExternalPlayers = false;
-		
-		Player p1= new Player(leaderName); //The player who create the game is accepted by default.
-		p1.setState("Accepted");
-		acceptedPlayers.add(p1);
+		acceptedPlayers.add(leaderName);
 		
 		numPlayers = 1;
 		
 	}
 	
 	public void putAccepted(String name){
-		Player player;
 		boolean found = false;
 		int i = 0;
 		while (!found && i<waitingPlayers.size()) //Searches the player on the vector of the invitation room.
 		{
-			if (waitingPlayers.get(i).getName().equals(name)){
-				player = waitingPlayers.get(i);
-				acceptedPlayers.add(player);
+			if (waitingPlayers.get(i).equals(name)){
+				acceptedPlayers.add(waitingPlayers.get(i));
 				waitingPlayers.remove(i);
 				found = true;
 			}
@@ -50,15 +41,14 @@ public class InvitationRoom {
 	}
 	
 	public void putRefused(String name){
-		Player player;
+	
 		boolean found = false;
 		int i = 0;
 		
 		while (!found && i<waitingPlayers.size()) //Searches the player on the vector of the invitation room.
 		{
-			if (waitingPlayers.get(i).getName().equals(name)){
-				player = waitingPlayers.get(i); 
-				refusedPlayers.add(player); //Adds the player to the refusedPlayers vector
+			if (waitingPlayers.get(i).equals(name)){ 
+				refusedPlayers.add(waitingPlayers.get(i)); //Adds the player to the refusedPlayers vector
 				waitingPlayers.remove(i); //Removes that player from the waitingPlayers vector
 				found = true;
 			}
@@ -68,9 +58,8 @@ public class InvitationRoom {
 		i=0;
 		while (!found && i<acceptedPlayers.size()) //Searches the player on the vector of the invitation room.
 		{
-			if (acceptedPlayers.get(i).getName().equals(name)){
-				player = acceptedPlayers.get(i); 
-				refusedPlayers.add(player); //Adds the player to the refusedPlayers vector
+			if (acceptedPlayers.get(i).equals(name)){
+				refusedPlayers.add(acceptedPlayers.get(i)); //Adds the player to the refusedPlayers vector
 				acceptedPlayers.remove(i); //Removes that player from the waitingPlayers vector
 				found = true;
 			}
@@ -80,20 +69,22 @@ public class InvitationRoom {
 	}
 	
 	public void putWaiting(String name){
-		Player player = new Player(name); //Adds a new user who needs to answer the invitation.
-		waitingPlayers.add(player);
+		//Adds a new user who needs to answer the invitation.
+		waitingPlayers.add(name);
 		boolean found = false;
 		int i=0;
 		
 		while (!found && i<refusedPlayers.size()) //Searches the player on the vector of the invitation room.
 		{
-			if (refusedPlayers.get(i).getName().equals(name)){
+			if (refusedPlayers.get(i).equals(name)){
 				refusedPlayers.remove(i);
 				found = true;
 			}
 			i++;
 		}
 	}
+	
+
 
 	public String getLeaderName() {
 		return leaderName;
@@ -127,23 +118,27 @@ public class InvitationRoom {
 		this.numPlayers = numPlayers;
 	}
 	
-	public Vector<Player> getRefusedPlayers() {
+	public Vector<String> getRefusedPlayers() {
 		return refusedPlayers;
 	}
 
-	public void setRefusedPlayers(Vector<Player> refusedPlayers) {
+	public void setRefusedPlayers(Vector<String> refusedPlayers) {
 		this.refusedPlayers = refusedPlayers;
 	}
 
-	public Vector<Player> getWaitingPlayers() {
+	public Vector<String> getWaitingPlayers() {
 		return waitingPlayers;
 	}
 
-	public void setWaitingPlayers(Vector<Player> waitingPlayers) {
+	public void setWaitingPlayers(Vector<String> waitingPlayers) {
 		this.waitingPlayers = waitingPlayers;
 	}
+	
+	public Vector<String> getAcceptedPlayers() {
+		return acceptedPlayers;
+	}
 
-	public void setAcceptedPlayers(Vector<Player> acceptedPlayers) {
+	public void setAcceptedPlayers(Vector<String> acceptedPlayers) {
 		this.acceptedPlayers = acceptedPlayers;
 	}
 	
