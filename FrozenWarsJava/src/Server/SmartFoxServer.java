@@ -307,6 +307,13 @@ public class SmartFoxServer implements IEventListener {
 		}
 	}
 	
+	public void removeOfQueue(int playersNumber){//Funcion invocada por el usuario que quiere salirse de cola.
+		  SFSObject params = new SFSObject();
+		  params.putInt("numJugadores", playersNumber);//playersNumber es el numero de amigos con los que metiste cola(incluido el que lanza).
+		  ExtensionRequest request2 = new ExtensionRequest("sacardecola",params);
+		  sfsClient.send(request2);
+	}
+	
 	public void refuseRequest(String inviter) {
 		ISFSObject params = new SFSObject();
 		params.putUtfString("Inviter", inviter);
