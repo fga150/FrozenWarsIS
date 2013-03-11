@@ -407,6 +407,10 @@ public class Match {
 		this.timeEventsManager = timeEventsManager;
 	}
 
+	public boolean isThePlayerDead(int numPlayer) {
+		return players[numPlayer].isThePlayerDead();
+	}
+
 	
 
 }

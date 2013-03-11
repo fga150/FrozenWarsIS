@@ -58,6 +58,11 @@ public class MatchManager {
 		match.putHarpoonAt(x,y,range,time);
 	}
 	
+	public boolean isThePlayerDead(int numPlayer) {
+		return match.isThePlayerDead(numPlayer);
+	}
+
+	
 	// Getters and Setters
 	
 	public SmartFoxServer getSfsClient() {
@@ -125,6 +130,7 @@ public class MatchManager {
 			return sfsClient.getMyName();		
 	}
 
+	
 
 
 

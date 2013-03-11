@@ -139,4 +139,8 @@ public class Player {
 	public void setSpecialMoveDir(Direction specialMoveDir) {
 		this.specialMoveDir = specialMoveDir;
 	}
+
+	public boolean isThePlayerDead() {
+		return(this.lifes == 0);
+	}
 }

@@ -155,8 +155,10 @@ public class GameScreen implements Screen{
 		batcher.draw(Assets.getButtonHarpoon(),19,0,2,4);
 		
 		for (int i=0;i<4;i++){
+			if(!manager.isThePlayerDead(i)){
 			position = penguinAnimations[i].getPosition();
 			batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
+			}
 		}
 		
 		paintPlayerStatus();
@@ -164,6 +166,7 @@ public class GameScreen implements Screen{
 		
 		batcher.end();
 		guiCam.update();
+		if(!manager.isThePlayerDead(numPlayer)){
 		if ((Gdx.input.isKeyPressed(Keys.W))||(Gdx.input.isKeyPressed(Keys.UP))){manager.movePlayer(Direction.up);}
 		if ((Gdx.input.isKeyPressed(Keys.S))||(Gdx.input.isKeyPressed(Keys.DOWN))){manager.movePlayer(Direction.down);}
 		if ((Gdx.input.isKeyPressed(Keys.A))||(Gdx.input.isKeyPressed(Keys.LEFT))){manager.movePlayer(Direction.left);}
@@ -186,9 +189,10 @@ public class GameScreen implements Screen{
 		}
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) manager.putHarpoon();
 		
-		//This has to be jus touched else the code of put harpoon run 2 times
+		//This has to be just touched else the code of put harpoon run 2 times
 		if (Gdx.input.justTouched() &&(harpoonBounds.contains(touchPoint)||harpoonBounds.contains(touchPoint2))){
 				manager.putHarpoon();
+		}
 		}
 }
 	
@@ -197,14 +201,26 @@ public class GameScreen implements Screen{
 		float textWidth = font.getBounds(name).width;
 		float textHeight = font.getBounds(name).height;
 		font.draw(batcher,name,1-textWidth/2,14-textHeight/2);*/
-		if (numPlayer==0){
-			batcher.draw(Assets.getLifeIconRed(),6,12,0.75f,0.75f);
-		}else if(numPlayer==1){
-			batcher.draw(Assets.getLifeIconGreen(),6,12,0.75f,0.75f);
-		}else if(numPlayer==2){
-			batcher.draw(Assets.getLifeIconYellow(),6,12,0.75f,0.75f);
-		}else if(numPlayer==3){
-			batcher.draw(Assets.getLifeIconBlue(),6,12,0.75f,0.75f);
+		if(!manager.isThePlayerDead(numPlayer)){
+			if (numPlayer==0){
+				batcher.draw(Assets.getLifeIconRed(),6,12,0.75f,0.75f);
+			}else if(numPlayer==1){
+				batcher.draw(Assets.getLifeIconGreen(),6,12,0.75f,0.75f);
+			}else if(numPlayer==2){
+				batcher.draw(Assets.getLifeIconYellow(),6,12,0.75f,0.75f);
+			}else if(numPlayer==3){
+				batcher.draw(Assets.getLifeIconBlue(),6,12,0.75f,0.75f);
+			}
+		}else{
+			if (numPlayer==0){
+				batcher.draw(Assets.getDeadIconRed(),6,12,0.75f,0.75f);
+			}else if(numPlayer==1){
+				batcher.draw(Assets.getDeadIconGreen(),6,12,0.75f,0.75f);
+			}else if(numPlayer==2){
+				batcher.draw(Assets.getDeadIconYellow(),6,12,0.75f,0.75f);
+			}else if(numPlayer==3){
+				batcher.draw(Assets.getDeadIconBlue(),6,12,0.75f,0.75f);
+			}
 		}
 }
 			
@@ -253,16 +269,13 @@ public class GameScreen implements Screen{
 	}
 
 	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
+	public void resume() {		
 	}
 
 	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
+	public void show() {		
 	}
+	
 	public PenguinAnimation[] getPreguinAnimations() {
 		return penguinAnimations;
 	}

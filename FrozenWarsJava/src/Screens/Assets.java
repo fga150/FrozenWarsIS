@@ -83,6 +83,12 @@ public class Assets {
 	    private static AtlasRegion lifeIconRed;
 	    private static AtlasRegion lifeIconGreen;
 	    private static AtlasRegion lifeIconBlue;
+	    
+	    private static AtlasRegion deadIconYellow;
+	    private static AtlasRegion deadIconRed;
+	    private static AtlasRegion deadIconGreen;
+	    private static AtlasRegion deadIconBlue;
+	    
 	    private static AtlasRegion directionPanel;
 	    private static AtlasRegion barrel;
 		private static AtlasRegion buttonHarpoon;
@@ -201,12 +207,19 @@ public class Assets {
 		    water4SideOpen =  atlas.findRegion("Water4SideOpen");
 		    //
 		    
-		    setIgloo(atlas.findRegion("iglus"));
+		    igloo = atlas.findRegion("iglus");
 			mapBackground = atlas.findRegion("fondoJuego");
+			
 			lifeIconYellow = atlas.findRegion("vidasJugadorAmarillo");
 			lifeIconRed = atlas.findRegion("vidasJugadorRojo");
 			lifeIconBlue = atlas.findRegion("vidasJugadorAzul");
 			lifeIconGreen = atlas.findRegion("vidasJugadorVerde");
+			
+			deadIconYellow = atlas.findRegion("deadIconYellow");
+			deadIconRed = atlas.findRegion("deadIconRed");
+			deadIconBlue = atlas.findRegion("deadIconBlue");
+			deadIconGreen = atlas.findRegion("deadIconGreen");
+			
 			directionPanel=(atlas.findRegion("MandoDirecciones"));
 			buttonHarpoon = atlas.findRegion("BotonLanza"); 
 			barrel = atlas.findRegion("barril");
@@ -470,6 +483,23 @@ public class Assets {
 		public static void setSunkenObject(AtlasRegion sunkenObject) {
 			Assets.sunkenObject = sunkenObject;
 		}
+
+		public static AtlasRegion getDeadIconRed() {
+			return deadIconRed;
+		}
+		
+		public static AtlasRegion getDeadIconBlue() {
+			return deadIconBlue;
+		}
+		
+		public static AtlasRegion getDeadIconYellow() {
+			return deadIconYellow;
+		}
+		
+		public static AtlasRegion getDeadIconGreen() {
+			return deadIconGreen;
+		}
+		
 
 	
 }
