@@ -73,7 +73,8 @@ public class ConfirmScreen implements Screen{
       //detectamos si se ha tocado la pantalla
       if (Gdx.input.justTouched()){
       		guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-      		
+      		System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
+
       		//compruebo si he tocado yes 
       		if (yesClick.contains(touchPoint)){
       			if (screenMode.equals("Exit")) this.dispose();
@@ -81,9 +82,11 @@ public class ConfirmScreen implements Screen{
       				SmartFoxServer.getInstance().acceptRequest(user);
       				MultiplayerScreen.getInstance().setGameAdmin(user);
       				game.setScreen(MultiplayerScreen.getInstance());
+      			} else if (screenMode.equals("FullTeam") || screenMode.equals("QueueExit")){
+      				game.setScreen(MultiplayerScreen.getInstance());
       			}
       		} else if(noClick.contains(touchPoint)){ //compruebo si he tocado no
-      			if (screenMode.equals("Exit")) game.setScreen(ancestor);
+      			if (screenMode.equals("Exit") || screenMode.equals("FullTeam") || screenMode.equals("QueueExit")) game.setScreen(ancestor);
       			else if (screenMode.equals("InviteGame")) {
       				SmartFoxServer.getInstance().refuseRequest(user);
       				game.setScreen(ancestor);
@@ -110,10 +113,16 @@ public class ConfirmScreen implements Screen{
             batcher.begin();    
             batcher.draw(Assets.window, 330, 300);
             if (screenMode.equals("Exit")) batcher.draw(Assets.exitText, 330, 300);
-            if (screenMode.equals("InviteGame")) {
+            else if (screenMode.equals("InviteGame")) {
             	String message = user.concat(" has invited you to join his game.");
             	font.drawWrapped(batcher, message, 350, 525, 330);
             	font.draw(batcher, "Do you want to join him?", 350, 450);
+            } else if (screenMode.equals("FullTeam")){
+            	String message = "You can't join this game because the team is full. Do you want to create your own game?";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
+            } else if (screenMode.equals("QueueExit")){
+            	String message = "Someone in your team left so you all have left the queue. Do you want to create a game?";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
             }
             batcher.end();	
 	}

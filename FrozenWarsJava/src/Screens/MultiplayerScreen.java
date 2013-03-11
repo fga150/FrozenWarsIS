@@ -90,27 +90,98 @@ public class MultiplayerScreen implements Screen{
     public void setAcceptedPlayers(Vector<String> acceptedPlayers) {
 		this.acceptedPlayers = acceptedPlayers;
 		drawPlayers = new Vector<InvitedInfo>();
-		for (int i = 0; i < acceptedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(acceptedPlayers.elementAt(i), "Accepted"));
-		for (int i = 0; i < waitingPlayers.size(); i++) drawPlayers.add(new InvitedInfo(waitingPlayers.elementAt(i), "Waiting"));		
-		for (int i = 0; i < refusedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(refusedPlayers.elementAt(i), "Cancelled"));
+		for (int i = 0; i < acceptedPlayers.size(); i++) {
+			String name = acceptedPlayers.elementAt(i);
+			if (font.getBounds(name).width > 195){
+				int j = 5;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				name = name.substring(0, j)+"...";
+			}
+			drawPlayers.add(new InvitedInfo(name, "Accepted"));
+		}
+		for (int i = 0; i < waitingPlayers.size(); i++) {
+			String name = waitingPlayers.elementAt(i);
+			if (font.getBounds(name).width > 195){
+				int j = 5;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				name = name.substring(0, j)+"...";
+			}
+			drawPlayers.add(new InvitedInfo(name, "Waiting"));		
+		}
+		for (int i = 0; i < refusedPlayers.size(); i++) {
+			String name = refusedPlayers.elementAt(i);
+			if (font.getBounds(name).width > 195){
+				int j = 5;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				name = name.substring(0, j)+"...";
+			}
+			drawPlayers.add(new InvitedInfo(name, "Cancelled"));
+		}
 		
 	}
     
     public void setRefusedPlayers(Vector<String> refusedPlayers) {
 		this.refusedPlayers = refusedPlayers;
 		drawPlayers = new Vector<InvitedInfo>();
-		for (int i = 0; i < acceptedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(acceptedPlayers.elementAt(i), "Accepted"));
-		for (int i = 0; i < waitingPlayers.size(); i++) drawPlayers.add(new InvitedInfo(waitingPlayers.elementAt(i), "Waiting"));		
-		for (int i = 0; i < refusedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(refusedPlayers.elementAt(i), "Cancelled"));
-		
+		for (int i = 0; i < acceptedPlayers.size(); i++) {
+			String name = acceptedPlayers.elementAt(i);
+			if (font.getBounds(name).width > 195){
+				int j = 5;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				name = name.substring(0, j)+"...";
+			}
+			drawPlayers.add(new InvitedInfo(name, "Accepted"));
+		}
+		for (int i = 0; i < waitingPlayers.size(); i++) {
+			String name = waitingPlayers.elementAt(i);
+			if (font.getBounds(name).width > 195){
+				int j = 5;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				name = name.substring(0, j)+"...";
+			}
+			drawPlayers.add(new InvitedInfo(name, "Waiting"));		
+		}
+		for (int i = 0; i < refusedPlayers.size(); i++) {
+			String name = refusedPlayers.elementAt(i);
+			if (font.getBounds(name).width > 195){
+				int j = 5;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				name = name.substring(0, j)+"...";
+			}
+			drawPlayers.add(new InvitedInfo(name, "Cancelled"));
+		}
 	}
     
     public void setWaitingPlayers(Vector<String> waitingPlayers) {
 		this.waitingPlayers = waitingPlayers;
 		drawPlayers = new Vector<InvitedInfo>();
-		for (int i = 0; i < acceptedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(acceptedPlayers.elementAt(i), "Accepted"));
-		for (int i = 0; i < waitingPlayers.size(); i++) drawPlayers.add(new InvitedInfo(waitingPlayers.elementAt(i), "Waiting"));		
-		for (int i = 0; i < refusedPlayers.size(); i++) drawPlayers.add(new InvitedInfo(refusedPlayers.elementAt(i), "Cancelled"));
+		for (int i = 0; i < acceptedPlayers.size(); i++) {
+			String name = acceptedPlayers.elementAt(i);
+			if (font.getBounds(name).width > 195){
+				int j = 5;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				name = name.substring(0, j)+"...";
+			}
+			drawPlayers.add(new InvitedInfo(name, "Accepted"));
+		}
+		for (int i = 0; i < waitingPlayers.size(); i++) {
+			String name = waitingPlayers.elementAt(i);
+			if (font.getBounds(name).width > 195){
+				int j = 5;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				name = name.substring(0, j)+"...";
+			}
+			drawPlayers.add(new InvitedInfo(name, "Waiting"));		
+		}
+		for (int i = 0; i < refusedPlayers.size(); i++) {
+			String name = refusedPlayers.elementAt(i);
+			if (font.getBounds(name).width > 195){
+				int j = 5;
+				while (font.getBounds(name.substring(0, j)).width < 168) j++;
+				name = name.substring(0, j)+"...";
+			}
+			drawPlayers.add(new InvitedInfo(name, "Cancelled"));
+		}
 	}
     
     public void setExternalPlayers(boolean externalPlayers) {
@@ -128,7 +199,15 @@ public class MultiplayerScreen implements Screen{
 	public void setMyName(String myName) {
 		this.myName = myName;
 		acceptedPlayers.add(myName);
-		drawPlayers.add(new InvitedInfo(myName, "Accepted"));
+		
+		String name = myName;
+		if (font.getBounds(name).width > 195){
+			int j = 5;
+			while (font.getBounds(name.substring(0, j)).width < 168) j++;
+			name = name.substring(0, j)+"...";
+		}
+		drawPlayers.add(new InvitedInfo(name, "Accepted"));
+	
 		gameAdmin = myName;
 	}
 	
@@ -292,12 +371,7 @@ public class MultiplayerScreen implements Screen{
 		for (int i = 0; i < Math.min(drawPlayers.size(), 5); i++){
 			String name = drawPlayers.elementAt(i+invitedScroll).getUserName();
 			
-			if (font.getBounds(name).width > 195){
-				int j = 6;
-				while (font.getBounds(name.substring(0, j)).width < 168) j++;
-				font.draw(batcher, name.substring(0, j)+"...", 700,(402-45*i));
-			} else font.draw(batcher, name, 700,(402-45*i));
-			
+			font.draw(batcher, name, 700,(402-45*i));
 			if (drawPlayers.elementAt(i+invitedScroll).getStatus().equals("Accepted")) 
 				batcher.draw(Assets.statusTick, 650, (367-45*i));
 			else if (drawPlayers.elementAt(i+invitedScroll).getStatus().equals("Waiting")) 
