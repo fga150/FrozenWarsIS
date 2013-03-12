@@ -143,4 +143,23 @@ public class Player {
 	public boolean isThePlayerDead() {
 		return(this.lifes == 0);
 	}
+
+	public Vector3[] getPositions() {
+		Vector3[] positions = new Vector3[2];
+		Vector3 position1 = new Vector3((int)position.x,(int)position.y,0);
+		int position2X;
+		int position2Y;
+		if ((int)position.x-position.x==0) position2X = (int)position.x;
+		else position2X = ((int)position.x)+1;
+		if ((int)position.y-position.y==0) position2Y = (int)position.y;
+		else position2Y = ((int)position.y)+1;
+		Vector3 position2 = new Vector3(position2X,position2Y,0);
+		positions[0] = position1;
+		positions[1] = position2;
+		return positions;
+	}
+
+	public void removeLive() {
+		if (lifes>0) lifes--;		
+	}
 }

@@ -256,11 +256,48 @@ public class Match {
 		Vector3 position = harpoon.getPosition();
 		harpoonManager.sinkHarpoon(harpoon);
 		timeEventsManager.freezeWaterEvent(harpoon);
+		harpoonRangeDamage(harpoon);
 		map.putSunkenHarpoonAt((int)position.x,(int)position.y);
 		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
 		map.addAllFissures(harpoonManager.getActiveHarpoonList());
 	}
 	
+	private void harpoonRangeDamage(Harpoon harpoon) {
+		int range = harpoon.getRange();
+		boolean []isCought = new boolean[numPlayers];
+		for (int i=0;i<numPlayers;i++) isCought[i] = false;
+		for (int j=0;j<numPlayers;j++){
+			Vector3[] positions = players[j].getPositions();
+			for (int i=0;i<=range;i++){
+				if (isCought(i,harpoon,positions)){
+					isCought[j] = true;
+				}
+			}
+		}
+		for (int i=0;i<numPlayers;i++){
+			if (isCought[i]) players[i].removeLive();
+		}
+	}
+
+	private boolean isCought(int range, Harpoon harpoon, Vector3[] positions) {
+		int x = (int)harpoon.getPosition().x;
+		int y = (int)harpoon.getPosition().y;
+		boolean isCought = false;
+		// north
+		if (((positions[0].x==x) && (positions[0].y == y+range)) || 
+		     (positions[1].x==x) && (positions[1].y == y+range)) isCought = true;
+		// south
+		else if (((positions[0].x==x) && (positions[0].y == y-range)) || 
+			     (positions[1].x==x) && (positions[1].y == y-range)) isCought = true;
+		// west
+		else if (((positions[0].x==x-range) && (positions[0].y == y)) || 
+			     (positions[1].x==x-range) && (positions[1].y == y)) isCought = true;
+		// east
+		else if (((positions[0].x==x+range) && (positions[0].y == y)) || 
+			     (positions[1].x==x+range) && (positions[1].y == y)) isCought = true;
+		return isCought;
+	}
+
 	public void freezeWater(Harpoon harpoon) {
 		map.emptyHarpoonPosInSunkenMatrix(harpoon);
 		harpoonManager.removeHarpoon(harpoon);

@@ -31,7 +31,7 @@ public class SmartFoxServer implements IEventListener {
 		String ip = getServerIP();
 		sfsClient = new SmartFox(false);
 		while(!sfsClient.isConnected()){
-			sfsClient.connect(ip,9933);
+			sfsClient.connect("127.0.0.1",9933);
 		}
 		addEventListeners();
 	}

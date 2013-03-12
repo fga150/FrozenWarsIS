@@ -14,7 +14,7 @@ import javax.swing.Timer;
 
 public class TimeEventsManager implements ActionListener {
 	
-	private final int sunkenTime = 500;
+	private final int sunkenTime = 1000;
 	private enum TypeEvent{sinkHarpoon,freezeWater,timeMatch};
 	
 	private Match match;
