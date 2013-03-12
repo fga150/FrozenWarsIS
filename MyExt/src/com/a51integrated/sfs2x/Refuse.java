@@ -1,7 +1,6 @@
 package com.a51integrated.sfs2x;
 
 import java.util.HashMap;
-import java.util.Vector;
 
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSArray;
@@ -24,24 +23,18 @@ public class Refuse extends BaseClientRequestHandler {
 		parentEx.setGamesInCreation(gamesInCreation);
 
 		ISFSArray refused = new SFSArray();
-		Vector<String> refusedPlayers = gamesInCreation.get(player2).getRefusedPlayers();
-		for(int i=0; i<refusedPlayers.size();i++){
-				refused.addUtfString(refusedPlayers.get(i)); //Adds the player who refused the invitation
-		}
+			refused = gamesInCreation.get(player2).getRefusedPlayers();
 		
 		ISFSArray waiting = new SFSArray();
-		Vector<String> waitingPlayers = gamesInCreation.get(player2).getWaitingPlayers();
-		for(int i=0; i<waitingPlayers.size();i++){
-				waiting.addUtfString(waitingPlayers.get(i)); //Adds the players who are waiting.
-		}
+			waiting = gamesInCreation.get(player2).getWaitingPlayers();
 		
         ISFSObject rtn = new SFSObject();
         rtn.putSFSArray("refusedPlayers", refused);
         rtn.putSFSArray("waitingPlayers", waiting);
        
-        Vector<String> accplayer = gamesInCreation.get(player2).getAcceptedPlayers();
+        ISFSArray accplayer = gamesInCreation.get(player2).getAcceptedPlayers();
         for (int j=0; j<accplayer.size();j++){ //Sends the response to the joinned players.
-        	parentEx.send("RefusedWaiting", rtn, users.get(accplayer.get(j)));
+        	parentEx.send("RefusedWaiting", rtn, users.get(accplayer.getUtfString(j)));
         }
 		
         

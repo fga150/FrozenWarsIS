@@ -1,7 +1,6 @@
 package com.a51integrated.sfs2x;
 
 import java.util.HashMap;
-import java.util.Vector;
 
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSArray;
@@ -20,31 +19,50 @@ public class Accept extends BaseClientRequestHandler {
 		HashMap<String,User> users = parentEx.getUsers();
 		String player2 = params.getUtfString("Inviter"); //Gets the name of the player who invited you.
 		
+		if(gamesInCreation.get(player2).getNumPlayers() == 4){
+			ISFSObject rtn = new SFSObject();
+			rtn.putUtfString("Inviter", player2);
+			parentEx.send("GameFull", rtn, player);
+			
+			gamesInCreation.get(player2).putRefused(player.getName());
+			
+			ISFSArray refused = new SFSArray();
+			refused = gamesInCreation.get(player2).getRefusedPlayers();
+		
+		ISFSArray waiting = new SFSArray();
+			waiting = gamesInCreation.get(player2).getWaitingPlayers();
+		
+        ISFSObject rtn2 = new SFSObject();
+        rtn2.putSFSArray("refusedPlayers", refused);
+        rtn2.putSFSArray("waitingPlayers", waiting);
+       
+        ISFSArray accplayer = gamesInCreation.get(player2).getAcceptedPlayers();
+        for (int j=0; j<accplayer.size();j++){ //Sends the response to the joinned players.
+        	parentEx.send("RefusedWaiting", rtn2, users.get(accplayer.getUtfString(j)));
+        }
+			
+			
+		}
+		else{
 		gamesInCreation.get(player2).putAccepted(player.getName());
 		parentEx.setGamesInCreation(gamesInCreation);
 
 		ISFSArray accepted = new SFSArray();
-		Vector<String> acceptedPlayers = gamesInCreation.get(player2).getAcceptedPlayers();
-		for(int i=0; i<acceptedPlayers.size();i++){
-				accepted.addUtfString(acceptedPlayers.get(i)); //Adds the player who accepted the invitation
-		}
+		 accepted = gamesInCreation.get(player2).getAcceptedPlayers();
 		
 		ISFSArray waiting = new SFSArray();
-		Vector<String> waitingPlayers = gamesInCreation.get(player2).getWaitingPlayers();
-		for(int i=0; i<waitingPlayers.size();i++){
-				waiting.addUtfString(waitingPlayers.get(i)); //Adds the players who are waiting.
-		}
+		 waiting = gamesInCreation.get(player2).getWaitingPlayers();
 		
         ISFSObject rtn = new SFSObject();
         rtn.putSFSArray("acceptedPlayers", accepted);
         rtn.putSFSArray("waitingPlayers", waiting);
-        Vector<String> accplayer = gamesInCreation.get(player2).getAcceptedPlayers();
+        ISFSArray accplayer = gamesInCreation.get(player2).getAcceptedPlayers();
         for (int j=0; j<accplayer.size();j++){ //Sends the response to the joinned players.
-        	parentEx.send("AcceptedWaiting", rtn, users.get(accplayer.get(j)));
+        	parentEx.send("AcceptedWaiting", rtn, users.get(accplayer.getUtfString(j)));
         }
 		
         
+		}
 	}
-
 
 }

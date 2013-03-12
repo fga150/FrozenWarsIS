@@ -1,25 +1,27 @@
 package com.a51integrated.sfs2x;
 
-import java.util.Vector;
+
+import com.smartfoxserver.v2.entities.data.ISFSArray;
+import com.smartfoxserver.v2.entities.data.SFSArray;
 
 public class InvitationRoom {
 	
 	private String leaderName;
-	private Vector<String> acceptedPlayers;	
-	private Vector<String> refusedPlayers;
-	private Vector<String> waitingPlayers;
+	private ISFSArray acceptedPlayers;	
+	private ISFSArray refusedPlayers;
+	private ISFSArray waitingPlayers;
 	private int gameMode;
 	private boolean enableExternalPlayers;
 	private int numPlayers;
 	
 	InvitationRoom(String leaderName){
 		this.leaderName = leaderName;
-		acceptedPlayers = new Vector<String>();
-		refusedPlayers = new Vector<String>();
-		waitingPlayers = new Vector<String>();
+		acceptedPlayers = new SFSArray();
+		refusedPlayers = new SFSArray();
+		waitingPlayers = new SFSArray();
 		gameMode = 0;
 		enableExternalPlayers = false;
-		acceptedPlayers.add(leaderName);
+		acceptedPlayers.addUtfString(leaderName);
 		
 		numPlayers = 1;
 		
@@ -30,10 +32,11 @@ public class InvitationRoom {
 		int i = 0;
 		while (!found && i<waitingPlayers.size()) //Searches the player on the vector of the invitation room.
 		{
-			if (waitingPlayers.get(i).equals(name)){
-				acceptedPlayers.add(waitingPlayers.get(i));
-				waitingPlayers.remove(i);
+			if (waitingPlayers.getUtfString(i).equals(name)){
+				acceptedPlayers.addUtfString(waitingPlayers.getUtfString(i));
+				waitingPlayers.removeElementAt(i);
 				found = true;
+				numPlayers++;
 			}
 			i++;
 		}
@@ -47,9 +50,9 @@ public class InvitationRoom {
 		
 		while (!found && i<waitingPlayers.size()) //Searches the player on the vector of the invitation room.
 		{
-			if (waitingPlayers.get(i).equals(name)){ 
-				refusedPlayers.add(waitingPlayers.get(i)); //Adds the player to the refusedPlayers vector
-				waitingPlayers.remove(i); //Removes that player from the waitingPlayers vector
+			if (waitingPlayers.getUtfString(i).equals(name)){ 
+				refusedPlayers.addUtfString(waitingPlayers.getUtfString(i)); //Adds the player to the refusedPlayers vector
+				waitingPlayers.removeElementAt(i); //Removes that player from the waitingPlayers vector
 				found = true;
 			}
 			i++;
@@ -58,10 +61,11 @@ public class InvitationRoom {
 		i=0;
 		while (!found && i<acceptedPlayers.size()) //Searches the player on the vector of the invitation room.
 		{
-			if (acceptedPlayers.get(i).equals(name)){
-				refusedPlayers.add(acceptedPlayers.get(i)); //Adds the player to the refusedPlayers vector
-				acceptedPlayers.remove(i); //Removes that player from the waitingPlayers vector
+			if (acceptedPlayers.getUtfString(i).equals(name)){
+				refusedPlayers.addUtfString(acceptedPlayers.getUtfString(i)); //Adds the player to the refusedPlayers vector
+				acceptedPlayers.removeElementAt(i); //Removes that player from the waitingPlayers vector
 				found = true;
+				numPlayers--;
 			}
 			i++;
 		}
@@ -70,14 +74,14 @@ public class InvitationRoom {
 	
 	public void putWaiting(String name){
 		//Adds a new user who needs to answer the invitation.
-		waitingPlayers.add(name);
+		waitingPlayers.addUtfString(name);
 		boolean found = false;
 		int i=0;
 		
 		while (!found && i<refusedPlayers.size()) //Searches the player on the vector of the invitation room.
 		{
-			if (refusedPlayers.get(i).equals(name)){
-				refusedPlayers.remove(i);
+			if (refusedPlayers.getUtfString(i).equals(name)){
+				refusedPlayers.removeElementAt(i);
 				found = true;
 			}
 			i++;
@@ -118,27 +122,27 @@ public class InvitationRoom {
 		this.numPlayers = numPlayers;
 	}
 	
-	public Vector<String> getRefusedPlayers() {
+	public ISFSArray getRefusedPlayers() {
 		return refusedPlayers;
 	}
 
-	public void setRefusedPlayers(Vector<String> refusedPlayers) {
+	public void setRefusedPlayers(ISFSArray refusedPlayers) {
 		this.refusedPlayers = refusedPlayers;
 	}
 
-	public Vector<String> getWaitingPlayers() {
+	public ISFSArray getWaitingPlayers() {
 		return waitingPlayers;
 	}
 
-	public void setWaitingPlayers(Vector<String> waitingPlayers) {
+	public void setWaitingPlayers(ISFSArray waitingPlayers) {
 		this.waitingPlayers = waitingPlayers;
 	}
 	
-	public Vector<String> getAcceptedPlayers() {
+	public ISFSArray getAcceptedPlayers() {
 		return acceptedPlayers;
 	}
 
-	public void setAcceptedPlayers(Vector<String> acceptedPlayers) {
+	public void setAcceptedPlayers(ISFSArray acceptedPlayers) {
 		this.acceptedPlayers = acceptedPlayers;
 	}
 	

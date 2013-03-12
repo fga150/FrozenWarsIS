@@ -46,6 +46,7 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("Refuse", Refuse.class); // handler fired when a user refuses an invitation.
 		this.addRequestHandler("ModeChange", ModeChange.class); // handler fired when a user changes the mode of his game.
 		this.addRequestHandler("ModExternalPlayers", ModExternalPlayers.class); // handler fired when a user changes the "external players" option.
+		this.addRequestHandler("ExitGroup", ExitGroup.class); // handler fired when a user want to exit the current team.
 		nRooms=0;
 	}
 
