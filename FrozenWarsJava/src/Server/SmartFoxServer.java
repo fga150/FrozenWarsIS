@@ -89,9 +89,11 @@ public class SmartFoxServer implements IEventListener {
 					modeChangeResponse(response);	
 				else if (cmd.equals("GameFull"))
 					gameFullResponse(response);	
+				else if (cmd.equals("LeaderLeft"))
+					leaderLeftResponse(response);	
 				}
 
-	
+
 			
 		});
 	}
@@ -361,6 +363,12 @@ public class SmartFoxServer implements IEventListener {
 		
 	}
 	
+	private void leaderLeftResponse(ISFSObject response) {
+		// TODO El lider ha abandonado, poner todo por defecto.
+		
+	}
+
+
 	
 	
 }
