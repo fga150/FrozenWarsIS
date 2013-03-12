@@ -83,6 +83,8 @@ public class SmartFoxServer implements IEventListener {
 					acceptedWaiting(response);
 				else if (cmd.equals("RefusedWaiting"))
 					refusedWaiting(response);
+				else if (cmd.equals("AcceptedRefused"))
+					acceptedRefused(response);
 				else if (cmd.equals("ModExternalPlayers"))
 					modExternalPlayersResponse(response);
 				else if (cmd.equals("ModeChange"))
@@ -92,6 +94,8 @@ public class SmartFoxServer implements IEventListener {
 				else if (cmd.equals("LeaderLeft"))
 					leaderLeftResponse(response);	
 				}
+
+
 
 
 			
@@ -251,6 +255,20 @@ public class SmartFoxServer implements IEventListener {
 		
 	}
 	
+	public void acceptedRefused(ISFSObject params) {
+		Vector<String> accepted = new Vector<String>();
+		for(int i= 0;i<params.getSFSArray("acceptedPlayers").size();i++)
+			accepted.add((String) params.getSFSArray("acceptedPlayers").getElementAt(i));//Builds the friends array.
+		
+		Vector<String> refused = new Vector<String>();
+		for(int i= 0;i<params.getSFSArray("refusedPlayers").size();i++)
+			refused.add((String) params.getSFSArray("refusedPlayers").getElementAt(i));//Builds the friends array.
+		
+		MultiplayerScreen.getInstance().setAcceptedPlayers(accepted);
+		MultiplayerScreen.getInstance().setRefusedPlayers(refused);
+		
+	}
+	
 	private void refusedWaiting(ISFSObject response) {
 		
 		Vector<String> refused = new Vector<String>();
@@ -361,6 +379,7 @@ public class SmartFoxServer implements IEventListener {
 		params.putUtfString("Inviter", name);
 		ExtensionRequest request = new ExtensionRequest("ExitGroup",params);
 		sfsClient.send(request);
+		 MultiplayerScreen.getInstance().setDefault();
 		
 	}
 	
