@@ -63,6 +63,7 @@ public class MultiplayerScreen implements Screen{
     private  BoundingBox inviteButtonClick;
     private  BoundingBox playButtonClick;
     private  BoundingBox backButtonClick;
+    private  BoundingBox exitTeamButtonClick;
     
     private  BoundingBox mapLeftArrowClick;
     private  BoundingBox mapRightArrowClick;
@@ -254,6 +255,7 @@ public class MultiplayerScreen implements Screen{
 	    inviteButtonClick = new BoundingBox(new Vector3(550,80,0), new Vector3(790,120,0));
 	    playButtonClick = new BoundingBox(new Vector3(200,80,0), new Vector3(440,120,0));
 	    backButtonClick = new BoundingBox(new Vector3(370,20,0), new Vector3(610,60,0));
+	    exitTeamButtonClick = new BoundingBox(new Vector3(130,150,0), new Vector3(430,330,0));
 	    
 	    mapLeftArrowClick = new BoundingBox(new Vector3(50,200,0), new Vector3(100,290,0));
 	    mapRightArrowClick = new BoundingBox(new Vector3(450,200,0), new Vector3(510,280,0));
@@ -262,6 +264,8 @@ public class MultiplayerScreen implements Screen{
 	    
 	    scrollDownPlayersClick = new BoundingBox(new Vector3(900,190,0), new Vector3(950,225,0));
 	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,400,0));
+	    
+	    
 	    
 	    externalPlayers = false;
 	    gameMode = 0;
@@ -317,6 +321,8 @@ public class MultiplayerScreen implements Screen{
       			if (invitedScroll != 0) invitedScroll--;     	
 			} else if (backButtonClick.contains(touchPoint)){
       			game.setScreen(InitialScreen.getInstance());
+      		} else if (exitTeamButtonClick.contains(touchPoint)){
+      			sfsClient.groupExitRequest(gameAdmin);
       		}
 		}
 		//crear solamente un batcher por pantalla y eliminarlo cuando no se use
@@ -389,6 +395,32 @@ public class MultiplayerScreen implements Screen{
 		else if (gameMode == 4) batcher.draw(Assets.battleRoyalMode, 100, 450);
 	}
 	
+	public void setDefault() {
+	    acceptedPlayers.clear();
+	    refusedPlayers.clear();
+	    waitingPlayers.clear();
+	    drawPlayers.clear();
+	    
+	    invitedScroll = 0;
+	    externalPlayers = false;
+	    gameMode = 0;
+	    
+		acceptedPlayers.add(myName);
+		
+		String name = myName;
+		if (font.getBounds(name).width > 195){
+			int j = 5;
+			while (font.getBounds(name.substring(0, j)).width < 168) j++;
+			name = name.substring(0, j)+"...";
+		}
+		drawPlayers.add(new InvitedInfo(name, "Accepted"));
+	
+		gameAdmin = myName;
+	}
+	
+
+	
+	
 	@Override
 	public void resize(int arg0, int arg1) {
 		
@@ -403,5 +435,4 @@ public class MultiplayerScreen implements Screen{
 	public void show() {
 		
 	}
-
 }

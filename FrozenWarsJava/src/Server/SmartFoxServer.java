@@ -350,8 +350,9 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void gameFullResponse(ISFSObject response) {
-		// TODO : Pon la ventanita... si necesitas el nombre del lider para poner en el mensaje " la partida de pepe esta llena dimelo
-		
+		Game game = LaunchFrozenWars.getGame();
+		ConfirmScreen confirmScreen = new ConfirmScreen(game.getScreen(), ScreenUtils.getFrameBufferTexture(), "FullTeam", "");
+		game.setScreen(confirmScreen);
 	}
 	
 	public void groupExitRequest(String name){
@@ -364,8 +365,7 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	private void leaderLeftResponse(ISFSObject response) {
-		// TODO El lider ha abandonado, poner todo por defecto.
-		
+		MultiplayerScreen.getInstance().setDefault();
 	}
 
 

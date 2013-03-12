@@ -83,6 +83,7 @@ public class ConfirmScreen implements Screen{
       				MultiplayerScreen.getInstance().setGameAdmin(user);
       				game.setScreen(MultiplayerScreen.getInstance());
       			} else if (screenMode.equals("FullTeam") || screenMode.equals("QueueExit")){
+      				MultiplayerScreen.getInstance().setDefault();
       				game.setScreen(MultiplayerScreen.getInstance());
       			}
       		} else if(noClick.contains(touchPoint)){ //compruebo si he tocado no
