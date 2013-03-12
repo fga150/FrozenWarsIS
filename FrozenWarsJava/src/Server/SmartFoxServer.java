@@ -86,7 +86,9 @@ public class SmartFoxServer implements IEventListener {
 				else if (cmd.equals("ModExternalPlayers"))
 					modExternalPlayersResponse(response);
 				else if (cmd.equals("ModeChange"))
-					modeChangeResponse(response);					
+					modeChangeResponse(response);	
+				else if (cmd.equals("GameFull"))
+					gameFullResponse(response);	
 				}
 
 	
@@ -212,7 +214,7 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void inviteResponse(ISFSObject response){
 		String inviter = response.getUtfString("Inviter");
-		// TODO : Aqui se recibe la invitacion, el nombre del lider esta en inviter.
+		//Aqui se recibe la invitacion, el nombre del lider esta en inviter.
 		Game game = LaunchFrozenWars.getGame();
 		ConfirmScreen confirmScreen = new ConfirmScreen(game.getScreen(), ScreenUtils.getFrameBufferTexture(), "InviteGame", inviter);
 		game.setScreen(confirmScreen);
@@ -343,6 +345,20 @@ public class SmartFoxServer implements IEventListener {
 	public void modExternalPlayersResponse(ISFSObject response){
 		Boolean external = response.getBool("externalPlayers");
 		MultiplayerScreen.getInstance().setExternalPlayers(external);
+	}
+	
+	public void gameFullResponse(ISFSObject response) {
+		// TODO : Pon la ventanita... si necesitas el nombre del lider para poner en el mensaje " la partida de pepe esta llena dimelo
+		
+	}
+	
+	public void groupExitRequest(String name){
+		//The name contains the leaders name.
+		ISFSObject params = new SFSObject();
+		params.putUtfString("Inviter", name);
+		ExtensionRequest request = new ExtensionRequest("ExitGroup",params);
+		sfsClient.send(request);
+		
 	}
 	
 	
