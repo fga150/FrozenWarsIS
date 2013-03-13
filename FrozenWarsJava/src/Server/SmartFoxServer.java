@@ -287,7 +287,7 @@ public class SmartFoxServer implements IEventListener {
 	}
 		
 	public void insertInQueuesResponse(ISFSObject response){ 
-		MultiplayerScreen.getInstance().creaPartida();
+		MultiplayerScreen.getInstance().setEmpiezaPartida(true);
 	} 
 
 	public void insertInQueuesRequest(Vector<String> names, boolean externalPlayers){

@@ -77,7 +77,7 @@ public class MultiplayerScreen implements Screen{
     private boolean externalPlayers;
 	private int gameMode;
 	private String myName = "";
-	
+	private boolean empiezaPartida;
 
 	private String gameAdmin;
 	private int invitedScroll;
@@ -197,6 +197,10 @@ public class MultiplayerScreen implements Screen{
 		return myName.equals(gameAdmin);
 	}
 	
+	public void setEmpiezaPartida(boolean b) {
+		empiezaPartida = b;
+	}
+	
 	public void setMyName(String myName) {
 		this.myName = myName;
 		acceptedPlayers.add(myName);
@@ -266,7 +270,7 @@ public class MultiplayerScreen implements Screen{
 	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,400,0));
 	    
 	    
-	    
+	    empiezaPartida = false;
 	    externalPlayers = false;
 	    gameMode = 0;
 	}
@@ -329,6 +333,8 @@ public class MultiplayerScreen implements Screen{
       			sfsClient.groupExitRequest(gameAdmin);
       		}
 		}
+		
+		if (empiezaPartida) creaPartida();
 		//crear solamente un batcher por pantalla y eliminarlo cuando no se use
 	
       		GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0
@@ -439,4 +445,5 @@ public class MultiplayerScreen implements Screen{
 	public void show() {
 		
 	}
+
 }
