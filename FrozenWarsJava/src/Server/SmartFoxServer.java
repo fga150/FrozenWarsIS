@@ -93,6 +93,8 @@ public class SmartFoxServer implements IEventListener {
 					gameFullResponse(response);	
 				else if (cmd.equals("LeaderLeft"))
 					leaderLeftResponse(response);	
+				else if (cmd.equals("meter1"))
+					insertInQueuesResponse(response);
 				}
 
 
@@ -284,10 +286,12 @@ public class SmartFoxServer implements IEventListener {
 		
 	}
 		
-	 
+	public void insertInQueuesResponse(ISFSObject response){ 
+		MultiplayerScreen.getInstance().creaPartida();
+	} 
 
-	public void InsertInQueues(Vector<String> names, boolean externalPlayers){
-		if(names.size()==1 && externalPlayers==true){		  //El que lanza la partida debe estar en la posicion 0 del vector.
+	public void insertInQueuesRequest(Vector<String> names, boolean externalPlayers){
+		if(names.size()==1){		  //El que lanza la partida debe estar en la posicion 0 del vector.
 			  ExtensionRequest request2 = new ExtensionRequest("meter1",new SFSObject());
 			  sfsClient.send(request2);
 		}

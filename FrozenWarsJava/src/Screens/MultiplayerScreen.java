@@ -287,6 +287,15 @@ public class MultiplayerScreen implements Screen{
 	public void pause() {
 	}
 
+	public void creaPartida(){
+		System.out.println("Entrando a partida");
+		MatchManager manager = new MatchManager(sfsClient);
+		sfsClient.addManager(manager);
+		GameScreen gameScreen = new GameScreen(game,manager);
+		manager.setGameScreen(gameScreen);
+		game.setScreen(gameScreen);
+	}
+	
 	@Override
 	public void render(float arg0) {
 		
@@ -296,12 +305,7 @@ public class MultiplayerScreen implements Screen{
       		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (playButtonClick.contains(touchPoint) && amIAdmin()){
-				System.out.println("Entrando a partida");
-				MatchManager manager = new MatchManager(sfsClient);
-				sfsClient.addManager(manager);
-				GameScreen gameScreen = new GameScreen(game,manager);
-				manager.setGameScreen(gameScreen);
-  				game.setScreen(gameScreen);
+				sfsClient.insertInQueuesRequest(acceptedPlayers, !externalPlayers);
       		} else if (inviteButtonClick.contains(touchPoint) && amIAdmin()) {
       			InviteScreen inviteScreen = new InviteScreen();
       			game.setScreen(inviteScreen);
