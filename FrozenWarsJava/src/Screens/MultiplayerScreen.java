@@ -292,7 +292,6 @@ public class MultiplayerScreen implements Screen{
 	}
 
 	public void creaPartida(){
-		System.out.println("Entrando a partida");
 		MatchManager manager = new MatchManager(sfsClient);
 		sfsClient.addManager(manager);
 		GameScreen gameScreen = new GameScreen(game,manager);

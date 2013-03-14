@@ -34,10 +34,7 @@ public class MatchManager {
 					sfsClient.sendMove(dir,myPlayerId,match.getMyPlayerPosition(myPlayerId));
 					this.lastMessage = System.currentTimeMillis();	
 				}
-			}
-			
-			
-			
+			}		
 		}
 	}
 	

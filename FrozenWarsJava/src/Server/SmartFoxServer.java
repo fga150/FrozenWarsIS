@@ -60,10 +60,22 @@ public class SmartFoxServer implements IEventListener {
 	private void addEventListeners() {
 		sfsClient.addEventListener(SFSEvent.CONNECTION, this);
 		sfsClient.addEventListener(SFSEvent.LOGIN, this);
-		sfsClient.addEventListener(SFSEvent.ROOM_JOIN, this);
+		sfsClient.addEventListener(SFSEvent.ROOM_JOIN, new IEventListener(){
+
+			public void dispatch(BaseEvent arg0) throws SFSException {
+				sfsClient.send(new JoinRoomRequest("The Lobby"));
+				
+			}
+			
+		});
 		sfsClient.addEventListener(SFSEvent.USER_ENTER_ROOM, this);
 		sfsClient.addEventListener(SFSEvent.USER_EXIT_ROOM, this);
-		sfsClient.addEventListener(SFSEvent.PUBLIC_MESSAGE,this);
+		sfsClient.addEventListener(SFSEvent.PUBLIC_MESSAGE,new IEventListener(){
+
+			public void dispatch(BaseEvent event) throws SFSException {
+			}
+			
+		});
 		sfsClient.addEventListener(SFSEvent.EXTENSION_RESPONSE, new IEventListener(){
 
 			@Override
@@ -93,13 +105,11 @@ public class SmartFoxServer implements IEventListener {
 					gameFullResponse(response);	
 				else if (cmd.equals("LeaderLeft"))
 					leaderLeftResponse(response);	
-				else if (cmd.equals("meter1"))
+				else if (cmd.equals("startGame"))
 					insertInQueuesResponse(response);
+				else if (cmd.equals("GameMessage"))
+					gameMessage(response);
 				}
-
-
-
-
 			
 		});
 	}
@@ -107,81 +117,15 @@ public class SmartFoxServer implements IEventListener {
 	private String getServerIP() {
 		String ip = "";
 		try {
-			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
-			ip = address.getHostAddress();
+			//InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			//ip = address.getHostAddress();
+			ip="127.0.0.1";
 		} catch (Exception e){
 			
 		}
 		return ip;
 	}
 
-	public void dispatch(BaseEvent event) throws SFSException {
-
-		if(event.getType().equals(SFSEvent.PUBLIC_MESSAGE)){
-			String message = event.getArguments().get("message").toString();
-			if (message.charAt(0)=='M'){
-				Direction dir = null;
-				if (message.charAt(1)=='0') dir = Direction.left;
-				else if (message.charAt(1)=='1') dir = Direction.right;
-				else if (message.charAt(1)=='2') dir = Direction.up;
-				else if (message.charAt(1)=='3') dir = Direction.down;
-				String text = (message.substring(2,3));
-				int jugador = Integer.parseInt(text);
-				int xPosition = 0;
-				int yPosition = 0;
-				boolean found = false;
-				int i = 0;
-				while (i<message.length() & !found){
-					found = (message.charAt(i)=='X');
-					if (found) xPosition = i;
-					else i++;
-				}
-				i = 0;
-				found = false;
-				while (i<message.length() & !found){
-					found = (message.charAt(i)=='Y');
-					if (found) yPosition = i;
-					else i++;
-				}
-				xPosition++;
-				float xPlayerPosition = Float.parseFloat(message.substring(xPosition, yPosition));
-				yPosition++;
-				float yPlayerPosition = Float.parseFloat(message.substring(yPosition));
-				manager.movePlayerEvent(dir,jugador,xPlayerPosition,yPlayerPosition);
-			}
-			else if (message.charAt(0)=='H'){
-				int xPosition = 0;
-				int yPosition = 0;
-				boolean found = false;
-				int i = 1;
-				while (i<message.length() & !found){
-					found = (message.charAt(i)=='X');
-					if (found) xPosition = i;
-					else i++;
-				}
-				found = false;
-				while (i<message.length() & !found){
-					found = (message.charAt(i)=='Y');
-					if (found) yPosition = i;
-					else i++;
-				}
-				xPosition++;
-				int xLancePosition = Integer.parseInt(message.substring(xPosition, yPosition));
-				yPosition++;
-				int yLancePosition = Integer.parseInt(message.substring(yPosition));
-				manager.putLanceEvent(xLancePosition,yLancePosition);
-			}
-		}
-		else if(event.getType().equalsIgnoreCase(SFSEvent.LOGIN))
-		{					
-			// Join The Lobby room
-			sfsClient.send(new JoinRoomRequest("The Lobby"));			    	
-		}
-		else if (event.getType().equalsIgnoreCase(SFSEvent.ROOM_JOIN)){
-			
-		}
-	}
-	
 	public void conectaSala(String user){
 		sfsClient.send(new LoginRequest(user,"", SFS_ZONE));
 		ExtensionRequest request = new ExtensionRequest("conectarse", null);
@@ -194,11 +138,19 @@ public class SmartFoxServer implements IEventListener {
 		else if (dir.equals(Direction.right)) dirCod = 1;
 		else if (dir.equals(Direction.up)) dirCod = 2;
 		else if (dir.equals(Direction.down)) dirCod = 3;
-		sfsClient.send(new PublicMessageRequest("M"+Integer.toString(dirCod)+Integer.toString(myPlayerId)+"X"+ position.x +"Y" + position.y));	
+		ISFSObject params = new SFSObject();
+		params.putUtfString("message", "M"+Integer.toString(dirCod)+Integer.toString(myPlayerId)+"X"+ position.x +"Y" + position.y);
+		ExtensionRequest request = new ExtensionRequest("GameMessage",params);
+		sfsClient.send(request);
+		//sfsClient.send(new PublicMessageRequest("M"+Integer.toString(dirCod)+Integer.toString(myPlayerId)+"X"+ position.x +"Y" + position.y));	
 	}
 	
 	public void sendLance(int x,int y) {
-		sfsClient.send(new PublicMessageRequest("H"+"X"+x+"Y"+y));	
+		//sfsClient.send(new PublicMessageRequest("H"+"X"+x+"Y"+y));
+		ISFSObject params = new SFSObject();
+		params.putUtfString("message", "H"+"X"+x+"Y"+y);
+		ExtensionRequest request = new ExtensionRequest("GameMessage",params);
+		sfsClient.send(request);
 	}
 	
 	public void getConnectedFriendsResponse(ISFSObject params){
@@ -286,7 +238,8 @@ public class SmartFoxServer implements IEventListener {
 		
 	}
 		
-	public void insertInQueuesResponse(ISFSObject response){ 
+	public void insertInQueuesResponse(ISFSObject response){
+		System.out.println(response.getUtfString("res"));
 		MultiplayerScreen.getInstance().setEmpiezaPartida(true);
 	} 
 
@@ -387,11 +340,71 @@ public class SmartFoxServer implements IEventListener {
 		
 	}
 	
+	public void gameMessage(ISFSObject response){
+		String message = response.getUtfString("message").toString();
+		if (message.charAt(0)=='M'){
+			Direction dir = null;
+			if (message.charAt(1)=='0') dir = Direction.left;
+			else if (message.charAt(1)=='1') dir = Direction.right;
+			else if (message.charAt(1)=='2') dir = Direction.up;
+			else if (message.charAt(1)=='3') dir = Direction.down;
+			String text = (message.substring(2,3));
+			int jugador = Integer.parseInt(text);
+			int xPosition = 0;
+			int yPosition = 0;
+			boolean found = false;
+			int i = 0;
+			while (i<message.length() & !found){
+				found = (message.charAt(i)=='X');
+				if (found) xPosition = i;
+				else i++;
+			}
+			i = 0;
+			found = false;
+			while (i<message.length() & !found){
+				found = (message.charAt(i)=='Y');
+				if (found) yPosition = i;
+				else i++;
+			}
+			xPosition++;
+			float xPlayerPosition = Float.parseFloat(message.substring(xPosition, yPosition));
+			yPosition++;
+			float yPlayerPosition = Float.parseFloat(message.substring(yPosition));
+			manager.movePlayerEvent(dir,jugador,xPlayerPosition,yPlayerPosition);
+		}
+		else if (message.charAt(0)=='H'){
+			int xPosition = 0;
+			int yPosition = 0;
+			boolean found = false;
+			int i = 1;
+			while (i<message.length() & !found){
+				found = (message.charAt(i)=='X');
+				if (found) xPosition = i;
+				else i++;
+			}
+			found = false;
+			while (i<message.length() & !found){
+				found = (message.charAt(i)=='Y');
+				if (found) yPosition = i;
+				else i++;
+			}
+			xPosition++;
+			int xLancePosition = Integer.parseInt(message.substring(xPosition, yPosition));
+			yPosition++;
+			int yLancePosition = Integer.parseInt(message.substring(yPosition));
+			manager.putLanceEvent(xLancePosition,yLancePosition);
+		}
+		
+	}
+	
 	private void leaderLeftResponse(ISFSObject response) {
 		MultiplayerScreen.getInstance().setDefault();
 	}
 
 
+	public void dispatch(BaseEvent event) throws SFSException {
+	}
+	
 	
 	
 }
