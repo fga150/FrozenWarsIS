@@ -78,6 +78,8 @@ public class MultiplayerScreen implements Screen{
 	private int gameMode;
 	private String myName = "";
 	private boolean empiezaPartida;
+	private boolean inQueue;
+
 
 	private String gameAdmin;
 	private int invitedScroll;
@@ -219,6 +221,10 @@ public class MultiplayerScreen implements Screen{
 	public void setGameAdmin(String gameAdmin){
 		this.gameAdmin = gameAdmin;
 	}
+	
+	public void setInQueue(boolean inQueue) {
+		this.inQueue = inQueue;
+	}
     
     public MultiplayerScreen() {
 		instance = this;
@@ -269,9 +275,9 @@ public class MultiplayerScreen implements Screen{
 	    scrollDownPlayersClick = new BoundingBox(new Vector3(900,190,0), new Vector3(950,225,0));
 	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,400,0));
 	    
-	    
+	    inQueue = false;
 	    empiezaPartida = false;
-	    externalPlayers = false;
+	    externalPlayers = true;
 	    gameMode = 0;
 	}
 
@@ -307,12 +313,12 @@ public class MultiplayerScreen implements Screen{
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
       		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
-			if (playButtonClick.contains(touchPoint) && amIAdmin()){
-				sfsClient.insertInQueuesRequest(acceptedPlayers, !externalPlayers);
+			if (playButtonClick.contains(touchPoint) && amIAdmin() && !inQueue){
+				sfsClient.insertInQueuesRequest(acceptedPlayers, externalPlayers);
       		} else if (inviteButtonClick.contains(touchPoint) && amIAdmin()) {
       			InviteScreen inviteScreen = new InviteScreen();
       			game.setScreen(inviteScreen);
-      		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin()){
+      		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
       			externalPlayers = !externalPlayers;
       			sfsClient.modExternalPlayersRequest(externalPlayers);
       		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin()){
@@ -366,7 +372,7 @@ public class MultiplayerScreen implements Screen{
             if (amIAdmin()) batcher.draw(Assets.mapLeftArrow, 45, 200);   
             if (amIAdmin()) batcher.draw(Assets.mapRightArrow, 450, 200);   
             
-            if (amIAdmin()) batcher.draw(Assets.playButton, 200, 80); 
+            if (amIAdmin() && !inQueue) batcher.draw(Assets.playButton, 200, 80); 
             if (amIAdmin()) batcher.draw(Assets.inviteButton, 550, 80); 
             
             batcher.draw(Assets.backButton, 370, 20); 
@@ -411,8 +417,9 @@ public class MultiplayerScreen implements Screen{
 	    drawPlayers.clear();
 	    
 	    invitedScroll = 0;
-	    externalPlayers = false;
+	    externalPlayers = true;
 	    gameMode = 0;
+	    inQueue = false;
 	    
 		acceptedPlayers.add(myName);
 		

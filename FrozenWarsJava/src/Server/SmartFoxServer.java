@@ -26,7 +26,6 @@ import sfs2x.client.core.SFSEvent;
 import sfs2x.client.requests.ExtensionRequest;
 import sfs2x.client.requests.JoinRoomRequest;
 import sfs2x.client.requests.LoginRequest;
-import sfs2x.client.requests.PublicMessageRequest;
 
 public class SmartFoxServer implements IEventListener {
 
@@ -83,7 +82,6 @@ public class SmartFoxServer implements IEventListener {
 				Map<String, Object> r = event.getArguments();
 				ISFSObject response = (ISFSObject)r.get("params"); //Gets the ISFSObject from the BaseEvent
 				String cmd = (String) r.get("cmd"); 
-				
 				//Executes the response methods according to the requests sent.
 				if(cmd.equals("GetConnectedFriends"))
 					getConnectedFriendsResponse(response);
@@ -109,7 +107,9 @@ public class SmartFoxServer implements IEventListener {
 					insertInQueuesResponse(response);
 				else if (cmd.equals("GameMessage"))
 					gameMessage(response);
-				}
+				else if (cmd.equals("modInQueue"))
+					modInQueueResponse(response);
+				} 
 			
 		});
 	}
@@ -117,9 +117,9 @@ public class SmartFoxServer implements IEventListener {
 	private String getServerIP() {
 		String ip = "";
 		try {
-			//InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
-			//ip = address.getHostAddress();
-			ip="127.0.0.1";
+			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			ip = address.getHostAddress();
+			//ip="127.0.0.1";
 		} catch (Exception e){
 			
 		}
@@ -286,11 +286,15 @@ public class SmartFoxServer implements IEventListener {
 		}
 	}
 	
+	public void modInQueueResponse(ISFSObject response){
+		MultiplayerScreen.getInstance().setInQueue(true);
+	} 
+	
 	public void removeOfQueue(int playersNumber){//Funcion invocada por el usuario que quiere salirse de cola.
-		  SFSObject params = new SFSObject();
-		  params.putInt("numJugadores", playersNumber);//playersNumber es el numero de amigos con los que metiste cola(incluido el que lanza).
-		  ExtensionRequest request2 = new ExtensionRequest("sacardecola",params);
-		  sfsClient.send(request2);
+		SFSObject params = new SFSObject();
+		params.putInt("numJugadores", playersNumber);//playersNumber es el numero de amigos con los que metiste cola(incluido el que lanza).
+		ExtensionRequest request2 = new ExtensionRequest("sacardecola",params);
+		sfsClient.send(request2);
 	}
 	
 	public void refuseRequest(String inviter) {
