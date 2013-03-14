@@ -132,5 +132,9 @@ public class MatchManager {
 
 	public int getNumPlayers() {
 		return match.getNumPlayers();
+	}
+
+	public Direction getLookAt(int i) {
+		return match.getLookAt(i);
 	}	
 }

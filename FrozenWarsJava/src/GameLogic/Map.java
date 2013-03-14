@@ -443,12 +443,12 @@ public class Map {
 				//If the harpoon center + range is great than bound of board game
 				//the X initial position range in board will be width
 			int xFin = (int)harpoon.getPosition().x+range;
-			if (xFin > width) xFin = width;
+			if (xFin >= width) xFin = width-1;
 			//South Delimiter: 
 				//If the harpoon center + range is great than bound of board game
 				//the Y initial position range in board will be length
 			int yFin = (int)harpoon.getPosition().y+range;
-			if (yFin > length) yFin = length;
+			if (yFin >= length) yFin = length-1;
 			
 			//Range harpoon spanning when I delete sunkenObject image of sunkenBoard
 			//only if there are water in waterBoard in the same position
@@ -464,6 +464,14 @@ public class Map {
 		sunkenBoard[x][y]= SunkenTypes.sunkenObject;
 	}	
 	
+	public boolean canRunThrough(int x, int y) {
+		boolean canRunThrough = false;
+		if (x>=0 && x<width && y >= 0 && y<length){
+			canRunThrough = !(boardGame[x][y].equals(TypeSquare.unbreakable) || 
+					boardGame[x][y].equals(TypeSquare.breakable));
+		}
+		return canRunThrough;
+	}
 	
 // Getters and Setters
 	

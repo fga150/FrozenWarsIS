@@ -64,10 +64,10 @@ public class GameScreen implements Screen{
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		//--------------------------------------------------------------------
 		penguinAnimations = new PenguinAnimation[4];
-		penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/pClarosRojo.png"),manager.getPlayerPosition(0),manager.getPlayerDirection(0));
-		penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"),manager.getPlayerPosition(1),manager.getPlayerDirection(1));
-		penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pClarosAmarillo.png"),manager.getPlayerPosition(2),manager.getPlayerDirection(2));
-		penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pClarosAzul.png"),manager.getPlayerPosition(3),manager.getPlayerDirection(3));
+		penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/pClarosRojo.png"),manager.getLookAt(0));
+		penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"),manager.getLookAt(1));
+		penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pClarosAmarillo.png"),manager.getLookAt(2));
+		penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pClarosAzul.png"),manager.getLookAt(3));
         stateTime = 0f;     
 	}
 	
@@ -160,7 +160,7 @@ public class GameScreen implements Screen{
 		
 		for (int i=0;i<manager.getNumPlayers();i++){
 			if(!manager.isThePlayerDead(i)){
-			position = penguinAnimations[i].getPosition();
+			position = manager.getPlayerPosition(i);
 			batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
 			}
 		}
@@ -246,8 +246,6 @@ public class GameScreen implements Screen{
         else if (dir.equals(Direction.left)) currentFrame = penguinAnimations[playerId].getwalkAnimationL().getKeyFrame(stateTime, true);
         else if (dir.equals(Direction.up)) currentFrame = penguinAnimations[playerId].getwalkAnimationU().getKeyFrame(stateTime, true);
         else if (dir.equals(Direction.down)) currentFrame = penguinAnimations[playerId].getwalkAnimationD().getKeyFrame(stateTime, true);
-        penguinAnimations[playerId].setPosition(position);
-        penguinAnimations[playerId].setlookAt(dir);
         penguinAnimations[playerId].setCurrentFrame(currentFrame);     
 	}
 

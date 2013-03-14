@@ -239,12 +239,10 @@ public class Match {
 		if(map.getWaterMatrixSquare((int)positions[0].x,(int)positions[0].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[0].x,(int)positions[0].y);
 			players[myPlayerId].removeLive();
-			players[myPlayerId].setPosition(players[myPlayerId].getInitialPosition());
 		}
 		else if(map.getWaterMatrixSquare((int)positions[1].x,(int)positions[1].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[1].x,(int)positions[1].y);
 			players[myPlayerId].removeLive();
-			players[myPlayerId].setPosition(players[myPlayerId].getInitialPosition());
 		}
 	}
 	
@@ -463,6 +461,10 @@ public class Match {
 
 	public boolean isThePlayerDead(int numPlayer) {
 		return players[numPlayer].isThePlayerDead();
+	}
+
+	public Direction getLookAt(int i) {
+		return players[i].getLookAt();
 	}
 
 	

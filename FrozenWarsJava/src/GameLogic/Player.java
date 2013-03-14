@@ -146,7 +146,10 @@ public class Player {
 	}
 
 	public void removeLive() {
-		if (lifes>0) lifes--;		
+		if (lifes>0) {
+			lifes--;
+			setPosition(initialPosition);
+		}
 	}
 
 	public Vector3 getInitialPosition() {
