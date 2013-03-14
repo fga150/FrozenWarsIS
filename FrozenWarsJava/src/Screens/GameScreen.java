@@ -159,9 +159,9 @@ public class GameScreen implements Screen{
 		batcher.draw(Assets.getButtonHarpoon(),19,0,2,4);
 		
 		for (int i=0;i<manager.getNumPlayers();i++){
-			if(!manager.isThePlayerDead(i)){
-			position = manager.getPlayerPosition(i);
-			batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
+			if(manager.canPlay(i)){
+				position = manager.getPlayerPosition(i);
+				batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
 			}
 		}
 		
@@ -172,35 +172,35 @@ public class GameScreen implements Screen{
 		guiCam.update();
 		textCam.update();
 		
-		if(!manager.isThePlayerDead(numPlayer)){
-		if ((Gdx.input.isKeyPressed(Keys.W))||(Gdx.input.isKeyPressed(Keys.UP))){manager.movePlayer(Direction.up);}
-		if ((Gdx.input.isKeyPressed(Keys.S))||(Gdx.input.isKeyPressed(Keys.DOWN))){manager.movePlayer(Direction.down);}
-		if ((Gdx.input.isKeyPressed(Keys.A))||(Gdx.input.isKeyPressed(Keys.LEFT))){manager.movePlayer(Direction.left);}
-		if ((Gdx.input.isKeyPressed(Keys.D))||(Gdx.input.isKeyPressed(Keys.RIGHT))){manager.movePlayer(Direction.right);}
-		if (Gdx.input.isTouched()){
-			if (Gdx.input.isTouched(0))guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
-			if (Gdx.input.isTouched(1))guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
-			if (fdBounds.contains(touchPoint)||fdBounds.contains(touchPoint2)){
-				manager.movePlayer(Direction.right);      
+		if(manager.canPlay(numPlayer)){
+			if ((Gdx.input.isKeyPressed(Keys.W))||(Gdx.input.isKeyPressed(Keys.UP))){manager.movePlayer(Direction.up);}
+			if ((Gdx.input.isKeyPressed(Keys.S))||(Gdx.input.isKeyPressed(Keys.DOWN))){manager.movePlayer(Direction.down);}
+			if ((Gdx.input.isKeyPressed(Keys.A))||(Gdx.input.isKeyPressed(Keys.LEFT))){manager.movePlayer(Direction.left);}
+			if ((Gdx.input.isKeyPressed(Keys.D))||(Gdx.input.isKeyPressed(Keys.RIGHT))){manager.movePlayer(Direction.right);}
+			if (Gdx.input.isTouched()){
+				if (Gdx.input.isTouched(0))guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
+				if (Gdx.input.isTouched(1))guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
+				if (fdBounds.contains(touchPoint)||fdBounds.contains(touchPoint2)){
+					manager.movePlayer(Direction.right);      
+				}
+				else if (fiBounds.contains(touchPoint)||fiBounds.contains(touchPoint2)){
+					manager.movePlayer(Direction.left);
+				}
+				else if (farBounds.contains(touchPoint)||farBounds.contains(touchPoint2)){
+					manager.movePlayer(Direction.up);
+				}
+				else if (fabBounds.contains(touchPoint)||fabBounds.contains(touchPoint2)){
+					manager.movePlayer(Direction.down);
+				}
 			}
-			else if (fiBounds.contains(touchPoint)||fiBounds.contains(touchPoint2)){
-				manager.movePlayer(Direction.left);
-			}
-			else if (farBounds.contains(touchPoint)||farBounds.contains(touchPoint2)){
-				manager.movePlayer(Direction.up);
-			}
-			else if (fabBounds.contains(touchPoint)||fabBounds.contains(touchPoint2)){
-				manager.movePlayer(Direction.down);
-			}
-		}
-		if (Gdx.input.isKeyPressed(Keys.SPACE)) manager.putHarpoon();
+			if (Gdx.input.isKeyPressed(Keys.SPACE)) manager.putHarpoon();
 		
-		//This has to be just touched else the code of put harpoon run 2 times
-		if (Gdx.input.justTouched() &&(harpoonBounds.contains(touchPoint)||harpoonBounds.contains(touchPoint2))){
+			//This has to be just touched else the code of put harpoon run 2 times
+			if (Gdx.input.justTouched() &&(harpoonBounds.contains(touchPoint)||harpoonBounds.contains(touchPoint2))){
 				manager.putHarpoon();
+			}
 		}
-		}
-}
+	}
 	
 	private void paintPlayerStatus(){
 		if(!manager.isThePlayerDead(numPlayer)){

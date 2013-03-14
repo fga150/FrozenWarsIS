@@ -15,7 +15,8 @@ import javax.swing.Timer;
 public class TimeEventsManager implements ActionListener {
 	
 	private final int sunkenTime = 1000;
-	private enum TypeEvent{sinkHarpoon,freezeWater,timeMatch};
+	private final int sinkPenguinTime = 1000;
+	private enum TypeEvent{sinkHarpoon,freezeWater,timeMatch,sinkPenguin};
 	
 	private Match match;
 	private HashMap<Timer,Object> timeEventObject;
@@ -31,6 +32,13 @@ public class TimeEventsManager implements ActionListener {
 		Timer timer = new Timer(sunkenTime,this);
 		timeEventObject.put(timer,sunkenHarpoon);
 		typeEvent.put(timer,TypeEvent.freezeWater);
+		timer.setRepeats(false);
+		timer.start();
+	}
+	public void sinkPenguinEvent(Player player) {
+		Timer timer = new Timer(sinkPenguinTime,this);
+		timeEventObject.put(timer,player);
+		typeEvent.put(timer,TypeEvent.sinkPenguin);
 		timer.setRepeats(false);
 		timer.start();
 	}
@@ -64,10 +72,20 @@ public class TimeEventsManager implements ActionListener {
 			typeEvent.remove(timer);
 			match.freezeWater(harpoon);
 		}
+		else if (type.equals(TypeEvent.sinkPenguin)){
+			Player player = (Player)timeEventObject.get(timer);
+			timeEventObject.remove(timer);
+			typeEvent.remove(timer);
+			match.sinkPenguinFinish(player);
+		}
 	}
 
 	public long getSunkenTime() {
 		return sunkenTime;
+	}
+
+	public int getSinkPenguinTime() {
+		return sinkPenguinTime;
 	}
 	
 }

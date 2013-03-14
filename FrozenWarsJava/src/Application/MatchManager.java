@@ -136,5 +136,9 @@ public class MatchManager {
 
 	public Direction getLookAt(int i) {
 		return match.getLookAt(i);
+	}
+
+	public boolean canPlay(int i) {
+		return match.canPlay(i);
 	}	
 }

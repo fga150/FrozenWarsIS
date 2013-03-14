@@ -216,9 +216,16 @@ public class Match {
 		//Commented method is for test sunkObject image when penguin is sunk
 		// and dead player this method is called for check if there are a collision
 		// between player and water.
-		isSunkenPenguin(myPlayerId);
+		if (!players[myPlayerId].isInvincible() && isSunkenPenguin(myPlayerId)){
+			loseLife(myPlayerId);
+		}
 		return valid;
 	}
+	private void loseLife(int playerId) {
+		timeEventsManager.sinkPenguinEvent(players[playerId]);
+		players[playerId].removeLive();
+	}
+
 	/**
 	 * @param yPlayerPosition 
 	 * @param xPlayerPosition * ***/
@@ -234,16 +241,18 @@ public class Match {
 		}
 	}
 	
-	public void isSunkenPenguin(int myPlayerId){
+	public boolean isSunkenPenguin(int myPlayerId){
 		Vector3[] positions = players[myPlayerId].getPositions();
+		boolean isSunken = false;
 		if(map.getWaterMatrixSquare((int)positions[0].x,(int)positions[0].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[0].x,(int)positions[0].y);
-			players[myPlayerId].removeLive();
+			isSunken = true;
 		}
 		else if(map.getWaterMatrixSquare((int)positions[1].x,(int)positions[1].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[1].x,(int)positions[1].y);
-			players[myPlayerId].removeLive();
+			isSunken = true;
 		}
+		return isSunken;
 	}
 	
 	public void putHarpoonAt(int x, int y, int range, long time){
@@ -272,15 +281,17 @@ public class Match {
 		for (int i=0;i<4;i++) isBlocked[i] = false;
 		for (int i=0;i<=range;i++){
 			for (int j=0;j<numPlayers;j++){
-				Vector3[] positions = players[j].getPositions();
-				if (isCought(harpoon,i,positions,isBlocked)){
-					isCought[j] = true;
+				if (!players[j].isInvincible()){
+					Vector3[] positions = players[j].getPositions();
+					if (isCought(harpoon,i,positions,isBlocked)){
+						isCought[j] = true;
+					}
 				}
 			}
 			updateBlocked(harpoon,i+1,isBlocked);
 		}
 		for (int i=0;i<numPlayers;i++){
-			if (isCought[i]) players[i].removeLive();
+			if (isCought[i]) loseLife(i);
 		}
 	}
 
@@ -299,16 +310,28 @@ public class Match {
 		boolean isCought = false;
 		// north
 		if (!isBlocked[0] && (((positions[0].x==x) && (positions[0].y == y+range)) || 
-		     (positions[1].x==x) && (positions[1].y == y+range))) isCought = true;
+		     (positions[1].x==x) && (positions[1].y == y+range))){
+			isCought = true;
+			map.sunkenObject((int)harpoon.getPosition().x,(int)harpoon.getPosition().y+range);
+		}
 		// south
 		else if (!isBlocked[1] && (((positions[0].x==x) && (positions[0].y == y-range)) || 
-			     (positions[1].x==x) && (positions[1].y == y-range))) isCought = true;
+			     (positions[1].x==x) && (positions[1].y == y-range))){
+			isCought = true;
+			map.sunkenObject((int)harpoon.getPosition().x,(int)harpoon.getPosition().y-range);
+		}
 		// west
 		else if (!isBlocked[2] && (((positions[0].x==x-range) && (positions[0].y == y)) || 
-			     (positions[1].x==x-range) && (positions[1].y == y))) isCought = true;
+			     (positions[1].x==x-range) && (positions[1].y == y))){
+			isCought = true;
+			map.sunkenObject((int)harpoon.getPosition().x-range,(int)harpoon.getPosition().y);
+		}
 		// east
 		else if (!isBlocked[3] && (((positions[0].x==x+range) && (positions[0].y == y)) || 
-			     (positions[1].x==x+range) && (positions[1].y == y))) isCought = true;
+			     (positions[1].x==x+range) && (positions[1].y == y))){
+			isCought = true;
+			map.sunkenObject((int)harpoon.getPosition().x+range,(int)harpoon.getPosition().y);
+		}
 		return isCought;
 	}
 
@@ -358,6 +381,11 @@ public class Match {
 		Player myPlayer = players[myPlayerId];
 		Vector3 position = myPlayer.getPosition();
 		return (int)position.y;
+	}
+	
+	public void sinkPenguinFinish(Player player) {
+		player.checkCanPlay();
+		player.removeInvincible();
 	}
 
 	public int getMyPlayerRange(int myPlayerId) {
@@ -465,6 +493,10 @@ public class Match {
 
 	public Direction getLookAt(int i) {
 		return players[i].getLookAt();
+	}
+
+	public boolean canPlay(int i) {
+		return players[i].canPlay();
 	}
 
 	
