@@ -29,7 +29,7 @@ public class MatchManager {
 	
 	public void movePlayer(Direction dir){
 		long currentTime = System.currentTimeMillis();
-		if ((currentTime-lastMessage)>=150){
+		if ((currentTime-lastMessage)>=100){
 			if(match.insideBoardMove(dir,myPlayerId)){
 				if (match.isSpecialMove(dir,myPlayerId)){
 					sfsClient.sendMove(match.getSpecialMoveDir(myPlayerId),myPlayerId,match.getMyPlayerPosition(myPlayerId));
@@ -130,9 +130,7 @@ public class MatchManager {
 			return sfsClient.getMyName();		
 	}
 
-	
-
-
-
-	
+	public int getNumPlayers() {
+		return match.getNumPlayers();
+	}	
 }

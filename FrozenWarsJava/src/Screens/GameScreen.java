@@ -23,6 +23,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 public class GameScreen implements Screen{
 	private Game game;
 	private OrthographicCamera guiCam;
+	private OrthographicCamera textCam;
 	private SpriteBatch batcher;
 	private Vector3 touchPoint;
 	private Vector3 touchPoint2;
@@ -45,8 +46,10 @@ public class GameScreen implements Screen{
 		this.name = manager.getMyNamePlayer();
 		numPlayer=manager.getMyIdPlayer();
 		this.manager = manager;
-		this.font = new BitmapFont();
+		font = new BitmapFont();
 		guiCam = new OrthographicCamera(21,13);
+		textCam=new OrthographicCamera(21*32,13*32);
+		textCam.position.set((21*32)/2,(13*32)/2,0);
 		guiCam.position.set(21f/2,13f/2,0);
 		batcher = new SpriteBatch();
 		touchPoint = new Vector3();
@@ -66,9 +69,8 @@ public class GameScreen implements Screen{
 		penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pClarosAmarillo.png"),manager.getPlayerPosition(2),manager.getPlayerDirection(2));
 		penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pClarosAzul.png"),manager.getPlayerPosition(3),manager.getPlayerDirection(3));
         stateTime = 0f;     
-
-      //--------------------------------------------------------------
-}
+	}
+	
 	@Override
 	public void dispose() {
 		batcher.dispose();
@@ -89,16 +91,18 @@ public class GameScreen implements Screen{
 		Vector3 position;
 		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-		stateTime += Gdx.graphics.getDeltaTime();  
-		batcher.setProjectionMatrix(guiCam.combined);
+		stateTime += Gdx.graphics.getDeltaTime();
 		batcher.enableBlending();
 		batcher.begin();
+		batcher.setProjectionMatrix(guiCam.combined);
 		batcher.draw(Assets.getBackground(),0,0,21,13);
 		
 		batcher.draw(Assets.getHorizontalBarDown(),8,0,11,1);
 		batcher.draw(Assets.getHorizontalBarUP(),8,12,11,1);
 		batcher.draw(Assets.getVerticalBarLeft(),7,0,1,13);
 		batcher.draw(Assets.getVerticalBarRigth(),19,0,1,13);
+		
+		paintPlayerStatus();
 		
 		for(int i=0;i<11;i++){
 			for (int j=0;j<11;j++){
@@ -154,18 +158,20 @@ public class GameScreen implements Screen{
 		batcher.draw(Assets.getDirectionPanel(),0.25f,0,7,7);
 		batcher.draw(Assets.getButtonHarpoon(),19,0,2,4);
 		
-		for (int i=0;i<4;i++){
+		for (int i=0;i<manager.getNumPlayers();i++){
 			if(!manager.isThePlayerDead(i)){
 			position = penguinAnimations[i].getPosition();
 			batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
 			}
 		}
 		
-		paintPlayerStatus();
 		paintLifes();
-		
+		batcher.setProjectionMatrix(textCam.combined);
+		font.draw(batcher, name, 1*32 ,13*32);
 		batcher.end();
 		guiCam.update();
+		textCam.update();
+		
 		if(!manager.isThePlayerDead(numPlayer)){
 		if ((Gdx.input.isKeyPressed(Keys.W))||(Gdx.input.isKeyPressed(Keys.UP))){manager.movePlayer(Direction.up);}
 		if ((Gdx.input.isKeyPressed(Keys.S))||(Gdx.input.isKeyPressed(Keys.DOWN))){manager.movePlayer(Direction.down);}
@@ -197,10 +203,6 @@ public class GameScreen implements Screen{
 }
 	
 	private void paintPlayerStatus(){
-		/*font.setColor(255,255,255,1);
-		float textWidth = font.getBounds(name).width;
-		float textHeight = font.getBounds(name).height;
-		font.draw(batcher,name,1-textWidth/2,14-textHeight/2);*/
 		if(!manager.isThePlayerDead(numPlayer)){
 			if (numPlayer==0){
 				batcher.draw(Assets.getLifeIconRed(),6,12,0.75f,0.75f);

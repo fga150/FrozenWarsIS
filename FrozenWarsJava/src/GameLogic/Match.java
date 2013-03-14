@@ -216,7 +216,7 @@ public class Match {
 		//Commented method is for test sunkObject image when penguin is sunk
 		// and dead player this method is called for check if there are a collision
 		// between player and water.
-		//isSunkenPenguin((int)players[myPlayerId].getPosition().x, (int)players[myPlayerId].getPosition().y, myPlayerId);
+		isSunkenPenguin(myPlayerId);
 		return valid;
 	}
 	/**
@@ -234,13 +234,17 @@ public class Match {
 		}
 	}
 	
-	public void isSunkenPenguin(int x, int y, int myPlayerId){
-		if(map.getWaterMatrixSquare(x, y)!=WaterTypes.empty){
-			map.sunkenObject(x, y);
-			if(players[myPlayerId].getLifes()>=1){
-				players[myPlayerId].setLifes(players[myPlayerId].getLifes()-1);
-				players[myPlayerId].setPosition(players[myPlayerId].getInitialPosition(myPlayerId));
-			}
+	public void isSunkenPenguin(int myPlayerId){
+		Vector3[] positions = players[myPlayerId].getPositions();
+		if(map.getWaterMatrixSquare((int)positions[0].x,(int)positions[0].y)!=WaterTypes.empty){
+			map.sunkenObject((int)positions[0].x,(int)positions[0].y);
+			players[myPlayerId].removeLive();
+			players[myPlayerId].setPosition(players[myPlayerId].getInitialPosition());
+		}
+		else if(map.getWaterMatrixSquare((int)positions[1].x,(int)positions[1].y)!=WaterTypes.empty){
+			map.sunkenObject((int)positions[1].x,(int)positions[1].y);
+			players[myPlayerId].removeLive();
+			players[myPlayerId].setPosition(players[myPlayerId].getInitialPosition());
 		}
 	}
 	
@@ -264,37 +268,49 @@ public class Match {
 	
 	private void harpoonRangeDamage(Harpoon harpoon) {
 		int range = harpoon.getRange();
-		boolean []isCought = new boolean[numPlayers];
+		boolean[] isCought = new boolean[numPlayers];
+		boolean[] isBlocked = new boolean [4];
 		for (int i=0;i<numPlayers;i++) isCought[i] = false;
-		for (int j=0;j<numPlayers;j++){
-			Vector3[] positions = players[j].getPositions();
-			for (int i=0;i<=range;i++){
-				if (isCought(i,harpoon,positions)){
+		for (int i=0;i<4;i++) isBlocked[i] = false;
+		for (int i=0;i<=range;i++){
+			for (int j=0;j<numPlayers;j++){
+				Vector3[] positions = players[j].getPositions();
+				if (isCought(harpoon,i,positions,isBlocked)){
 					isCought[j] = true;
 				}
 			}
+			updateBlocked(harpoon,i+1,isBlocked);
 		}
 		for (int i=0;i<numPlayers;i++){
 			if (isCought[i]) players[i].removeLive();
 		}
 	}
 
-	private boolean isCought(int range, Harpoon harpoon, Vector3[] positions) {
+	private void updateBlocked(Harpoon harpoon, int range, boolean[] isBlocked) {
+		int x = (int)harpoon.getPosition().x;
+		int y = (int)harpoon.getPosition().y;
+		if (!map.canRunThrough(x,y+range)) isBlocked[0] = true;
+		if (!map.canRunThrough(x,y-range)) isBlocked[1] = true;
+		if (!map.canRunThrough(x-range,y)) isBlocked[2] = true;
+		if (!map.canRunThrough(x+range,y)) isBlocked[3] = true;
+	}
+
+	private boolean isCought(Harpoon harpoon, int range, Vector3[] positions,boolean[] isBlocked) {
 		int x = (int)harpoon.getPosition().x;
 		int y = (int)harpoon.getPosition().y;
 		boolean isCought = false;
 		// north
-		if (((positions[0].x==x) && (positions[0].y == y+range)) || 
-		     (positions[1].x==x) && (positions[1].y == y+range)) isCought = true;
+		if (!isBlocked[0] && (((positions[0].x==x) && (positions[0].y == y+range)) || 
+		     (positions[1].x==x) && (positions[1].y == y+range))) isCought = true;
 		// south
-		else if (((positions[0].x==x) && (positions[0].y == y-range)) || 
-			     (positions[1].x==x) && (positions[1].y == y-range)) isCought = true;
+		else if (!isBlocked[1] && (((positions[0].x==x) && (positions[0].y == y-range)) || 
+			     (positions[1].x==x) && (positions[1].y == y-range))) isCought = true;
 		// west
-		else if (((positions[0].x==x-range) && (positions[0].y == y)) || 
-			     (positions[1].x==x-range) && (positions[1].y == y)) isCought = true;
+		else if (!isBlocked[2] && (((positions[0].x==x-range) && (positions[0].y == y)) || 
+			     (positions[1].x==x-range) && (positions[1].y == y))) isCought = true;
 		// east
-		else if (((positions[0].x==x+range) && (positions[0].y == y)) || 
-			     (positions[1].x==x+range) && (positions[1].y == y)) isCought = true;
+		else if (!isBlocked[3] && (((positions[0].x==x+range) && (positions[0].y == y)) || 
+			     (positions[1].x==x+range) && (positions[1].y == y))) isCought = true;
 		return isCought;
 	}
 
