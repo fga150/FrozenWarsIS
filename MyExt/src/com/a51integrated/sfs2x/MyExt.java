@@ -47,6 +47,7 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("ModeChange", ModeChange.class); // handler fired when a user changes the mode of his game.
 		this.addRequestHandler("ModExternalPlayers", ModExternalPlayers.class); // handler fired when a user changes the "external players" option.
 		this.addRequestHandler("ExitGroup", ExitGroup.class); // handler fired when a user want to exit the current team.
+		this.addRequestHandler("GameMessage", GameMessage.class);
 		nRooms=0;
 	}
 
@@ -109,10 +110,10 @@ public class MyExt extends SFSExtension {
 			}catch(Exception e){};
 			try{
 				rtn.putUtfString("res", "Partida en marcha con los siguientes jugadores: "+a.getName()+", "+b.getName()+", "+c.getName()+", "+d.getName()+", ");
-				this.send("meter1", rtn, a);
-				this.send("meter1", rtn, b);
-				this.send("meter1", rtn, c);
-				this.send("meter1", rtn, d);
+				this.send("startGame", rtn, a);
+				this.send("startGame", rtn, b);
+				this.send("startGame", rtn, c);
+				this.send("startGame", rtn, d);
 			}catch(Exception e){};
 			return room;
 		} catch (SFSCreateRoomException e) {
