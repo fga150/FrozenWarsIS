@@ -1,7 +1,6 @@
 package com.a51integrated.sfs2x;
 
 import java.util.Iterator;
-import java.util.List;
 
 import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.User;

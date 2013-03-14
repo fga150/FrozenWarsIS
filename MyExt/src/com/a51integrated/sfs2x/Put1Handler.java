@@ -15,6 +15,8 @@ public class Put1Handler extends BaseClientRequestHandler {
 		Queue<User> queue1 = parentEx.getQueue1();
 		queue1.add(player); // we add the player to the queue
 		
+        parentEx.send("modInQueue", null, player);
+       
 		Queue<User[]> queue2=parentEx.getQueue3();
 		if(queue1.size()==1 && queue2.size()==1){ //in the next ifs we see if with this player we can create a room
 			User a = queue1.poll();

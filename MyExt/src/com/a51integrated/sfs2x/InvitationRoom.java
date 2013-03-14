@@ -20,7 +20,7 @@ public class InvitationRoom {
 		refusedPlayers = new SFSArray();
 		waitingPlayers = new SFSArray();
 		gameMode = 0;
-		enableExternalPlayers = false;
+		enableExternalPlayers = true;
 		acceptedPlayers.addUtfString(leaderName);
 		
 		numPlayers = 1;

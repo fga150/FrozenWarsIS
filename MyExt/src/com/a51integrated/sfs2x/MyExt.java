@@ -99,8 +99,12 @@ public class MyExt extends SFSExtension {
 			settings.setGame(true);
 			settings.setName("sala"+ nRooms);
 			nRooms++;
-			Room room = this.getApi().createRoom(this.getParentZone(), settings, a,true,a.getLastJoinedRoom());
-			try{
+			//Room room = this.getApi().createRoom(this.getParentZone(), settings, a,true,a.getLastJoinedRoom());
+			Room room = this.getApi().createRoom(this.getParentZone(), settings, a);
+			
+			try{	
+				a.getLastJoinedRoom().removeUser(a);
+				room.addUser(a);
 				b.getLastJoinedRoom().removeUser(b);
 				room.addUser(b);
 				c.getLastJoinedRoom().removeUser(c);

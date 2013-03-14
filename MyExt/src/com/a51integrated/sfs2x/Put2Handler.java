@@ -1,8 +1,11 @@
 package com.a51integrated.sfs2x;
 
+import java.util.HashMap;
 import java.util.Queue;
 import com.smartfoxserver.v2.entities.User;
+import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
+
 import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 
 public class Put2Handler extends BaseClientRequestHandler {
@@ -17,6 +20,13 @@ public class Put2Handler extends BaseClientRequestHandler {
 		aux[1]=parentEx.getUsers().get(params.getUtfString("pfriend1"));
 		queue2.add(aux);// add the array to the queue for groups of 2
 		
+		HashMap<String,InvitationRoom> gamesInCreation = parentEx.getGamesInCreation();
+		HashMap<String,User> users = parentEx.getUsers();
+		
+        ISFSArray accplayer = gamesInCreation.get(player.getName()).getAcceptedPlayers();
+        for (int j=0; j<accplayer.size();j++){ //Sends the queue-waiting message to the joinned players.
+        	parentEx.send("modInQueue", null, users.get(accplayer.getUtfString(j)));
+        }
 		Queue<User> queue1=parentEx.getQueue1();
 		if(queue2.size()==1 && queue1.size()>=2){ //in the next ifs we see if with this players we can create a room
 			User[] aux2= queue2.poll();
