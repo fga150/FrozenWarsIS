@@ -4,6 +4,7 @@ package com.a51integrated.sfs2x;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
 
 import com.smartfoxserver.v2.core.ISFSEvent;
 import com.smartfoxserver.v2.core.SFSEventParam;
@@ -37,7 +38,42 @@ public class Disconnect extends BaseServerEventHandler {
 				parentEx.send("meter1", rtn, iterator.next());
 			}
 		}
-		
+		try{
+			Queue<User> queue1 = parentEx.getQueue1();
+			queue1.remove(player);
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue2 = parentEx.getQueue2();
+			Iterator<User[]> it=queue2.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length&&enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true)queue2.remove(arrayUsers);
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue3 = parentEx.getQueue3();
+			Iterator<User[]> it=queue3.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length&&enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true)queue3.remove(arrayUsers);
+		}catch(Exception e){};
 		/*Set<String> names= users.keySet(); //TODO tell friends he was disconected
 		Iterator<String> it=names.iterator();
 		if (it.hasNext()){				// here we tell to another user the disconection of this player (TO DO "tell" friends got disconnected)

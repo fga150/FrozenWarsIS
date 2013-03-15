@@ -6,6 +6,7 @@ import java.util.Queue;
 import com.smartfoxserver.v2.api.CreateRoomSettings;
 import com.smartfoxserver.v2.core.SFSEventType;
 import com.smartfoxserver.v2.entities.Room;
+import com.smartfoxserver.v2.entities.SFSRoomRemoveMode;
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
@@ -99,6 +100,8 @@ public class MyExt extends SFSExtension {
 			settings.setGame(true);
 			settings.setName("sala"+ nRooms);
 			nRooms++;
+			 settings.setDynamic(true);
+			 settings.setAutoRemoveMode(SFSRoomRemoveMode.WHEN_EMPTY);
 			//Room room = this.getApi().createRoom(this.getParentZone(), settings, a,true,a.getLastJoinedRoom());
 			Room room = this.getApi().createRoom(this.getParentZone(), settings, a);
 			
