@@ -315,7 +315,7 @@ public class MultiplayerScreen implements Screen{
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (playButtonClick.contains(touchPoint) && amIAdmin() && !inQueue){
 				sfsClient.insertInQueuesRequest(acceptedPlayers, externalPlayers);
-      		} else if (inviteButtonClick.contains(touchPoint) && amIAdmin()) {
+      		} else if (inviteButtonClick.contains(touchPoint) && amIAdmin() && !inQueue) {
       			InviteScreen inviteScreen = new InviteScreen();
       			game.setScreen(inviteScreen);
       		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
@@ -334,7 +334,7 @@ public class MultiplayerScreen implements Screen{
       			if (invitedScroll != 0) invitedScroll--;     	
 			} else if (backButtonClick.contains(touchPoint)){
       			game.setScreen(InitialScreen.getInstance());
-      		} else if (leaveGroupButtonClick.contains(touchPoint)){
+      		} else if (leaveGroupButtonClick.contains(touchPoint) && !inQueue){
       			sfsClient.groupExitRequest(gameAdmin);
       		}
 		}
@@ -380,7 +380,7 @@ public class MultiplayerScreen implements Screen{
             	batcher.draw(Assets.pingu, 565, 112);
             }
             
-            batcher.draw(Assets.leaveGroupButton, 650, 20); 
+            if (!inQueue) batcher.draw(Assets.leaveGroupButton, 650, 20); 
             batcher.draw(Assets.backButton, 320, 20); 
            
             
