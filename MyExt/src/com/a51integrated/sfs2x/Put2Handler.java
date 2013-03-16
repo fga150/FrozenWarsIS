@@ -14,6 +14,7 @@ public class Put2Handler extends BaseClientRequestHandler {
 	public void handleClientRequest(User player, ISFSObject params) { // a groups of 2 want to join a game
 		
 		MyExt parentEx = (MyExt) getParentExtension();
+
 		Queue<User[]> queue2 = parentEx.getQueue2();
 		User[] aux= new User[2];// we set in the array the group of 2 players that fired this handler
 		aux[0]=player;
@@ -27,6 +28,10 @@ public class Put2Handler extends BaseClientRequestHandler {
         for (int j=0; j<accplayer.size();j++){ //Sends the queue-waiting message to the joinned players.
         	parentEx.send("modInQueue", null, users.get(accplayer.getUtfString(j)));
         }
+        
+        gamesInCreation.remove(player.getName());
+        parentEx.setGamesInCreation(gamesInCreation);
+    
 		Queue<User> queue1=parentEx.getQueue1();
 		if(queue2.size()==1 && queue1.size()>=2){ //in the next ifs we see if with this players we can create a room
 			User[] aux2= queue2.poll();

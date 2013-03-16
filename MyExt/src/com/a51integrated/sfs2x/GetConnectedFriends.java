@@ -33,10 +33,11 @@ public class GetConnectedFriends extends BaseClientRequestHandler {
 		@SuppressWarnings("rawtypes")
 		Map.Entry entry = (Map.Entry) iter.next();
 		if(gamesInCreation.containsKey(player.getName())){
-		if(!gamesInCreation.get(player.getName()).getAcceptedPlayers().contains(entry.getKey()) && !gamesInCreation.get(player.getName()).getWaitingPlayers().contains(entry.getKey()))
+		if(!gamesInCreation.get(player.getName()).getAcceptedPlayers().contains(entry.getKey()) && !gamesInCreation.get(player.getName()).getWaitingPlayers().contains(entry.getKey())
+			&& !users.get(entry.getKey()).getLastJoinedRoom().isDynamic())
 			connectedFriends.addUtfString((String) entry.getKey());
 		}else 
-			if(!player.getName().equals(entry.getKey()))
+			if(!player.getName().equals(entry.getKey()) && !users.get(entry.getKey()).getLastJoinedRoom().isDynamic())
 			connectedFriends.addUtfString((String) entry.getKey());
 		}
 		rtn.putSFSArray("ConnectedFriends", connectedFriends);

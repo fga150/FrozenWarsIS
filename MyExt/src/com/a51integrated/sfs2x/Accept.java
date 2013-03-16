@@ -19,6 +19,10 @@ public class Accept extends BaseClientRequestHandler {
 		HashMap<String,User> users = parentEx.getUsers();
 		String player2 = params.getUtfString("Inviter"); //Gets the name of the player who invited you.
 		
+		if(!gamesInCreation.containsKey(player2)){
+			parentEx.send("GameNotFound", null, player);
+		}
+		else{
 		if(gamesInCreation.get(player2).getNumPlayers() == 4){
 			ISFSObject rtn = new SFSObject();
 			rtn.putUtfString("Inviter", player2);
@@ -62,6 +66,7 @@ public class Accept extends BaseClientRequestHandler {
         }
 		
         
+		}
 		}
 	}
 

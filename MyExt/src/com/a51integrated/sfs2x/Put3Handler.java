@@ -27,6 +27,10 @@ public class Put3Handler extends BaseClientRequestHandler {
         for (int j=0; j<accplayer.size();j++){ //Sends the queue-waiting message to the joinned players.
         	parentEx.send("modInQueue", null, users.get(accplayer.getUtfString(j)));
         }
+        
+        gamesInCreation.remove(player.getName());
+        parentEx.setGamesInCreation(gamesInCreation);
+        
 		Queue<User> queue1=parentEx.getQueue1();
 		if(queue3.size() == 1 && queue1.size()== 1){ //here we see if with this players we can create a room
 			User[] aux2= queue3.poll();
