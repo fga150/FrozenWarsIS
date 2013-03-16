@@ -63,7 +63,7 @@ public class MultiplayerScreen implements Screen{
     private  BoundingBox inviteButtonClick;
     private  BoundingBox playButtonClick;
     private  BoundingBox backButtonClick;
-    private  BoundingBox exitTeamButtonClick;
+    private  BoundingBox leaveGroupButtonClick;
     
     private  BoundingBox mapLeftArrowClick;
     private  BoundingBox mapRightArrowClick;
@@ -262,10 +262,10 @@ public class MultiplayerScreen implements Screen{
 	    
 	    externalPlayerTickClick = new BoundingBox(new Vector3(120,370,0), new Vector3(170,410,0));
 	    
-	    inviteButtonClick = new BoundingBox(new Vector3(550,80,0), new Vector3(790,120,0));
-	    playButtonClick = new BoundingBox(new Vector3(200,80,0), new Vector3(440,120,0));
-	    backButtonClick = new BoundingBox(new Vector3(370,20,0), new Vector3(610,60,0));
-	    exitTeamButtonClick = new BoundingBox(new Vector3(130,150,0), new Vector3(430,330,0));
+	    inviteButtonClick = new BoundingBox(new Vector3(500,80,0), new Vector3(740,120,0));
+	    playButtonClick = new BoundingBox(new Vector3(150,80,0), new Vector3(390,120,0));
+	    backButtonClick = new BoundingBox(new Vector3(320,20,0), new Vector3(560,60,0));
+	    leaveGroupButtonClick = new BoundingBox(new Vector3(650,20,0), new Vector3(890,64,0));
 	    
 	    mapLeftArrowClick = new BoundingBox(new Vector3(50,200,0), new Vector3(100,290,0));
 	    mapRightArrowClick = new BoundingBox(new Vector3(450,200,0), new Vector3(510,280,0));
@@ -334,7 +334,7 @@ public class MultiplayerScreen implements Screen{
       			if (invitedScroll != 0) invitedScroll--;     	
 			} else if (backButtonClick.contains(touchPoint)){
       			game.setScreen(InitialScreen.getInstance());
-      		} else if (exitTeamButtonClick.contains(touchPoint)){
+      		} else if (leaveGroupButtonClick.contains(touchPoint)){
       			sfsClient.groupExitRequest(gameAdmin);
       		}
 		}
@@ -371,15 +371,21 @@ public class MultiplayerScreen implements Screen{
             batcher.draw(Assets.map, 130, 150);   
             if (amIAdmin()) batcher.draw(Assets.mapLeftArrow, 45, 200);   
             if (amIAdmin()) batcher.draw(Assets.mapRightArrow, 450, 200);   
-            
-            if (amIAdmin() && !inQueue) batcher.draw(Assets.playButton, 200, 80); 
-            if (amIAdmin()) batcher.draw(Assets.inviteButton, 550, 80); 
-            
-            batcher.draw(Assets.backButton, 370, 20); 
            
-            batcher.draw(Assets.pingu, 565, 112);
-            
             drawInvited();
+            
+            if (amIAdmin() && !inQueue) batcher.draw(Assets.playButton, 150, 80); 
+            if (amIAdmin() && !inQueue) {
+            	batcher.draw(Assets.inviteButton, 500, 80); 
+            	batcher.draw(Assets.pingu, 565, 112);
+            }
+            
+            batcher.draw(Assets.leaveGroupButton, 650, 20); 
+            batcher.draw(Assets.backButton, 320, 20); 
+           
+            
+            
+    
             	          
             batcher.end();
 

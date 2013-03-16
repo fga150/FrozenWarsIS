@@ -234,23 +234,30 @@ InviteListText
   orig: 200, 55
   offset: 0, 0
   index: -1
-PlayButton
+LeaveGroupButton
   rotate: false
   xy: 1307, 755
-  size: 240, 41
-  orig: 240, 41
+  size: 240, 44
+  orig: 240, 44
   offset: 0, 0
   index: -1
-InviteButton
+PlayButton
   rotate: false
   xy: 1669, 760
   size: 240, 41
   orig: 240, 41
   offset: 0, 0
   index: -1
-BackButton
+InviteButton
   rotate: false
   xy: 1060, 1803
+  size: 240, 41
+  orig: 240, 41
+  offset: 0, 0
+  index: -1
+BackButton
+  rotate: false
+  xy: 1060, 1846
   size: 240, 41
   orig: 240, 41
   offset: 0, 0
@@ -271,7 +278,7 @@ PlayersText
   index: -1
 IndicadorVidas
   rotate: false
-  xy: 1060, 1846
+  xy: 1060, 1889
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
