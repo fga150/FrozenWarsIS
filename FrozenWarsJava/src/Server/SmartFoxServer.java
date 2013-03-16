@@ -109,8 +109,10 @@ public class SmartFoxServer implements IEventListener {
 					gameMessage(response);
 				else if (cmd.equals("modInQueue"))
 					modInQueueResponse(response);
-				} 
-			
+				else if (cmd.equals("GameNotFound"))
+					gameNotFound(response);
+				}
+
 		});
 	}
 
@@ -119,7 +121,7 @@ public class SmartFoxServer implements IEventListener {
 		try {
 			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
 			ip = address.getHostAddress();
-			//ip="127.0.0.1";
+			//ip="192.168.1.41";
 		} catch (Exception e){
 			
 		}
@@ -182,7 +184,9 @@ public class SmartFoxServer implements IEventListener {
 
 
 	public void inviteFail(ISFSObject response){
-		// TODO : Aqui se recibe mensaje de que el usuario invitado no esta conectado.
+		String invited = response.getUtfString("Invited");
+		// TODO : Aqui se recibe mensaje de que el usuario invitado no esta conectado. Invited es el usuario desconectado
+		System.out.println("AMIGO DESCONECTADO");
 	}
 	
 	public void acceptRequest(String inviter) {
@@ -404,6 +408,13 @@ public class SmartFoxServer implements IEventListener {
 	private void leaderLeftResponse(ISFSObject response) {
 		MultiplayerScreen.getInstance().setDefault();
 	}
+	
+	private void gameNotFound(ISFSObject response) {
+		//TODO : Cuando se intenta aceptar una partida que ya no existe
+		System.out.println("GAME NOT FOUND");
+		
+	} 
+	
 
 
 	public void dispatch(BaseEvent event) throws SFSException {
