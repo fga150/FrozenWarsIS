@@ -116,7 +116,7 @@ public class MyExt extends SFSExtension {
 				room.addUser(d);
 			}catch(Exception e){};
 			try{
-				rtn.putUtfString("res", "Partida en marcha con los siguientes jugadores: "+a.getName()+", "+b.getName()+", "+c.getName()+", "+d.getName()+", ");
+				//rtn.putUtfString("res", "Partida en marcha con los siguientes jugadores: "+a.getName()+", "+b.getName()+", "+c.getName()+", "+d.getName()+", ");
 				this.send("startGame", rtn, a);
 				this.send("startGame", rtn, b);
 				this.send("startGame", rtn, c);
