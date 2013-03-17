@@ -176,17 +176,13 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void inviteResponse(ISFSObject response){
 		String inviter = response.getUtfString("Inviter");
-		//Aqui se recibe la invitacion, el nombre del lider esta en inviter.
-		Game game = LaunchFrozenWars.getGame();
-		ConfirmScreen confirmScreen = new ConfirmScreen(game.getScreen(), ScreenUtils.getFrameBufferTexture(), "InviteGame", inviter);
-		game.setScreen(confirmScreen);
+		ConfirmScreen.getInstance().setNewConfirmScreen("InviteGame", inviter);
 	}
 
 
 	public void inviteFail(ISFSObject response){
 		String invited = response.getUtfString("Invited");
-		// TODO : Aqui se recibe mensaje de que el usuario invitado no esta conectado. Invited es el usuario desconectado
-		System.out.println("AMIGO DESCONECTADO");
+		ConfirmScreen.getInstance().setNewConfirmScreen("InvitedDisconnected", invited);
 	}
 	
 	public void acceptRequest(String inviter) {
@@ -243,7 +239,6 @@ public class SmartFoxServer implements IEventListener {
 	}
 		
 	public void insertInQueuesResponse(ISFSObject response){
-		System.out.println(response.getUtfString("res"));
 		MultiplayerScreen.getInstance().setEmpiezaPartida(true);
 	} 
 
@@ -333,9 +328,7 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void gameFullResponse(ISFSObject response) {
-		Game game = LaunchFrozenWars.getGame();
-		ConfirmScreen confirmScreen = new ConfirmScreen(game.getScreen(), ScreenUtils.getFrameBufferTexture(), "FullTeam", "");
-		game.setScreen(confirmScreen);
+		ConfirmScreen.getInstance().setNewConfirmScreen("FullTeam", "");
 	}
 	
 	public void groupExitRequest(String name){
@@ -406,13 +399,11 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	private void leaderLeftResponse(ISFSObject response) {
-		MultiplayerScreen.getInstance().setDefault();
+		ConfirmScreen.getInstance().setNewConfirmScreen("LeaderLeft", "");
 	}
 	
 	private void gameNotFound(ISFSObject response) {
-		//TODO : Cuando se intenta aceptar una partida que ya no existe
-		System.out.println("GAME NOT FOUND");
-		
+		ConfirmScreen.getInstance().setNewConfirmScreen("GameNotFound", "");
 	} 
 	
 

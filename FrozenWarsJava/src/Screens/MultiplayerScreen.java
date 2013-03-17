@@ -318,7 +318,7 @@ public class MultiplayerScreen implements Screen{
       		} else if (inviteButtonClick.contains(touchPoint) && amIAdmin() && !inQueue) {
       			InviteScreen inviteScreen = new InviteScreen();
       			game.setScreen(inviteScreen);
-      		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
+      		/*}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
       			externalPlayers = !externalPlayers;
       			sfsClient.modExternalPlayersRequest(externalPlayers);
       		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin()){
@@ -328,13 +328,13 @@ public class MultiplayerScreen implements Screen{
       		} else if (modeRightArrowClick.contains(touchPoint) && amIAdmin()){
       			gameMode = (gameMode + 1) % 5;
       			sfsClient.modeChangeRequest(gameMode);
-      		} else if (scrollDownPlayersClick.contains(touchPoint)){
+      		*/} else if (scrollDownPlayersClick.contains(touchPoint)){
       			if (invitedScroll < (acceptedPlayers.size() + refusedPlayers.size() + waitingPlayers.size()) - 5) invitedScroll++;
       		} else if (scrollUpPlayersClick.contains(touchPoint)){
       			if (invitedScroll != 0) invitedScroll--;     	
 			} else if (backButtonClick.contains(touchPoint)){
       			game.setScreen(InitialScreen.getInstance());
-      		} else if (leaveGroupButtonClick.contains(touchPoint) && !inQueue){
+      		} else if (leaveGroupButtonClick.contains(touchPoint) && !inQueue && (acceptedPlayers.size() > 1 || waitingPlayers.size() > 0)){
       			sfsClient.groupExitRequest(gameAdmin);
       		}
 		}
@@ -380,14 +380,12 @@ public class MultiplayerScreen implements Screen{
             	batcher.draw(Assets.pingu, 565, 112);
             }
             
-            if (!inQueue) batcher.draw(Assets.leaveGroupButton, 650, 20); 
+            if (!inQueue && (acceptedPlayers.size() > 1 || waitingPlayers.size() > 0)) batcher.draw(Assets.leaveGroupButton, 650, 20); 
             batcher.draw(Assets.backButton, 320, 20); 
-           
-            
-            
-    
             	          
             batcher.end();
+            
+            ConfirmScreen.getInstance().createConfirmIfNeeded();
 
 	}
 

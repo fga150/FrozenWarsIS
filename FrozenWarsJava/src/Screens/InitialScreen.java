@@ -113,8 +113,7 @@ public class InitialScreen implements Screen{
       				if (!gSettings.isConfirmedExitOn()) {
       					this.dispose();
       				} else{
-      					Screen confirmScreen = new ConfirmScreen(this, ScreenUtils.getFrameBufferTexture(), "Exit", "");   
-	      	     		game.setScreen(confirmScreen);
+      					ConfirmScreen.getInstance().setNewConfirmScreen("Exit", "");   
       				}
       			}
       		}
@@ -147,6 +146,8 @@ public class InitialScreen implements Screen{
 	        batcher.draw(Assets.exit, 225, 240);
 	          
             batcher.end();
+            
+            ConfirmScreen.getInstance().createConfirmIfNeeded();
 
 	}
 

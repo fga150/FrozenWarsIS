@@ -117,7 +117,9 @@ public class SettingsScreen implements Screen{
 	   if (gSettings.isConfirmedExitOn()) batcher.draw(Assets.confirmedExitOn, 120, 150);
 	   else batcher.draw(Assets.confirmedExitOff, 120, 150);
 	   batcher.draw(Assets.volver, 120, 80);
-        batcher.end();
+       batcher.end();
+
+       ConfirmScreen.getInstance().createConfirmIfNeeded();
 
 	}
 

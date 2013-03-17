@@ -183,6 +183,8 @@ public class InviteScreen implements Screen{
             drawNotInvited();
             
             batcher.end();
+            
+            ConfirmScreen.getInstance().createConfirmIfNeeded();
 
 	}
 

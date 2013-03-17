@@ -134,6 +134,8 @@ public class HelpScreen implements Screen{
             	          
             batcher.end();
 
+            ConfirmScreen.getInstance().createConfirmIfNeeded();
+
 	}
 
 

@@ -142,6 +142,8 @@ public class IndexScreen implements Screen{
             	          
             batcher.end();
 
+            ConfirmScreen.getInstance().createConfirmIfNeeded();
+
 	}
 
 
