@@ -24,9 +24,9 @@ public class Assets {
 	    public static AtlasRegion exit;
 
 	    //Componentes de la pantalla de confirmacion
-	    public static AtlasRegion panelConf;
-	    public static AtlasRegion yesConf;
-	    public static AtlasRegion noConf;
+	    public static AtlasRegion window;
+	    public static AtlasRegion exitText;
+
 	    
 	    //Componentes de la pantalla de carga
 	    public static AtlasRegion cincoSec;
@@ -64,7 +64,7 @@ public class Assets {
 	    private static AtlasRegion HorizontalBarDown;
 	    
 	    //Componentes de la pantalla de creacion de partida multiplayer
-	    public static AtlasRegion backMultiplayer;
+	    public static AtlasRegion backGrey;
 	    
 	    public static AtlasRegion _1vsAllMode;
 	    public static AtlasRegion battleRoyalMode;
@@ -79,12 +79,14 @@ public class Assets {
 	    public static AtlasRegion inviteButton;
 	    public static AtlasRegion playButton;
 	    public static AtlasRegion backButton;
+	    public static AtlasRegion leaveGroupButton;
 	    
 	    public static AtlasRegion map;
 	    public static AtlasRegion multiplayerGameTitle;
+	    public static AtlasRegion inviteGameTitle;
 	    public static AtlasRegion pingu;
 	    
-	    public static AtlasRegion playerList;
+	    public static AtlasRegion list;
 	    public static AtlasRegion statusCancel;
 	    public static AtlasRegion statusTick;
 	    public static AtlasRegion statusInterrogation;
@@ -93,6 +95,75 @@ public class Assets {
 	    public static AtlasRegion mapRightArrow;
 	    public static AtlasRegion modeLeftArrow;
 	    public static AtlasRegion modeRightArrow;
+	    
+	    public static AtlasRegion playersText;
+	    public static AtlasRegion inviteListText;
+	    public static AtlasRegion availablePlayersText;
+
+	    public static AtlasRegion add;
+	    public static AtlasRegion minus;
+	    
+private static AtlasRegion barrelWithFissure;
+	    
+	    
+	    private static AtlasRegion fissureCenter;
+	    private static AtlasRegion fissureSideX;
+	    private static AtlasRegion fissureSideY;
+	    private static AtlasRegion fissureCrossing;
+	    
+	    private static AtlasRegion sunkenObject;
+	    private static AtlasRegion water1SideOpenE;
+	    private static AtlasRegion water1SideOpenW;
+	    private static AtlasRegion water1SideOpenN;
+	    private static AtlasRegion water1SideOpenS;
+	    
+	    private static AtlasRegion water2SideOpenCornerEN;
+	    private static AtlasRegion water2SideOpenCornerNW;
+	    private static AtlasRegion water2SideOpenCornerSE;
+	    private static AtlasRegion water2SideOpenCornerWS;
+	    
+	    private static AtlasRegion water2SideOpenBridgeX;
+	    private static AtlasRegion water2SideOpenBridgeY;
+	    
+	    private static AtlasRegion water3SideEOpen;
+	    private static AtlasRegion water3SideWOpen;
+	    private static AtlasRegion water3SideNOpen;
+	    private static AtlasRegion water3SideSOpen;
+	    
+	    private static AtlasRegion water4SideOpen;
+
+	    
+	    private static AtlasRegion deadIconYellow;
+	    private static AtlasRegion deadIconRed;
+	    private static AtlasRegion deadIconGreen;
+	    private static AtlasRegion deadIconBlue;
+	    
+
+	    private static AtlasRegion background;
+	    
+	    //Componentes de la pantalla de creacion de partida multiplayer
+	    public static AtlasRegion backMultiplayer;
+	    
+	    public static AtlasRegion playerList;
+
+	    //Componentes de la pantalla de ayuda
+	    
+	    public static AtlasRegion gameModesButtonHelp;
+	    public static AtlasRegion createButtonHelp;
+	    public static AtlasRegion controlButtonHelp;
+	    public static AtlasRegion backButtonHelp;
+	    public static AtlasRegion indexTitle;
+	    public static AtlasRegion introductionButtonHelp;
+	    public static AtlasRegion upgradesButtonHelp;
+	    
+	    public static AtlasRegion introductionHelpText;
+	    public static AtlasRegion upgradesHelpText;
+	    public static AtlasRegion controlHelpText;
+	    public static AtlasRegion createGameHelpText;
+	    public static AtlasRegion gameModesHelpText;
+	    
+
+
 
 	    /**
 	     * Load.
@@ -111,12 +182,11 @@ public class Assets {
 	        settings = atlas.findRegion("Settings");
 	        help = atlas.findRegion("Help");
 	        exit = atlas.findRegion("Exit");
-	        
-	        
+	 
+	          
 		    //Componentes de la pantalla de confirmacion
-		    panelConf = atlas.findRegion("Confirm");
-		    yesConf = atlas.findRegion("YesConfirm");
-		    noConf = atlas.findRegion("NoConfirm");
+		    window = atlas.findRegion("Window");
+		    exitText = atlas.findRegion("ExitText");
 		        
 		    //Componentes de la pantalla de carga
 		    cincoSec = atlas.findRegion("cincoSec");
@@ -140,12 +210,47 @@ public class Assets {
 		    volver = atlas.findRegion("Back");
 		    
 		    harpooon = atlas.findRegion("ArponParaBomba");
+		  //Fissures
+		    barrelWithFissure =  atlas.findRegion("barrelWithFissure");
+		    fissureCenter =  atlas.findRegion("fissureCenter");
+		    fissureSideX =  atlas.findRegion("fissureSideX");
+		    fissureSideY =  atlas.findRegion("fissureSideY");
+		    fissureCrossing = atlas.findRegion("fissureCrossing");
+		    //Sunken objects in water
+		    sunkenObject = atlas.findRegion("sunkenObject");
+		    //Water 1 Open Side 4 positions
+		    water1SideOpenE =  atlas.findRegion("Water1SideOpenEast");
+		    water1SideOpenW =  atlas.findRegion("Water1SideOpenWest");
+		    water1SideOpenS =  atlas.findRegion("Water1SideOpenSouth");
+		    water1SideOpenN =  atlas.findRegion("Water1SideOpenNorth");
+		   //Water 2 Open Sides Corner mode 4 positions
+		    water2SideOpenCornerEN =  atlas.findRegion("Water2SideOpenCornerEN");
+		    water2SideOpenCornerNW =  atlas.findRegion("Water2SideOpenCornerNW");
+		    water2SideOpenCornerSE =  atlas.findRegion("Water2SideOpenCornerSE");
+		    water2SideOpenCornerWS =  atlas.findRegion("Water2SideOpenCornerWS");
+		    //Water 2 open sides bridge mode 2 positions
+		    water2SideOpenBridgeX =  atlas.findRegion("Water2SideOpenBridgeX");
+		    water2SideOpenBridgeY =  atlas.findRegion("Water2SideOpenBridgeY");
+		    //Water 3 open side 4 position (the position is the unconnected side)
+		    water3SideEOpen =  atlas.findRegion("Water3SideEastOpen");
+		    water3SideWOpen =  atlas.findRegion("Water3SideWestOpen");
+		    water3SideNOpen =  atlas.findRegion("Water3SideNorthOpen");
+		    water3SideSOpen =  atlas.findRegion("Water3SideSouthOpen");
+		    //water 4 open sides
+		    water4SideOpen =  atlas.findRegion("Water4SideOpen");
 		    setIgloo(atlas.findRegion("iglus"));
 			mapBackground = atlas.findRegion("fondoJuego");
+			
 			lifeIconYellow = atlas.findRegion("vidasJugadorAmarillo");
 			lifeIconRed = atlas.findRegion("vidasJugadorRojo");
 			lifeIconBlue = atlas.findRegion("vidasJugadorAzul");
 			lifeIconGreen = atlas.findRegion("vidasJugadorVerde");
+			
+			deadIconYellow = atlas.findRegion("deadIconYellow");
+			deadIconRed = atlas.findRegion("deadIconRed");
+			deadIconBlue = atlas.findRegion("deadIconBlue");
+			deadIconGreen = atlas.findRegion("deadIconGreen");
+			
 			directionPanel=(atlas.findRegion("MandoDirecciones"));
 			buttonHarpoon = atlas.findRegion("BotonLanza"); 
 			barrel = atlas.findRegion("barril");
@@ -154,11 +259,10 @@ public class Assets {
 			VerticalBarRigth=((atlas.findRegion("barraverticalDer")));
 			HorizontalBarUP=((atlas.findRegion("barrahorizontalArriba")));
 			HorizontalBarDown=((atlas.findRegion("barrahorizontalAbajo")));
-			
-			
+			background=atlas.findRegion("fondo");
 			
 		    //Componentes de la pantalla de creacion de partida multiplayer
-			backMultiplayer = atlas.findRegion("BackgroundMultiplayer");
+			backGrey = atlas.findRegion("BackGrey");
 		    
 		    _1vsAllMode = atlas.findRegion("1vsAllModeButton");
 		    battleRoyalMode = atlas.findRegion("BattleRoyalButton");
@@ -173,12 +277,15 @@ public class Assets {
 		    inviteButton = atlas.findRegion("InviteButton");
 		    playButton = atlas.findRegion("PlayButton");
 		    backButton = atlas.findRegion("BackButton");
+		    leaveGroupButton = atlas.findRegion("LeaveGroupButton");
 		    
 		    map = atlas.findRegion("Map");
 		    multiplayerGameTitle = atlas.findRegion("MultiplayerGameTitle");
+		    inviteGameTitle = atlas.findRegion("InviteGameTitle");
+		    
 		    pingu = atlas.findRegion("Pingu");
 		    
-		    playerList = atlas.findRegion("PlayersList");
+		    list = atlas.findRegion("List");
 		    statusCancel = atlas.findRegion("StatusCancel");
 		    statusTick = atlas.findRegion("StatusTick");
 		    statusInterrogation = atlas.findRegion("StatusInterrogation");
@@ -186,8 +293,46 @@ public class Assets {
 		    mapLeftArrow = atlas.findRegion("MapLeftArrow");
 		    mapRightArrow = atlas.findRegion("MapRightArrow");
 		    modeLeftArrow = atlas.findRegion("ModeLeftArrow");
-		    modeRightArrow = atlas.findRegion("ModeRightArrow");
+		    modeRightArrow = atlas.findRegion("ModeRightArrow");    
+		  		    
+		    playersText = atlas.findRegion("PlayersText");
+		    inviteListText = atlas.findRegion("InviteListText");
+		    availablePlayersText = atlas.findRegion("AvailablePlayersText");	    
+		    
+		    add = atlas.findRegion("Add");
+		    minus = atlas.findRegion("Minus");
+		    
+		    //Componentes de la pantalla de ayuda
+		    
+		    gameModesButtonHelp = atlas.findRegion("GameModesButtonHelp");
+		    createButtonHelp = atlas.findRegion("CreateButtonHelp");
+		    controlButtonHelp = atlas.findRegion("ControlButtonHelp");
+		    backButtonHelp = atlas.findRegion("BackButtonHelp");
+		    indexTitle = atlas.findRegion("IndexTitle");
+		    introductionButtonHelp = atlas.findRegion("IntroductionButtonHelp");
+		    upgradesButtonHelp = atlas.findRegion("UpgradesButtonHelp");
+		    
+		    
+		    introductionHelpText = atlas.findRegion("IntroductionHelpText");
+		    upgradesHelpText = atlas.findRegion("UpgradesHelpText");
+		    controlHelpText = atlas.findRegion("ControlHelpText");
+		    createGameHelpText = atlas.findRegion("CreateGameHelpText");
+		    gameModesHelpText = atlas.findRegion("GameModesHelpText");
+		    
 	    }
+	    
+	    public static AtlasRegion getBarrelWithFissure() {
+			return barrelWithFissure;
+		}
+
+		public static AtlasRegion getBackground() {
+			return background;
+		}
+
+		public static void setBackground(AtlasRegion background) {
+			Assets.background = background;
+		}
+	    
 	    
 	    public static AtlasRegion getHarpoon() {
 			return harpooon;
@@ -199,6 +344,82 @@ public class Assets {
 		}
 
 
+		public static AtlasRegion getFissureCenter() {
+			return fissureCenter;
+		}
+
+		public static AtlasRegion getFissureSideX() {
+			return fissureSideX;
+		}
+
+		public static AtlasRegion getFissureSideY() {
+			return fissureSideY;
+		}
+		
+		public static AtlasRegion getFissureCrossing() {
+			return fissureCrossing;
+		}
+
+		public static AtlasRegion getWater1SideOpenE() {
+			return water1SideOpenE;
+		}
+
+		public static AtlasRegion getWater1SideOpenW() {
+			return water1SideOpenW;
+		}
+
+		public static AtlasRegion getWater1SideOpenN() {
+			return water1SideOpenN;
+		}
+
+		public static AtlasRegion getWater1SideOpenS() {
+			return water1SideOpenS;
+		}
+
+		public static AtlasRegion getWater2SideOpenCornerEN() {
+			return water2SideOpenCornerEN;
+		}
+
+		public static AtlasRegion getWater2SideOpenCornerNW() {
+			return water2SideOpenCornerNW;
+		}
+
+		public static AtlasRegion getWater2SideOpenCornerSE() {
+			return water2SideOpenCornerSE;
+		}
+
+		public static AtlasRegion getWater2SideOpenCornerWS() {
+			return water2SideOpenCornerWS;
+		}
+
+		public static AtlasRegion getWater2SideOpenBridgeX() {
+			return water2SideOpenBridgeX;
+		}
+
+		public static AtlasRegion getWater2SideOpenBridgeY() {
+			return water2SideOpenBridgeY;
+		}
+
+		public static AtlasRegion getWater3SideEOpen() {
+			return water3SideEOpen;
+		}
+
+		public static AtlasRegion getWater3SideWOpen() {
+			return water3SideWOpen;
+		}
+
+		public static AtlasRegion getWater3SideNOpen() {
+			return water3SideNOpen;
+		}
+
+		public static AtlasRegion getWater3SideSOpen() {
+			return water3SideSOpen;
+		}
+
+		public static AtlasRegion getWater4SideOpen() {
+			return water4SideOpen;
+		}
+		
 		public static AtlasRegion getButtonHarpoon() {
 			return buttonHarpoon;
 		}
@@ -214,7 +435,6 @@ public class Assets {
 		public static void setBarrel(AtlasRegion barrel) {
 			Assets.barrel = barrel;
 		}
-
 
 
 		public static void dispose(){
@@ -309,6 +529,30 @@ public class Assets {
 
 		public static void setIgloo(AtlasRegion igloo) {
 			Assets.igloo = igloo;
+		}
+		
+		public static AtlasRegion getSunkenObject() {
+			return sunkenObject;
+		}
+
+		public static void setSunkenObject(AtlasRegion sunkenObject) {
+			Assets.sunkenObject = sunkenObject;
+		}
+
+		public static AtlasRegion getDeadIconRed() {
+			return deadIconRed;
+		}
+		
+		public static AtlasRegion getDeadIconBlue() {
+			return deadIconBlue;
+		}
+		
+		public static AtlasRegion getDeadIconYellow() {
+			return deadIconYellow;
+		}
+		
+		public static AtlasRegion getDeadIconGreen() {
+			return deadIconGreen;
 		}
 
 	

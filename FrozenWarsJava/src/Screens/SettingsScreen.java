@@ -1,13 +1,11 @@
 package Screens;
 
-import java.io.IOException;
-
 import Application.Assets;
 import Application.GameSettings;
+import Application.LaunchFrozenWars;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -33,17 +31,14 @@ public class SettingsScreen implements Screen{
 	private BoundingBox confirmedExitClick;
 	private BoundingBox volverClick;
 	private Game game;
-	private boolean confirm;
-
-	public SettingsScreen(Game game, GameSettings gSettings, InitialScreen initialScreen) {
-		this.game = game;
-		this.gSettings = gSettings;
-		this.initialScreen = initialScreen;
+	
+	public SettingsScreen() {
+		this.game = LaunchFrozenWars.getGame();
+		this.gSettings = GameSettings.getInstance();
+		this.initialScreen = InitialScreen.getInstance();
 		guiCam = new OrthographicCamera(420,380);
 		guiCam.position.set(210,190,0);
 		
-		confirm = gSettings.isConfirmedExitOn(); //True si esta activada la opcion de confirmacion al salir
-
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 	    //Esquina inferior izq y superior derecha
@@ -122,7 +117,9 @@ public class SettingsScreen implements Screen{
 	   if (gSettings.isConfirmedExitOn()) batcher.draw(Assets.confirmedExitOn, 120, 150);
 	   else batcher.draw(Assets.confirmedExitOff, 120, 150);
 	   batcher.draw(Assets.volver, 120, 80);
-        batcher.end();
+       batcher.end();
+
+       ConfirmScreen.getInstance().createConfirmIfNeeded();
 
 	}
 

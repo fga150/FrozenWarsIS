@@ -7,6 +7,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 public class GameSettings {
+	private static GameSettings instance; 
+	public static GameSettings getInstance() {
+		if (instance == null) instance = new GameSettings("settings.xml");
+		return instance;
+	}
+	
 	private boolean soundOn;
 	private boolean vibrationOn;
 	private String userName;

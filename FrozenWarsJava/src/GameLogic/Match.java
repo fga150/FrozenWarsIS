@@ -3,53 +3,51 @@ package GameLogic;
 import com.badlogic.gdx.math.Vector3;
 
 import Application.MatchManager.Direction;
+import GameLogic.Map.SunkenTypes;
+import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.TypeSquare;
+import GameLogic.Map.WaterTypes;
 
 public class Match {
 	
 	enum TypeGame {Normal}
 	
+	private final int numPlayers = 4;
 	private final float playerWidth = 1;
 	private final float playerLength = 1;
 	private final float minimalMove = 0.25f;
 	
 	private Map map;
+	private TimeEventsManager timeEventsManager;
+	private HarpoonManager harpoonManager;
 	private TypeGame type;
 	private Player[] players;
-	private int numPlayers;
 	private int numUpgrades;
-	private long time;
-	
+	private long matchTime;
+	private Vector3 coord;
+
 	/*** ***/
 	
 	public Match(){
 		this.map = new Map(11,11,"mapaPrueba.xml");
-		this.players = new Player[4];
-		for (int i=0;i<4;i++){
+		this.harpoonManager = new HarpoonManager(numPlayers);
+		this.players = new Player[numPlayers];
+		this.timeEventsManager = new TimeEventsManager(this);
+		for (int i=0;i<numPlayers;i++){
 			players[i] = new Player(i);
 		}
-		this.numPlayers = 4;
+		coord=new Vector3();
 		this.numUpgrades = 0;
 	}
-
-	/*** Check if a movement made in a direction(dir) from a position
-	 *   made the object going to a new square on the boardGame. If
-	 *   the object goes to new one, it check if square's object can or
-	 *   not go through it.
-	 *   @param dir - direction of the object
-	 *   @param position - position of the object
-	 *   @return Returns if the object can move to the new square
-	 * ***/
-	
 	
 	/*** ***/
+	// CHANGEST
 	private boolean newSquare(int x, int y){
-
-		TypeSquare square = map.getposition(x,y);
+		TypeSquare square = map.getBasicMatrixSquare(x,y);
 		return !(square.equals(TypeSquare.unbreakable)|| square.equals(TypeSquare.breakable) 
 				  ||square.equals(TypeSquare.Harpoon));
 	}
-
+	//END
 	public boolean insideBoardMove(Direction dir, int playerId) {
 		boolean valid = false;
 		
@@ -74,6 +72,8 @@ public class Match {
 	public Direction getSpecialMoveDir(int myPlayerId) {
 		return players[myPlayerId].getSpecialMoveDir();
 	}
+	
+
 	
 	public boolean isSpecialMove(Direction dir, int myPlayerId) {
 		boolean valid=false;
@@ -182,7 +182,6 @@ public class Match {
 					}
 			}
 		}
-		//System.out.print(valid);
 		return valid;
 		}
 
@@ -214,8 +213,19 @@ public class Match {
 			}
 		}else valid=true;
 		players[myPlayerId].setSpecialMove(false);
+		//Commented method is for test sunkObject image when penguin is sunk
+		// and dead player this method is called for check if there are a collision
+		// between player and water.
+		if (!players[myPlayerId].isInvincible() && isSunkenPenguin(myPlayerId)){
+			loseLife(myPlayerId);
+		}
 		return valid;
 	}
+	private void loseLife(int playerId) {
+		timeEventsManager.sinkPenguinEvent(players[playerId]);
+		players[playerId].removeLive();
+	}
+
 	/**
 	 * @param yPlayerPosition 
 	 * @param xPlayerPosition * ***/
@@ -231,14 +241,134 @@ public class Match {
 		}
 	}
 	
-	public void putLanceAt(int xLancePosition, int yLancePosition) {
-		map.putLanceAt(xLancePosition,yLancePosition);		
+	public boolean isSunkenPenguin(int myPlayerId){
+		Vector3[] positions = players[myPlayerId].getPositions();
+		boolean isSunken = false;
+		if(map.getWaterMatrixSquare((int)positions[0].x,(int)positions[0].y)!=WaterTypes.empty){
+			map.sunkenObject((int)positions[0].x,(int)positions[0].y);
+			isSunken = true;
+		}
+		else if(map.getWaterMatrixSquare((int)positions[1].x,(int)positions[1].y)!=WaterTypes.empty){
+			map.sunkenObject((int)positions[1].x,(int)positions[1].y);
+			isSunken = true;
+		}
+		return isSunken;
 	}
 	
-	public boolean canPutLance(int myPlayerId){
-		int x = getIntegerCoordX(myPlayerId);
-		int y = getIntegerCoordY(myPlayerId);
-		return (map.isEmptySquare(x,y));
+	public void putHarpoonAt(int x, int y, int range, long time){
+		Harpoon harpoon = new Harpoon(x,y,range);
+		harpoonManager.addHarpoon(harpoon);
+		timeEventsManager.sinkHarpoonEvent(harpoon,time);
+		map.putHarpoonAt(x,y);
+		map.addAllFissures(harpoonManager.getActiveHarpoonList());
+	}
+	
+	public void sinkHarpoon(Harpoon harpoon) {
+		Vector3 position = harpoon.getPosition();
+		harpoonManager.sinkHarpoon(harpoon);
+		timeEventsManager.freezeWaterEvent(harpoon);
+		harpoonRangeDamage(harpoon);
+		map.putSunkenHarpoonAt((int)position.x,(int)position.y);
+		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
+		map.addAllFissures(harpoonManager.getActiveHarpoonList());
+	}
+	
+	private void harpoonRangeDamage(Harpoon harpoon) {
+		int range = harpoon.getRange();
+		boolean[] isCought = new boolean[numPlayers];
+		boolean[] isBlocked = new boolean [4];
+		for (int i=0;i<numPlayers;i++) isCought[i] = false;
+		for (int i=0;i<4;i++) isBlocked[i] = false;
+		for (int i=0;i<=range;i++){
+			for (int j=0;j<numPlayers;j++){
+				if (!players[j].isInvincible()){
+					Vector3[] positions = players[j].getPositions();
+					if (isCought(harpoon,i,positions,isBlocked)){
+						isCought[j] = true;
+					}
+				}
+			}
+			updateBlocked(harpoon,i+1,isBlocked);
+		}
+		for (int i=0;i<numPlayers;i++){
+			if (isCought[i]) loseLife(i);
+		}
+	}
+
+	private void updateBlocked(Harpoon harpoon, int range, boolean[] isBlocked) {
+		int x = (int)harpoon.getPosition().x;
+		int y = (int)harpoon.getPosition().y;
+		if (!map.canRunThrough(x,y+range)) isBlocked[0] = true;
+		if (!map.canRunThrough(x,y-range)) isBlocked[1] = true;
+		if (!map.canRunThrough(x-range,y)) isBlocked[2] = true;
+		if (!map.canRunThrough(x+range,y)) isBlocked[3] = true;
+	}
+
+	private boolean isCought(Harpoon harpoon, int range, Vector3[] positions,boolean[] isBlocked) {
+		int x = (int)harpoon.getPosition().x;
+		int y = (int)harpoon.getPosition().y;
+		boolean isCought = false;
+		// north
+		if (!isBlocked[0] && (((positions[0].x==x) && (positions[0].y == y+range)) || 
+		     (positions[1].x==x) && (positions[1].y == y+range))){
+			isCought = true;
+			map.sunkenObject((int)harpoon.getPosition().x,(int)harpoon.getPosition().y+range);
+		}
+		// south
+		else if (!isBlocked[1] && (((positions[0].x==x) && (positions[0].y == y-range)) || 
+			     (positions[1].x==x) && (positions[1].y == y-range))){
+			isCought = true;
+			map.sunkenObject((int)harpoon.getPosition().x,(int)harpoon.getPosition().y-range);
+		}
+		// west
+		else if (!isBlocked[2] && (((positions[0].x==x-range) && (positions[0].y == y)) || 
+			     (positions[1].x==x-range) && (positions[1].y == y))){
+			isCought = true;
+			map.sunkenObject((int)harpoon.getPosition().x-range,(int)harpoon.getPosition().y);
+		}
+		// east
+		else if (!isBlocked[3] && (((positions[0].x==x+range) && (positions[0].y == y)) || 
+			     (positions[1].x==x+range) && (positions[1].y == y))){
+			isCought = true;
+			map.sunkenObject((int)harpoon.getPosition().x+range,(int)harpoon.getPosition().y);
+		}
+		return isCought;
+	}
+
+	public void freezeWater(Harpoon harpoon) {
+		map.emptyHarpoonPosInSunkenMatrix(harpoon);
+		harpoonManager.removeHarpoon(harpoon);
+		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
+	}
+	
+	public boolean canPutHarpoon(int myPlayerId){
+		Vector3 position=players[myPlayerId].getPosition();
+		if(players[myPlayerId].getLookAt().equals(Direction.right)){
+			if ((position.x-(int)position.x)==0){
+				coord.x=position.x;
+				coord.y=position.y;
+			}else{
+				coord.x=position.x+1;
+				coord.y=position.y;
+			}
+		}else if(players[myPlayerId].getLookAt().equals(Direction.left)){
+				coord.x=position.x;
+				coord.y=position.y;
+			
+		}else if(players[myPlayerId].getLookAt().equals(Direction.up)){
+			if ((position.y-(int)position.y)==0){
+				coord.x=position.x;
+				coord.y=position.y;
+			}else{
+				coord.x=position.x;
+				coord.y=position.y+1;
+			}
+		}else if(players[myPlayerId].getLookAt().equals(Direction.down)){
+				coord.x=position.x;
+				coord.y=position.y;
+			
+		}
+		return (map.isEmptySquare((int)coord.x,(int)coord.y));
 	}	
 
 	public int getIntegerCoordX(int myPlayerId) {
@@ -251,6 +381,15 @@ public class Match {
 		Player myPlayer = players[myPlayerId];
 		Vector3 position = myPlayer.getPosition();
 		return (int)position.y;
+	}
+	
+	public void sinkPenguinFinish(Player player) {
+		player.checkCanPlay();
+		player.removeInvincible();
+	}
+
+	public int getMyPlayerRange(int myPlayerId) {
+		return players[myPlayerId].getRange();
 	}
 	
 	//Getters and Setters
@@ -270,14 +409,16 @@ public class Match {
 	public Player[] getPlayers() {
 		return players;
 	}
+	
+	public Player getPlayers(int i) {
+		return players[i];
+	}
+	
 	public void setPlayers(Player[] players) {
 		this.players = players;
 	}
 	public int getNumPlayers() {
 		return numPlayers;
-	}
-	public void setNumPlayers(int numPlayers) {
-		this.numPlayers = numPlayers;
 	}
 	public int getNumUpgrades() {
 		return numUpgrades;
@@ -286,10 +427,10 @@ public class Match {
 		this.numUpgrades = numUpgrades;
 	}
 	public long getTime() {
-		return time;
+		return matchTime;
 	}
 	public void setTime(long time) {
-		this.time = time;
+		this.matchTime = time;
 	}
 
 	public Vector3 getMyPlayerPosition(int playerId) {
@@ -298,12 +439,66 @@ public class Match {
 		return currentPosition;
 	}
 
-	public TypeSquare getSquare(int i, int j) {
-		return map.getposition(i,j);
+	public TypeSquare getBasicMatrixSquare(int i, int j) {
+		return map.getBasicMatrixSquare(i,j);
 	}
+	
+	public FissuresTypes getFissureMatrixSquare(int i, int j) {
+		return map.getFissureMatrixSquare(i,j);
+	}
+
+	
+	public WaterTypes getWaterMatrixSquare(int i, int j) {
+		return map.getWaterMatrixSquare(i,j);
+	}
+	
+	public SunkenTypes getSunkenMatrixSquare(int i, int j) {
+		return map.getSunkenMatrixSquare(i,j);
+	}
+	
 
 	public Direction getPlayerDirection(int i) {
 		return players[i].getLookAt();
 	}
+	public Vector3 getCoord() {
+		return coord;
+	}
+
+	public void setCoord(Vector3 coord) {
+		this.coord = coord;
+	}
+	public int getPlayerLifes(int i) {
+		return players[i].getLifes();
+	}
+
+	public HarpoonManager getHarpoonManager() {
+		return harpoonManager;
+	}
+
+	public void setHarpoonManager(HarpoonManager harpoonManager) {
+		this.harpoonManager = harpoonManager;
+	}
+
+	public TimeEventsManager getTimeEventsManager() {
+		return timeEventsManager;
+	}
+
+	public void setTimeEventsManager(TimeEventsManager timeEventsManager) {
+		this.timeEventsManager = timeEventsManager;
+	}
+
+	public boolean isThePlayerDead(int numPlayer) {
+		return players[numPlayer].isThePlayerDead();
+	}
+
+	public Direction getLookAt(int i) {
+		return players[i].getLookAt();
+	}
+
+	public boolean canPlay(int i) {
+		return players[i].canPlay();
+	}
+
+	
 
 }

@@ -7,18 +7,18 @@ import com.badlogic.gdx.Screen;
 
 
 public class LaunchFrozenWars extends Game {
+	private static Game instance;
+	
+	public static Game getGame(){
+		return instance;
+	}
 	
 	private Screen loadScreen;
 	@Override
 	public void create() {
 		Assets.load();
-		GameSettings gSettings = new GameSettings("settings.xml");
-	    if (gSettings.isSoundOn()){
-			Assets.music.setVolume(0.5f);
-			//  Assets.music.play();
-			Assets.music.setLooping(true);
-	    }
-		loadScreen = new LoadScreen(this, gSettings);
+	    instance = this;
+		loadScreen = new LoadScreen();
 		setScreen(loadScreen);
 	}
 
