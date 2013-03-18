@@ -88,52 +88,56 @@ public class Disconnect extends BaseServerEventHandler {
 				}
 			}
 			
-			try{
-				Queue<User> queue1 = parentEx.getQueue1();
-				queue1.remove(player);
-			}catch(Exception e){};
-			try{
-				Queue<User[]> queue2 = parentEx.getQueue2();
-				Iterator<User[]> it=queue2.iterator();
-				boolean enc=false;
-				User[] arrayUsers=null;
-				int i;
-				while(it.hasNext()&&enc==false){
-					arrayUsers=it.next();
-						i=0;
-						while(i<arrayUsers.length&&enc==false){
-							enc= arrayUsers[i]==player;
-							i++;
-						}
-				}
-				if(enc==true){
-					if(arrayUsers[0]!=player)this.send("OutOfQueue", new SFSObject(), arrayUsers[0]);
-					if(arrayUsers[1]!=player)this.send("OutOfQueue", new SFSObject(), arrayUsers[1]);
-					queue2.remove(arrayUsers);		
-				}
-			}catch(Exception e){};
-			try{
-				Queue<User[]> queue3 = parentEx.getQueue3();
-				Iterator<User[]> it=queue3.iterator();
-				boolean enc=false;
-				User[] arrayUsers=null;
-				int i;
-				while(it.hasNext()&&enc==false){
-					arrayUsers=it.next();
-						i=0;
-						while(i<arrayUsers.length && enc==false){
-							enc= arrayUsers[i]==player;
-							i++;
-						}
-				}
-				if(enc==true){
-					if(arrayUsers[0]!=player)this.send("OutOfQueue", new SFSObject(), arrayUsers[0]);
-					if(arrayUsers[1]!=player)this.send("OutOfQueue", new SFSObject(), arrayUsers[1]);
-					if(arrayUsers[2]!=player)this.send("OutOfQueue", new SFSObject(), arrayUsers[2]);
-					queue3.remove(arrayUsers);
-				}
-			}catch(Exception e){};
-		}
+		try{
+			Queue<User> queue1 = parentEx.getQueue1();
+			queue1.remove(player);
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue2 = parentEx.getQueue2();
+			Iterator<User[]> it=queue2.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length&&enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				queue2.remove(arrayUsers);		
+			}
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue3 = parentEx.getQueue3();
+			Iterator<User[]> it=queue3.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length && enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+				queue3.remove(arrayUsers);
+			}
+		}catch(Exception e){};
+	}
 		/*Set<String> names= users.keySet(); //TODO tell friends he was disconected
 		Iterator<String> it=names.iterator();
 		if (it.hasNext()){				// here we tell to another user the disconection of this player (TO DO "tell" friends got disconnected)
