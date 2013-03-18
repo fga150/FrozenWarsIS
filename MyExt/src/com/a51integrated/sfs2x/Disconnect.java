@@ -56,7 +56,11 @@ public class Disconnect extends BaseServerEventHandler {
 						i++;
 					}
 			}
-			if(enc==true)queue2.remove(arrayUsers);
+			if(enc==true){
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", new SFSObject(), arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", new SFSObject(), arrayUsers[1]);
+				queue2.remove(arrayUsers);		
+			}
 		}catch(Exception e){};
 		try{
 			Queue<User[]> queue3 = parentEx.getQueue3();
@@ -67,12 +71,17 @@ public class Disconnect extends BaseServerEventHandler {
 			while(it.hasNext()&&enc==false){
 				arrayUsers=it.next();
 					i=0;
-					while(i<arrayUsers.length&&enc==false){
+					while(i<arrayUsers.length && enc==false){
 						enc= arrayUsers[i]==player;
 						i++;
 					}
 			}
-			if(enc==true)queue3.remove(arrayUsers);
+			if(enc==true){
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", new SFSObject(), arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", new SFSObject(), arrayUsers[1]);
+				if(arrayUsers[2]!=player)this.send("OutOfQueue", new SFSObject(), arrayUsers[2]);
+				queue3.remove(arrayUsers);
+			}
 		}catch(Exception e){};
 		/*Set<String> names= users.keySet(); //TODO tell friends he was disconected
 		Iterator<String> it=names.iterator();
