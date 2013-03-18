@@ -4,13 +4,17 @@ package com.a51integrated.sfs2x;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 import com.smartfoxserver.v2.core.ISFSEvent;
 import com.smartfoxserver.v2.core.SFSEventParam;
 import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.User;
+import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
+import com.smartfoxserver.v2.entities.data.SFSArray;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.SFSException;
 import com.smartfoxserver.v2.extensions.BaseServerEventHandler;
@@ -21,6 +25,7 @@ public class Disconnect extends BaseServerEventHandler {
 
 		MyExt parentEx = (MyExt) getParentExtension();
 		HashMap<String,User> users=parentEx.getUsers(); // get the hashmap with all the current users conected
+		HashMap<String,InvitationRoom> gamesInCreation = parentEx.getGamesInCreation(); // Get the games in creation.
 		User player=(User) event.getParameter(SFSEventParam.USER); // get the player that fired the event
 		users.remove(player.getName());	//remove the player from the hashmap
 		
@@ -38,6 +43,47 @@ public class Disconnect extends BaseServerEventHandler {
 				parentEx.send("meter1", rtn, iterator.next());
 			}
 		}
+		if(gamesInCreation.containsKey(player.getName())){
+			 ISFSArray accplayer = gamesInCreation.get(player.getName()).getAcceptedPlayers();
+		        for (int j=0; j<accplayer.size();j++){ //Sends the response to the joinned players.
+		        	if(accplayer.getUtfString(j) != player.getName())
+		        	parentEx.send("LeaderLeft", null, users.get(accplayer.getUtfString(j)));
+		        }
+		        
+		        gamesInCreation.remove(player.getName());
+			
+		}
+		else{
+			@SuppressWarnings("rawtypes")
+			Set set = gamesInCreation.entrySet();
+
+			@SuppressWarnings("rawtypes")
+			Iterator iter = set.iterator();
+			boolean found = false;
+			while (iter.hasNext() && !found) { //Gets the keys of the hashmap. This keys are the user names
+			@SuppressWarnings({ "rawtypes" })
+			Map.Entry entry = (Map.Entry) iter.next();
+			if(gamesInCreation.get(entry.getKey()).getAcceptedPlayers().contains(player.getName())){
+				gamesInCreation.get(entry.getKey()).putRefused(player.getName());
+				
+				ISFSArray accepted = new SFSArray();
+				 accepted = gamesInCreation.get(entry.getKey()).getAcceptedPlayers();
+				
+				ISFSArray refused = new SFSArray();
+				 refused = gamesInCreation.get(entry.getKey()).getRefusedPlayers();
+				
+		       ISFSObject rtn = new SFSObject();
+		       rtn.putSFSArray("acceptedPlayers", accepted);
+		       rtn.putSFSArray("refusedPlayers", refused);
+		       ISFSArray accplayer = gamesInCreation.get(entry.getKey()).getAcceptedPlayers();
+		       for (int j=0; j<accplayer.size();j++){ //Sends the response to the joinned players.
+		       	parentEx.send("AcceptedRefused", rtn, users.get(accplayer.getUtfString(j)));
+		       }
+		       found =true;
+			}
+			}
+		}
+		
 		try{
 			Queue<User> queue1 = parentEx.getQueue1();
 			queue1.remove(player);

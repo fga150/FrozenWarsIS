@@ -22,6 +22,7 @@ public class ExitGroup extends BaseClientRequestHandler {
 		if(player2.equals(player.getName())){
 	        ISFSArray accplayer = gamesInCreation.get(player2).getAcceptedPlayers();
 	        for (int j=0; j<accplayer.size();j++){ //Sends the response to the joinned players.
+	        	if(accplayer.getUtfString(j) != player2)
 	        	parentEx.send("LeaderLeft", null, users.get(accplayer.getUtfString(j)));
 	        }
 	        
