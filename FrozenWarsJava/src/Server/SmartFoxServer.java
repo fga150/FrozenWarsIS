@@ -111,6 +111,8 @@ public class SmartFoxServer implements IEventListener {
 					modInQueueResponse(response);
 				else if (cmd.equals("GameNotFound"))
 					gameNotFound(response);
+				else if (cmd.equals("OutOfQueue"))
+					OutOfQueue(response);
 				}
 
 		});
@@ -121,7 +123,7 @@ public class SmartFoxServer implements IEventListener {
 		try {
 			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
 			ip = address.getHostAddress();
-			//ip="192.168.1.41";
+			//ip="127.0.0.1";
 		} catch (Exception e){
 			
 		}
@@ -337,8 +339,7 @@ public class SmartFoxServer implements IEventListener {
 		params.putUtfString("Inviter", name);
 		ExtensionRequest request = new ExtensionRequest("ExitGroup",params);
 		sfsClient.send(request);
-		 MultiplayerScreen.getInstance().setDefault();
-		
+		MultiplayerScreen.getInstance().setDefault();
 	}
 	
 	public void gameMessage(ISFSObject response){
@@ -394,8 +395,11 @@ public class SmartFoxServer implements IEventListener {
 			yPosition++;
 			int yLancePosition = Integer.parseInt(message.substring(yPosition));
 			manager.putLanceEvent(xLancePosition,yLancePosition);
-		}
-		
+		}		
+	}
+	
+	private void OutOfQueue(ISFSObject params){
+		System.out.println("funciona");
 	}
 	
 	private void leaderLeftResponse(ISFSObject response) {
