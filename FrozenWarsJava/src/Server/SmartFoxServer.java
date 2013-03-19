@@ -189,11 +189,12 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void acceptRequest(String inviter) {
+		this.groupExitRequest(MultiplayerScreen.getInstance().getGameAdmin());
+		
 		ISFSObject params = new SFSObject();
 		params.putUtfString("Inviter", inviter);
 		ExtensionRequest request = new ExtensionRequest("Accept",params);
 		sfsClient.send(request);
-		
 	}
 	
 	

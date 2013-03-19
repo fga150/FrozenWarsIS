@@ -222,10 +222,20 @@ public class MultiplayerScreen implements Screen{
 		this.gameAdmin = gameAdmin;
 	}
 	
+
+	public String getGameAdmin() {
+		return gameAdmin;
+	}
+	
 	public void setInQueue(boolean inQueue) {
 		this.inQueue = inQueue;
 	}
     
+
+	public boolean isInQueue() {
+		return inQueue;
+	}
+	
     public MultiplayerScreen() {
 		instance = this;
     	this.game = LaunchFrozenWars.getGame();
@@ -455,5 +465,7 @@ public class MultiplayerScreen implements Screen{
 	public void show() {
 		
 	}
+
+
 
 }
