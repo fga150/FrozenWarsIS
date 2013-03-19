@@ -33,6 +33,7 @@ public class SmartFoxServer implements IEventListener {
 	private SmartFox sfsClient;
 	private MatchManager manager;
 	private static SmartFoxServer instance;
+	private int myId;
 	
 	public static SmartFoxServer getInstance() {
 		if (instance == null) instance = new SmartFoxServer();
@@ -41,6 +42,7 @@ public class SmartFoxServer implements IEventListener {
 	
 	public SmartFoxServer(){
 		instance = this;
+		myId = -999;
 		String ip = getServerIP();
 		sfsClient = new SmartFox(false);
 		sfsClient.connect(ip,9933);
@@ -53,7 +55,7 @@ public class SmartFoxServer implements IEventListener {
 	
 	
 	public int getMyPlayerId(){
-		return sfsClient.getMySelf().getPlayerId();
+		return myId;
 	}
 	
 	private void addEventListeners() {
@@ -243,6 +245,7 @@ public class SmartFoxServer implements IEventListener {
 	}
 		
 	public void insertInQueuesResponse(ISFSObject response){
+		myId = response.getInt("id");
 		MultiplayerScreen.getInstance().setEmpiezaPartida(true);
 	} 
 
@@ -405,7 +408,7 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void getHarpoon(ISFSObject response){
-		long time=response.getLong("time");
+		long time=response.getLong("time");		
 		int x=response.getInt("x");
 		int y=response.getInt("y");
 		int range=response.getInt("range");
