@@ -58,8 +58,10 @@ public class ConfirmScreen implements Screen{
 	}
 	
 	public void setNewConfirmScreen(String mode, String usr){
-		screenModeV.add(mode);
-		userV.add(usr);
+		if (!(mode.equals("InviteGame") && MultiplayerScreen.getInstance().isInQueue())){
+			screenModeV.add(mode);
+			userV.add(usr);
+		}
 	}
 	
 	public void createConfirmIfNeeded(){

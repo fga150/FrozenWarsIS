@@ -12,6 +12,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -48,6 +49,7 @@ public class GameScreen implements Screen{
 		numPlayer=manager.getMyIdPlayer();
 		this.manager = manager;
 		font = new BitmapFont();
+		font.setColor(Color.BLACK);
 		guiCam = new OrthographicCamera(21,13);
 		textCam=new OrthographicCamera(21*32,13*32);
 		textCam.position.set((21*32)/2,(13*32)/2,0);
@@ -168,7 +170,7 @@ public class GameScreen implements Screen{
 		
 		paintLifes();
 		batcher.setProjectionMatrix(textCam.combined);
-		font.draw(batcher, name, 1*32 ,13*32);
+		font.draw(batcher, name, 2*32 ,13*32);
 		batcher.end();
 		guiCam.update();
 		textCam.update();

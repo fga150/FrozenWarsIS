@@ -27,7 +27,7 @@ public class Desktop {
 		- 480. Alto en píxeles.
 		- false. Para indicar que no queremos utilizar OpenGL S 2.0 en este caso. Por lo que se utilizará el 1.1
 		*/
-        new JoglApplication(new LaunchFrozenWars(), "FrozenWars", 672, 416, false);
+        new JoglApplication(new LaunchFrozenWars(), "FrozenWars", 1024, 639, false);
 	}
 
 }
