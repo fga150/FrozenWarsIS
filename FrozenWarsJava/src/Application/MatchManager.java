@@ -64,7 +64,12 @@ public class MatchManager {
 	public boolean isThePlayerDead(int numPlayer) {
 		return match.isThePlayerDead(numPlayer);
 	}
+	
+	public boolean imTheWinner(int numPlayer){
+		return match.imTheWinner(numPlayer);
 
+	}
+	
 	
 	// Getters and Setters
 	

@@ -105,7 +105,6 @@ public class GameScreen implements Screen{
 		batcher.draw(Assets.getVerticalBarLeft(),7,0,1,13);
 		batcher.draw(Assets.getVerticalBarRigth(),19,0,1,13);
 		
-		paintPlayerStatus();
 		
 		for(int i=0;i<11;i++){
 			for (int j=0;j<11;j++){
@@ -169,13 +168,15 @@ public class GameScreen implements Screen{
 		}
 		
 		paintLifes();
+		paintPlayerStatus();
+		
 		batcher.setProjectionMatrix(textCam.combined);
 		font.draw(batcher, name, 2*32 ,13*32);
 		batcher.end();
 		guiCam.update();
 		textCam.update();
 		
-		if(manager.canPlay(numPlayer)){
+		if(manager.canPlay(numPlayer) && !manager.imTheWinner(numPlayer)){
 			if ((Gdx.input.isKeyPressed(Keys.W))||(Gdx.input.isKeyPressed(Keys.UP))){manager.movePlayer(Direction.up);}
 			if ((Gdx.input.isKeyPressed(Keys.S))||(Gdx.input.isKeyPressed(Keys.DOWN))){manager.movePlayer(Direction.down);}
 			if ((Gdx.input.isKeyPressed(Keys.A))||(Gdx.input.isKeyPressed(Keys.LEFT))){manager.movePlayer(Direction.left);}
@@ -226,6 +227,10 @@ public class GameScreen implements Screen{
 			}else if(numPlayer==3){
 				batcher.draw(Assets.getDeadIconBlue(),6,12,0.75f,0.75f);
 			}
+			batcher.draw(Assets.getGameOver(),6,4,14,8);
+		}
+		if (manager.imTheWinner(numPlayer)){
+			batcher.draw(Assets.getYouWin(),6,4,14,8);
 		}
 }
 			

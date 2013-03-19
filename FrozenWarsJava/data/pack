@@ -52,9 +52,16 @@ Confirm
   orig: 300, 300
   offset: 0, 0
   index: -1
-gameOver
+YouWin
   rotate: false
   xy: 304, 1608
+  size: 441, 184
+  orig: 441, 184
+  offset: 0, 0
+  index: -1
+GameOver
+  rotate: false
+  xy: 304, 1794
   size: 441, 184
   orig: 441, 184
   offset: 0, 0
@@ -103,126 +110,126 @@ BotonLanza
   index: -1
 InviteGameTitle
   rotate: false
-  xy: 304, 1794
+  xy: 304, 1980
   size: 385, 65
   orig: 385, 65
   offset: 0, 0
   index: -1
 MultiplayerGameTitle
   rotate: false
-  xy: 304, 1794
+  xy: 304, 1980
   size: 385, 65
   orig: 385, 65
   offset: 0, 0
   index: -1
 unSec
   rotate: false
-  xy: 304, 1861
+  xy: 1454, 805
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
 tresSec
   rotate: false
-  xy: 304, 1938
+  xy: 1454, 882
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
 dosSec
   rotate: false
-  xy: 1454, 805
+  xy: 1454, 959
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
 cuatroSec
   rotate: false
-  xy: 1454, 882
+  xy: 1454, 1036
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
 AvailablePlayersText
   rotate: false
-  xy: 1454, 959
+  xy: 1454, 1113
   size: 330, 55
   orig: 330, 55
   offset: 0, 0
   index: -1
 UpgradesButtonHelp
   rotate: false
-  xy: 1454, 1016
+  xy: 1454, 1170
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 IntroductionButtonHelp
   rotate: false
-  xy: 1454, 1075
+  xy: 1454, 1229
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 GameModesButtonHelp
   rotate: false
-  xy: 1454, 1134
+  xy: 1454, 1288
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 CreateButtonHelp
   rotate: false
-  xy: 1454, 1193
+  xy: 1454, 1347
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 ControlButtonHelp
   rotate: false
-  xy: 1454, 1252
+  xy: 1454, 1406
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 BackButtonHelp
   rotate: false
-  xy: 1454, 1311
+  xy: 1454, 1465
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 TeamPlayButton
   rotate: false
-  xy: 1454, 1370
+  xy: 1454, 1524
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 SurvivalModeButton
   rotate: false
-  xy: 1454, 1427
+  xy: 1454, 1581
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 NormalModeButton
   rotate: false
-  xy: 1454, 1484
+  xy: 1454, 1638
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 BattleRoyalButton
   rotate: false
-  xy: 1454, 1541
+  xy: 1454, 1695
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 1vsAllModeButton
   rotate: false
-  xy: 1454, 1598
+  xy: 1454, 1752
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
@@ -306,7 +313,7 @@ PlayersText
   index: -1
 IndicadorVidas
   rotate: false
-  xy: 610, 1861
+  xy: 1005, 1880
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
@@ -327,98 +334,98 @@ MapLeftArrow
   index: -1
 VibrationOn
   rotate: false
-  xy: 304, 2015
+  xy: 747, 2009
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 VibrationOff
   rotate: false
-  xy: 747, 2009
+  xy: 1100, 1670
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 SoundOn
   rotate: false
-  xy: 1100, 1670
+  xy: 1100, 1702
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 SoundOff
   rotate: false
-  xy: 1100, 1702
+  xy: 1100, 1734
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Settings
   rotate: false
-  xy: 1100, 1734
+  xy: 1100, 1766
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Play
   rotate: false
-  xy: 1100, 1766
+  xy: 1100, 1798
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 LoggedOut
   rotate: false
-  xy: 1100, 1798
+  xy: 1100, 1830
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 LoggedIn
   rotate: false
-  xy: 1100, 1830
+  xy: 1100, 1862
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Help
   rotate: false
-  xy: 1100, 1862
+  xy: 1100, 1894
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Exit
   rotate: false
-  xy: 1100, 1894
+  xy: 1100, 1926
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 ConfirmedExitOn
   rotate: false
-  xy: 1100, 1926
+  xy: 1100, 1958
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 ConfirmedExitOff
   rotate: false
-  xy: 1100, 1958
+  xy: 1100, 1990
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Back
   rotate: false
-  xy: 1100, 1990
+  xy: 1760, 848
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 ExternalPlayersText
   rotate: false
-  xy: 1760, 848
+  xy: 1760, 882
   size: 190, 25
   orig: 190, 25
   offset: 0, 0
@@ -593,70 +600,70 @@ deadIconYellow
   index: -1
 deadIconRed
   rotate: false
-  xy: 691, 1794
+  xy: 691, 1980
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 deadIconGreen
   rotate: false
-  xy: 692, 1861
+  xy: 691, 2014
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 deadIconBlue
   rotate: false
-  xy: 692, 1895
+  xy: 949, 1866
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 barril
   rotate: false
-  xy: 610, 1943
+  xy: 919, 2009
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ArponParaBomba
   rotate: false
-  xy: 610, 1977
+  xy: 953, 2009
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Water2SideOpenCornerSE
   rotate: false
-  xy: 691, 1828
+  xy: 1005, 1962
   size: 32, 31
   orig: 32, 31
   offset: 0, 0
   index: -1
 Water2SideOpenCornerNW
   rotate: false
-  xy: 476, 2015
+  xy: 1005, 1995
   size: 32, 31
   orig: 32, 31
   offset: 0, 0
   index: -1
 Water2SideOpenCornerWS
   rotate: false
-  xy: 610, 2011
+  xy: 1039, 1962
   size: 31, 32
   orig: 31, 32
   offset: 0, 0
   index: -1
 Water2SideOpenCornerEN
   rotate: false
-  xy: 644, 1943
+  xy: 1039, 1996
   size: 31, 32
   orig: 31, 32
   offset: 0, 0
   index: -1
 Water2SideOpenBridgeX
   rotate: false
-  xy: 510, 2015
+  xy: 1242, 1608
   size: 32, 30
   orig: 32, 30
   offset: 0, 0
@@ -670,35 +677,35 @@ Water2SideOpenBridgeY
   index: -1
 Water1SideOpenSouth
   rotate: false
-  xy: 544, 2015
+  xy: 1272, 1670
   size: 31, 30
   orig: 31, 30
   offset: 0, 0
   index: -1
 Water1SideOpenNorth
   rotate: false
-  xy: 577, 2015
+  xy: 1272, 1702
   size: 31, 30
   orig: 31, 30
   offset: 0, 0
   index: -1
 Water1SideOpenWest
   rotate: false
-  xy: 677, 1943
+  xy: 1272, 1990
   size: 30, 31
   orig: 30, 31
   offset: 0, 0
   index: -1
 Water1SideOpenEast
   rotate: false
-  xy: 709, 1943
+  xy: 1307, 1548
   size: 30, 31
   orig: 30, 31
   offset: 0, 0
   index: -1
 iglus
   rotate: false
-  xy: 644, 1977
+  xy: 1242, 1640
   size: 31, 25
   orig: 31, 25
   offset: 0, 0
@@ -712,2440 +719,7 @@ TickExternalPlayers
   index: -1
 ExternalPlayersButton
   rotate: false
-  xy: 644, 2004
-  size: 27, 24
-  orig: 27, 24
-  offset: 0, 0
-  index: -1
-
-image2.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-secondBack
-  rotate: false
-  xy: 2, 2
-  size: 1303, 800
-  orig: 1303, 800
-  offset: 0, 0
-  index: -1
-fondoJuego
-  rotate: false
-  xy: 2, 804
-  size: 1300, 800
-  orig: 1300, 800
-  offset: 0, 0
-  index: -1
-barrahorizontalAbajo
-  rotate: false
-  xy: 2, 1606
-  size: 918, 70
-  orig: 918, 70
-  offset: 0, 0
-  index: -1
-
-image3.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-UpgradesHelpText
-  rotate: false
-  xy: 2, 2
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-IntroductionHelpText
-  rotate: false
-  xy: 2, 633
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-GameModesHelpText
-  rotate: false
-  xy: 2, 1264
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-barrahorizontalArriba
-  rotate: false
-  xy: 1028, 2
-  size: 921, 64
-  orig: 921, 64
-  offset: 0, 0
-  index: -1
-
-image4.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-CreateGameHelpText
-  rotate: false
-  xy: 2, 2
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-ControlHelpText
-  rotate: false
-  xy: 2, 633
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-BackGrey
-  rotate: false
-  xy: 2, 1264
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-BackgroundMultiplayer
-  rotate: false
-  xy: 2, 1264
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-
-image1.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-initialBack
-  rotate: false
-  xy: 2, 2
-  size: 1303, 801
-  orig: 1303, 801
-  offset: 0, 0
-  index: -1
-backConf
-  rotate: false
-  xy: 2, 805
-  size: 1303, 801
-  orig: 1303, 801
-  offset: 0, 0
-  index: -1
-PlayersList
-  rotate: false
-  xy: 1307, 2
-  size: 332, 302
-  orig: 332, 302
-  offset: 0, 0
-  index: -1
-List
-  rotate: false
-  xy: 1641, 2
-  size: 329, 300
-  orig: 329, 300
-  offset: 0, 0
-  index: -1
-Window
-  rotate: false
-  xy: 1307, 306
-  size: 360, 265
-  orig: 360, 265
-  offset: 0, 0
-  index: -1
-ExitText
-  rotate: false
-  xy: 1669, 306
-  size: 360, 265
-  orig: 360, 265
-  offset: 0, 0
-  index: -1
-Confirm
-  rotate: false
-  xy: 2, 1608
-  size: 300, 300
-  orig: 300, 300
-  offset: 0, 0
-  index: -1
-gameOver
-  rotate: false
-  xy: 304, 1608
-  size: 441, 184
-  orig: 441, 184
-  offset: 0, 0
-  index: -1
-MandoDirecciones
-  rotate: false
-  xy: 747, 1608
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
-barraverticalIzq
-  rotate: false
-  xy: 1307, 805
-  size: 81, 741
-  orig: 81, 741
-  offset: 0, 0
-  index: -1
-Map
-  rotate: false
-  xy: 1307, 573
-  size: 300, 182
-  orig: 300, 182
-  offset: 0, 0
-  index: -1
-barraverticalDer
-  rotate: false
-  xy: 1390, 805
-  size: 62, 756
-  orig: 62, 756
-  offset: 0, 0
-  index: -1
-fondo
-  rotate: false
-  xy: 1669, 573
-  size: 182, 172
-  orig: 182, 172
-  offset: 0, 0
-  index: -1
-BotonLanza
-  rotate: false
-  xy: 1005, 1608
-  size: 93, 270
-  orig: 93, 270
-  offset: 0, 0
-  index: -1
-InviteGameTitle
-  rotate: false
-  xy: 304, 1794
-  size: 385, 65
-  orig: 385, 65
-  offset: 0, 0
-  index: -1
-MultiplayerGameTitle
-  rotate: false
-  xy: 304, 1794
-  size: 385, 65
-  orig: 385, 65
-  offset: 0, 0
-  index: -1
-unSec
-  rotate: false
-  xy: 304, 1861
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-tresSec
-  rotate: false
-  xy: 304, 1938
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-dosSec
-  rotate: false
-  xy: 1454, 805
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-cuatroSec
-  rotate: false
-  xy: 1454, 882
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-AvailablePlayersText
-  rotate: false
-  xy: 1454, 959
-  size: 330, 55
-  orig: 330, 55
-  offset: 0, 0
-  index: -1
-UpgradesButtonHelp
-  rotate: false
-  xy: 1454, 1016
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-IntroductionButtonHelp
-  rotate: false
-  xy: 1454, 1075
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-GameModesButtonHelp
-  rotate: false
-  xy: 1454, 1134
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-CreateButtonHelp
-  rotate: false
-  xy: 1454, 1193
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-ControlButtonHelp
-  rotate: false
-  xy: 1454, 1252
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-BackButtonHelp
-  rotate: false
-  xy: 1454, 1311
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-TeamPlayButton
-  rotate: false
-  xy: 1454, 1370
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-SurvivalModeButton
-  rotate: false
-  xy: 1454, 1427
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-NormalModeButton
-  rotate: false
-  xy: 1454, 1484
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-BattleRoyalButton
-  rotate: false
-  xy: 1454, 1541
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-1vsAllModeButton
-  rotate: false
-  xy: 1454, 1598
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-CajaMapas
-  rotate: false
-  xy: 1853, 573
-  size: 151, 105
-  orig: 151, 105
-  offset: 0, 0
-  index: -1
-YesConfirm
-  rotate: false
-  xy: 1853, 680
-  size: 150, 100
-  orig: 150, 100
-  offset: 0, 0
-  index: -1
-NoConfirm
-  rotate: false
-  xy: 2, 1910
-  size: 150, 100
-  orig: 150, 100
-  offset: 0, 0
-  index: -1
-Pingu
-  rotate: false
-  xy: 154, 1910
-  size: 100, 120
-  orig: 100, 120
-  offset: 0, 0
-  index: -1
-InviteListText
-  rotate: false
-  xy: 747, 1866
-  size: 200, 55
-  orig: 200, 55
-  offset: 0, 0
-  index: -1
-LeaveGroupButton
-  rotate: false
-  xy: 1307, 757
-  size: 240, 44
-  orig: 240, 44
-  offset: 0, 0
-  index: -1
-PlayButton
-  rotate: false
-  xy: 747, 1923
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-InviteButton
-  rotate: false
-  xy: 747, 1966
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-BackButton
-  rotate: false
-  xy: 1760, 805
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-IndexTitle
-  rotate: false
-  xy: 1100, 1608
-  size: 140, 60
-  orig: 140, 60
-  offset: 0, 0
-  index: -1
-PlayersText
-  rotate: false
-  xy: 1669, 747
-  size: 150, 55
-  orig: 150, 55
-  offset: 0, 0
-  index: -1
-IndicadorVidas
-  rotate: false
-  xy: 610, 1861
-  size: 80, 80
-  orig: 80, 80
-  offset: 0, 0
-  index: -1
-MapRightArrow
-  rotate: false
-  xy: 1972, 2
-  size: 65, 85
-  orig: 65, 85
-  offset: 0, 0
-  index: -1
-MapLeftArrow
-  rotate: false
-  xy: 1972, 89
-  size: 65, 85
-  orig: 65, 85
-  offset: 0, 0
-  index: -1
-VibrationOn
-  rotate: false
-  xy: 304, 2015
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-VibrationOff
-  rotate: false
-  xy: 747, 2009
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-SoundOn
-  rotate: false
-  xy: 1100, 1670
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-SoundOff
-  rotate: false
-  xy: 1100, 1702
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Settings
-  rotate: false
-  xy: 1100, 1734
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Play
-  rotate: false
-  xy: 1100, 1766
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-LoggedOut
-  rotate: false
-  xy: 1100, 1798
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-LoggedIn
-  rotate: false
-  xy: 1100, 1830
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Help
-  rotate: false
-  xy: 1100, 1862
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Exit
-  rotate: false
-  xy: 1100, 1894
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-ConfirmedExitOn
-  rotate: false
-  xy: 1100, 1926
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-ConfirmedExitOff
-  rotate: false
-  xy: 1100, 1958
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Back
-  rotate: false
-  xy: 1100, 1990
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-ExternalPlayersText
-  rotate: false
-  xy: 1760, 848
-  size: 190, 25
-  orig: 190, 25
-  offset: 0, 0
-  index: -1
-casilla
-  rotate: false
-  xy: 1972, 176
-  size: 46, 46
-  orig: 46, 46
-  offset: 0, 0
-  index: -1
-StatusTick
-  rotate: false
-  xy: 1972, 224
-  size: 45, 40
-  orig: 45, 40
-  offset: 0, 0
-  index: -1
-StatusInterrogation
-  rotate: false
-  xy: 1549, 757
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-StatusCancel
-  rotate: false
-  xy: 1609, 573
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-Minus
-  rotate: false
-  xy: 1609, 615
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-Add
-  rotate: false
-  xy: 1609, 657
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-ModeRightArrow
-  rotate: false
-  xy: 1609, 699
-  size: 30, 44
-  orig: 30, 44
-  offset: 0, 0
-  index: -1
-ModeLeftArrow
-  rotate: false
-  xy: 1609, 745
-  size: 30, 44
-  orig: 30, 44
-  offset: 0, 0
-  index: -1
-barrelWithFissure
-  rotate: false
-  xy: 1972, 266
-  size: 36, 36
-  orig: 36, 36
-  offset: 0, 0
-  index: -1
-sunkenObject
-  rotate: false
-  xy: 2010, 266
-  size: 33, 33
-  orig: 33, 33
-  offset: 0, 0
-  index: -1
-Water4SideOpen
-  rotate: false
-  xy: 2006, 573
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideWestOpen
-  rotate: false
-  xy: 2006, 607
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideSouthOpen
-  rotate: false
-  xy: 2006, 641
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideNorthOpen
-  rotate: false
-  xy: 2005, 680
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideEastOpen
-  rotate: false
-  xy: 2005, 714
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorVerde
-  rotate: false
-  xy: 2005, 748
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorRojo
-  rotate: false
-  xy: 2, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorAzul
-  rotate: false
-  xy: 36, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorAmarillo
-  rotate: false
-  xy: 70, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureSideY
-  rotate: false
-  xy: 104, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureSideX
-  rotate: false
-  xy: 256, 1910
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureCrossing
-  rotate: false
-  xy: 256, 1944
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureCenter
-  rotate: false
-  xy: 256, 1978
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconYellow
-  rotate: false
-  xy: 256, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconRed
-  rotate: false
-  xy: 691, 1794
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconGreen
-  rotate: false
-  xy: 692, 1861
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconBlue
-  rotate: false
-  xy: 692, 1895
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-barril
-  rotate: false
-  xy: 610, 1943
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-ArponParaBomba
-  rotate: false
-  xy: 610, 1977
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerSE
-  rotate: false
-  xy: 691, 1828
-  size: 32, 31
-  orig: 32, 31
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerNW
-  rotate: false
-  xy: 476, 2015
-  size: 32, 31
-  orig: 32, 31
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerWS
-  rotate: false
-  xy: 610, 2011
-  size: 31, 32
-  orig: 31, 32
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerEN
-  rotate: false
-  xy: 644, 1943
-  size: 31, 32
-  orig: 31, 32
-  offset: 0, 0
-  index: -1
-Water2SideOpenBridgeX
-  rotate: false
-  xy: 510, 2015
-  size: 32, 30
-  orig: 32, 30
-  offset: 0, 0
-  index: -1
-Water2SideOpenBridgeY
-  rotate: false
-  xy: 1821, 747
-  size: 30, 32
-  orig: 30, 32
-  offset: 0, 0
-  index: -1
-Water1SideOpenSouth
-  rotate: false
-  xy: 544, 2015
-  size: 31, 30
-  orig: 31, 30
-  offset: 0, 0
-  index: -1
-Water1SideOpenNorth
-  rotate: false
-  xy: 577, 2015
-  size: 31, 30
-  orig: 31, 30
-  offset: 0, 0
-  index: -1
-Water1SideOpenWest
-  rotate: false
-  xy: 677, 1943
-  size: 30, 31
-  orig: 30, 31
-  offset: 0, 0
-  index: -1
-Water1SideOpenEast
-  rotate: false
-  xy: 709, 1943
-  size: 30, 31
-  orig: 30, 31
-  offset: 0, 0
-  index: -1
-iglus
-  rotate: false
-  xy: 644, 1977
-  size: 31, 25
-  orig: 31, 25
-  offset: 0, 0
-  index: -1
-TickExternalPlayers
-  rotate: false
-  xy: 2019, 224
-  size: 27, 24
-  orig: 27, 24
-  offset: 0, 0
-  index: -1
-ExternalPlayersButton
-  rotate: false
-  xy: 644, 2004
-  size: 27, 24
-  orig: 27, 24
-  offset: 0, 0
-  index: -1
-
-image2.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-secondBack
-  rotate: false
-  xy: 2, 2
-  size: 1303, 800
-  orig: 1303, 800
-  offset: 0, 0
-  index: -1
-fondoJuego
-  rotate: false
-  xy: 2, 804
-  size: 1300, 800
-  orig: 1300, 800
-  offset: 0, 0
-  index: -1
-barrahorizontalAbajo
-  rotate: false
-  xy: 2, 1606
-  size: 918, 70
-  orig: 918, 70
-  offset: 0, 0
-  index: -1
-
-image3.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-UpgradesHelpText
-  rotate: false
-  xy: 2, 2
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-IntroductionHelpText
-  rotate: false
-  xy: 2, 633
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-GameModesHelpText
-  rotate: false
-  xy: 2, 1264
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-barrahorizontalArriba
-  rotate: false
-  xy: 1028, 2
-  size: 921, 64
-  orig: 921, 64
-  offset: 0, 0
-  index: -1
-
-image4.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-CreateGameHelpText
-  rotate: false
-  xy: 2, 2
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-ControlHelpText
-  rotate: false
-  xy: 2, 633
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-BackGrey
-  rotate: false
-  xy: 2, 1264
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-BackgroundMultiplayer
-  rotate: false
-  xy: 2, 1264
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-
-image1.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-initialBack
-  rotate: false
-  xy: 2, 2
-  size: 1303, 801
-  orig: 1303, 801
-  offset: 0, 0
-  index: -1
-backConf
-  rotate: false
-  xy: 2, 805
-  size: 1303, 801
-  orig: 1303, 801
-  offset: 0, 0
-  index: -1
-PlayersList
-  rotate: false
-  xy: 1307, 2
-  size: 332, 302
-  orig: 332, 302
-  offset: 0, 0
-  index: -1
-List
-  rotate: false
-  xy: 1641, 2
-  size: 329, 300
-  orig: 329, 300
-  offset: 0, 0
-  index: -1
-Window
-  rotate: false
-  xy: 1307, 306
-  size: 360, 265
-  orig: 360, 265
-  offset: 0, 0
-  index: -1
-ExitText
-  rotate: false
-  xy: 1669, 306
-  size: 360, 265
-  orig: 360, 265
-  offset: 0, 0
-  index: -1
-Confirm
-  rotate: false
-  xy: 2, 1608
-  size: 300, 300
-  orig: 300, 300
-  offset: 0, 0
-  index: -1
-gameOver
-  rotate: false
-  xy: 304, 1608
-  size: 441, 184
-  orig: 441, 184
-  offset: 0, 0
-  index: -1
-MandoDirecciones
-  rotate: false
-  xy: 747, 1608
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
-barraverticalIzq
-  rotate: false
-  xy: 1307, 805
-  size: 81, 741
-  orig: 81, 741
-  offset: 0, 0
-  index: -1
-Map
-  rotate: false
-  xy: 1307, 573
-  size: 300, 182
-  orig: 300, 182
-  offset: 0, 0
-  index: -1
-barraverticalDer
-  rotate: false
-  xy: 1390, 805
-  size: 62, 756
-  orig: 62, 756
-  offset: 0, 0
-  index: -1
-fondo
-  rotate: false
-  xy: 1669, 573
-  size: 182, 172
-  orig: 182, 172
-  offset: 0, 0
-  index: -1
-BotonLanza
-  rotate: false
-  xy: 1005, 1608
-  size: 93, 270
-  orig: 93, 270
-  offset: 0, 0
-  index: -1
-InviteGameTitle
-  rotate: false
-  xy: 304, 1794
-  size: 385, 65
-  orig: 385, 65
-  offset: 0, 0
-  index: -1
-MultiplayerGameTitle
-  rotate: false
-  xy: 304, 1794
-  size: 385, 65
-  orig: 385, 65
-  offset: 0, 0
-  index: -1
-unSec
-  rotate: false
-  xy: 304, 1861
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-tresSec
-  rotate: false
-  xy: 304, 1938
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-dosSec
-  rotate: false
-  xy: 1454, 805
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-cuatroSec
-  rotate: false
-  xy: 1454, 882
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-AvailablePlayersText
-  rotate: false
-  xy: 1454, 959
-  size: 330, 55
-  orig: 330, 55
-  offset: 0, 0
-  index: -1
-UpgradesButtonHelp
-  rotate: false
-  xy: 1454, 1016
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-IntroductionButtonHelp
-  rotate: false
-  xy: 1454, 1075
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-GameModesButtonHelp
-  rotate: false
-  xy: 1454, 1134
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-CreateButtonHelp
-  rotate: false
-  xy: 1454, 1193
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-ControlButtonHelp
-  rotate: false
-  xy: 1454, 1252
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-BackButtonHelp
-  rotate: false
-  xy: 1454, 1311
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-TeamPlayButton
-  rotate: false
-  xy: 1454, 1370
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-SurvivalModeButton
-  rotate: false
-  xy: 1454, 1427
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-NormalModeButton
-  rotate: false
-  xy: 1454, 1484
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-BattleRoyalButton
-  rotate: false
-  xy: 1454, 1541
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-1vsAllModeButton
-  rotate: false
-  xy: 1454, 1598
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-CajaMapas
-  rotate: false
-  xy: 1853, 573
-  size: 151, 105
-  orig: 151, 105
-  offset: 0, 0
-  index: -1
-YesConfirm
-  rotate: false
-  xy: 1853, 680
-  size: 150, 100
-  orig: 150, 100
-  offset: 0, 0
-  index: -1
-NoConfirm
-  rotate: false
-  xy: 2, 1910
-  size: 150, 100
-  orig: 150, 100
-  offset: 0, 0
-  index: -1
-Pingu
-  rotate: false
-  xy: 154, 1910
-  size: 100, 120
-  orig: 100, 120
-  offset: 0, 0
-  index: -1
-InviteListText
-  rotate: false
-  xy: 747, 1866
-  size: 200, 55
-  orig: 200, 55
-  offset: 0, 0
-  index: -1
-LeaveGroupButton
-  rotate: false
-  xy: 1307, 757
-  size: 240, 44
-  orig: 240, 44
-  offset: 0, 0
-  index: -1
-PlayButton
-  rotate: false
-  xy: 747, 1923
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-InviteButton
-  rotate: false
-  xy: 747, 1966
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-BackButton
-  rotate: false
-  xy: 1760, 805
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-IndexTitle
-  rotate: false
-  xy: 1100, 1608
-  size: 140, 60
-  orig: 140, 60
-  offset: 0, 0
-  index: -1
-PlayersText
-  rotate: false
-  xy: 1669, 747
-  size: 150, 55
-  orig: 150, 55
-  offset: 0, 0
-  index: -1
-IndicadorVidas
-  rotate: false
-  xy: 610, 1861
-  size: 80, 80
-  orig: 80, 80
-  offset: 0, 0
-  index: -1
-MapRightArrow
-  rotate: false
-  xy: 1972, 2
-  size: 65, 85
-  orig: 65, 85
-  offset: 0, 0
-  index: -1
-MapLeftArrow
-  rotate: false
-  xy: 1972, 89
-  size: 65, 85
-  orig: 65, 85
-  offset: 0, 0
-  index: -1
-VibrationOn
-  rotate: false
-  xy: 304, 2015
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-VibrationOff
-  rotate: false
-  xy: 747, 2009
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-SoundOn
-  rotate: false
-  xy: 1100, 1670
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-SoundOff
-  rotate: false
-  xy: 1100, 1702
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Settings
-  rotate: false
-  xy: 1100, 1734
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Play
-  rotate: false
-  xy: 1100, 1766
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-LoggedOut
-  rotate: false
-  xy: 1100, 1798
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-LoggedIn
-  rotate: false
-  xy: 1100, 1830
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Help
-  rotate: false
-  xy: 1100, 1862
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Exit
-  rotate: false
-  xy: 1100, 1894
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-ConfirmedExitOn
-  rotate: false
-  xy: 1100, 1926
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-ConfirmedExitOff
-  rotate: false
-  xy: 1100, 1958
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Back
-  rotate: false
-  xy: 1100, 1990
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-ExternalPlayersText
-  rotate: false
-  xy: 1760, 848
-  size: 190, 25
-  orig: 190, 25
-  offset: 0, 0
-  index: -1
-casilla
-  rotate: false
-  xy: 1972, 176
-  size: 46, 46
-  orig: 46, 46
-  offset: 0, 0
-  index: -1
-StatusTick
-  rotate: false
-  xy: 1972, 224
-  size: 45, 40
-  orig: 45, 40
-  offset: 0, 0
-  index: -1
-StatusInterrogation
-  rotate: false
-  xy: 1549, 757
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-StatusCancel
-  rotate: false
-  xy: 1609, 573
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-Minus
-  rotate: false
-  xy: 1609, 615
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-Add
-  rotate: false
-  xy: 1609, 657
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-ModeRightArrow
-  rotate: false
-  xy: 1609, 699
-  size: 30, 44
-  orig: 30, 44
-  offset: 0, 0
-  index: -1
-ModeLeftArrow
-  rotate: false
-  xy: 1609, 745
-  size: 30, 44
-  orig: 30, 44
-  offset: 0, 0
-  index: -1
-barrelWithFissure
-  rotate: false
-  xy: 1972, 266
-  size: 36, 36
-  orig: 36, 36
-  offset: 0, 0
-  index: -1
-sunkenObject
-  rotate: false
-  xy: 2010, 266
-  size: 33, 33
-  orig: 33, 33
-  offset: 0, 0
-  index: -1
-Water4SideOpen
-  rotate: false
-  xy: 2006, 573
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideWestOpen
-  rotate: false
-  xy: 2006, 607
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideSouthOpen
-  rotate: false
-  xy: 2006, 641
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideNorthOpen
-  rotate: false
-  xy: 2005, 680
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideEastOpen
-  rotate: false
-  xy: 2005, 714
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorVerde
-  rotate: false
-  xy: 2005, 748
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorRojo
-  rotate: false
-  xy: 2, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorAzul
-  rotate: false
-  xy: 36, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorAmarillo
-  rotate: false
-  xy: 70, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureSideY
-  rotate: false
-  xy: 104, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureSideX
-  rotate: false
-  xy: 256, 1910
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureCrossing
-  rotate: false
-  xy: 256, 1944
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureCenter
-  rotate: false
-  xy: 256, 1978
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconYellow
-  rotate: false
-  xy: 256, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconRed
-  rotate: false
-  xy: 691, 1794
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconGreen
-  rotate: false
-  xy: 692, 1861
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconBlue
-  rotate: false
-  xy: 692, 1895
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-barril
-  rotate: false
-  xy: 610, 1943
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-ArponParaBomba
-  rotate: false
-  xy: 610, 1977
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerSE
-  rotate: false
-  xy: 691, 1828
-  size: 32, 31
-  orig: 32, 31
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerNW
-  rotate: false
-  xy: 476, 2015
-  size: 32, 31
-  orig: 32, 31
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerWS
-  rotate: false
-  xy: 610, 2011
-  size: 31, 32
-  orig: 31, 32
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerEN
-  rotate: false
-  xy: 644, 1943
-  size: 31, 32
-  orig: 31, 32
-  offset: 0, 0
-  index: -1
-Water2SideOpenBridgeX
-  rotate: false
-  xy: 510, 2015
-  size: 32, 30
-  orig: 32, 30
-  offset: 0, 0
-  index: -1
-Water2SideOpenBridgeY
-  rotate: false
-  xy: 1821, 747
-  size: 30, 32
-  orig: 30, 32
-  offset: 0, 0
-  index: -1
-Water1SideOpenSouth
-  rotate: false
-  xy: 544, 2015
-  size: 31, 30
-  orig: 31, 30
-  offset: 0, 0
-  index: -1
-Water1SideOpenNorth
-  rotate: false
-  xy: 577, 2015
-  size: 31, 30
-  orig: 31, 30
-  offset: 0, 0
-  index: -1
-Water1SideOpenWest
-  rotate: false
-  xy: 677, 1943
-  size: 30, 31
-  orig: 30, 31
-  offset: 0, 0
-  index: -1
-Water1SideOpenEast
-  rotate: false
-  xy: 709, 1943
-  size: 30, 31
-  orig: 30, 31
-  offset: 0, 0
-  index: -1
-iglus
-  rotate: false
-  xy: 644, 1977
-  size: 31, 25
-  orig: 31, 25
-  offset: 0, 0
-  index: -1
-TickExternalPlayers
-  rotate: false
-  xy: 2019, 224
-  size: 27, 24
-  orig: 27, 24
-  offset: 0, 0
-  index: -1
-ExternalPlayersButton
-  rotate: false
-  xy: 644, 2004
-  size: 27, 24
-  orig: 27, 24
-  offset: 0, 0
-  index: -1
-
-image2.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-secondBack
-  rotate: false
-  xy: 2, 2
-  size: 1303, 800
-  orig: 1303, 800
-  offset: 0, 0
-  index: -1
-fondoJuego
-  rotate: false
-  xy: 2, 804
-  size: 1300, 800
-  orig: 1300, 800
-  offset: 0, 0
-  index: -1
-barrahorizontalAbajo
-  rotate: false
-  xy: 2, 1606
-  size: 918, 70
-  orig: 918, 70
-  offset: 0, 0
-  index: -1
-
-image3.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-UpgradesHelpText
-  rotate: false
-  xy: 2, 2
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-IntroductionHelpText
-  rotate: false
-  xy: 2, 633
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-GameModesHelpText
-  rotate: false
-  xy: 2, 1264
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-barrahorizontalArriba
-  rotate: false
-  xy: 1028, 2
-  size: 921, 64
-  orig: 921, 64
-  offset: 0, 0
-  index: -1
-
-image4.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-CreateGameHelpText
-  rotate: false
-  xy: 2, 2
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-ControlHelpText
-  rotate: false
-  xy: 2, 633
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-BackGrey
-  rotate: false
-  xy: 2, 1264
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-BackgroundMultiplayer
-  rotate: false
-  xy: 2, 1264
-  size: 1024, 629
-  orig: 1024, 629
-  offset: 0, 0
-  index: -1
-
-image1.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-initialBack
-  rotate: false
-  xy: 2, 2
-  size: 1303, 801
-  orig: 1303, 801
-  offset: 0, 0
-  index: -1
-backConf
-  rotate: false
-  xy: 2, 805
-  size: 1303, 801
-  orig: 1303, 801
-  offset: 0, 0
-  index: -1
-PlayersList
-  rotate: false
-  xy: 1307, 2
-  size: 332, 302
-  orig: 332, 302
-  offset: 0, 0
-  index: -1
-List
-  rotate: false
-  xy: 1641, 2
-  size: 329, 300
-  orig: 329, 300
-  offset: 0, 0
-  index: -1
-Window
-  rotate: false
-  xy: 1307, 306
-  size: 360, 265
-  orig: 360, 265
-  offset: 0, 0
-  index: -1
-ExitText
-  rotate: false
-  xy: 1669, 306
-  size: 360, 265
-  orig: 360, 265
-  offset: 0, 0
-  index: -1
-Confirm
-  rotate: false
-  xy: 2, 1608
-  size: 300, 300
-  orig: 300, 300
-  offset: 0, 0
-  index: -1
-gameOver
-  rotate: false
-  xy: 304, 1608
-  size: 441, 184
-  orig: 441, 184
-  offset: 0, 0
-  index: -1
-MandoDirecciones
-  rotate: false
-  xy: 747, 1608
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
-barraverticalIzq
-  rotate: false
-  xy: 1307, 805
-  size: 81, 741
-  orig: 81, 741
-  offset: 0, 0
-  index: -1
-Map
-  rotate: false
-  xy: 1307, 573
-  size: 300, 182
-  orig: 300, 182
-  offset: 0, 0
-  index: -1
-barraverticalDer
-  rotate: false
-  xy: 1390, 805
-  size: 62, 756
-  orig: 62, 756
-  offset: 0, 0
-  index: -1
-fondo
-  rotate: false
-  xy: 1669, 573
-  size: 182, 172
-  orig: 182, 172
-  offset: 0, 0
-  index: -1
-BotonLanza
-  rotate: false
-  xy: 1005, 1608
-  size: 93, 270
-  orig: 93, 270
-  offset: 0, 0
-  index: -1
-InviteGameTitle
-  rotate: false
-  xy: 304, 1794
-  size: 385, 65
-  orig: 385, 65
-  offset: 0, 0
-  index: -1
-MultiplayerGameTitle
-  rotate: false
-  xy: 304, 1794
-  size: 385, 65
-  orig: 385, 65
-  offset: 0, 0
-  index: -1
-unSec
-  rotate: false
-  xy: 304, 1861
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-tresSec
-  rotate: false
-  xy: 304, 1938
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-dosSec
-  rotate: false
-  xy: 1454, 805
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-cuatroSec
-  rotate: false
-  xy: 1454, 882
-  size: 304, 75
-  orig: 304, 75
-  offset: 0, 0
-  index: -1
-AvailablePlayersText
-  rotate: false
-  xy: 1454, 959
-  size: 330, 55
-  orig: 330, 55
-  offset: 0, 0
-  index: -1
-UpgradesButtonHelp
-  rotate: false
-  xy: 1454, 1016
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-IntroductionButtonHelp
-  rotate: false
-  xy: 1454, 1075
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-GameModesButtonHelp
-  rotate: false
-  xy: 1454, 1134
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-CreateButtonHelp
-  rotate: false
-  xy: 1454, 1193
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-ControlButtonHelp
-  rotate: false
-  xy: 1454, 1252
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-BackButtonHelp
-  rotate: false
-  xy: 1454, 1311
-  size: 316, 57
-  orig: 316, 57
-  offset: 0, 0
-  index: -1
-TeamPlayButton
-  rotate: false
-  xy: 1454, 1370
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-SurvivalModeButton
-  rotate: false
-  xy: 1454, 1427
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-NormalModeButton
-  rotate: false
-  xy: 1454, 1484
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-BattleRoyalButton
-  rotate: false
-  xy: 1454, 1541
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-1vsAllModeButton
-  rotate: false
-  xy: 1454, 1598
-  size: 325, 55
-  orig: 325, 55
-  offset: 0, 0
-  index: -1
-CajaMapas
-  rotate: false
-  xy: 1853, 573
-  size: 151, 105
-  orig: 151, 105
-  offset: 0, 0
-  index: -1
-YesConfirm
-  rotate: false
-  xy: 1853, 680
-  size: 150, 100
-  orig: 150, 100
-  offset: 0, 0
-  index: -1
-NoConfirm
-  rotate: false
-  xy: 2, 1910
-  size: 150, 100
-  orig: 150, 100
-  offset: 0, 0
-  index: -1
-Pingu
-  rotate: false
-  xy: 154, 1910
-  size: 100, 120
-  orig: 100, 120
-  offset: 0, 0
-  index: -1
-InviteListText
-  rotate: false
-  xy: 747, 1866
-  size: 200, 55
-  orig: 200, 55
-  offset: 0, 0
-  index: -1
-LeaveGroupButton
-  rotate: false
-  xy: 1307, 757
-  size: 240, 44
-  orig: 240, 44
-  offset: 0, 0
-  index: -1
-PlayButton
-  rotate: false
-  xy: 747, 1923
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-InviteButton
-  rotate: false
-  xy: 747, 1966
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-BackButton
-  rotate: false
-  xy: 1760, 805
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-IndexTitle
-  rotate: false
-  xy: 1100, 1608
-  size: 140, 60
-  orig: 140, 60
-  offset: 0, 0
-  index: -1
-PlayersText
-  rotate: false
-  xy: 1669, 747
-  size: 150, 55
-  orig: 150, 55
-  offset: 0, 0
-  index: -1
-IndicadorVidas
-  rotate: false
-  xy: 610, 1861
-  size: 80, 80
-  orig: 80, 80
-  offset: 0, 0
-  index: -1
-MapRightArrow
-  rotate: false
-  xy: 1972, 2
-  size: 65, 85
-  orig: 65, 85
-  offset: 0, 0
-  index: -1
-MapLeftArrow
-  rotate: false
-  xy: 1972, 89
-  size: 65, 85
-  orig: 65, 85
-  offset: 0, 0
-  index: -1
-VibrationOn
-  rotate: false
-  xy: 304, 2015
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-VibrationOff
-  rotate: false
-  xy: 747, 2009
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-SoundOn
-  rotate: false
-  xy: 1100, 1670
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-SoundOff
-  rotate: false
-  xy: 1100, 1702
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Settings
-  rotate: false
-  xy: 1100, 1734
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Play
-  rotate: false
-  xy: 1100, 1766
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-LoggedOut
-  rotate: false
-  xy: 1100, 1798
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-LoggedIn
-  rotate: false
-  xy: 1100, 1830
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Help
-  rotate: false
-  xy: 1100, 1862
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Exit
-  rotate: false
-  xy: 1100, 1894
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-ConfirmedExitOn
-  rotate: false
-  xy: 1100, 1926
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-ConfirmedExitOff
-  rotate: false
-  xy: 1100, 1958
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Back
-  rotate: false
-  xy: 1100, 1990
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-ExternalPlayersText
-  rotate: false
-  xy: 1760, 848
-  size: 190, 25
-  orig: 190, 25
-  offset: 0, 0
-  index: -1
-casilla
-  rotate: false
-  xy: 1972, 176
-  size: 46, 46
-  orig: 46, 46
-  offset: 0, 0
-  index: -1
-StatusTick
-  rotate: false
-  xy: 1972, 224
-  size: 45, 40
-  orig: 45, 40
-  offset: 0, 0
-  index: -1
-StatusInterrogation
-  rotate: false
-  xy: 1549, 757
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-StatusCancel
-  rotate: false
-  xy: 1609, 573
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-Minus
-  rotate: false
-  xy: 1609, 615
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-Add
-  rotate: false
-  xy: 1609, 657
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-ModeRightArrow
-  rotate: false
-  xy: 1609, 699
-  size: 30, 44
-  orig: 30, 44
-  offset: 0, 0
-  index: -1
-ModeLeftArrow
-  rotate: false
-  xy: 1609, 745
-  size: 30, 44
-  orig: 30, 44
-  offset: 0, 0
-  index: -1
-barrelWithFissure
-  rotate: false
-  xy: 1972, 266
-  size: 36, 36
-  orig: 36, 36
-  offset: 0, 0
-  index: -1
-sunkenObject
-  rotate: false
-  xy: 2010, 266
-  size: 33, 33
-  orig: 33, 33
-  offset: 0, 0
-  index: -1
-Water4SideOpen
-  rotate: false
-  xy: 2006, 573
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideWestOpen
-  rotate: false
-  xy: 2006, 607
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideSouthOpen
-  rotate: false
-  xy: 2006, 641
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideNorthOpen
-  rotate: false
-  xy: 2005, 680
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water3SideEastOpen
-  rotate: false
-  xy: 2005, 714
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorVerde
-  rotate: false
-  xy: 2005, 748
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorRojo
-  rotate: false
-  xy: 2, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorAzul
-  rotate: false
-  xy: 36, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vidasJugadorAmarillo
-  rotate: false
-  xy: 70, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureSideY
-  rotate: false
-  xy: 104, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureSideX
-  rotate: false
-  xy: 256, 1910
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureCrossing
-  rotate: false
-  xy: 256, 1944
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-fissureCenter
-  rotate: false
-  xy: 256, 1978
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconYellow
-  rotate: false
-  xy: 256, 2012
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconRed
-  rotate: false
-  xy: 691, 1794
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconGreen
-  rotate: false
-  xy: 692, 1861
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-deadIconBlue
-  rotate: false
-  xy: 692, 1895
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-barril
-  rotate: false
-  xy: 610, 1943
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-ArponParaBomba
-  rotate: false
-  xy: 610, 1977
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerSE
-  rotate: false
-  xy: 691, 1828
-  size: 32, 31
-  orig: 32, 31
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerNW
-  rotate: false
-  xy: 476, 2015
-  size: 32, 31
-  orig: 32, 31
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerWS
-  rotate: false
-  xy: 610, 2011
-  size: 31, 32
-  orig: 31, 32
-  offset: 0, 0
-  index: -1
-Water2SideOpenCornerEN
-  rotate: false
-  xy: 644, 1943
-  size: 31, 32
-  orig: 31, 32
-  offset: 0, 0
-  index: -1
-Water2SideOpenBridgeX
-  rotate: false
-  xy: 510, 2015
-  size: 32, 30
-  orig: 32, 30
-  offset: 0, 0
-  index: -1
-Water2SideOpenBridgeY
-  rotate: false
-  xy: 1821, 747
-  size: 30, 32
-  orig: 30, 32
-  offset: 0, 0
-  index: -1
-Water1SideOpenSouth
-  rotate: false
-  xy: 544, 2015
-  size: 31, 30
-  orig: 31, 30
-  offset: 0, 0
-  index: -1
-Water1SideOpenNorth
-  rotate: false
-  xy: 577, 2015
-  size: 31, 30
-  orig: 31, 30
-  offset: 0, 0
-  index: -1
-Water1SideOpenWest
-  rotate: false
-  xy: 677, 1943
-  size: 30, 31
-  orig: 30, 31
-  offset: 0, 0
-  index: -1
-Water1SideOpenEast
-  rotate: false
-  xy: 709, 1943
-  size: 30, 31
-  orig: 30, 31
-  offset: 0, 0
-  index: -1
-iglus
-  rotate: false
-  xy: 644, 1977
-  size: 31, 25
-  orig: 31, 25
-  offset: 0, 0
-  index: -1
-TickExternalPlayers
-  rotate: false
-  xy: 2019, 224
-  size: 27, 24
-  orig: 27, 24
-  offset: 0, 0
-  index: -1
-ExternalPlayersButton
-  rotate: false
-  xy: 644, 2004
+  xy: 1276, 1608
   size: 27, 24
   orig: 27, 24
   offset: 0, 0

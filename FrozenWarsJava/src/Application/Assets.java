@@ -47,6 +47,10 @@ public class Assets {
 	    public static AtlasRegion loggedOut;
 	    public static AtlasRegion volver;
 	    
+	    public static AtlasRegion youWin;
+	    public static AtlasRegion gameOver;
+	    
+	    
 	    private static AtlasRegion harpooon;
 	    private static AtlasRegion mapBackground;
 	    private static AtlasRegion lifeIconYellow;
@@ -209,6 +213,9 @@ private static AtlasRegion barrelWithFissure;
 		    loggedOut = atlas.findRegion("LoggedOut");
 		    volver = atlas.findRegion("Back");
 		    
+		    youWin = atlas.findRegion("YouWin");
+		    gameOver = atlas.findRegion("GameOver");
+		    
 		    harpooon = atlas.findRegion("ArponParaBomba");
 		  //Fissures
 		    barrelWithFissure =  atlas.findRegion("barrelWithFissure");
@@ -321,7 +328,15 @@ private static AtlasRegion barrelWithFissure;
 		    
 	    }
 	    
-	    public static AtlasRegion getBarrelWithFissure() {
+	    public static AtlasRegion getYouWin() {
+			return youWin;
+		}
+
+		public static AtlasRegion getGameOver() {
+			return gameOver;
+		}
+
+		public static AtlasRegion getBarrelWithFissure() {
 			return barrelWithFissure;
 		}
 

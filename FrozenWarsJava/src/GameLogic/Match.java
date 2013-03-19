@@ -402,6 +402,17 @@ public class Match {
 		return (map.isEmptySquare((int)coord.x,(int)coord.y));
 	}	
 
+	public boolean imTheWinner(int numPlayer){
+		boolean win = !players[numPlayer].isThePlayerDead();
+		for(int i = 0; i< numPlayers; i++){
+			if(i != numPlayer){
+				win = win && players[i].isThePlayerDead();
+			}
+		}
+		return win;
+	}
+	
+	
 	public int getIntegerCoordX(int myPlayerId) {
 		Player myPlayer = players[myPlayerId];
 		Vector3 position = myPlayer.getPosition();
