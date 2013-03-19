@@ -454,7 +454,7 @@ public class Map {
 			//only if there are water in waterBoard in the same position
 			for(int i=xIni; i<=xFin; i++)
 				for(int j=yIni; j<=yFin; j++)
-					if(waterBoard[i][j] != WaterTypes.empty && sunkenBoard[i][j] == SunkenTypes.sunkenObject)
+					//if(waterBoard[i][j] != WaterTypes.empty && sunkenBoard[i][j] == SunkenTypes.sunkenObject)
 						sunkenBoard[i][j] = SunkenTypes.empty;
 		}
 	
