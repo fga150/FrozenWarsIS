@@ -42,6 +42,7 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("putHarpoon", PutHarpoon.class); // handler to put an harpoon in the game.
 		this.addRequestHandler("GetConnectedFriends", GetConnectedFriends.class); // handler fired when a user wants to see the connected friends
 		this.addRequestHandler("asignImprovements", AsignImprovementsHandler.class);
+		this.addRequestHandler("GetTime", GetTime.class);//Gets the servers time.
 		this.addRequestHandler("Invite", Invite.class); // handler fired when a user invite someone.
 		this.addRequestHandler("Accept", Accept.class); // handler fired when a user accepts an invitation.
 		this.addRequestHandler("Refuse", Refuse.class); // handler fired when a user refuses an invitation.
@@ -94,6 +95,10 @@ public class MyExt extends SFSExtension {
 	
 	public Room creatGame(User a, User b,User c,User d){
 		ISFSObject rtn = new SFSObject();
+		ISFSObject rtna = new SFSObject();
+		ISFSObject rtnb = new SFSObject();
+		ISFSObject rtnc = new SFSObject();
+		ISFSObject rtnd = new SFSObject();
 		try {
 			CreateRoomSettings settings= new CreateRoomSettings();
 			settings.setMaxUsers(4);
@@ -114,13 +119,18 @@ public class MyExt extends SFSExtension {
 				room.addUser(c);
 				d.getLastJoinedRoom().removeUser(d);
 				room.addUser(d);
+				 Thread.currentThread().sleep(5000);
 			}catch(Exception e){};
 			try{
 				//rtn.putUtfString("res", "Partida en marcha con los siguientes jugadores: "+a.getName()+", "+b.getName()+", "+c.getName()+", "+d.getName()+", ");
-				this.send("startGame", rtn, a);
-				this.send("startGame", rtn, b);
-				this.send("startGame", rtn, c);
-				this.send("startGame", rtn, d);
+				rtna.putInt("id", a.getPlayerId(room));
+				this.send("startGame", rtna, a);
+				rtnb.putInt("id", b.getPlayerId(room));
+				this.send("startGame", rtnb, b);         //Sends the ids of each player at the new room.
+				rtnc.putInt("id", c.getPlayerId(room));
+				this.send("startGame", rtnc, c);
+				rtnd.putInt("id", d.getPlayerId(room));
+				this.send("startGame", rtnd, d);
 			}catch(Exception e){};
 			return room;
 		} catch (SFSCreateRoomException e) {
