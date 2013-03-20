@@ -383,12 +383,15 @@ public class MultiplayerScreen implements Screen{
             if (amIAdmin()) batcher.draw(Assets.mapRightArrow, 450, 200);   
            
             drawInvited();
-            
-            if (amIAdmin() && !inQueue) batcher.draw(Assets.playButton, 150, 80); 
+             
             if (amIAdmin() && !inQueue) {
+            	batcher.draw(Assets.playButton, 150, 80);
             	batcher.draw(Assets.inviteButton, 500, 80); 
             	batcher.draw(Assets.pingu, 565, 112);
             }
+            
+            if (inQueue) font.draw(batcher, "Waiting for players. The game will start soon.", 160, 130);
+
             
             if (!inQueue && (acceptedPlayers.size() > 1 || waitingPlayers.size() > 0)) batcher.draw(Assets.leaveGroupButton, 650, 20); 
             batcher.draw(Assets.backButton, 320, 20); 
