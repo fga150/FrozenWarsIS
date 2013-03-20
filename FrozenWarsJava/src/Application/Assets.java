@@ -214,7 +214,7 @@ private static AtlasRegion barrelWithFissure;
 		    volver = atlas.findRegion("Back");
 		    
 		    youWin = atlas.findRegion("YouWin");
-		    gameOver = atlas.findRegion("GameOver");
+		    gameOver = atlas.findRegion("gameOver");
 		    
 		    harpooon = atlas.findRegion("ArponParaBomba");
 		  //Fissures

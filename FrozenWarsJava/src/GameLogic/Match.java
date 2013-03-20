@@ -213,12 +213,6 @@ public class Match {
 			}
 		}else valid=true;
 		if (valid) players[myPlayerId].setSpecialMove(false);
-		//Commented method is for test sunkObject image when penguin is sunk
-		// and dead player this method is called for check if there are a collision
-		// between player and water.
-		if (!players[myPlayerId].isInvincible() && isSunkenPenguin(myPlayerId)){
-			loseLife(myPlayerId);
-		}
 		return valid;
 	}
 	private void loseLife(int playerId) {
@@ -239,6 +233,9 @@ public class Match {
 			else if (dir.equals(Direction.right)) myPlayer.setPositionX(xPlayerPosition+minimalMove);
 			else if (dir.equals(Direction.up)) myPlayer.setPositionY(yPlayerPosition+minimalMove);
 			else if (dir.equals(Direction.down)) myPlayer.setPositionY(yPlayerPosition-minimalMove);
+		}
+		if (!players[playerId].isInvincible() && isSunkenPenguin(playerId)){
+			loseLife(playerId);
 		}
 	}
 	

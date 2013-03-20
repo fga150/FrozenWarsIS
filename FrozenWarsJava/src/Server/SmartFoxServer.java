@@ -6,16 +6,13 @@ import java.util.Map;
 import java.util.Vector;
 
 
-import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
 import Screens.ConfirmScreen;
 import Screens.InviteScreen;
 import Screens.MultiplayerScreen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.SFSException;
@@ -33,11 +30,22 @@ public class SmartFoxServer implements IEventListener {
 	private SmartFox sfsClient;
 	private MatchManager manager;
 	private static SmartFoxServer instance;
+	private long delayTime;
 	private int myId;
 	
 	public static SmartFoxServer getInstance() {
 		if (instance == null) instance = new SmartFoxServer();
 		return instance;
+	}
+	
+	public void getTimeResponse(ISFSObject response){
+		long time = response.getLong("time");
+		this.delayTime = System.currentTimeMillis() - time;
+	}
+	
+	public void getTimeRequest(){
+		ExtensionRequest request = new ExtensionRequest("GetTime",null);
+		sfsClient.send(request);
 	}
 	
 	public SmartFoxServer(){
@@ -60,7 +68,13 @@ public class SmartFoxServer implements IEventListener {
 	
 	private void addEventListeners() {
 		sfsClient.addEventListener(SFSEvent.CONNECTION, this);
-		sfsClient.addEventListener(SFSEvent.LOGIN, this);
+		sfsClient.addEventListener(SFSEvent.LOGIN, new IEventListener(){
+
+			public void dispatch(BaseEvent arg0) throws SFSException {
+				getTimeRequest();				
+			}
+			
+		});
 		sfsClient.addEventListener(SFSEvent.ROOM_JOIN, new IEventListener(){
 
 			public void dispatch(BaseEvent arg0) throws SFSException {
@@ -117,6 +131,8 @@ public class SmartFoxServer implements IEventListener {
 					DisconectedOnGame(response);
 				else if (cmd.equals("putHarpoon"))
 					getHarpoon(response);
+				else if (cmd.equals("getTime"))
+					getTimeResponse(response);
 				}
 
 		});
@@ -412,7 +428,7 @@ public class SmartFoxServer implements IEventListener {
 		int x=response.getInt("x");
 		int y=response.getInt("y");
 		int range=response.getInt("range");
-		manager.putHarpoonEvent(x,y,range,time);
+		manager.putHarpoonEvent(x,y,range,time+delayTime);
 	}
 
 

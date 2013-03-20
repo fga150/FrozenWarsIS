@@ -59,7 +59,7 @@ YouWin
   orig: 441, 184
   offset: 0, 0
   index: -1
-GameOver
+gameOver
   rotate: false
   xy: 304, 1794
   size: 441, 184
