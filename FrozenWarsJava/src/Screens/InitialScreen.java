@@ -88,7 +88,8 @@ public class InitialScreen implements Screen{
 	
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (playClick.contains(touchPoint)){
-				game.setScreen(MultiplayerScreen.getInstance());
+				//game.setScreen(LogSignScreen.getInstance());
+				game.setScreen(LogSignScreen.getInstance());
 
       		}else{
       			//compruebo si he tocado settings

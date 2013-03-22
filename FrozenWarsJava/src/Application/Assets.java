@@ -166,8 +166,11 @@ private static AtlasRegion barrelWithFissure;
 	    public static AtlasRegion createGameHelpText;
 	    public static AtlasRegion gameModesHelpText;
 	    
-
-
+	    //Log in, sign in windows
+	    public static AtlasRegion logSignWindow;
+	    public static AtlasRegion logInWindow;
+	    public static AtlasRegion signInWindow;
+	    
 
 	    /**
 	     * Load.
@@ -325,6 +328,11 @@ private static AtlasRegion barrelWithFissure;
 		    controlHelpText = atlas.findRegion("ControlHelpText");
 		    createGameHelpText = atlas.findRegion("CreateGameHelpText");
 		    gameModesHelpText = atlas.findRegion("GameModesHelpText");
+		    
+		    
+		    logSignWindow = atlas.findRegion("LogSignWindow");
+		    logInWindow = atlas.findRegion("LogInWindow");
+		    signInWindow = atlas.findRegion("SignInWindow");
 		    
 	    }
 	    
