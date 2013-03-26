@@ -183,7 +183,7 @@ public class SignInScreen implements Screen {
 	}
 
 	
-	private void completeMessagePc(){
+	private void completeMessagePc(){ //TODO process also the characters @ and .
 		char aux = 0;
 		boolean delete = false;
 				

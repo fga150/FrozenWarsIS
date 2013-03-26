@@ -4,6 +4,10 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.Map;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.JOptionPane;
 
 
 import Application.MatchManager;
@@ -27,6 +31,7 @@ import sfs2x.client.requests.LoginRequest;
 public class SmartFoxServer implements IEventListener {
 
 	private static final String SFS_ZONE = "FrozenWars";
+	private static final String SFS_RegisterZone = "Register";
 	private SmartFox sfsClient;
 	private MatchManager manager;
 	private static SmartFoxServer instance;
@@ -53,7 +58,9 @@ public class SmartFoxServer implements IEventListener {
 		myId = -999;
 		String ip = getServerIP();
 		sfsClient = new SmartFox(false);
-		sfsClient.connect(ip,9933);
+		while(!sfsClient.isConnected()){
+			sfsClient.connect(ip,9933);
+		}
 		addEventListeners();
 	}
 	
@@ -71,7 +78,20 @@ public class SmartFoxServer implements IEventListener {
 		sfsClient.addEventListener(SFSEvent.LOGIN, new IEventListener(){
 
 			public void dispatch(BaseEvent arg0) throws SFSException {
-				getTimeRequest();				
+				if (sfsClient.getCurrentZone().equals("FrozenWars")){
+				getTimeRequest();
+				//TODO once is logged go to the multiplayer screen
+				}
+			}
+			
+		});
+		
+		sfsClient.addEventListener(SFSEvent.LOGIN_ERROR,new IEventListener(){
+
+			public void dispatch(BaseEvent event) throws SFSException {
+				if (sfsClient.getCurrentZone().equals("FrozenWars")){
+				JOptionPane.showMessageDialog(null,"Usuario o contraseña no validos");//TODO show a better dialog with the string
+				}
 			}
 			
 		});
@@ -85,12 +105,6 @@ public class SmartFoxServer implements IEventListener {
 		});
 		sfsClient.addEventListener(SFSEvent.USER_ENTER_ROOM, this);
 		sfsClient.addEventListener(SFSEvent.USER_EXIT_ROOM, this);
-		sfsClient.addEventListener(SFSEvent.PUBLIC_MESSAGE,new IEventListener(){
-
-			public void dispatch(BaseEvent event) throws SFSException {
-			}
-			
-		});
 		sfsClient.addEventListener(SFSEvent.EXTENSION_RESPONSE, new IEventListener(){
 
 			@Override
@@ -133,6 +147,8 @@ public class SmartFoxServer implements IEventListener {
 					getHarpoon(response);
 				else if (cmd.equals("getTime"))
 					getTimeResponse(response);
+				else if (cmd.equals("dbRegister"))
+					registerResponse(response);
 				}
 
 		});
@@ -141,8 +157,9 @@ public class SmartFoxServer implements IEventListener {
 	private String getServerIP() {
 		String ip = "";
 		try {
-			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
-			ip = address.getHostAddress();
+			//InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			//ip = address.getHostAddress();
+			ip="192.168.1.36";
 		} catch (Exception e){
 			
 		}
@@ -308,6 +325,45 @@ public class SmartFoxServer implements IEventListener {
 		}
 	}
 	
+	public void register(String user,String email, String pword, String confpword){ //method that sends the user that wants to regist
+		if (!user.equals("")){
+			String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+			Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+			Matcher matcher = pattern.matcher(email);
+			if (matcher.matches()){
+				if (pword.length()>=4 && pword.length()<=8){
+					if (pword.equals(confpword)){
+						sfsClient.send(new LoginRequest("","", SFS_RegisterZone));
+						SFSObject params = new SFSObject();
+						params.putUtfString("name", user);
+						params.putUtfString("pword", pword);//TODO gonzalo put the emaill!!!!!
+						sfsClient.send(new ExtensionRequest("register",params));
+					}else{
+						JOptionPane.showMessageDialog(null,"2 different passwords!"); //TODO show a better dialog
+					}
+				}else{
+					JOptionPane.showMessageDialog(null,"Write a PassWord between 4 a 8 characters");//TODO show a better dialog
+				}
+			}else{
+				JOptionPane.showMessageDialog(null,"The email is not correct!");//TODO show a better dialog
+			}
+		}else{
+			JOptionPane.showMessageDialog(null,"Write a UserName"); //TODO show a better dialog
+		}
+	}
+	
+	public void registerResponse(ISFSObject response){ //response of the regist call
+		String str=response.getUtfString("res");
+		JOptionPane.showMessageDialog(null, str); //TODO show a better dialog with the string
+		if (str.equals("you are now registrated!")){
+			//TODO volver una vez registrado a la pantalla principal??
+		}
+		sfsClient.disconnect();   // necesario desconectarse y conectarse para poder cambiar de zona
+		while(!sfsClient.isConnected()){
+			sfsClient.connect(getServerIP(),9933);
+		}
+	}
+	
 	public void modInQueueResponse(ISFSObject response){
 		MultiplayerScreen.getInstance().setInQueue(true);
 	} 
@@ -431,7 +487,7 @@ public class SmartFoxServer implements IEventListener {
 		manager.putHarpoonEvent(x,y,range,time+delayTime);
 	}
 
-
+	
 	public void dispatch(BaseEvent event) throws SFSException {
 	}
 	
