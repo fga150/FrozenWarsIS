@@ -3,6 +3,8 @@ package Screens;
 import Application.Assets;
 import Application.LaunchFrozenWars;
 
+import Server.SmartFoxServer;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -23,7 +25,7 @@ public class LogInScreen implements Screen {
 		return instance;
 	}
 	
-
+	private SmartFoxServer sfsClient;
 	private OrthographicCamera guiCam;
 	private SpriteBatch batcher; 
 	private Vector3 touchPoint;
@@ -62,7 +64,9 @@ public class LogInScreen implements Screen {
 	    userClick = new BoundingBox(new Vector3(440,395,0), new Vector3(670,440,0));
 	    passClick = new BoundingBox(new Vector3(435,325,0), new Vector3(700,370,0));      
 	    okClick = new BoundingBox(new Vector3(335,240,0), new Vector3(500,300,0));  
-	    backClick = new BoundingBox(new Vector3(540,245,0), new Vector3(700,300,0));  
+	    backClick = new BoundingBox(new Vector3(540,245,0), new Vector3(700,300,0)); 
+	    
+	    sfsClient = SmartFoxServer.getInstance();
 	}
 
 	@Override
@@ -98,6 +102,7 @@ public class LogInScreen implements Screen {
       			System.out.println("pass");
       		} else if(okClick.contains(touchPoint)){ //compruebo si he tocado no
       			System.out.println("ok");
+      			sfsClient.conectaSala(user, pass);
       		} else if(backClick.contains(touchPoint)){ //compruebo si he tocado no
       			game.setScreen(LogSignScreen.getInstance());
       			System.out.println("back");

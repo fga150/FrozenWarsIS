@@ -256,20 +256,20 @@ public class MultiplayerScreen implements Screen{
 	    
 	    sfsClient = SmartFoxServer.getInstance();
 	    
-	    Gdx.input.getTextInput(new TextInputListener() {
+	    /*Gdx.input.getTextInput(new TextInputListener() {
 	         public void input(String text) {
 	        	 MultiplayerScreen.getInstance().setMyName(text);
-	        	 sfsClient.conectaSala(text);
+	        	 sfsClient.conectaSala(text,"");//TODO pass also the password
 	         }
 	
 	         public void canceled() {
 	        	 String user = "user".concat(Long.toString(Math.round(Math.random()*1000)));
 	        	 MultiplayerScreen.getInstance().setMyName(user);
-	        	 sfsClient.conectaSala(user);
+	        	 sfsClient.conectaSala(user,""); //TODO pass also the password
 	         }
 	    }, "Enter user: ","");
 
-	    
+	    */
 	    externalPlayerTickClick = new BoundingBox(new Vector3(120,370,0), new Vector3(170,410,0));
 	    
 	    inviteButtonClick = new BoundingBox(new Vector3(500,80,0), new Vector3(740,120,0));

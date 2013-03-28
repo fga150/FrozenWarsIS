@@ -14,6 +14,8 @@ import org.lwjgl.input.Keyboard;
 import Application.Assets;
 import Application.LaunchFrozenWars;
 
+import Server.SmartFoxServer;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -39,7 +41,7 @@ public class SignInScreen implements Screen {
 		return instance;
 	}
 	
-
+	private SmartFoxServer sfsClient;
 	private OrthographicCamera guiCam;
 	private SpriteBatch batcher; 
 	private Vector3 touchPoint;
@@ -85,6 +87,8 @@ public class SignInScreen implements Screen {
 	    okClick = new BoundingBox(new Vector3(325,175,0), new Vector3(490,300,0));  
 	    backClick = new BoundingBox(new Vector3(540,175,0), new Vector3(700,230,0)); 
 	    
+	    sfsClient = SmartFoxServer.getInstance();
+	    
 	}
 
 	
@@ -129,6 +133,7 @@ public class SignInScreen implements Screen {
       			this.infoPressed = 2;
       		} else if(okClick.contains(touchPoint)){ //compruebo si he tocado no
       			System.out.println("ok");
+      			sfsClient.register(user, email, pass1, pass2);
       		} else if(backClick.contains(touchPoint)){ //compruebo si he tocado no
       			game.setScreen(LogSignScreen.getInstance());
       			System.out.println("back");

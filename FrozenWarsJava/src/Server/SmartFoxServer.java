@@ -16,7 +16,6 @@ import Application.MatchManager.Direction;
 import Screens.AcceptScreen;
 import Screens.ConfirmScreen;
 import Screens.InviteScreen;
-import Screens.LogSignScreen;
 import Screens.MultiplayerScreen;
 
 import com.badlogic.gdx.math.Vector3;
@@ -30,6 +29,7 @@ import sfs2x.client.core.SFSEvent;
 import sfs2x.client.requests.ExtensionRequest;
 import sfs2x.client.requests.JoinRoomRequest;
 import sfs2x.client.requests.LoginRequest;
+import sfs2x.client.requests.LogoutRequest;
 
 public class SmartFoxServer implements IEventListener {
 
@@ -81,11 +81,16 @@ public class SmartFoxServer implements IEventListener {
 		sfsClient.addEventListener(SFSEvent.LOGIN, new IEventListener(){
 
 			public void dispatch(BaseEvent arg0) throws SFSException {
+				sfsClient.send(new JoinRoomRequest("The Lobby"));
 				if (sfsClient.getCurrentZone().equals("FrozenWars")){
-				getTimeRequest();
-				//TODO once is logged go to the multiplayer screen (Quitar TODO cuando este revisado)
-				//FIXME probablemente no funcione (alguna imagen se pinte mal, pinguinos desaparezcan...). Contactar con Fede. 
-				LaunchFrozenWars.getGame().setScreen(MultiplayerScreen.getInstance());
+					getTimeRequest();
+					ExtensionRequest request = new ExtensionRequest("conectarse", null);
+					sfsClient.send(request);
+					//TODO once is logged go to the multiplayer screen (Quitar TODO cuando este revisado)
+					//FIXME probablemente no funcione (alguna imagen se pinte mal, pinguinos desaparezcan...). Contactar con Fede. 
+		        	 MultiplayerScreen.getInstance().setMyName(sfsClient.getMySelf().getName());
+					LaunchFrozenWars.getGame().setScreen(MultiplayerScreen.getInstance());
+
 				}
 			}
 			
@@ -95,16 +100,7 @@ public class SmartFoxServer implements IEventListener {
 
 			public void dispatch(BaseEvent event) throws SFSException {
 				if (sfsClient.getCurrentZone().equals("FrozenWars")){
-					AcceptScreen.getInstance().setNewAcceptScreen("NamePassNotValid", "");
-				}
-			}
-			
-		});
-		sfsClient.addEventListener(SFSEvent.ROOM_JOIN, new IEventListener(){
-
-			public void dispatch(BaseEvent arg0) throws SFSException {
-				sfsClient.send(new JoinRoomRequest("The Lobby"));
-				
+				AcceptScreen.getInstance().setNewAcceptScreen("NamePassNotValid", "");				}
 			}
 			
 		});
@@ -162,19 +158,17 @@ public class SmartFoxServer implements IEventListener {
 	private String getServerIP() {
 		String ip = "";
 		try {
-			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
-			ip = address.getHostAddress();
-			
+			//InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			//ip = address.getHostAddress();
+			ip="127.0.0.1";
 		} catch (Exception e){
 			
 		}
 		return ip;
 	}
 
-	public void conectaSala(String user){
-		sfsClient.send(new LoginRequest(user,"", SFS_ZONE));
-		ExtensionRequest request = new ExtensionRequest("conectarse", null);
-		sfsClient.send(request);
+	public void conectaSala(String user,String pword){
+		sfsClient.send(new LoginRequest(user,pword, SFS_ZONE));
 	}
 
 	public void sendMove(Direction dir, int myPlayerId,Vector3 position) {
@@ -341,7 +335,8 @@ public class SmartFoxServer implements IEventListener {
 						sfsClient.send(new LoginRequest("","", SFS_RegisterZone));
 						SFSObject params = new SFSObject();
 						params.putUtfString("name", user);
-						params.putUtfString("pword", pword);//TODO gonzalo put the emaill!!!!!
+						params.putUtfString("pword", pword);
+						params.putUtfString("email", email);
 						sfsClient.send(new ExtensionRequest("register",params));
 					}else{
 						AcceptScreen.getInstance().setNewAcceptScreen("DiffPasswords", "");
@@ -359,12 +354,12 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void registerResponse(ISFSObject response){ //response of the regist call
 		String str=response.getUtfString("res");
-		//FIXME el str sirve para algo? En principio no lo he usado. Si hace falta cambiar, contactar con Fede.
+		//JOptionPane.showMessageDialog(null, str); //TODO show a better dialog with the string
 		AcceptScreen.getInstance().setNewAcceptScreen("RegisterSuccess", "");
-		sfsClient.disconnect();   // necesario desconectarse y conectarse para poder cambiar de zona
-		while(!sfsClient.isConnected()){
-			sfsClient.connect(getServerIP(),9933);
+		if (str.equals("you are now registrated!")){
+			//TODO volver una vez registrado a la pantalla principal??
 		}
+		sfsClient.send(new LogoutRequest());
 	}
 	
 	public void modInQueueResponse(ISFSObject response){
@@ -462,11 +457,11 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	private void leaderLeftResponse(ISFSObject response) {
-		AcceptScreen.getInstance().setNewAcceptScreen("LeaderLeft", "");
+		ConfirmScreen.getInstance().setNewConfirmScreen("LeaderLeft", "");
 	}
 	
 	private void gameNotFound(ISFSObject response) {
-		AcceptScreen.getInstance().setNewAcceptScreen("GameNotFound", "");
+		ConfirmScreen.getInstance().setNewConfirmScreen("GameNotFound", "");
 	} 
 	
 	
