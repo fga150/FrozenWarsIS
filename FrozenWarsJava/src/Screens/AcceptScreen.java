@@ -19,13 +19,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class ConfirmScreen implements Screen{
-	private static ConfirmScreen instance;
+public class AcceptScreen implements Screen{
+	private static AcceptScreen instance;
 	private OrthographicCamera guiCam;
 	private SpriteBatch batcher; 
 	private Vector3 touchPoint;
-	private BoundingBox yesClick;
-	private BoundingBox noClick;
+	private BoundingBox acceptClick;
 	private Game game;
 	private BitmapFont font;
 	private TextureRegion background;
@@ -35,12 +34,12 @@ public class ConfirmScreen implements Screen{
 	private String screenMode;
 	private String user;
 	
-	public static ConfirmScreen getInstance() {
-		if (instance == null) instance = new ConfirmScreen();
+	public static AcceptScreen getInstance() {
+		if (instance == null) instance = new AcceptScreen();
 		return instance;
 	}
 
-	public ConfirmScreen() {
+	public AcceptScreen() {
 		instance = this;
 		this.game = LaunchFrozenWars.getGame();
 		screenModeV = new Vector<String>();
@@ -53,18 +52,17 @@ public class ConfirmScreen implements Screen{
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 
-	    yesClick = new BoundingBox(new Vector3(350,340,0), new Vector3(500,400,0));
-	    noClick = new BoundingBox(new Vector3(510,340,0), new Vector3(660,660,0));        
+	    acceptClick = new BoundingBox(new Vector3(350,340,0), new Vector3(500,400,0));
 	}
 	
-	public void setNewConfirmScreen(String mode, String usr){
+	public void setNewAcceptScreen(String mode, String usr){
 		if (!(mode.equals("InviteGame") && MultiplayerScreen.getInstance().isInQueue())){
 			screenModeV.add(mode);
 			userV.add(usr);
 		}
 	}
 	
-	public void createConfirmIfNeeded(){
+	public void createAcceptIfNeeded(){
 		if (!screenModeV.isEmpty()){
 			background = ScreenUtils.getFrameBufferTexture();
 			ancestor = game.getScreen();
@@ -99,23 +97,14 @@ public class ConfirmScreen implements Screen{
       		System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 
       		//compruebo si he tocado yes 
-      		if (yesClick.contains(touchPoint)){
-      			if (screenMode.equals("Exit")) this.dispose();
-      			else if (screenMode.equals("InviteGame")) {
-      				SmartFoxServer.getInstance().acceptRequest(user);
-      				MultiplayerScreen.getInstance().setGameAdmin(user);
-      				game.setScreen(MultiplayerScreen.getInstance());
-      			} else if (screenMode.equals("InvitedDisconnected")){
-      				game.setScreen(new InviteScreen());
-      			}
-      			
-      		} else if(noClick.contains(touchPoint)){ //compruebo si he tocado no
-      			if (screenMode.equals("Exit") || screenMode.equals("InvitedDisconnected")) game.setScreen(ancestor);
-      			else if (screenMode.equals("InviteGame")) {
-      				SmartFoxServer.getInstance().refuseRequest(user);
-      				game.setScreen(ancestor);
-      			}
-      		}
+      		if (screenMode.equals("FullTeam") || screenMode.equals("QueueExit") || screenMode.equals("GameNotFound") || screenMode.equals("LeaderLeft") || screenMode.equals("UserOutOfQueue")){
+  				MultiplayerScreen.getInstance().setDefault();
+  				game.setScreen(MultiplayerScreen.getInstance());
+  			} else if (screenMode.equals("DiffPasswords") || screenMode.equals("PasswordChars") || screenMode.equals("Email") || screenMode.equals("Username") || screenMode.equals("NamePassNotValid")){
+  				game.setScreen(ancestor);
+  			} else if (screenMode.equals("RegisterSuccess")){
+  				game.setScreen(LogSignScreen.getInstance());
+  			}
       }
       //crear solamente un batcher por pantalla y eliminarlo cuando no se use
         	GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0
@@ -135,16 +124,42 @@ public class ConfirmScreen implements Screen{
           //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();    
-            batcher.draw(Assets.window, 330, 300);
-            if (screenMode.equals("Exit")) batcher.draw(Assets.exitText, 330, 300);
-            else if (screenMode.equals("InviteGame")) {
-            	String message = user.concat(" has invited you to join his game.");
-            	font.drawWrapped(batcher, message, 350, 525, 330);
-            	font.draw(batcher, "Do you want to join him?", 350, 450);
-            } else if (screenMode.equals("InvitedDisconnected")){
-            	String message = user.concat(" has disconnected. Do you want to invite anyone else?");
+            batcher.draw(Assets.okWindow, 330, 300);
+            if (screenMode.equals("FullTeam")){
+            	String message = "You can't join this game because the team is full.";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
+            } else if (screenMode.equals("QueueExit")){
+            	String message = "Someone in your team left so you all have left the queue.";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
+            }  else if (screenMode.equals("GameNotFound")){
+            	String message = "Game not found.";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
+            } else if (screenMode.equals("LeaderLeft")){
+            	String message = "Game's leader left.";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
+            } else if (screenMode.equals("UserOutOfQueue")){
+            	String message = "A teammate has disconnected so you all have left the queue.";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
+            } else if (screenMode.equals("DiffPasswords")){
+            	String message = "Passwords must be different.";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
+            } else if (screenMode.equals("PasswordChars")){
+            	String message = "Password must have between 4 and 8 characters.";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
+            } else if (screenMode.equals("Email")){
+            	String message = "The email is not correct.";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
+            } else if (screenMode.equals("Username")){
+            	String message = "Write an user name.";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
+            } else if (screenMode.equals("NamePassNotValid")){
+            	String message = "User and/or password are not valid.";
+            	font.drawWrapped(batcher, message, 350, 538, 330);
+            } else if (screenMode.equals("RegisterSuccess")){
+            	String message = "You are now registered!";
             	font.drawWrapped(batcher, message, 350, 538, 330);
             }
+            
             batcher.end();	
 	}
 

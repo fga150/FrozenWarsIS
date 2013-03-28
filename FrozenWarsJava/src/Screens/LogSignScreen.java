@@ -108,7 +108,8 @@ public class LogSignScreen implements Screen{
 	            batcher.draw(Assets.logSignWindow, 300, 200);
 	            batcher.end();	
 	            
-	            //game.setScreen(MultiplayerScreen.getInstance());
+	            ConfirmScreen.getInstance().createConfirmIfNeeded();
+	            AcceptScreen.getInstance().createAcceptIfNeeded();
 		}
 
 		@Override

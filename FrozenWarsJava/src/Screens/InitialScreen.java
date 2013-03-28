@@ -149,6 +149,7 @@ public class InitialScreen implements Screen{
             batcher.end();
             
             ConfirmScreen.getInstance().createConfirmIfNeeded();
+            AcceptScreen.getInstance().createAcceptIfNeeded();
 
 	}
 

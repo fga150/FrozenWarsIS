@@ -135,6 +135,8 @@ public class LogInScreen implements Screen {
             	this.time = System.nanoTime();
             }
             
+            ConfirmScreen.getInstance().createConfirmIfNeeded();
+            AcceptScreen.getInstance().createAcceptIfNeeded();
             
 	}
 

@@ -167,7 +167,8 @@ public class SignInScreen implements Screen {
             	this.completeMessagePc();
             	this.time = System.nanoTime();
             }
-
+            ConfirmScreen.getInstance().createConfirmIfNeeded();
+            AcceptScreen.getInstance().createAcceptIfNeeded();
 	}
 
 	@Override

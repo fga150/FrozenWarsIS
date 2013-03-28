@@ -10,10 +10,13 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 
+import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
+import Screens.AcceptScreen;
 import Screens.ConfirmScreen;
 import Screens.InviteScreen;
+import Screens.LogSignScreen;
 import Screens.MultiplayerScreen;
 
 import com.badlogic.gdx.math.Vector3;
@@ -80,7 +83,9 @@ public class SmartFoxServer implements IEventListener {
 			public void dispatch(BaseEvent arg0) throws SFSException {
 				if (sfsClient.getCurrentZone().equals("FrozenWars")){
 				getTimeRequest();
-				//TODO once is logged go to the multiplayer screen
+				//TODO once is logged go to the multiplayer screen (Quitar TODO cuando este revisado)
+				//FIXME probablemente no funcione (alguna imagen se pinte mal, pinguinos desaparezcan...). Contactar con Fede. 
+				LaunchFrozenWars.getGame().setScreen(MultiplayerScreen.getInstance());
 				}
 			}
 			
@@ -90,7 +95,7 @@ public class SmartFoxServer implements IEventListener {
 
 			public void dispatch(BaseEvent event) throws SFSException {
 				if (sfsClient.getCurrentZone().equals("FrozenWars")){
-				JOptionPane.showMessageDialog(null,"Usuario o contraseña no validos");//TODO show a better dialog with the string
+					AcceptScreen.getInstance().setNewAcceptScreen("NamePassNotValid", "");
 				}
 			}
 			
@@ -157,9 +162,9 @@ public class SmartFoxServer implements IEventListener {
 	private String getServerIP() {
 		String ip = "";
 		try {
-			//InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
-			//ip = address.getHostAddress();
-			ip="192.168.1.36";
+			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			ip = address.getHostAddress();
+			
 		} catch (Exception e){
 			
 		}
@@ -339,25 +344,23 @@ public class SmartFoxServer implements IEventListener {
 						params.putUtfString("pword", pword);//TODO gonzalo put the emaill!!!!!
 						sfsClient.send(new ExtensionRequest("register",params));
 					}else{
-						JOptionPane.showMessageDialog(null,"2 different passwords!"); //TODO show a better dialog
+						AcceptScreen.getInstance().setNewAcceptScreen("DiffPasswords", "");
 					}
 				}else{
-					JOptionPane.showMessageDialog(null,"Write a PassWord between 4 a 8 characters");//TODO show a better dialog
+					AcceptScreen.getInstance().setNewAcceptScreen("PasswordChars", "");
 				}
 			}else{
-				JOptionPane.showMessageDialog(null,"The email is not correct!");//TODO show a better dialog
+				AcceptScreen.getInstance().setNewAcceptScreen("Email", "");
 			}
 		}else{
-			JOptionPane.showMessageDialog(null,"Write a UserName"); //TODO show a better dialog
+			AcceptScreen.getInstance().setNewAcceptScreen("Username", "");
 		}
 	}
 	
 	public void registerResponse(ISFSObject response){ //response of the regist call
 		String str=response.getUtfString("res");
-		JOptionPane.showMessageDialog(null, str); //TODO show a better dialog with the string
-		if (str.equals("you are now registrated!")){
-			//TODO volver una vez registrado a la pantalla principal??
-		}
+		//FIXME el str sirve para algo? En principio no lo he usado. Si hace falta cambiar, contactar con Fede.
+		AcceptScreen.getInstance().setNewAcceptScreen("RegisterSuccess", "");
 		sfsClient.disconnect();   // necesario desconectarse y conectarse para poder cambiar de zona
 		while(!sfsClient.isConnected()){
 			sfsClient.connect(getServerIP(),9933);
@@ -407,7 +410,7 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void gameFullResponse(ISFSObject response) {
-		ConfirmScreen.getInstance().setNewConfirmScreen("FullTeam", "");
+		AcceptScreen.getInstance().setNewAcceptScreen("FullTeam", "");
 	}
 	
 	public void groupExitRequest(String name){
@@ -459,11 +462,11 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	private void leaderLeftResponse(ISFSObject response) {
-		ConfirmScreen.getInstance().setNewConfirmScreen("LeaderLeft", "");
+		AcceptScreen.getInstance().setNewAcceptScreen("LeaderLeft", "");
 	}
 	
 	private void gameNotFound(ISFSObject response) {
-		ConfirmScreen.getInstance().setNewConfirmScreen("GameNotFound", "");
+		AcceptScreen.getInstance().setNewAcceptScreen("GameNotFound", "");
 	} 
 	
 	
