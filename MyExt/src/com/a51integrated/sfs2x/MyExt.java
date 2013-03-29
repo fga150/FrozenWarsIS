@@ -50,7 +50,8 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("ModExternalPlayers", ModExternalPlayers.class); // handler fired when a user changes the "external players" option.
 		this.addRequestHandler("ExitGroup", ExitGroup.class); // handler fired when a user want to exit the current team.
 		this.addRequestHandler("GameMessage", GameMessage.class);
-		this.addRequestHandler("addFriend",AddFriend.class); // handler fired when 2 users confirm get friends
+		this.addRequestHandler("AddFriend",AddFriend.class); // handler fired when 2 users confirm get friends
+		this.addRequestHandler("FriendRequest", FriendRequest.class);// handler fired when a user sends a friend request
 		nRooms=0;
 	}
 
