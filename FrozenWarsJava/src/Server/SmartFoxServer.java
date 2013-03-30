@@ -86,11 +86,11 @@ public class SmartFoxServer implements IEventListener {
 					getTimeRequest();
 					ExtensionRequest request = new ExtensionRequest("conectarse", null);
 					sfsClient.send(request);
-					//TODO once is logged go to the multiplayer screen (Quitar TODO cuando este revisado)
 					//FIXME probablemente no funcione (alguna imagen se pinte mal, pinguinos desaparezcan...). Contactar con Fede. 
-		        	 MultiplayerScreen.getInstance().setMyName(sfsClient.getMySelf().getName());
-					LaunchFrozenWars.getGame().setScreen(MultiplayerScreen.getInstance());
-
+		        	MultiplayerScreen.getInstance().setMyName(sfsClient.getMySelf().getName());
+		        	LaunchFrozenWars.getGame().setScreen(MultiplayerScreen.getInstance());
+		        	ExtensionRequest request2 = new ExtensionRequest("GetFriendsRequests",new SFSObject());
+					sfsClient.send(request2);
 				}
 			}
 			
@@ -99,8 +99,7 @@ public class SmartFoxServer implements IEventListener {
 		sfsClient.addEventListener(SFSEvent.LOGIN_ERROR,new IEventListener(){
 
 			public void dispatch(BaseEvent event) throws SFSException {
-				if (sfsClient.getCurrentZone().equals("FrozenWars")){
-				AcceptScreen.getInstance().setNewAcceptScreen("NamePassNotValid", "");				}
+				AcceptScreen.getInstance().setNewAcceptScreen("NamePassNotValid", "");				
 			}
 			
 		});
@@ -150,6 +149,12 @@ public class SmartFoxServer implements IEventListener {
 					getTimeResponse(response);
 				else if (cmd.equals("dbRegister"))
 					registerResponse(response);
+				else if(cmd.equals("FriendRequestRes"))
+					JOptionPane.showMessageDialog(null,((ISFSObject)r.get("params")).getUtfString("res"));//TODO show a better dialog
+				else if(cmd.equals("BeFriends?"))
+					beFriends(response);
+				else if(cmd.equals("AddFriendRes"))
+					JOptionPane.showMessageDialog(null,((ISFSObject)r.get("params")).getUtfString("res"));//TODO show a better dialog
 				}
 
 		});
@@ -483,6 +488,35 @@ public class SmartFoxServer implements IEventListener {
 		int y=response.getInt("y");
 		int range=response.getInt("range");
 		manager.putHarpoonEvent(x,y,range,time+delayTime);
+	}
+	
+	public void beFriends(ISFSObject params){
+		SFSObject params2 = new SFSObject();
+		if (params.getSFSArray("Friends")!=null){
+			for(int i= 0;i<params.getSFSArray("Friends").size();i++){
+				int confirmado = JOptionPane.showConfirmDialog(null,((String) params.getSFSArray("Friends").getElementAt(i))+" wants to be your friend");//TODO show a better dialog in which the user can confirm or reject
+				params2.putUtfString("friend", ((String) params.getSFSArray("Friends").getElementAt(i)));	
+				if (JOptionPane.OK_OPTION == confirmado){
+					   System.out.println("confirmado");	   
+					   params2.putUtfString("res", "yes");
+					}	
+					else{
+					   System.out.println("vale... no borro nada...");
+					   params2.putUtfString("res", "no");
+					}
+				ExtensionRequest request2 = new ExtensionRequest("AddFriend",params2);
+				sfsClient.send(request2);
+			}
+		}
+		if (params.getSFSArray("Friends2")!=null){
+			for(int i=0;i<params.getSFSArray("Friends2").size();i++){
+				JOptionPane.showMessageDialog(null,((String) params.getSFSArray("Friends2").getElementAt(i))+" accepted your friend request");//TODO show a better dialog
+				params2.putUtfString("friend", ((String) params.getSFSArray("Friends2").getElementAt(i)));
+				ExtensionRequest request2 = new ExtensionRequest("ViewedConfFriend",params2);
+				sfsClient.send(request2);
+			}
+		}
+	
 	}
 
 	
