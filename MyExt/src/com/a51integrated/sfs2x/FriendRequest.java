@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import com.smartfoxserver.v2.entities.User;
+import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
+import com.smartfoxserver.v2.entities.data.SFSArray;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 
@@ -17,50 +19,67 @@ public class FriendRequest extends BaseClientRequestHandler {
 		MyExt parentEx=(MyExt) getParentExtension(); 
 		ISFSObject response = new SFSObject();
 		try {
-			//TODO comprobar que no se quiera añadir a si mismo
 			Connection connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
-			PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(*) FROM friends WHERE name=? and friend=?");
-		    stmt.setString(1, player.getName());
-		    stmt.setString(2, friend);
-			ResultSet res= stmt.executeQuery(); // send a query to know if they are friends already
+			PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(name) FROM users WHERE name=?");
+		    stmt.setString(1, friend);
+			ResultSet res= stmt.executeQuery(); // send a query to know if there is a user with that name
 	        if (!res.first()){
 	        	response.putUtfString("res", "Error"); // if the query sends nothing send an error to the user
 				send("FriendRequestRes", response, player);
 	        }else{
-				if (res.getInt(1)!=0){ // there are friends or in process of being
-					response.putUtfString("res", "Friends");
+				if (res.getInt(1)==0){ // if dosn't exist the friend tell it
+					response.putUtfString("res", "UserNoExits");
 			        send("FriendRequestRes", response, player);
-				}else{
-					stmt= connection.prepareStatement("INSERT INTO friends VALUES (?,?,?)");
+				}else{        
+					stmt = connection.prepareStatement("SELECT COUNT(*) FROM friends WHERE name=? and friend=?");
 					stmt.setString(1, player.getName());
 					stmt.setString(2, friend);
-					stmt.setString(3, "r");
-					int rowsafected= stmt.executeUpdate();
-					if (rowsafected!=1){ // if the rows affected on the query were more than 1 send an error to the user
-			        	response.putUtfString("res", "Error");
+					res= stmt.executeQuery(); // send a query to know if they are friends already
+					if (!res.first()){
+						response.putUtfString("res", "Error"); // if the query sends nothing send an error to the user
 						send("FriendRequestRes", response, player);
-			        }else{
-			        	stmt.setString(1, friend);
-			        	stmt.setString(2, player.getName());
-			        	rowsafected= stmt.executeUpdate();
-						if (rowsafected!=1){ // if the rows affected on the query were more than 1 send an error to the user
-				        	response.putUtfString("res", "Error");
+					}else{
+						if (res.getInt(1)!=0){ // there are friends or in process of being
+							response.putUtfString("res", "Friends");
 							send("FriendRequestRes", response, player);
-				        }else{
-				        	response.putUtfString("res", "Success");
-				        	send("FriendRequestRes", response, player);
-				        	User uFriend=parentEx.getUsers().get(friend);
-				        	if(uFriend!=null){
-				        		if(uFriend.getJoinedRooms().iterator().next().getName().equals("The Lobby")){//si esta conectado y no jugando el amigo le mando la peticion directamente
-				        		ISFSObject response2 = new SFSObject();
-				        		response2.putUtfString("friend", player.getName());
-				        		send("BeFriends?",response2,uFriend);
-				        		}
-				        	}
-				        }
-			        }
+						}else{
+							stmt= connection.prepareStatement("INSERT INTO friends VALUES (?,?,?)");
+							stmt.setString(1, player.getName());
+							stmt.setString(2, friend);
+							stmt.setString(3, "");
+							int rowsafected= stmt.executeUpdate();
+							if (rowsafected!=1){ // if the rows affected on the query were more than 1, send an error to the user
+					        	response.putUtfString("res", "Error");
+								send("FriendRequestRes", response, player);
+					        }else{
+					        	stmt.setString(1, friend);
+					        	stmt.setString(2, player.getName());
+					        	stmt.setString(3, "r");
+					        	rowsafected= stmt.executeUpdate();
+								if (rowsafected!=1){ // if the rows affected on the query were more than 1 send an error to the user
+						        	response.putUtfString("res", "Error");
+									send("FriendRequestRes", response, player);
+						        }else{
+						        	response.putUtfString("res", "Success");
+						        	send("FriendRequestRes", response, player);
+						        	User uFriend=parentEx.getUsers().get(friend);
+						        	if(uFriend!=null){
+						        		if(uFriend.getJoinedRooms().iterator().next().getName().equals("The Lobby")){//si esta conectado y no jugando el amigo le mando la peticion directamente
+						        		ISFSObject response2 = new SFSObject();
+						        		ISFSArray friends = new SFSArray();
+						        		friends.addUtfString(friend);
+						        		response2.putSFSArray("Friends", friends);
+						        		send("BeFriends?",response2,uFriend);
+						        		}
+						        	}
+						        }
+					        }
+						}
+					}
 				}
 	        }
+	        connection.close();
+	        
 		} catch (Exception e) {
 			response.putUtfString("res", "Error");
 			send("FriendRequestRes", response, player);

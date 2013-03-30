@@ -52,6 +52,8 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("GameMessage", GameMessage.class);
 		this.addRequestHandler("AddFriend",AddFriend.class); // handler fired when 2 users confirm get friends
 		this.addRequestHandler("FriendRequest", FriendRequest.class);// handler fired when a user sends a friend request
+		this.addRequestHandler("GetFriendsRequests", GetFriendsRequests.class); // handler firend when user wants to get all his friends
+		this.addRequestHandler("ViewedConfFriend", ViewedConfFriend.class);
 		nRooms=0;
 	}
 
