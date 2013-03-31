@@ -28,8 +28,7 @@ public class MyExt extends SFSExtension {
 		queue2 = new LinkedList<User[]>();
 		queue3 = new LinkedList<User[]>();
 		users=new HashMap<String,User>();
-		gamesInCreation=new HashMap<String,InvitationRoom>();
-		this.addRequestHandler("conectarse", Connect.class); // handler fired when a user connects		
+		gamesInCreation=new HashMap<String,InvitationRoom>();	
 		this.addEventHandler(SFSEventType.USER_JOIN_ZONE, ZoneJoinEventHandler.class); // handler fired when checked the pword
 		this.addEventHandler(SFSEventType.USER_LOGIN, LoginEventHandler.class); // handler fired when a user want to connect
 		this.addEventHandler(SFSEventType.USER_DISCONNECT, Disconnect.class); // handler fired after a user disconnects
