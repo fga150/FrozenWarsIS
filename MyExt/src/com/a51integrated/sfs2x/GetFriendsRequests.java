@@ -3,6 +3,7 @@ package com.a51integrated.sfs2x;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSArray;
@@ -19,8 +20,9 @@ public class GetFriendsRequests extends BaseClientRequestHandler{
 		ISFSObject response = new SFSObject();
 		ISFSArray friends = new SFSArray();
 		ISFSArray friends2 = new SFSArray();
+		Connection connection=null;
 		try {
-			Connection connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
+			connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
 			PreparedStatement stmt = connection.prepareStatement("SELECT friend FROM friends WHERE name=? AND status=?");
 		    stmt.setString(1, player.getName());
 		    stmt.setString(2, "r");
@@ -40,9 +42,15 @@ public class GetFriendsRequests extends BaseClientRequestHandler{
         		response.putSFSArray("Friends2", friends2);
         		parentEx.send("BeFriends?", response, player); //Sends the object which contains the friend requests
         	}
-	        connection.close();
 		}catch(Exception e){
 			
+		}
+		finally{
+			// Return connection to the DBManager connection pool
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
 		}
 	}
 

@@ -19,9 +19,10 @@ public class AddFriend extends BaseClientRequestHandler {
 		String res=params.getUtfString("res");
 		MyExt parentEx=(MyExt) getParentExtension(); 
 		ISFSObject response = new SFSObject();
+		Connection connection=null;
 		if (res.equals("yes")){
 			try {
-				Connection connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
+				connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
 				PreparedStatement stmt= connection.prepareStatement("UPDATE friends SET status=? WHERE name=? AND friend=?;");
 						stmt.setString(1, "c");
 						stmt.setString(2, player.getName());
@@ -61,7 +62,7 @@ public class AddFriend extends BaseClientRequestHandler {
 		}
 		if (res.equals("no")){
 			try {
-				Connection connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
+				connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
 				PreparedStatement stmt= connection.prepareStatement("DELETE FROM friends WHERE name=? AND friend=?;");
 			    stmt.setString(1, player.getName());
 			    stmt.setString(2, friend);
@@ -77,6 +78,11 @@ public class AddFriend extends BaseClientRequestHandler {
 				send("AddFriendRes", response, player);
 			}
 			
+		}
+		// Return connection to the DBManager connection pool
+		try {
+			connection.close();
+		} catch (SQLException e) {
 		}
      
 	}

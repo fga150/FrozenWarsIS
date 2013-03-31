@@ -4,6 +4,8 @@ package com.a51integrated.sfs2x;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSArray;
@@ -18,9 +20,28 @@ public class FriendRequest extends BaseClientRequestHandler {
 		String friend=params.getUtfString("friend");
 		MyExt parentEx=(MyExt) getParentExtension(); 
 		ISFSObject response = new SFSObject();
+		Connection connection = null;
+		String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(friend);
+		if (matcher.matches()){
+			try{
+				connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
+				PreparedStatement stmt = connection.prepareStatement("SELECT user FROM users WHERE email=?");
+			    stmt.setString(1, friend);
+				ResultSet res= stmt.executeQuery(); // send a query to know if there is a user with that email
+				if (res.next()){
+					friend=res.getString(1);
+				}else{
+					response.putUtfString("res", "UserNoExits");
+			        send("FriendRequestRes", response, player);
+				}
+			}catch(Exception e){
+			}
+		}
 		try {
-			Connection connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
-			PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(name) FROM users WHERE name=?");
+			connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
+			PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(name) FROM users WHERE user=?");
 		    stmt.setString(1, friend);
 			ResultSet res= stmt.executeQuery(); // send a query to know if there is a user with that name
 	        if (!res.first()){

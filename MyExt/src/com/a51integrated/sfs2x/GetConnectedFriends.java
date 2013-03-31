@@ -2,6 +2,7 @@ package com.a51integrated.sfs2x;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class GetConnectedFriends extends BaseClientRequestHandler {
 		HashMap<String,InvitationRoom> gamesInCreation = parentEx.getGamesInCreation();
 		ISFSObject rtn = new SFSObject();
 		ISFSArray connectedFriends = new SFSArray();
+		Connection connection=null;
 		
 		HashMap<String,User> users = parentEx.getUsers(); //Gets the hasmap which contains the connected users.
 
@@ -41,7 +43,7 @@ public class GetConnectedFriends extends BaseClientRequestHandler {
 			connectedFriends.addUtfString((String) entry.getKey());
 		}*/
 		try {
-			Connection connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
+			connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
 			PreparedStatement stmt = connection.prepareStatement("SELECT friend FROM friends WHERE name=? AND status=?");
 		    stmt.setString(1, player.getName());
 		    stmt.setString(2, "c");
@@ -60,7 +62,15 @@ public class GetConnectedFriends extends BaseClientRequestHandler {
 		}catch(Exception e){
 			
 		}
+		finally{
+			// Return connection to the DBManager connection pool
+			try {
+				connection.close();
+			} catch (SQLException e) {
+			}
+		}
 		rtn.putSFSArray("ConnectedFriends", connectedFriends);
-		parentEx.send("GetConnectedFriends", rtn, player); //Sends the object which contains the connected users	      
+		parentEx.send("GetConnectedFriends", rtn, player); //Sends the object which contains the connected users
+		
 	}
 }
