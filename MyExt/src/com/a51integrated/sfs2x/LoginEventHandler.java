@@ -35,7 +35,7 @@ public class LoginEventHandler extends BaseServerEventHandler{
 			if (!res.first()){ // Verify that one record was found
 				SFSErrorData errData = new SFSErrorData(SFSErrorCode.LOGIN_BAD_USERNAME);
 				errData.addParameter(userName);
-				throw new SFSLoginException("Bad user name: " + userName, errData);
+				throw new SFSLoginException("BadUserName", errData);
 			}
 			
 			String dbPword = res.getString("pword"); // catch the password from the database
@@ -45,7 +45,7 @@ public class LoginEventHandler extends BaseServerEventHandler{
 			{
 				SFSErrorData data = new SFSErrorData(SFSErrorCode.LOGIN_BAD_PASSWORD);
 				data.addParameter(userName);
-				throw new SFSLoginException("Login failed for user: "  + userName, data);
+				throw new SFSLoginException("BadUserName", data);
 			}
 			
         }catch (SQLException e){// User name was not found
