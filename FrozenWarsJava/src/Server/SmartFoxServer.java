@@ -2,6 +2,7 @@ package Server;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -81,16 +82,8 @@ public class SmartFoxServer implements IEventListener {
 		sfsClient.addEventListener(SFSEvent.LOGIN, new IEventListener(){
 
 			public void dispatch(BaseEvent arg0) throws SFSException {
-				sfsClient.send(new JoinRoomRequest("The Lobby"));
 				if (sfsClient.getCurrentZone().equals("FrozenWars")){
 					getTimeRequest();
-					ExtensionRequest request = new ExtensionRequest("conectarse", null);
-					sfsClient.send(request);
-					//FIXME probablemente no funcione (alguna imagen se pinte mal, pinguinos desaparezcan...). Contactar con Fede. 
-		        	MultiplayerScreen.getInstance().setMyName(sfsClient.getMySelf().getName());
-		        	LaunchFrozenWars.getGame().setScreen(MultiplayerScreen.getInstance());
-		        	ExtensionRequest request2 = new ExtensionRequest("GetFriendsRequests",new SFSObject());
-					sfsClient.send(request2);
 				}
 			}
 			
@@ -99,7 +92,13 @@ public class SmartFoxServer implements IEventListener {
 		sfsClient.addEventListener(SFSEvent.LOGIN_ERROR,new IEventListener(){
 
 			public void dispatch(BaseEvent event) throws SFSException {
-				AcceptScreen.getInstance().setNewAcceptScreen("NamePassNotValid", "");				
+				Map<String,Object>args=event.getArguments();
+				Short err=(Short) args.get("errorCode");
+				Short error=6;
+				if (!(error==err))
+					AcceptScreen.getInstance().setNewAcceptScreen("NamePassNotValid", "");
+				else
+					JOptionPane.showMessageDialog(null,"There is another person logged with this account");//TODO show a better dialog
 			}
 			
 		});
@@ -155,6 +154,8 @@ public class SmartFoxServer implements IEventListener {
 					beFriends(response);
 				else if(cmd.equals("AddFriendRes"))
 					JOptionPane.showMessageDialog(null,((ISFSObject)r.get("params")).getUtfString("res"));//TODO show a better dialog
+				else if(cmd.equals("ConnectRes"))
+					connectRes(response);
 				}
 
 		});
@@ -174,6 +175,16 @@ public class SmartFoxServer implements IEventListener {
 
 	public void conectaSala(String user,String pword){
 		sfsClient.send(new LoginRequest(user,pword, SFS_ZONE));
+	}
+	
+	public void connectRes(ISFSObject response) {
+		if (response.getUtfString("Response").equals("Success")){
+			//FIXME probablemente no funcione (alguna imagen se pinte mal, pinguinos desaparezcan...). Contactar con Fede. 
+			MultiplayerScreen.getInstance().setMyName(sfsClient.getMySelf().getName());
+        	LaunchFrozenWars.getGame().setScreen(MultiplayerScreen.getInstance());
+        	ExtensionRequest request2 = new ExtensionRequest("GetFriendsRequests",new SFSObject());
+			sfsClient.send(request2);
+		}
 	}
 
 	public void sendMove(Direction dir, int myPlayerId,Vector3 position) {
