@@ -6,6 +6,8 @@ import com.smartfoxserver.v2.core.ISFSEvent;
 import com.smartfoxserver.v2.core.SFSEventParam;
 import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.User;
+import com.smartfoxserver.v2.entities.data.ISFSObject;
+import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.SFSException;
 import com.smartfoxserver.v2.extensions.BaseServerEventHandler;
 
@@ -21,5 +23,8 @@ public class ZoneJoinEventHandler extends BaseServerEventHandler{
 		parentEx.setUsers(users);
 		Room lobby = getParentExtension().getParentZone().getRoomByName("The Lobby");
 		getApi().joinRoom(player, lobby);  // the user joins the room The lobby
+		ISFSObject rtn = new SFSObject();
+		rtn.putUtfString("Response", "Success");
+		parentEx.send("ConnectRes", rtn, player);
 	}	
 }
