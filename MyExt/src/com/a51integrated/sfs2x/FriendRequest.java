@@ -41,7 +41,7 @@ public class FriendRequest extends BaseClientRequestHandler {
 		}
 		try {
 			connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
-			PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(name) FROM users WHERE user=?");
+			PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(name) FROM users WHERE name=?");
 		    stmt.setString(1, friend);
 			ResultSet res= stmt.executeQuery(); // send a query to know if there is a user with that name
 	        if (!res.first()){
@@ -51,7 +51,7 @@ public class FriendRequest extends BaseClientRequestHandler {
 				if (res.getInt(1)==0){ // if dosn't exist the friend tell it
 					response.putUtfString("res", "UserNoExits");
 			        send("FriendRequestRes", response, player);
-				}else{        
+				}else{
 					stmt = connection.prepareStatement("SELECT COUNT(*) FROM friends WHERE name=? and friend=?");
 					stmt.setString(1, player.getName());
 					stmt.setString(2, friend);
@@ -99,10 +99,10 @@ public class FriendRequest extends BaseClientRequestHandler {
 					}
 				}
 	        }
-	        connection.close();
+	       connection.close();
 	        
 		} catch (Exception e) {
-			response.putUtfString("res", "Error");
+			response.putUtfString("res", "Error8");
 			send("FriendRequestRes", response, player);
 		}
      

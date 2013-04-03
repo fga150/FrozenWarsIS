@@ -23,7 +23,7 @@ public class AddFriend extends BaseClientRequestHandler {
 		if (res.equals("yes")){
 			try {
 				connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
-				PreparedStatement stmt= connection.prepareStatement("UPDATE friends SET status=? WHERE name=? AND friend=?;");
+				PreparedStatement stmt= connection.prepareStatement("UPDATE friends SET status=? WHERE name=? AND friend=?");
 						stmt.setString(1, "c");
 						stmt.setString(2, player.getName());
 						stmt.setString(3, friend);
@@ -63,7 +63,7 @@ public class AddFriend extends BaseClientRequestHandler {
 		if (res.equals("no")){
 			try {
 				connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
-				PreparedStatement stmt= connection.prepareStatement("DELETE FROM friends WHERE name=? AND friend=?;");
+				PreparedStatement stmt= connection.prepareStatement("DELETE FROM friends WHERE name=? AND friend=?");
 			    stmt.setString(1, player.getName());
 			    stmt.setString(2, friend);
 			    stmt.executeUpdate();
