@@ -52,6 +52,7 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("FriendRequest", FriendRequest.class);// handler fired when a user sends a friend request
 		this.addRequestHandler("GetFriendsRequests", GetFriendsRequests.class); // handler firend when user wants to get all his friends
 		this.addRequestHandler("ViewedConfFriend", ViewedConfFriend.class);
+		this.addRequestHandler("GetFriends",GetFriends.class);//handler fired when we want to know all friends, connected or not
 		nRooms=0;
 	}
 
@@ -121,7 +122,6 @@ public class MyExt extends SFSExtension {
 				room.addUser(c);
 				d.getLastJoinedRoom().removeUser(d);
 				room.addUser(d);
-				 Thread.currentThread().sleep(5000);
 			}catch(Exception e){};
 			try{
 				//rtn.putUtfString("res", "Partida en marcha con los siguientes jugadores: "+a.getName()+", "+b.getName()+", "+c.getName()+", "+d.getName()+", ");
