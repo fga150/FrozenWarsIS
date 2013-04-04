@@ -2,10 +2,14 @@ package Screens;
 
 import java.io.IOException;
 
+import sfs2x.client.requests.LoginRequest;
+
 
 import Application.Assets;
 import Application.GameSettings;
 import Application.LaunchFrozenWars;
+
+import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -88,8 +92,14 @@ public class InitialScreen implements Screen{
 	
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (playClick.contains(touchPoint)){
-				//game.setScreen(LogSignScreen.getInstance());
-				game.setScreen(LogSignScreen.getInstance());
+				GameSettings sett = GameSettings.getInstance();
+				if (SmartFoxServer.getInstance().isLoggedIn()) game.setScreen(MultiplayerScreen.getInstance());
+				else if (sett.isLoggedIn()){
+					
+					SmartFoxServer.getInstance().conectaSala(sett.getUserName(), sett.getUserPassword());
+				}
+				else game.setScreen(LogSignScreen.getInstance());
+				
 
       		}else{
       			//compruebo si he tocado settings

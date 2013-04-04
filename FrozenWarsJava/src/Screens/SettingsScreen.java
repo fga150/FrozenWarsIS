@@ -80,7 +80,8 @@ public class SettingsScreen implements Screen{
       		else if(vibrationClick.contains(touchPoint))
       			gSettings.setVibrationOn(!gSettings.isVibrationOn());
       		else if (loggedClick.contains(touchPoint)){
-      			System.out.println("Pulsado loggin");
+      			gSettings.setUserName(null);
+      			gSettings.setUserPassword(null);
       		}else if (confirmedExitClick.contains(touchPoint))
       			gSettings.setConfirmedExitOn(!gSettings.isConfirmedExitOn());
       		else if (volverClick.contains(touchPoint))

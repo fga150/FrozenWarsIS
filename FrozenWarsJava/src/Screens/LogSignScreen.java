@@ -40,6 +40,7 @@ public class LogSignScreen implements Screen{
 		
 
 		public LogSignScreen() {
+			instance = this;
 			this.game = LaunchFrozenWars.getGame();
 			
 			guiCam = new OrthographicCamera(1024,629);

@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 
+import Application.GameSettings;
 import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
@@ -41,10 +42,17 @@ public class SmartFoxServer implements IEventListener {
 	private static SmartFoxServer instance;
 	private long delayTime;
 	private int myId;
+	private String lastUserName;
+	private String lastPass;
+	private boolean loggedIn;
 	
 	public static SmartFoxServer getInstance() {
 		if (instance == null) instance = new SmartFoxServer();
 		return instance;
+	}
+	
+	public boolean isLoggedIn() {
+		return loggedIn;
 	}
 	
 	public void getTimeResponse(ISFSObject response){
@@ -58,6 +66,7 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public SmartFoxServer(){
+		loggedIn = false;
 		instance = this;
 		myId = -999;
 		String ip = getServerIP();
@@ -98,7 +107,7 @@ public class SmartFoxServer implements IEventListener {
 				if (!(error==err))
 					AcceptScreen.getInstance().setNewAcceptScreen("NamePassNotValid", "");
 				else
-					JOptionPane.showMessageDialog(null,"There is another person logged with this account");//TODO show a better dialog
+					AcceptScreen.getInstance().setNewAcceptScreen("AlreadyLogged", "");
 			}
 			
 		});
@@ -149,11 +158,13 @@ public class SmartFoxServer implements IEventListener {
 				else if (cmd.equals("dbRegister"))
 					registerResponse(response);
 				else if(cmd.equals("FriendRequestRes"))
-					JOptionPane.showMessageDialog(null,((ISFSObject)r.get("params")).getUtfString("res"));//TODO show a better dialog
+					//DONE JOptionPane.showMessageDialog(null,((ISFSObject)r.get("params")).getUtfString("res"));//TODO show a better dialog
+					AcceptScreen.getInstance().setNewAcceptScreen("AddFriendAdder", ((ISFSObject)r.get("params")).getUtfString("res"));
 				else if(cmd.equals("BeFriends?"))
 					beFriends(response);
 				else if(cmd.equals("AddFriendRes"))
-					JOptionPane.showMessageDialog(null,((ISFSObject)r.get("params")).getUtfString("res"));//TODO show a better dialog
+					//DONDE JOptionPane.showMessageDialog(null,((ISFSObject)r.get("params")).getUtfString("res"));//TODO show a better dialog
+					AcceptScreen.getInstance().setNewAcceptScreen("AddFriendAdded", ((ISFSObject)r.get("params")).getUtfString("res"));
 				else if(cmd.equals("ConnectRes"))
 					connectRes(response);
 				}
@@ -164,9 +175,9 @@ public class SmartFoxServer implements IEventListener {
 	private String getServerIP() {
 		String ip = "";
 		try {
-			//InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
-			//ip = address.getHostAddress();
-			ip="127.0.0.1";
+			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			ip = address.getHostAddress();
+			//ip="127.0.0.1";
 		} catch (Exception e){
 			
 		}
@@ -175,13 +186,20 @@ public class SmartFoxServer implements IEventListener {
 
 	public void conectaSala(String user,String pword){
 		sfsClient.send(new LoginRequest(user,pword, SFS_ZONE));
+		lastUserName = user;
+		lastPass = pword;
+		System.out.println(lastUserName + " " + lastPass);
+
 	}
 	
 	public void connectRes(ISFSObject response) {
 		if (response.getUtfString("Response").equals("Success")){
 			//FIXME probablemente no funcione (alguna imagen se pinte mal, pinguinos desaparezcan...). Contactar con Fede. 
 			MultiplayerScreen.getInstance().setMyName(sfsClient.getMySelf().getName());
-        	LaunchFrozenWars.getGame().setScreen(MultiplayerScreen.getInstance());
+			loggedIn = true;
+  			GameSettings.getInstance().setUserName(lastUserName);
+  			GameSettings.getInstance().setUserPassword(lastPass);
+			LaunchFrozenWars.getGame().setScreen(MultiplayerScreen.getInstance());
         	ExtensionRequest request2 = new ExtensionRequest("GetFriendsRequests",new SFSObject());
 			sfsClient.send(request2);
 		}
@@ -370,11 +388,8 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void registerResponse(ISFSObject response){ //response of the regist call
 		String str=response.getUtfString("res");
-		//JOptionPane.showMessageDialog(null, str); //TODO show a better dialog with the string
-		AcceptScreen.getInstance().setNewAcceptScreen("RegisterSuccess", "");
-		if (str.equals("you are now registrated!")){
-			//TODO volver una vez registrado a la pantalla principal??
-		}
+		AcceptScreen.getInstance().setNewAcceptScreen("RegisterSuccess", str);
+		
 		sfsClient.send(new LogoutRequest());
 	}
 	
@@ -505,7 +520,8 @@ public class SmartFoxServer implements IEventListener {
 		SFSObject params2 = new SFSObject();
 		if (params.getSFSArray("Friends")!=null){
 			for(int i= 0;i<params.getSFSArray("Friends").size();i++){
-				int confirmado = JOptionPane.showConfirmDialog(null,((String) params.getSFSArray("Friends").getElementAt(i))+" wants to be your friend");//TODO show a better dialog in which the user can confirm or reject
+				int confirmado = JOptionPane.showConfirmDialog(null,((String) params.getSFSArray("Friends").getElementAt(i))+" wants to be your friend");//DONE TODO show a better dialog in which the user can confirm or reject
+				ConfirmScreen.getInstance().setNewConfirmScreen("BeFriends?", ((String) params.getSFSArray("Friends").getElementAt(i)));
 				params2.putUtfString("friend", ((String) params.getSFSArray("Friends").getElementAt(i)));	
 				if (JOptionPane.OK_OPTION == confirmado){
 					   System.out.println("confirmado");	   
@@ -521,7 +537,8 @@ public class SmartFoxServer implements IEventListener {
 		}
 		if (params.getSFSArray("Friends2")!=null){
 			for(int i=0;i<params.getSFSArray("Friends2").size();i++){
-				JOptionPane.showMessageDialog(null,((String) params.getSFSArray("Friends2").getElementAt(i))+" accepted your friend request");//TODO show a better dialog
+				// DONE JOptionPane.showMessageDialog(null,((String) params.getSFSArray("Friends2").getElementAt(i))+" accepted your friend request");//TODO show a better dialog
+				AcceptScreen.getInstance().setNewAcceptScreen("AcceptedFriendRequest", ((String) params.getSFSArray("Friends2").getElementAt(i)));
 				params2.putUtfString("friend", ((String) params.getSFSArray("Friends2").getElementAt(i)));
 				ExtensionRequest request2 = new ExtensionRequest("ViewedConfFriend",params2);
 				sfsClient.send(request2);
@@ -533,6 +550,8 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void dispatch(BaseEvent event) throws SFSException {
 	}
+
+
 	
 	
 	

@@ -23,6 +23,7 @@ public class GameSettings {
 	String xmlPath;	
 	
 	public GameSettings(String xmlPath){
+		instance = this;
 		this.xmlPath = xmlPath;
 		this.loadSettings();
 	}

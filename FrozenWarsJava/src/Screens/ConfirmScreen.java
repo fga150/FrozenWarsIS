@@ -83,12 +83,10 @@ public class ConfirmScreen implements Screen{
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
@@ -107,12 +105,19 @@ public class ConfirmScreen implements Screen{
       				game.setScreen(MultiplayerScreen.getInstance());
       			} else if (screenMode.equals("InvitedDisconnected")){
       				game.setScreen(new InviteScreen());
+      			} else if (screenMode.equals("BeFriends?")){
+      				//TODO SmartFoxServer.getInstance().beFriends("yes", user);
+      				//TODO friendsScreen.updateFriends();
+      				game.setScreen(ancestor);
       			}
       			
       		} else if(noClick.contains(touchPoint)){ //compruebo si he tocado no
       			if (screenMode.equals("Exit") || screenMode.equals("InvitedDisconnected")) game.setScreen(ancestor);
       			else if (screenMode.equals("InviteGame")) {
       				SmartFoxServer.getInstance().refuseRequest(user);
+      				game.setScreen(ancestor);
+      			} else if (screenMode.equals("BeFriends?")){
+      				//TODO SmartFoxServer.getInstance().beFriends("no", user);
       				game.setScreen(ancestor);
       			}
       		}
@@ -144,22 +149,23 @@ public class ConfirmScreen implements Screen{
             } else if (screenMode.equals("InvitedDisconnected")){
             	String message = user.concat(" has disconnected. Do you want to invite anyone else?");
             	font.drawWrapped(batcher, message, 350, 538, 330);
+            } else if (screenMode.equals("BeFriends?")){
+            	String message = user.concat(" wants to be your friend.");
+            	font.drawWrapped(batcher, message, 350, 525, 330);
+            	font.draw(batcher, "Do you want to be friends?", 350, 450);
             }
             batcher.end();	
 	}
 
 	@Override
 	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub		
 	}
 }

@@ -81,12 +81,10 @@ public class AcceptScreen implements Screen{
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
@@ -96,14 +94,21 @@ public class AcceptScreen implements Screen{
       		guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
       		System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 
-      		//compruebo si he tocado yes 
       		if (screenMode.equals("FullTeam") || screenMode.equals("QueueExit") || screenMode.equals("GameNotFound") || screenMode.equals("LeaderLeft") || screenMode.equals("UserOutOfQueue")){
   				MultiplayerScreen.getInstance().setDefault();
   				game.setScreen(MultiplayerScreen.getInstance());
-  			} else if (screenMode.equals("DiffPasswords") || screenMode.equals("PasswordChars") || screenMode.equals("Email") || screenMode.equals("Username") || screenMode.equals("NamePassNotValid")){
+  			} else if (screenMode.equals("DiffPasswords") || screenMode.equals("PasswordChars") || screenMode.equals("Email") || screenMode.equals("Username") || screenMode.equals("NamePassNotValid")
+  					   || screenMode.equals("AlreadyLogged") || screenMode.equals("AddFriendAdder")){
+  				game.setScreen(ancestor);
+  			} else if (screenMode.equals("AddFriendAdded")){
+  				//TODO if (user.equals("SuccessYes")) friendsScreen.updateFriends();
   				game.setScreen(ancestor);
   			} else if (screenMode.equals("RegisterSuccess")){
-  				game.setScreen(LogSignScreen.getInstance());
+  				if (user.equals("Registered")) game.setScreen(InitialScreen.getInstance()); //TODO conectarse y meterse directamente al MultiplayerScreen + guardar user y contraseña
+  				else game.setScreen(ancestor);
+  			} else if (screenMode.equals("AcceptedFriendRequest")){
+            	//TODO friendsScreen.updateFriends();
+  				game.setScreen(ancestor);
   			}
       }
       //crear solamente un batcher por pantalla y eliminarlo cuando no se use
@@ -125,56 +130,61 @@ public class AcceptScreen implements Screen{
             batcher.enableBlending();
             batcher.begin();    
             batcher.draw(Assets.okWindow, 330, 300);
+            String message = "";
             if (screenMode.equals("FullTeam")){
-            	String message = "You can't join this game because the team is full.";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	message = "You can't join this game because the team is full.";
             } else if (screenMode.equals("QueueExit")){
-            	String message = "Someone in your team left so you all have left the queue.";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	message = "Someone in your team left so you all have left the queue.";
             }  else if (screenMode.equals("GameNotFound")){
-            	String message = "Game not found.";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	message = "Game not found.";
             } else if (screenMode.equals("LeaderLeft")){
-            	String message = "Game's leader left.";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	message = "Game's leader left.";
             } else if (screenMode.equals("UserOutOfQueue")){
-            	String message = "A teammate has disconnected so you all have left the queue.";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	message = "A teammate has disconnected so you all have left the queue.";
             } else if (screenMode.equals("DiffPasswords")){
-            	String message = "Passwords must be different.";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	message = "Passwords must be the same.";
             } else if (screenMode.equals("PasswordChars")){
-            	String message = "Password must have between 4 and 8 characters.";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	message = "Password must have between 4 and 8 characters.";
             } else if (screenMode.equals("Email")){
-            	String message = "The email is not correct.";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	message = "The email is not correct.";
             } else if (screenMode.equals("Username")){
-            	String message = "Write an user name.";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	message = "Write an user name.";
             } else if (screenMode.equals("NamePassNotValid")){
-            	String message = "User and/or password are not valid.";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	message = "User and/or password are not valid.";
+            } else if (screenMode.equals("AlreadyLogged")){
+            	message = "There is another person logged with this account";
+            } else if (screenMode.equals("AddFriendAdder")){
+            	if (user.equals("Error")) message = "Something unexpected happened!";
+            	else if (user.equals("UserNoExist")) message = "The user doesnt exist";
+            	else if (user.equals("Friends")) message = "The user is already your friend";
+            	else if (user.equals("Success")) message = "You have added the user as friend (he has to accept the invitation)";
+            } else if (screenMode.equals("AddFriendAdded")){
+            	if (user.equals("Error")) message = "Something unexpected happened!";
+            	else if (user.equals("SuccessYes")) message = "You have the user as friend";
+            	else if (user.equals("SuccessNo")) message = "You will not be friend with that user";
             } else if (screenMode.equals("RegisterSuccess")){
-            	String message = "You are now registered!";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	if (user.equals("Error")) message = "Something unexpected happened!";
+            	else if (user.equals("UserExits")) message = "There is a user with that name already"; //TODO deberia ser UserExists (mirar los demas tambien)
+            	else if (user.equals("EmailExits")) message = "There is a user with that email already"; //TODO deberia ser EmailExists
+            	else if (user.equals("Registered")) message = "You have been correctly registered";
+            	else message = user;
+            } else if (screenMode.equals("AcceptedFriendRequest")){
+            	message = user.concat(" accepted your friend request");
             }
             
+            font.drawWrapped(batcher, message, 350, 538, 330);
             batcher.end();	
 	}
 
 	@Override
 	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub		
 	}
 }
