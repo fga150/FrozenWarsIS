@@ -1,10 +1,18 @@
 package GameLogic;
 
+import Server.SmartFoxServer;
+
 import com.badlogic.gdx.Gdx;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import sfs2x.client.requests.ExtensionRequest;
+
 import com.badlogic.gdx.files.FileHandle;
+import com.smartfoxserver.v2.entities.data.ISFSArray;
+import com.smartfoxserver.v2.entities.data.SFSArray;
+import com.smartfoxserver.v2.entities.data.SFSObject;
 
 public class Map {
 	
@@ -83,6 +91,20 @@ public class Map {
 			maxRangeUpgrades = 8;
 			maxNumHarpoonsUpgrades = 8;
 			maxThrowUpgrades = 8;
+			/*if(SmartFoxServer.getInstance().getSfsClient().getMySelf().getId()==1){     PROBAR CUANDO DANI SUBA CAMBIOS DEL SERVER
+				SFSObject params = new SFSObject();
+				ISFSArray array = new SFSArray();
+				  int numBarriles=5;
+				  array.addInt(2);
+				  array.addInt(1);
+				  array.addInt(1);
+				  
+				  params.putInt("numBarriles", numBarriles);
+				  params.putSFSArray("arraymejoras", array);
+				  
+				  ExtensionRequest request2 = new ExtensionRequest("AsignaMejoras",params);
+				SmartFoxServer.getInstance().getSfsClient().send(request2);
+			}*/
 		} else {
 			xmlMap = getData(xmlMap, "Map");
 			loadName();

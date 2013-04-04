@@ -46,6 +46,10 @@ public class SmartFoxServer implements IEventListener {
 	private String lastPass;
 	private boolean loggedIn;
 	
+	public SmartFox getSfsClient(){
+		return this.sfsClient;
+	}
+	
 	public static SmartFoxServer getInstance() {
 		if (instance == null) instance = new SmartFoxServer();
 		return instance;
@@ -167,6 +171,8 @@ public class SmartFoxServer implements IEventListener {
 					AcceptScreen.getInstance().setNewAcceptScreen("AddFriendAdded", ((ISFSObject)r.get("params")).getUtfString("res"));
 				else if(cmd.equals("ConnectRes"))
 					connectRes(response);
+				else if(cmd.equals("asignaMejoras"))
+					asignaMejoras(response);
 				}
 
 		});
@@ -175,9 +181,9 @@ public class SmartFoxServer implements IEventListener {
 	private String getServerIP() {
 		String ip = "";
 		try {
-			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
-			ip = address.getHostAddress();
-			//ip="127.0.0.1";
+			//InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			//ip = address.getHostAddress();
+			ip="127.0.0.1";
 		} catch (Exception e){
 			
 		}
@@ -551,7 +557,12 @@ public class SmartFoxServer implements IEventListener {
 	public void dispatch(BaseEvent event) throws SFSException {
 	}
 
-
+	public void asignaMejoras(ISFSObject params) {
+		int numBarriles=((ISFSObject)params.get("params")).getInt("nBarriles");
+		for(int i=0;i<numBarriles;i++){
+			System.out.println(((ISFSObject)params.get("params")).getSFSArray("arrayBarriles").getInt(i));
+		}
+	}
 	
 	
 	
