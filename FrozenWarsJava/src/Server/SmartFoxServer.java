@@ -181,9 +181,9 @@ public class SmartFoxServer implements IEventListener {
 	private String getServerIP() {
 		String ip = "";
 		try {
-			//InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
-			//ip = address.getHostAddress();
-			ip="127.0.0.1";
+			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			ip = address.getHostAddress();
+			//ip="127.0.0.1";
 		} catch (Exception e){
 			
 		}
