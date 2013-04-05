@@ -435,6 +435,10 @@ public class Match {
 		return (insideBoardMove(dir, playerId)&& isLegalMove(dir,playerId));
 	}
 	
+	public boolean checkHarpoon(int x, int y) {
+		return map.isEmptySquare(x,y);
+	}
+	
 	//Getters and Setters
 
 	public Map getMap() {

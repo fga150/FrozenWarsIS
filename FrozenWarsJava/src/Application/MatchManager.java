@@ -58,7 +58,9 @@ public class MatchManager {
 	}                
 	
 	public void putHarpoonEvent(int x, int y, int range, long time) {
-		match.putHarpoonAt(x,y,range,time);
+		if (match.checkHarpoon(x,y)){
+			match.putHarpoonAt(x,y,range,time);
+		}
 	}
 	
 	public boolean isThePlayerDead(int numPlayer) {

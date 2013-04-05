@@ -1,10 +1,9 @@
 package GameLogic;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import javax.swing.Timer;
+import com.badlogic.gdx.utils.Timer;
+
 
 /**
  * The main objective of this class is helping class match by controlling
@@ -12,53 +11,52 @@ import javax.swing.Timer;
  * of the sunken time, or other time events.
  */
 
-public class TimeEventsManager implements ActionListener {
+public class TimeEventsManager{
 	
-	private final int sunkenTime = 1000;
-	private final int sinkPenguinTime = 1000;
-	private enum TypeEvent{sinkHarpoon,freezeWater,timeMatch,sinkPenguin};
+	private final float sunkenTime = 0.5f;
+	private final float sinkPenguinTime = 1;
+	public enum TypeEvent{sinkHarpoon,freezeWater,timeMatch,sinkPenguin};
 	
 	private Match match;
-	private HashMap<Timer,Object> timeEventObject;
-	private HashMap<Timer,TypeEvent> typeEvent;
+	private Timer timer;
+	private HashMap<TimeEventsTask,Object> timeEventObject;
+	private HashMap<TimeEventsTask,TypeEvent> typeEvent;
 	
 	public TimeEventsManager(Match match){
 		this.match = match;
-		this.timeEventObject = new HashMap<Timer,Object>();
-		this.typeEvent = new HashMap<Timer,TypeEvent>();
+		this.timer = new Timer();
+		timer.stop();
+		this.timeEventObject = new HashMap<TimeEventsTask,Object>();
+		this.typeEvent = new HashMap<TimeEventsTask,TypeEvent>();
 	}
 	
 	public void freezeWaterEvent(Harpoon sunkenHarpoon) {
-		Timer timer = new Timer(sunkenTime,this);
-		timeEventObject.put(timer,sunkenHarpoon);
-		typeEvent.put(timer,TypeEvent.freezeWater);
-		timer.setRepeats(false);
+		TimeEventsTask timerTask = new TimeEventsTask(this);
+		timeEventObject.put(timerTask,sunkenHarpoon);
+		typeEvent.put(timerTask,TypeEvent.freezeWater);
+		timer.scheduleTask(timerTask, sunkenTime);
 		timer.start();
 	}
 	public void sinkPenguinEvent(Player player) {
-		Timer timer = new Timer(sinkPenguinTime,this);
-		timeEventObject.put(timer,player);
-		typeEvent.put(timer,TypeEvent.sinkPenguin);
-		timer.setRepeats(false);
+		TimeEventsTask timerTask = new TimeEventsTask(this);
+		timeEventObject.put(timerTask,player);
+		typeEvent.put(timerTask,TypeEvent.sinkPenguin);
+		timer.scheduleTask(timerTask,sinkPenguinTime);
 		timer.start();
 	}
 	
 	public void sinkHarpoonEvent(Harpoon harpoon,long time){
+		TimeEventsTask timerTask = new TimeEventsTask(this);
 		long currentTime = System.currentTimeMillis();
-		long waitTime = (time - currentTime);
-		Timer timer = new Timer((int)waitTime,this);
-		timeEventObject.put(timer,harpoon);
-		typeEvent.put(timer,TypeEvent.sinkHarpoon);
-		timer.setRepeats(false);
+		float waitTime = (time - currentTime)/1000;
+		timeEventObject.put(timerTask,harpoon);
+		typeEvent.put(timerTask,TypeEvent.sinkHarpoon);
+		timer.scheduleTask(timerTask,waitTime);
 		timer.start();
 	}
 	
-	/**
-	 * 
-	 */
-	
-	public void actionPerformed(ActionEvent e){
-		Timer timer = (Timer)e.getSource();
+	public void actionPerformed(TimeEventsTask timeEventsTask){
+		TimeEventsTask timer = timeEventsTask; 
 		TypeEvent type = typeEvent.get(timer);
 		if (type.equals(TypeEvent.sinkHarpoon)){
 			Harpoon harpoon = (Harpoon)timeEventObject.get(timer);
@@ -80,12 +78,12 @@ public class TimeEventsManager implements ActionListener {
 		}
 	}
 
-	public long getSunkenTime() {
+	public float getSunkenTime() {
 		return sunkenTime;
 	}
 
-	public int getSinkPenguinTime() {
+	public float getSinkPenguinTime() {
 		return sinkPenguinTime;
 	}
-	
+
 }

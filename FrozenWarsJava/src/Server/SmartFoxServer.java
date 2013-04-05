@@ -26,7 +26,7 @@ import sfs2x.client.requests.LoginRequest;
 
 public class SmartFoxServer implements IEventListener {
 
-	private static final String SFS_ZONE = "FrozenWars";
+	private static final String SFS_ZONE = "FrozenWarsLogic";
 	private SmartFox sfsClient;
 	private MatchManager manager;
 	private static SmartFoxServer instance;

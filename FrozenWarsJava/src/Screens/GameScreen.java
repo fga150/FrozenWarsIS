@@ -176,14 +176,23 @@ public class GameScreen implements Screen{
 		guiCam.update();
 		textCam.update();
 		
-		if(manager.canPlay(numPlayer) && !manager.imTheWinner(numPlayer)){
-			if ((Gdx.input.isKeyPressed(Keys.W))||(Gdx.input.isKeyPressed(Keys.UP))){manager.movePlayer(Direction.up);}
-			if ((Gdx.input.isKeyPressed(Keys.S))||(Gdx.input.isKeyPressed(Keys.DOWN))){manager.movePlayer(Direction.down);}
-			if ((Gdx.input.isKeyPressed(Keys.A))||(Gdx.input.isKeyPressed(Keys.LEFT))){manager.movePlayer(Direction.left);}
-			if ((Gdx.input.isKeyPressed(Keys.D))||(Gdx.input.isKeyPressed(Keys.RIGHT))){manager.movePlayer(Direction.right);}
+		if(manager.canPlay(numPlayer)){
+			
+			//Keyboard
+			
+			if ((Gdx.input.isKeyPressed(Keys.W))||(Gdx.input.isKeyPressed(Keys.UP)))manager.movePlayer(Direction.up);
+			if ((Gdx.input.isKeyPressed(Keys.S))||(Gdx.input.isKeyPressed(Keys.DOWN)))manager.movePlayer(Direction.down);
+			if ((Gdx.input.isKeyPressed(Keys.A))||(Gdx.input.isKeyPressed(Keys.LEFT)))manager.movePlayer(Direction.left);
+			if ((Gdx.input.isKeyPressed(Keys.D))||(Gdx.input.isKeyPressed(Keys.RIGHT)))manager.movePlayer(Direction.right);
+			if (Gdx.input.isKeyPressed(Keys.SPACE)) manager.putHarpoon();
+			
+			//TouchPad
+			
 			if (Gdx.input.isTouched()){
 				if (Gdx.input.isTouched(0))guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
+				else touchPoint.set(-1,-1,-1);
 				if (Gdx.input.isTouched(1))guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
+				else touchPoint2.set(-1,-1,-1);
 				if (fdBounds.contains(touchPoint)||fdBounds.contains(touchPoint2)){
 					manager.movePlayer(Direction.right);      
 				}
@@ -196,12 +205,10 @@ public class GameScreen implements Screen{
 				else if (fabBounds.contains(touchPoint)||fabBounds.contains(touchPoint2)){
 					manager.movePlayer(Direction.down);
 				}
-			}
-			if (Gdx.input.isKeyPressed(Keys.SPACE)) manager.putHarpoon();
-		
-			//This has to be just touched else the code of put harpoon run 2 times
-			if (Gdx.input.justTouched() &&(harpoonBounds.contains(touchPoint)||harpoonBounds.contains(touchPoint2))){
-				manager.putHarpoon();
+				if (harpoonBounds.contains(touchPoint)||harpoonBounds.contains(touchPoint2)){
+					manager.putHarpoon();
+					Gdx.input.vibrate(200);
+				}
 			}
 		}
 	}

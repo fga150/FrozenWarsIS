@@ -1,8 +1,8 @@
 package Application;
 
-import com.badlogic.gdx.backends.jogl.JoglApplication;
-import com.badlogic.gdx.tools.imagepacker.TexturePacker;
-import com.badlogic.gdx.tools.imagepacker.TexturePacker.Settings;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.tools.imagepacker.TexturePacker2;
+import com.badlogic.gdx.tools.imagepacker.TexturePacker2.Settings;
 
 public class Desktop {
 
@@ -13,11 +13,9 @@ public class Desktop {
 
 		//Empaquetar imagenes
 		Settings settings = new Settings();
-        settings.padding=2;
         settings.maxHeight=2048;
         settings.maxWidth=2048;
-        settings.incremental=true;
-        TexturePacker.process(settings, "image", "data");    
+        TexturePacker2.process(settings, "image", "data","pack");    
 		
 		/*
 		 * Para poder lanzar el juego tenemos que hacer
@@ -27,7 +25,7 @@ public class Desktop {
 		- 480. Alto en píxeles.
 		- false. Para indicar que no queremos utilizar OpenGL S 2.0 en este caso. Por lo que se utilizará el 1.1
 		*/
-        new JoglApplication(new LaunchFrozenWars(), "FrozenWars", 1024, 639, false);
+        new LwjglApplication(new LaunchFrozenWars(), "FrozenWars", 1024, 639, false);
 	}
 
 }
