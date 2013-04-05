@@ -212,13 +212,7 @@ public class Match {
 				}
 			}
 		}else valid=true;
-		players[myPlayerId].setSpecialMove(false);
-		//Commented method is for test sunkObject image when penguin is sunk
-		// and dead player this method is called for check if there are a collision
-		// between player and water.
-		if (!players[myPlayerId].isInvincible() && isSunkenPenguin(myPlayerId)){
-			loseLife(myPlayerId);
-		}
+		if (valid) players[myPlayerId].setSpecialMove(false);
 		return valid;
 	}
 	private void loseLife(int playerId) {
@@ -228,7 +222,8 @@ public class Match {
 
 	/**
 	 * @param yPlayerPosition 
-	 * @param xPlayerPosition * ***/
+	 * @param xPlayerPosition 
+	 **/
 	
 	public void movePlayer(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition) {
 		Player myPlayer = players[playerId];
@@ -238,6 +233,9 @@ public class Match {
 			else if (dir.equals(Direction.right)) myPlayer.setPositionX(xPlayerPosition+minimalMove);
 			else if (dir.equals(Direction.up)) myPlayer.setPositionY(yPlayerPosition+minimalMove);
 			else if (dir.equals(Direction.down)) myPlayer.setPositionY(yPlayerPosition-minimalMove);
+		}
+		if (!players[playerId].isInvincible() && isSunkenPenguin(playerId)){
+			loseLife(playerId);
 		}
 	}
 	
@@ -341,6 +339,36 @@ public class Match {
 		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
 	}
 	
+	private boolean isLegalMove(Direction dir, int playerId){
+		boolean valid = false;
+		if(dir.equals(players[playerId].getLookAt())){
+			Vector3 position=players[playerId].getPosition();
+			if ((dir.equals(Direction.left)||dir.equals(Direction.right))&&((int)position.y==position.y)){
+				if ((int)position.x==position.x){
+					if(dir.equals(Direction.left)){
+						valid=newSquare((int)position.x-1,(int)position.y);
+					}else{
+						valid=newSquare((int)position.x+1,(int)position.y);
+					}
+				}else{
+					valid=true;
+				}
+				
+			}else if((dir.equals(Direction.up)||dir.equals(Direction.down))&&((int)position.x==position.x)){
+				if ((int)position.y==position.y){
+					if(dir.equals(Direction.up)){
+						valid=newSquare((int)position.x,(int)position.y+1);
+					}else{
+						valid=newSquare((int)position.x,(int)position.y-1);
+					}
+				}else{
+					valid=true;
+				}
+			}
+		}else valid=true;
+		return valid;
+	}
+	
 	public boolean canPutHarpoon(int myPlayerId){
 		Vector3 position=players[myPlayerId].getPosition();
 		if(players[myPlayerId].getLookAt().equals(Direction.right)){
@@ -371,6 +399,17 @@ public class Match {
 		return (map.isEmptySquare((int)coord.x,(int)coord.y));
 	}	
 
+	public boolean imTheWinner(int numPlayer){
+		boolean win = !players[numPlayer].isThePlayerDead();
+		for(int i = 0; i< numPlayers; i++){
+			if(i != numPlayer){
+				win = win && players[i].isThePlayerDead();
+			}
+		}
+		return win;
+	}
+	
+	
 	public int getIntegerCoordX(int myPlayerId) {
 		Player myPlayer = players[myPlayerId];
 		Vector3 position = myPlayer.getPosition();
@@ -390,6 +429,10 @@ public class Match {
 
 	public int getMyPlayerRange(int myPlayerId) {
 		return players[myPlayerId].getRange();
+	}
+	
+	public boolean checkCorrectMove(Direction dir, int playerId){
+		return (insideBoardMove(dir, playerId)&& isLegalMove(dir,playerId));
 	}
 	
 	//Getters and Setters
@@ -498,7 +541,5 @@ public class Match {
 	public boolean canPlay(int i) {
 		return players[i].canPlay();
 	}
-
-	
 
 }

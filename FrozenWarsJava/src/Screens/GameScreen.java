@@ -1,5 +1,6 @@
 package Screens;
 
+import Application.Assets;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
 import GameLogic.Map.TypeSquare;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -47,6 +49,7 @@ public class GameScreen implements Screen{
 		numPlayer=manager.getMyIdPlayer();
 		this.manager = manager;
 		font = new BitmapFont();
+		font.setColor(Color.BLACK);
 		guiCam = new OrthographicCamera(21,13);
 		textCam=new OrthographicCamera(21*32,13*32);
 		textCam.position.set((21*32)/2,(13*32)/2,0);
@@ -102,7 +105,6 @@ public class GameScreen implements Screen{
 		batcher.draw(Assets.getVerticalBarLeft(),7,0,1,13);
 		batcher.draw(Assets.getVerticalBarRigth(),19,0,1,13);
 		
-		paintPlayerStatus();
 		
 		for(int i=0;i<11;i++){
 			for (int j=0;j<11;j++){
@@ -166,13 +168,15 @@ public class GameScreen implements Screen{
 		}
 		
 		paintLifes();
+		paintPlayerStatus();
+		
 		batcher.setProjectionMatrix(textCam.combined);
-		font.draw(batcher, name, 1*32 ,13*32);
+		font.draw(batcher, name, 2*32 ,13*32);
 		batcher.end();
 		guiCam.update();
 		textCam.update();
 		
-		if(manager.canPlay(numPlayer)){
+		if(manager.canPlay(numPlayer) && !manager.imTheWinner(numPlayer)){
 			if ((Gdx.input.isKeyPressed(Keys.W))||(Gdx.input.isKeyPressed(Keys.UP))){manager.movePlayer(Direction.up);}
 			if ((Gdx.input.isKeyPressed(Keys.S))||(Gdx.input.isKeyPressed(Keys.DOWN))){manager.movePlayer(Direction.down);}
 			if ((Gdx.input.isKeyPressed(Keys.A))||(Gdx.input.isKeyPressed(Keys.LEFT))){manager.movePlayer(Direction.left);}
@@ -223,6 +227,10 @@ public class GameScreen implements Screen{
 			}else if(numPlayer==3){
 				batcher.draw(Assets.getDeadIconBlue(),6,12,0.75f,0.75f);
 			}
+			batcher.draw(Assets.getGameOver(),6,4,14,8);
+		}
+		if (manager.imTheWinner(numPlayer)){
+			batcher.draw(Assets.getYouWin(),6,4,14,8);
 		}
 }
 			

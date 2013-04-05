@@ -1,7 +1,7 @@
 package Screens;
 
-import Application.GameSettings;
-
+import Application.Assets;
+import Application.LaunchFrozenWars;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -11,21 +11,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LoadScreen implements Screen{
-
 	private SpriteBatch batcher; 
 	private Game game;
 	private OrthographicCamera guiCam;
-	private GameSettings gSettings;
 	private long t0, t1;
 	private boolean showed;
 	 
-	public LoadScreen(Game game, GameSettings gSettings){
-		this.game = game;
+	public LoadScreen(){
+		this.game = LaunchFrozenWars.getGame();
 		this.showed = false;
 		guiCam = new OrthographicCamera(420,380);
 		guiCam.position.set(210,190,0);
-		batcher = new SpriteBatch();
-		this.gSettings = gSettings; 
+		batcher = new SpriteBatch(); 
 		t0 =  System.currentTimeMillis(); //Hora de  creacion de la pantalla	
 	}	
 	
@@ -56,8 +53,7 @@ public class LoadScreen implements Screen{
 		//en cuyo caso se abre la ventana de inicio
         if ((((t1 - t0) >= (5000)) || Gdx.input.justTouched()) && !showed) { 
         	showed = true;
-        	InitialScreen initialScreen = new InitialScreen(game,gSettings);
-            game.setScreen(initialScreen);
+            game.setScreen(InitialScreen.getInstance());
     	return;
 
         }

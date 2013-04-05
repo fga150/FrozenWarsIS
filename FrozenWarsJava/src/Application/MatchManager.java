@@ -46,13 +46,16 @@ public class MatchManager {
 		if (match.canPutHarpoon(myPlayerId)){
 			Vector3 coord=match.getCoord();
 			sfsClient.putHarpoon((int)coord.x,(int)coord.y,match.getMyPlayerRange(myPlayerId));
+			this.lastMessage = System.currentTimeMillis();
 		}
 	}
 	
-	public void movePlayerEvent(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition) {
-		match.movePlayer(dir,playerId,xPlayerPosition,yPlayerPosition);
-		gameScreen.movePlayer(dir,playerId,match.getMyPlayerPosition(playerId));
-	}
+	public void movePlayerEvent(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition){
+		if (match.checkCorrectMove(dir,playerId)){ 
+			match.movePlayer(dir,playerId,xPlayerPosition,yPlayerPosition);
+			gameScreen.movePlayer(dir,playerId,match.getMyPlayerPosition(playerId));
+		}
+	}                
 	
 	public void putHarpoonEvent(int x, int y, int range, long time) {
 		match.putHarpoonAt(x,y,range,time);
@@ -61,7 +64,12 @@ public class MatchManager {
 	public boolean isThePlayerDead(int numPlayer) {
 		return match.isThePlayerDead(numPlayer);
 	}
+	
+	public boolean imTheWinner(int numPlayer){
+		return match.imTheWinner(numPlayer);
 
+	}
+	
 	
 	// Getters and Setters
 	
