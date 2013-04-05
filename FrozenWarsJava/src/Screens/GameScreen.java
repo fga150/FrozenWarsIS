@@ -127,7 +127,7 @@ public class GameScreen implements Screen{
 				}
 				if (!typeBasicMatrix.equals(TypeSquare.empty)){
 					if (typeBasicMatrix.equals(TypeSquare.unbreakable)) texture = Assets.getIgloo();
-					else if (typeBasicMatrix.equals(TypeSquare.Harpoon)) texture = Assets.getHarpoon();				
+					else if (typeBasicMatrix.equals(TypeSquare.harpoon)) texture = Assets.getHarpoon();				
 					else if (typeBasicMatrix.equals(TypeSquare.breakable)) texture  = Assets.getBarrel();
 					batcher.draw(texture,i+8,j+1,1,1);
 				}

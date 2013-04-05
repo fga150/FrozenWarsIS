@@ -26,7 +26,7 @@ import sfs2x.client.requests.LoginRequest;
 
 public class SmartFoxServer implements IEventListener {
 
-	private static final String SFS_ZONE = "FrozenWarsLogic";
+	private static final String SFS_ZONE = "FrozenWars";
 	private SmartFox sfsClient;
 	private MatchManager manager;
 	private static SmartFoxServer instance;
@@ -53,7 +53,7 @@ public class SmartFoxServer implements IEventListener {
 		myId = -999;
 		String ip = getServerIP();
 		sfsClient = new SmartFox(false);
-		sfsClient.connect(ip,9933);
+		sfsClient.connect("127.0.0.1",9933);
 		addEventListeners();
 	}
 	

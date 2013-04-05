@@ -1,6 +1,7 @@
 package GameLogic;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class HarpoonManager{
 	
@@ -14,6 +15,21 @@ public class HarpoonManager{
 		this.currentPlayerHarpoons = new int[numPlayers];
 		this.activeHarpoonList = new ArrayList<Harpoon>(arrayListSize);
 		this.sunkenHarpoonList = new ArrayList<Harpoon>(arrayListSize);
+	}
+	
+	public Harpoon getHarpoon(int x, int y) {
+		Iterator<Harpoon> iterator = activeHarpoonList.iterator();
+		boolean found = false;
+		Harpoon harpoonAux = null;
+		while (iterator.hasNext() && !found){
+			harpoonAux = iterator.next();
+			found = checkHarpoon(x,y,harpoonAux);
+		}
+		return harpoonAux;
+	}
+	
+	private boolean checkHarpoon(int x, int y, Harpoon harpoon){
+		return (((int)harpoon.getPosition().x == x) && (y == (int)harpoon.getPosition().y));
 	}
 	
 	public void sinkHarpoon(Harpoon harpoon) {

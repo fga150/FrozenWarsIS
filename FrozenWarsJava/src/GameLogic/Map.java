@@ -21,7 +21,7 @@ public class Map {
 	
 	//Type of Basic Square in the boardGame
 	public enum TypeSquare{empty,unbreakable,breakable,bootUpgrade,rangeUpgrade,numHarpoonUpgrade,
-		throwUpgrade,Harpoon}
+		throwUpgrade,harpoon}
 	
 	//Total number of each Upgrade
 	private int maxBootUpgrades;
@@ -150,7 +150,7 @@ public class Map {
 	//METHODS OF PUT FISSURE
 	
 	public void putHarpoonAt(int xHarpoonPosition, int yHarpoonPosition) {
-		boardGame[xHarpoonPosition][yHarpoonPosition]= TypeSquare.Harpoon;
+		boardGame[xHarpoonPosition][yHarpoonPosition]= TypeSquare.harpoon;
 	}
 
 	public void addAllFissures(ArrayList<Harpoon> harpoonList){
@@ -458,6 +458,10 @@ public class Map {
 						sunkenBoard[i][j] = SunkenTypes.empty;
 		}
 	
+		public void setBasicMatrixSquare(int x, int y) {
+			boardGame[x][y] = TypeSquare.empty;
+		}
+		
 //END OF METHOD DELETE SUNKEN OBJECT
 
 	public void sunkenObject(int x, int y){
@@ -531,4 +535,5 @@ public class Map {
 	public void setMapName(String mapName) {
 		this.mapName = mapName;
 	}
+
 }

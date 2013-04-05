@@ -45,7 +45,7 @@ public class Match {
 	private boolean newSquare(int x, int y){
 		TypeSquare square = map.getBasicMatrixSquare(x,y);
 		return !(square.equals(TypeSquare.unbreakable)|| square.equals(TypeSquare.breakable) 
-				  ||square.equals(TypeSquare.Harpoon));
+				  ||square.equals(TypeSquare.harpoon));
 	}
 	//END
 	public boolean insideBoardMove(Direction dir, int playerId) {
@@ -272,11 +272,18 @@ public class Match {
 	}
 	
 	private void harpoonRangeDamage(Harpoon harpoon) {
-		int range = harpoon.getRange();
 		boolean[] isCought = new boolean[numPlayers];
-		boolean[] isBlocked = new boolean [4];
 		for (int i=0;i<numPlayers;i++) isCought[i] = false;
+		harpoonRangeDamageChain(harpoon,isCought);
+		for (int i=0;i<numPlayers;i++){
+			if (isCought[i]) loseLife(i);
+		}
+	}
+
+	private void harpoonRangeDamageChain(Harpoon harpoon, boolean[] isCought) {
+		boolean[] isBlocked = new boolean [4];
 		for (int i=0;i<4;i++) isBlocked[i] = false;
+		int range = harpoon.getRange();
 		for (int i=0;i<=range;i++){
 			for (int j=0;j<numPlayers;j++){
 				if (!players[j].isInvincible()){
@@ -286,11 +293,47 @@ public class Match {
 					}
 				}
 			}
+			if (i!=0) checkHarpoonsInRange(harpoon,i,isCought,isBlocked);
 			updateBlocked(harpoon,i+1,isBlocked);
 		}
-		for (int i=0;i<numPlayers;i++){
-			if (isCought[i]) loseLife(i);
+		map.putSunkenHarpoonAt((int)harpoon.getPosition().x,(int)harpoon.getPosition().y);
+	}
+
+	private void checkHarpoonsInRange(Harpoon harpoon, int range, boolean[] isCought, boolean[] isBlocked) {
+		int x = (int)harpoon.getPosition().x;
+		int y = (int)harpoon.getPosition().y;
+		if (!isBlocked[0] && (map.getBasicMatrixSquare(x, y+range).equals(TypeSquare.harpoon))){		
+			Harpoon newHarpoon = harpoonManager.getHarpoon(x,y+range);
+			harpoonManager.sinkHarpoon(newHarpoon);
+			timeEventsManager.stopTimer(newHarpoon);
+			map.putSunkenHarpoonAt(x,y);
+			harpoonRangeDamageChain(newHarpoon,isCought);
+			timeEventsManager.freezeWaterEvent(newHarpoon);
 		}
+		else if (!isBlocked[1] && (map.getBasicMatrixSquare(x, y-range).equals(TypeSquare.harpoon))){
+			Harpoon newHarpoon = harpoonManager.getHarpoon(x,y-range);
+			harpoonManager.sinkHarpoon(newHarpoon);
+			timeEventsManager.stopTimer(newHarpoon);
+			map.putSunkenHarpoonAt(x,y);
+			harpoonRangeDamageChain(newHarpoon,isCought);
+			timeEventsManager.freezeWaterEvent(newHarpoon);
+		}
+		else if (!isBlocked[2] && (map.getBasicMatrixSquare(x-range,y).equals(TypeSquare.harpoon))){
+			Harpoon newHarpoon = harpoonManager.getHarpoon(x-range,y);
+			harpoonManager.sinkHarpoon(newHarpoon);
+			timeEventsManager.stopTimer(newHarpoon);
+			map.putSunkenHarpoonAt(x,y);
+			harpoonRangeDamageChain(newHarpoon,isCought);
+			timeEventsManager.freezeWaterEvent(newHarpoon);
+		}
+		else if (!isBlocked[3] && (map.getBasicMatrixSquare(x+range,y).equals(TypeSquare.harpoon))){
+			Harpoon newHarpoon = harpoonManager.getHarpoon(x+range,y);
+			harpoonManager.sinkHarpoon(newHarpoon);
+			timeEventsManager.stopTimer(newHarpoon);
+			map.putSunkenHarpoonAt(x,y);
+			harpoonRangeDamageChain(newHarpoon,isCought);
+			timeEventsManager.freezeWaterEvent(newHarpoon);
+		}	
 	}
 
 	private void updateBlocked(Harpoon harpoon, int range, boolean[] isBlocked) {
