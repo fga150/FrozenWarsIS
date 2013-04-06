@@ -297,6 +297,7 @@ public class Match {
 			updateBlocked(harpoon,i+1,isBlocked);
 		}
 		map.putSunkenHarpoonAt((int)harpoon.getPosition().x,(int)harpoon.getPosition().y);
+		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
 	}
 
 	private void checkHarpoonsInRange(Harpoon harpoon, int range, boolean[] isCought, boolean[] isBlocked) {

@@ -292,9 +292,10 @@ public class Map {
 	}
 	
 	public boolean hasOneFissure(int x, int y){
-		return fissuresBoard[x][y] == FissuresTypes.fissureSY || fissuresBoard[x][y] == FissuresTypes.fissureSX	
+		return (fissuresBoard[x][y] == FissuresTypes.fissureSY || fissuresBoard[x][y] == FissuresTypes.fissureSX	
 				|| fissuresBoard[x][y] == FissuresTypes.invisibleFissureSX	||(fissuresBoard[x][y] == FissuresTypes.barrelWithFissure
-				|| fissuresBoard[x][y] == FissuresTypes.invisibleFissureSY	|| fissuresBoard[x][y] == FissuresTypes.crossInvisibleFissure);
+				|| fissuresBoard[x][y] == FissuresTypes.invisibleFissureSY	|| fissuresBoard[x][y] == FissuresTypes.crossInvisibleFissure)
+				&& !(fissuresBoard[x][y] == FissuresTypes.fissureC));
 		
 	}
 	
@@ -416,38 +417,38 @@ public class Map {
 		//The new field is in the East. we have to check that this field is a fissure or is a water block with a connection in the west side
 		if(xIni < xFin){
 			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSX || fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSX
+					|| fissuresBoard[xFin][yFin] == FissuresTypes.fissureC || fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure
 					|| waterBoard[xFin][yFin] == WaterTypes.water1SOpW || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerNW 
 					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerWS || waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeX 
 					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpE || waterBoard[xFin][yFin] == WaterTypes.water3SOpN 
-					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpS || waterBoard[xFin][yFin] == WaterTypes.water4SOp
-					|| fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure);
+					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpS || waterBoard[xFin][yFin] == WaterTypes.water4SOp);
 		
 		//The new field is in the West. we have to check that this field is a fissure or is a water block with a connection in the east side
 		}else if(xIni > xFin){
 			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSX  || fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSX
+					|| fissuresBoard[xFin][yFin] == FissuresTypes.fissureC || fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure
 					|| waterBoard[xFin][yFin] == WaterTypes.water1SOpE || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerEN 
 					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerSE || waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeX 
 					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpW || waterBoard[xFin][yFin] == WaterTypes.water3SOpN 
-					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpS || waterBoard[xFin][yFin] == WaterTypes.water4SOp
-					|| fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure);
+					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpS || waterBoard[xFin][yFin] == WaterTypes.water4SOp);
 				
 		//The new field is in the South. we have to check that this field is a fissure or is a water block with a connection in the north side
 		}else if(yIni > yFin){
 			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSY || fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSY
+					|| fissuresBoard[xFin][yFin] == FissuresTypes.fissureC || fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure
 					|| waterBoard[xFin][yFin] == WaterTypes.water1SOpN || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerNW
 					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerEN || waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeY 
 					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpE || waterBoard[xFin][yFin] == WaterTypes.water3SOpW 
-					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpS || waterBoard[xFin][yFin] == WaterTypes.water4SOp
-					|| fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure);
+					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpS || waterBoard[xFin][yFin] == WaterTypes.water4SOp);
 	
 		//The new field is in the North. we have to check that this field is a fissure or is a water block with a connection in the south side
 		}else if(yIni < yFin){
 			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSY  || fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSY
+					|| fissuresBoard[xFin][yFin] == FissuresTypes.fissureC || fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure
 					|| waterBoard[xFin][yFin] == WaterTypes.water1SOpS || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerSE 
 					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerWS || waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeY 
 					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpE || waterBoard[xFin][yFin] == WaterTypes.water3SOpW 
-					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpN || waterBoard[xFin][yFin] == WaterTypes.water4SOp
-					|| fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure);
+					|| waterBoard[xFin][yFin] == WaterTypes.water3SOpN || waterBoard[xFin][yFin] == WaterTypes.water4SOp);
 		}		
 	return true;
 	}
