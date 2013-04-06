@@ -91,20 +91,6 @@ public class Map {
 			maxRangeUpgrades = 8;
 			maxNumHarpoonsUpgrades = 8;
 			maxThrowUpgrades = 8;
-			/*if(SmartFoxServer.getInstance().getSfsClient().getMySelf().getId()==1){     PROBAR CUANDO DANI SUBA CAMBIOS DEL SERVER
-				SFSObject params = new SFSObject();
-				ISFSArray array = new SFSArray();
-				  int numBarriles=5;
-				  array.addInt(2);
-				  array.addInt(1);
-				  array.addInt(1);
-				  
-				  params.putInt("numBarriles", numBarriles);
-				  params.putSFSArray("arraymejoras", array);
-				  
-				  ExtensionRequest request2 = new ExtensionRequest("AsignaMejoras",params);
-				SmartFoxServer.getInstance().getSfsClient().send(request2);
-			}*/
 		} else {
 			xmlMap = getData(xmlMap, "Map");
 			loadName();

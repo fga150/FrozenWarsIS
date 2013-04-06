@@ -2,6 +2,8 @@ package Screens;
 
 import java.util.Vector;
 
+import sfs2x.client.requests.ExtensionRequest;
+
 
 import Application.Assets;
 import Application.GameSettings;
@@ -22,6 +24,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.smartfoxserver.v2.entities.data.ISFSArray;
+import com.smartfoxserver.v2.entities.data.SFSArray;
+import com.smartfoxserver.v2.entities.data.SFSObject;
 
 public class MultiplayerScreen implements Screen{
 
@@ -313,6 +318,10 @@ public class MultiplayerScreen implements Screen{
 		GameScreen gameScreen = new GameScreen(game,manager);
 		manager.setGameScreen(gameScreen);
 		game.setScreen(gameScreen);
+		System.out.println(sfsClient.getMyPlayerId());
+		if(sfsClient.getMyPlayerId()==1){     //PROBAR CUANDO DANI SUBA CAMBIOS DEL SERVER
+			sfsClient.sendAsign();
+		}
 	}
 	
 	@Override

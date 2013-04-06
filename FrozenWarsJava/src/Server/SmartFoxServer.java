@@ -21,7 +21,9 @@ import Screens.InviteScreen;
 import Screens.MultiplayerScreen;
 
 import com.badlogic.gdx.math.Vector3;
+import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
+import com.smartfoxserver.v2.entities.data.SFSArray;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.SFSException;
 import sfs2x.client.SmartFox;
@@ -45,10 +47,6 @@ public class SmartFoxServer implements IEventListener {
 	private String lastUserName;
 	private String lastPass;
 	private boolean loggedIn;
-	
-	public SmartFox getSfsClient(){
-		return this.sfsClient;
-	}
 	
 	public static SmartFoxServer getInstance() {
 		if (instance == null) instance = new SmartFoxServer();
@@ -557,18 +555,32 @@ public class SmartFoxServer implements IEventListener {
 		}
 	
 	}
-
 	
-	public void dispatch(BaseEvent event) throws SFSException {
+	public void  sendAsign(){
+		SFSObject params = new SFSObject();
+		ISFSArray array = new SFSArray();
+		  int numBarriles=5;
+		  array.addInt(2);
+		  array.addInt(1);
+		  array.addInt(1);
+		  
+		  params.putInt("numBarriles", numBarriles);
+		  params.putSFSArray("arraymejoras", array);
+
+		  ExtensionRequest request2 = new ExtensionRequest("AsignaMejoras",params);
+		  sfsClient.send(request2);
 	}
 
 	public void asignaMejoras(ISFSObject params) {
+		System.out.println("hello");
 		int numBarriles=((ISFSObject)params.get("params")).getInt("nBarriles");
 		for(int i=0;i<numBarriles;i++){
 			System.out.println(((ISFSObject)params.get("params")).getSFSArray("arrayBarriles").getInt(i));
 		}
 	}
 	
+	public void dispatch(BaseEvent event) throws SFSException {
+	}
 	
 	
 }
