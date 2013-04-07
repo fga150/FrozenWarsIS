@@ -1,5 +1,6 @@
 package GameLogic;
 
+import Screens.MultiplayerScreen;
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Gdx;
@@ -32,11 +33,13 @@ public class Map {
 		throwUpgrade,Harpoon}
 	
 	//Total number of each Upgrade
-	private int maxBootUpgrades;
-	private int maxRangeUpgrades;
-	private int maxNumHarpoonsUpgrades;
-	private int maxThrowUpgrades;
-	
+	private int maxBootUpgrades;//mejora 0
+	private int maxRangeUpgrades;//mejora 1
+	private int maxNumHarpoonsUpgrades;//mejora 2
+	private int maxThrowUpgrades;//mejora 3
+	private int barrels=20;
+	private int[] upgrades;//vector de barriles indicando que mejora hay en cada barril, -infinito si no hay mejora.
+
 	//Board Attributes
 	private String mapName;
 	private int length;
@@ -51,7 +54,16 @@ public class Map {
 	//LoadFile
 	private String xmlMap;
 	
+	private static Map instance;
+	
+	public static Map getInstance() {
+		if (instance == null) instance = new Map(1,1,"");
+		return instance;
+	}
+	
 	public Map(int lenght, int width, String mapPath) {
+		instance = this;
+		this.upgrades = new int[barrels];
 		this.length=lenght;
 		this.width=width;
 		this.boardGame = new TypeSquare[lenght][width];
@@ -538,5 +550,25 @@ public class Map {
 	}
 	public void setMapName(String mapName) {
 		this.mapName = mapName;
+	}
+
+	public void setBarrels(int barrels) {
+		this.barrels = barrels;
+	}
+
+	public int getBarrels() {
+		return barrels;
+	}
+
+	public void setPositionUpgrades(int i,int a) {
+		this.upgrades[i] = a;
+	}
+
+	public int getPositionUpgrades(int i) {
+		return this.upgrades[i];
+	}
+	
+	public int[] getUpgrades() {
+		return upgrades;
 	}
 }

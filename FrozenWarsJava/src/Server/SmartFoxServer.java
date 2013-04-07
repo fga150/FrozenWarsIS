@@ -2,7 +2,6 @@ package Server;
 
 import java.net.InetAddress;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -31,7 +30,6 @@ import sfs2x.client.core.BaseEvent;
 import sfs2x.client.core.IEventListener;
 import sfs2x.client.core.SFSEvent;
 import sfs2x.client.requests.ExtensionRequest;
-import sfs2x.client.requests.JoinRoomRequest;
 import sfs2x.client.requests.LoginRequest;
 import sfs2x.client.requests.LogoutRequest;
 
@@ -559,10 +557,16 @@ public class SmartFoxServer implements IEventListener {
 	public void  sendAsign(){
 		SFSObject params = new SFSObject();
 		ISFSArray array = new SFSArray();
-		  int numBarriles=5;
-		  array.addInt(2);
-		  array.addInt(1);
-		  array.addInt(1);
+		  int numBarriles=GameLogic.Map.getInstance().getBarrels();
+		  int maxBootUpgrades=GameLogic.Map.getInstance().getMaxBootUpgrades();
+		  int maxRangeUpgrades=GameLogic.Map.getInstance().getMaxRangeUpgrades();
+		  int maxNumHarpoonsUpgrades=GameLogic.Map.getInstance().getMaxNumHarpoonsUpgrades();
+		  int maxThrowUpgrades=GameLogic.Map.getInstance().getMaxThrowUpgrades();
+		  
+		  array.addInt(maxBootUpgrades);
+		  array.addInt(maxRangeUpgrades);
+		  array.addInt(maxNumHarpoonsUpgrades);
+		  array.addInt(maxThrowUpgrades);
 		  
 		  params.putInt("numBarriles", numBarriles);
 		  params.putSFSArray("arraymejoras", array);
@@ -572,10 +576,10 @@ public class SmartFoxServer implements IEventListener {
 	}
 
 	public void asignaMejoras(ISFSObject params) {
-		System.out.println("hello");
-		int numBarriles=((ISFSObject)params.get("params")).getInt("nBarriles");
+		int numBarriles=params.getInt("nBarriles");
 		for(int i=0;i<numBarriles;i++){
-			System.out.println(((ISFSObject)params.get("params")).getSFSArray("arrayBarriles").getInt(i));
+			GameLogic.Map.getInstance().setPositionUpgrades(i,(params.getSFSArray("arrayBarriles").getInt(i)));
+			System.out.println(GameLogic.Map.getInstance().getPositionUpgrades(i));
 		}
 	}
 	

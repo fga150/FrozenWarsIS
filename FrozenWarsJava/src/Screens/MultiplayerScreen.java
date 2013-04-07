@@ -318,10 +318,11 @@ public class MultiplayerScreen implements Screen{
 		GameScreen gameScreen = new GameScreen(game,manager);
 		manager.setGameScreen(gameScreen);
 		game.setScreen(gameScreen);
-		System.out.println(sfsClient.getMyPlayerId());
+
 		if(sfsClient.getMyPlayerId()==1){     //PROBAR CUANDO DANI SUBA CAMBIOS DEL SERVER
 			sfsClient.sendAsign();
 		}
+		
 	}
 	
 	@Override
