@@ -86,7 +86,8 @@ public class Assets {
 	    public static AtlasRegion leaveGroupButton;
 	    
 	    public static AtlasRegion map;
-	    public static AtlasRegion multiplayerGameTitle;
+	    public static AtlasRegion multiplayerButtonPressed;
+	    public static AtlasRegion inviteFriendsButtonUnpressed;
 	    public static AtlasRegion inviteGameTitle;
 	    public static AtlasRegion pingu;
 	    
@@ -106,6 +107,15 @@ public class Assets {
 
 	    public static AtlasRegion add;
 	    public static AtlasRegion minus;
+	    
+	    
+	    //Componentes de la pantalla de creacion de partida friendsList
+	    public static AtlasRegion multiplayerButtonUnpressed;
+	    public static AtlasRegion inviteFriendsButtonPressed;
+	    
+	    public static AtlasRegion listOfPeopleOn;
+	    public static AtlasRegion listOfPeopleOff;
+	    public static AtlasRegion addFriend;
 	    
 private static AtlasRegion barrelWithFissure;
 	    
@@ -291,7 +301,11 @@ private static AtlasRegion barrelWithFissure;
 		    leaveGroupButton = atlas.findRegion("LeaveGroupButton");
 		    
 		    map = atlas.findRegion("Map");
-		    multiplayerGameTitle = atlas.findRegion("MultiplayerGameTitle");
+		    multiplayerButtonPressed = atlas.findRegion("MultiplayerButtonPressed");
+		    multiplayerButtonUnpressed = atlas.findRegion("MultiplayerButtonUnpressed");
+		    inviteFriendsButtonPressed = atlas.findRegion("InviteFriendsButtonPressed");
+		    inviteFriendsButtonUnpressed = atlas.findRegion("InviteFriendsButtonUnpressed");
+
 		    inviteGameTitle = atlas.findRegion("InviteGameTitle");
 		    
 		    pingu = atlas.findRegion("Pingu");
@@ -312,6 +326,12 @@ private static AtlasRegion barrelWithFissure;
 		    
 		    add = atlas.findRegion("Add");
 		    minus = atlas.findRegion("Minus");
+		    
+		    //Componentes de la pantalla de friendsList		    
+		    listOfPeopleOn= atlas.findRegion("ListOfPeopleOn");
+		    listOfPeopleOff = atlas.findRegion("ListOfPeopleOff");
+		    
+		    addFriend = atlas.findRegion("AddFriend");
 		    
 		    //Componentes de la pantalla de ayuda
 		    

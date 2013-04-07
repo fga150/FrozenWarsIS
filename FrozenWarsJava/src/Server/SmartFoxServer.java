@@ -586,5 +586,9 @@ public class SmartFoxServer implements IEventListener {
 	public void dispatch(BaseEvent event) throws SFSException {
 	}
 	
+	public void disconnect(){
+		this.sfsClient.disconnect();
+	}
+	
 	
 }

@@ -129,7 +129,7 @@ public class AcceptScreen implements Screen{
           //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();    
-            batcher.draw(Assets.okWindow, 330, 300);
+            batcher.draw(Assets.okWindow, 330, 330);
             String message = "";
             if (screenMode.equals("FullTeam")){
             	message = "You can't join this game because the team is full.";

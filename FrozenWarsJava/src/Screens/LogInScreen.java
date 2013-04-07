@@ -136,7 +136,7 @@ public class LogInScreen implements Screen {
             batcher.end();	
 
             
-            if ( this.infoPressed !=0 && ((System.nanoTime() - this.time) > 129000000)){
+            if ( this.infoPressed !=0 && ((System.nanoTime() - this.time) > 135000000)){
             	this.completeMessagePc();
             	this.time = System.nanoTime();
             }

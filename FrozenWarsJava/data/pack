@@ -17,16 +17,9 @@ backConf
   orig: 1303, 801
   offset: 0, 0
   index: -1
-OkWindow
-  rotate: false
-  xy: 1307, 2
-  size: 583, 494
-  orig: 583, 494
-  offset: 0, 0
-  index: -1
 SignInWindow
   rotate: false
-  xy: 1307, 805
+  xy: 1307, 2
   size: 450, 500
   orig: 450, 500
   offset: 0, 0
@@ -38,72 +31,100 @@ LogSignWindow
   orig: 450, 370
   offset: 0, 0
   index: -1
+ListOfPeopleOn
+  rotate: false
+  xy: 454, 1608
+  size: 421, 349
+  orig: 421, 349
+  offset: 0, 0
+  index: -1
+ListOfPeopleOff
+  rotate: false
+  xy: 877, 1608
+  size: 421, 349
+  orig: 421, 349
+  offset: 0, 0
+  index: -1
 LogInWindow
   rotate: false
-  xy: 1307, 498
+  xy: 1307, 805
   size: 440, 300
   orig: 440, 300
   offset: 0, 0
   index: -1
 PlayersList
   rotate: false
-  xy: 454, 1608
+  xy: 1307, 1107
   size: 332, 302
   orig: 332, 302
   offset: 0, 0
   index: -1
 List
   rotate: false
-  xy: 788, 1608
+  xy: 1641, 1107
   size: 329, 300
   orig: 329, 300
   offset: 0, 0
   index: -1
 Window
   rotate: false
-  xy: 1307, 1307
+  xy: 1307, 504
   size: 360, 265
   orig: 360, 265
   offset: 0, 0
   index: -1
 ExitText
   rotate: false
-  xy: 1669, 1307
+  xy: 1669, 504
   size: 360, 265
   orig: 360, 265
   offset: 0, 0
   index: -1
+OkWindow
+  rotate: false
+  xy: 1307, 1411
+  size: 361, 264
+  orig: 361, 264
+  offset: 0, 0
+  index: -1
 Confirm
   rotate: false
-  xy: 1307, 1574
+  xy: 1307, 1677
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 MandoDirecciones
   rotate: false
-  xy: 1749, 498
+  xy: 1759, 2
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 Map
   rotate: false
-  xy: 1609, 1574
+  xy: 1670, 1411
   size: 300, 182
   orig: 300, 182
   offset: 0, 0
   index: -1
 fondo
   rotate: false
-  xy: 1119, 1608
+  xy: 1759, 260
   size: 182, 172
   orig: 182, 172
   offset: 0, 0
   index: -1
+AddFriend
+  rotate: false
+  xy: 454, 1959
+  size: 383, 76
+  orig: 383, 76
+  offset: 0, 0
+  index: -1
 BotonLanza
   rotate: false
-  xy: 1892, 2
+  xy: 1749, 805
   size: 93, 270
   orig: 93, 270
   offset: 0, 0
@@ -124,525 +145,448 @@ MultiplayerGameTitle
   index: -1
 unSec
   rotate: false
-  xy: 454, 1912
+  xy: 877, 1959
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
 tresSec
   rotate: false
-  xy: 788, 1910
+  xy: 1670, 1595
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
 dosSec
   rotate: false
-  xy: 1609, 1758
+  xy: 1670, 1672
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
 cuatroSec
   rotate: false
-  xy: 1609, 1835
+  xy: 1670, 1749
   size: 304, 75
   orig: 304, 75
   offset: 0, 0
   index: -1
 AvailablePlayersText
   rotate: false
-  xy: 454, 1989
+  xy: 1307, 1979
   size: 330, 55
   orig: 330, 55
   offset: 0, 0
   index: -1
 UpgradesButtonHelp
   rotate: false
-  xy: 788, 1987
+  xy: 1670, 1826
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 IntroductionButtonHelp
   rotate: false
-  xy: 1609, 1912
+  xy: 1670, 1885
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 GameModesButtonHelp
   rotate: false
-  xy: 1609, 1971
+  xy: 1670, 1944
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 CajaMapas
   rotate: false
-  xy: 1892, 274
+  xy: 1844, 805
   size: 151, 105
   orig: 151, 105
   offset: 0, 0
   index: -1
 YesConfirm
   rotate: false
-  xy: 1892, 381
-  size: 150, 100
-  orig: 150, 100
-  offset: 0, 0
-  index: -1
-NoConfirm
-  rotate: false
-  xy: 1119, 1782
+  xy: 1844, 912
   size: 150, 100
   orig: 150, 100
   offset: 0, 0
   index: -1
 Pingu
   rotate: false
-  xy: 1119, 1884
+  xy: 1943, 260
   size: 100, 120
   orig: 100, 120
   offset: 0, 0
   index: -1
 InviteListText
   rotate: false
-  xy: 1759, 805
+  xy: 1844, 1014
   size: 200, 55
   orig: 200, 55
   offset: 0, 0
   index: -1
-LeaveGroupButton
-  rotate: false
-  xy: 1749, 756
-  size: 240, 44
-  orig: 240, 44
-  offset: 0, 0
-  index: -1
 PlayButton
   rotate: false
-  xy: 1759, 862
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-InviteButton
-  rotate: false
-  xy: 1759, 905
-  size: 240, 41
-  orig: 240, 41
-  offset: 0, 0
-  index: -1
-BackButton
-  rotate: false
-  xy: 1759, 948
+  xy: 1670, 2003
   size: 240, 41
   orig: 240, 41
   offset: 0, 0
   index: -1
 IndexTitle
   rotate: false
-  xy: 1759, 991
+  xy: 1759, 434
   size: 140, 60
   orig: 140, 60
   offset: 0, 0
   index: -1
-PlayersText
-  rotate: false
-  xy: 1759, 1053
-  size: 150, 55
-  orig: 150, 55
-  offset: 0, 0
-  index: -1
 IndicadorVidas
   rotate: false
-  xy: 1221, 1884
+  xy: 1943, 382
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 MapRightArrow
   rotate: false
-  xy: 1759, 1110
+  xy: 1183, 1959
   size: 65, 85
   orig: 65, 85
   offset: 0, 0
   index: -1
 MapLeftArrow
   rotate: false
-  xy: 1759, 1197
+  xy: 1972, 1107
   size: 65, 85
   orig: 65, 85
   offset: 0, 0
   index: -1
 VibrationOn
   rotate: false
-  xy: 1826, 1110
+  xy: 1307, 771
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 VibrationOff
   rotate: false
-  xy: 1826, 1142
+  xy: 1479, 771
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 SoundOn
   rotate: false
-  xy: 1826, 1174
+  xy: 1669, 771
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 SoundOff
   rotate: false
-  xy: 1826, 1206
+  xy: 1841, 771
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Settings
   rotate: false
-  xy: 1826, 1238
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Play
-  rotate: false
-  xy: 1826, 1270
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-LoggedOut
-  rotate: false
-  xy: 1307, 1876
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-LoggedIn
-  rotate: false
-  xy: 1307, 1908
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Help
-  rotate: false
-  xy: 1307, 1940
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-Exit
-  rotate: false
-  xy: 1307, 1972
-  size: 170, 30
-  orig: 170, 30
-  offset: 0, 0
-  index: -1
-ConfirmedExitOn
-  rotate: false
-  xy: 1307, 2004
+  xy: 1844, 1071
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 casilla
   rotate: false
-  xy: 1987, 2
+  xy: 389, 1980
   size: 46, 46
   orig: 46, 46
   offset: 0, 0
   index: -1
 StatusTick
   rotate: false
-  xy: 1987, 50
+  xy: 1250, 1959
   size: 45, 40
   orig: 45, 40
   offset: 0, 0
   index: -1
 StatusInterrogation
   rotate: false
-  xy: 1987, 92
+  xy: 1901, 434
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
 StatusCancel
   rotate: false
-  xy: 1987, 134
+  xy: 1250, 2001
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
 Minus
   rotate: false
-  xy: 1987, 176
+  xy: 1997, 805
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
 Add
   rotate: false
-  xy: 1987, 218
+  xy: 1997, 847
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
 ModeRightArrow
   rotate: false
-  xy: 2007, 498
+  xy: 839, 1959
   size: 30, 44
   orig: 30, 44
   offset: 0, 0
   index: -1
 ModeLeftArrow
   rotate: false
-  xy: 2007, 544
+  xy: 1996, 912
   size: 30, 44
   orig: 30, 44
   offset: 0, 0
   index: -1
 barrelWithFissure
   rotate: false
-  xy: 2007, 590
+  xy: 1943, 464
   size: 36, 36
   orig: 36, 36
   offset: 0, 0
   index: -1
 sunkenObject
   rotate: false
-  xy: 2007, 628
+  xy: 1981, 464
   size: 33, 33
   orig: 33, 33
   offset: 0, 0
   index: -1
 Water4SideOpen
   rotate: false
-  xy: 2007, 663
+  xy: 2013, 771
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Water3SideWestOpen
   rotate: false
-  xy: 2007, 697
+  xy: 839, 2005
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Water3SideSouthOpen
   rotate: false
-  xy: 1991, 756
+  xy: 1996, 958
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Water3SideNorthOpen
   rotate: false
-  xy: 389, 1980
+  xy: 1972, 1194
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Water3SideEastOpen
   rotate: false
-  xy: 389, 2014
+  xy: 2006, 1194
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 vidasJugadorVerde
   rotate: false
-  xy: 1271, 1782
+  xy: 1972, 1228
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 vidasJugadorRojo
   rotate: false
-  xy: 1271, 1816
+  xy: 2006, 1228
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 vidasJugadorAzul
   rotate: false
-  xy: 1271, 1850
+  xy: 1972, 1262
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 vidasJugadorAmarillo
   rotate: false
-  xy: 1119, 2006
+  xy: 2006, 1262
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 fissureSideY
   rotate: false
-  xy: 1153, 2006
+  xy: 1972, 1296
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 fissureSideX
   rotate: false
-  xy: 1187, 2006
+  xy: 2006, 1296
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 fissureCrossing
   rotate: false
-  xy: 1221, 1966
+  xy: 1972, 1330
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 fissureCenter
   rotate: false
-  xy: 1221, 2000
+  xy: 2006, 1330
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 deadIconYellow
   rotate: false
-  xy: 1255, 1966
+  xy: 1972, 1364
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 deadIconRed
   rotate: false
-  xy: 1255, 2000
+  xy: 2006, 1364
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 deadIconGreen
   rotate: false
-  xy: 1961, 805
+  xy: 1609, 1677
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 deadIconBlue
   rotate: false
-  xy: 1995, 805
+  xy: 1609, 1711
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 barril
   rotate: false
-  xy: 2001, 862
+  xy: 1609, 1745
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ArponParaBomba
   rotate: false
-  xy: 2001, 905
+  xy: 1609, 1779
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Water2SideOpenCornerSE
   rotate: false
-  xy: 2001, 948
+  xy: 1609, 1813
   size: 32, 31
   orig: 32, 31
   offset: 0, 0
   index: -1
 Water2SideOpenCornerNW
   rotate: false
-  xy: 1901, 991
+  xy: 1609, 1846
   size: 32, 31
   orig: 32, 31
   offset: 0, 0
   index: -1
 Water2SideOpenCornerWS
   rotate: false
-  xy: 1935, 991
+  xy: 1609, 1879
   size: 31, 32
   orig: 31, 32
   offset: 0, 0
   index: -1
 Water2SideOpenCornerEN
   rotate: false
-  xy: 1968, 991
+  xy: 1609, 1913
   size: 31, 32
   orig: 31, 32
   offset: 0, 0
   index: -1
 Water2SideOpenBridgeX
   rotate: false
-  xy: 2001, 991
+  xy: 1609, 1947
   size: 32, 30
   orig: 32, 30
   offset: 0, 0
   index: -1
 Water2SideOpenBridgeY
   rotate: false
-  xy: 1911, 1053
+  xy: 2016, 464
   size: 30, 32
   orig: 30, 32
   offset: 0, 0
   index: -1
 Water1SideOpenSouth
   rotate: false
-  xy: 1943, 1053
+  xy: 1972, 1411
   size: 31, 30
   orig: 31, 30
   offset: 0, 0
   index: -1
 Water1SideOpenNorth
   rotate: false
-  xy: 1976, 1053
+  xy: 2005, 1411
   size: 31, 30
   orig: 31, 30
   offset: 0, 0
   index: -1
 Water1SideOpenWest
   rotate: false
-  xy: 2009, 1053
+  xy: 2016, 1071
   size: 30, 31
   orig: 30, 31
   offset: 0, 0
   index: -1
 Water1SideOpenEast
   rotate: false
-  xy: 1998, 1238
+  xy: 1972, 1443
   size: 30, 31
   orig: 30, 31
   offset: 0, 0
   index: -1
 iglus
   rotate: false
-  xy: 1901, 1024
+  xy: 1901, 476
   size: 31, 25
   orig: 31, 25
   offset: 0, 0
   index: -1
 TickExternalPlayers
   rotate: false
-  xy: 423, 1980
+  xy: 2017, 2
   size: 27, 24
   orig: 27, 24
   offset: 0, 0
   index: -1
 ExternalPlayersButton
   rotate: false
-  xy: 423, 2014
+  xy: 2017, 28
   size: 27, 24
   orig: 27, 24
   offset: 0, 0
@@ -701,79 +645,198 @@ barraverticalDer
   orig: 62, 756
   offset: 0, 0
   index: -1
-CreateButtonHelp
+UnpressedButtonMp
   rotate: false
   xy: 1307, 374
+  size: 486, 69
+  orig: 486, 69
+  offset: 0, 0
+  index: -1
+MultiplayerButtonUnpressed
+  rotate: false
+  xy: 1307, 445
+  size: 486, 69
+  orig: 486, 69
+  offset: 0, 0
+  index: -1
+InviteFriendsButtonUnpressed
+  rotate: false
+  xy: 1307, 516
+  size: 486, 69
+  orig: 486, 69
+  offset: 0, 0
+  index: -1
+PressedButtonMp
+  rotate: false
+  xy: 2, 1678
+  size: 487, 61
+  orig: 487, 61
+  offset: 0, 0
+  index: -1
+MultiplayerButtonPressed
+  rotate: false
+  xy: 2, 1741
+  size: 487, 61
+  orig: 487, 61
+  offset: 0, 0
+  index: -1
+InviteFriendsButtonPressed
+  rotate: false
+  xy: 2, 1804
+  size: 487, 61
+  orig: 487, 61
+  offset: 0, 0
+  index: -1
+CreateButtonHelp
+  rotate: false
+  xy: 1307, 587
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 ControlButtonHelp
   rotate: false
-  xy: 1307, 433
+  xy: 1307, 646
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 BackButtonHelp
   rotate: false
-  xy: 1307, 492
+  xy: 1307, 705
   size: 316, 57
   orig: 316, 57
   offset: 0, 0
   index: -1
 TeamPlayButton
   rotate: false
-  xy: 1625, 374
+  xy: 2, 1867
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 SurvivalModeButton
   rotate: false
-  xy: 1625, 431
+  xy: 2, 1924
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 NormalModeButton
   rotate: false
-  xy: 1625, 488
+  xy: 2, 1981
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 BattleRoyalButton
   rotate: false
-  xy: 1625, 545
+  xy: 491, 1678
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
 1vsAllModeButton
   rotate: false
-  xy: 1625, 602
+  xy: 491, 1735
   size: 325, 55
   orig: 325, 55
   offset: 0, 0
   index: -1
-ConfirmedExitOff
+NoConfirm
   rotate: false
   xy: 1750, 2
+  size: 150, 100
+  orig: 150, 100
+  offset: 0, 0
+  index: -1
+LeaveGroupButton
+  rotate: false
+  xy: 1750, 188
+  size: 240, 44
+  orig: 240, 44
+  offset: 0, 0
+  index: -1
+InviteButton
+  rotate: false
+  xy: 1750, 234
+  size: 240, 41
+  orig: 240, 41
+  offset: 0, 0
+  index: -1
+BackButton
+  rotate: false
+  xy: 1750, 277
+  size: 240, 41
+  orig: 240, 41
+  offset: 0, 0
+  index: -1
+PlayersText
+  rotate: false
+  xy: 1750, 104
+  size: 150, 55
+  orig: 150, 55
+  offset: 0, 0
+  index: -1
+Play
+  rotate: false
+  xy: 1750, 320
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+LoggedOut
+  rotate: false
+  xy: 1795, 374
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+LoggedIn
+  rotate: false
+  xy: 1795, 406
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+Help
+  rotate: false
+  xy: 1795, 445
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+Exit
+  rotate: false
+  xy: 1795, 477
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+ConfirmedExitOn
+  rotate: false
+  xy: 1307, 764
+  size: 170, 30
+  orig: 170, 30
+  offset: 0, 0
+  index: -1
+ConfirmedExitOff
+  rotate: false
+  xy: 1795, 516
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 Back
   rotate: false
-  xy: 1750, 34
+  xy: 1795, 548
   size: 170, 30
   orig: 170, 30
   offset: 0, 0
   index: -1
 ExternalPlayersText
   rotate: false
-  xy: 1750, 188
+  xy: 1795, 580
   size: 190, 25
   orig: 190, 25
   offset: 0, 0

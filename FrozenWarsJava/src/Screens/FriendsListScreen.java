@@ -28,13 +28,13 @@ import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.SFSArray;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 
-public class MultiplayerScreen implements Screen{
+public class FriendsListScreen implements Screen{
 
 
-	private static MultiplayerScreen instance;
+	private static FriendsListScreen instance;
 
-	public static MultiplayerScreen getInstance() {
-		if (instance == null) instance = new MultiplayerScreen();
+	public static FriendsListScreen getInstance() {
+		if (instance == null) instance = new FriendsListScreen();
 		return instance;
 	}
 	
@@ -62,23 +62,11 @@ public class MultiplayerScreen implements Screen{
 	private Game game;
 	private SmartFoxServer sfsClient;
 	private BitmapFont font;
-	    
-    private  BoundingBox externalPlayerTickClick;
+	     
+    private BoundingBox MultiplayerClick;
     
-    private  BoundingBox inviteButtonClick;
-    private  BoundingBox playButtonClick;
     private  BoundingBox backButtonClick;
-    private  BoundingBox leaveGroupButtonClick;
-    
-    private  BoundingBox mapLeftArrowClick;
-    private  BoundingBox mapRightArrowClick;
-    private  BoundingBox modeLeftArrowClick;
-    private  BoundingBox modeRightArrowClick;
-	
-    private BoundingBox scrollDownPlayersClick;
-    private BoundingBox scrollUpPlayersClick;
-    
-    private BoundingBox friendsListClick;
+    private  BoundingBox addFriendClick;
     
     // Settings
     private boolean externalPlayers;
@@ -243,7 +231,7 @@ public class MultiplayerScreen implements Screen{
 		return inQueue;
 	}
 	
-    public MultiplayerScreen() {
+    public FriendsListScreen() {
 		instance = this;
     	this.game = LaunchFrozenWars.getGame();
 
@@ -277,23 +265,11 @@ public class MultiplayerScreen implements Screen{
 	    }, "Enter user: ","");
 
 	    */
-	    externalPlayerTickClick = new BoundingBox(new Vector3(120,370,0), new Vector3(170,410,0));
-	    
-	    inviteButtonClick = new BoundingBox(new Vector3(500,80,0), new Vector3(740,120,0));
-	    playButtonClick = new BoundingBox(new Vector3(150,80,0), new Vector3(390,120,0));
-	    backButtonClick = new BoundingBox(new Vector3(320,20,0), new Vector3(560,60,0));
-	    leaveGroupButtonClick = new BoundingBox(new Vector3(650,20,0), new Vector3(890,64,0));
-	    
-	    mapLeftArrowClick = new BoundingBox(new Vector3(50,200,0), new Vector3(100,290,0));
-	    mapRightArrowClick = new BoundingBox(new Vector3(450,200,0), new Vector3(510,280,0));
-	    modeLeftArrowClick = new BoundingBox(new Vector3(80,450,0), new Vector3(120,500,0));
-	    modeRightArrowClick = new BoundingBox(new Vector3(425,450,0), new Vector3(460,500,0));
-	    
-	    scrollDownPlayersClick = new BoundingBox(new Vector3(900,190,0), new Vector3(950,225,0));
-	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,400,0));
 
-	    friendsListClick = new BoundingBox(new Vector3(525,540,0), new Vector3(1000,605,0));
-	    
+	    backButtonClick = new BoundingBox(new Vector3(320,20,0), new Vector3(560,60,0));
+	    addFriendClick = new BoundingBox(new Vector3(395,118,0), new Vector3(439,155,0));
+	    MultiplayerClick = new BoundingBox(new Vector3(30,540,0), new Vector3(510,605,0));
+	      
 	    inQueue = false;
 	    empiezaPartida = false;
 	    externalPlayers = true;
@@ -336,31 +312,11 @@ public class MultiplayerScreen implements Screen{
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
       		System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
-			if (playButtonClick.contains(touchPoint) && amIAdmin() && !inQueue){
-				sfsClient.insertInQueuesRequest(acceptedPlayers, externalPlayers);
-      		} else if (inviteButtonClick.contains(touchPoint) && amIAdmin() && !inQueue) {
-      			InviteScreen inviteScreen = new InviteScreen();
-      			game.setScreen(inviteScreen);
-      		/*}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
-      			externalPlayers = !externalPlayers;
-      			sfsClient.modExternalPlayersRequest(externalPlayers);
-      		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin()){
-      			if (gameMode == 0) gameMode = 4;
-      			else gameMode--;
-      			sfsClient.modeChangeRequest(gameMode);
-      		} else if (modeRightArrowClick.contains(touchPoint) && amIAdmin()){
-      			gameMode = (gameMode + 1) % 5;
-      			sfsClient.modeChangeRequest(gameMode);
-      		*/} else if (scrollDownPlayersClick.contains(touchPoint)){
-      			if (invitedScroll < (acceptedPlayers.size() + refusedPlayers.size() + waitingPlayers.size()) - 5) invitedScroll++;
-      		} else if (scrollUpPlayersClick.contains(touchPoint)){
-      			if (invitedScroll != 0) invitedScroll--;     	
-			} else if (backButtonClick.contains(touchPoint)){
+			
+      		if (backButtonClick.contains(touchPoint)){
       			game.setScreen(InitialScreen.getInstance());
-      		} else if (leaveGroupButtonClick.contains(touchPoint) && !inQueue && (acceptedPlayers.size() > 1 || waitingPlayers.size() > 0)){
-      			sfsClient.groupExitRequest(gameAdmin);
-      		} else if (friendsListClick.contains(touchPoint)){
-      			this.game.setScreen(FriendsListScreen.getInstance());
+      		 } else if (MultiplayerClick.contains(touchPoint)){
+      			this.game.setScreen(MultiplayerScreen.getInstance());
       		}
 		}
 		
@@ -384,33 +340,15 @@ public class MultiplayerScreen implements Screen{
             //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();
-            batcher.draw(Assets.multiplayerButtonPressed, 27, 540);
-            batcher.draw(Assets.inviteFriendsButtonUnpressed, 521, 540);
-            drawMode();
-            if (amIAdmin()) batcher.draw(Assets.modeLeftArrow, 85, 455);
-            if (amIAdmin()) batcher.draw(Assets.modeRightArrow, 435, 455);   
-            
-            batcher.draw(Assets.externalPlayerButton, 130, 380);   
-            if (externalPlayers) batcher.draw(Assets.externalPlayerTick, 130, 380);   
-            batcher.draw(Assets.externalPlayerText, 200, 380);   
-            
-            batcher.draw(Assets.map, 130, 150);   
-            if (amIAdmin()) batcher.draw(Assets.mapLeftArrow, 45, 200);   
-            if (amIAdmin()) batcher.draw(Assets.mapRightArrow, 450, 200);   
-           
-            drawInvited();
-             
-            if (amIAdmin() && !inQueue) {
-            	batcher.draw(Assets.playButton, 150, 80);
-            	batcher.draw(Assets.inviteButton, 500, 80); 
-            	batcher.draw(Assets.pingu, 565, 112);
-            }
-            
-            if (inQueue) font.draw(batcher, "Waiting for players. The game will start soon.", 160, 130);
-
-            
-            if (!inQueue && (acceptedPlayers.size() > 1 || waitingPlayers.size() > 0)) batcher.draw(Assets.leaveGroupButton, 650, 20); 
             batcher.draw(Assets.backButton, 320, 20); 
+            batcher.draw(Assets.multiplayerButtonUnpressed, 27, 540);
+            batcher.draw(Assets.inviteFriendsButtonPressed, 521, 540);
+ 
+            batcher.draw(Assets.listOfPeopleOn, 60, 180); 
+            batcher.draw(Assets.listOfPeopleOff, 560, 180); 
+            
+            batcher.draw(Assets.addFriend, 290, 90); 
+
             	          
             batcher.end();
             
@@ -436,14 +374,7 @@ public class MultiplayerScreen implements Screen{
 		}
 	}
 
-	private void drawMode() {
-		if (gameMode == 0) batcher.draw(Assets.normalRoyalMode, 100, 450);
-		else if (gameMode == 1) batcher.draw(Assets.teamPlayMode, 100, 450);
-		else if (gameMode == 2) batcher.draw(Assets._1vsAllMode, 100, 450);
-		else if (gameMode == 3) batcher.draw(Assets.survivalMode, 100, 450);
-		else if (gameMode == 4) batcher.draw(Assets.battleRoyalMode, 100, 450);
-	}
-	
+
 	public void setDefault() {
 	    acceptedPlayers.clear();
 	    refusedPlayers.clear();
