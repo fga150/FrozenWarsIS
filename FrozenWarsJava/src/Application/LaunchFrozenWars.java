@@ -24,9 +24,9 @@ public class LaunchFrozenWars extends Game {
 	}
 	
 	public void dispose(){
-		this.instance = null;
-		SmartFoxServer.getInstance().disconnect();
-		
+		if (SmartFoxServer.isInstanced()) SmartFoxServer.getInstance().dispose();
+		GameSettings.getInstance().saveSettings();
+		instance = null;
 	}
 
 }

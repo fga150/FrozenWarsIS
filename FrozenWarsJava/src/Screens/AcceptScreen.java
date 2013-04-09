@@ -52,7 +52,7 @@ public class AcceptScreen implements Screen{
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 
-	    acceptClick = new BoundingBox(new Vector3(350,340,0), new Vector3(500,400,0));
+	    acceptClick = new BoundingBox(new Vector3(460,360,0), new Vector3(565,420,0));
 	}
 	
 	public void setNewAcceptScreen(String mode, String usr){
@@ -91,9 +91,10 @@ public class AcceptScreen implements Screen{
 	public void render(float arg0) { 
       //detectamos si se ha tocado la pantalla
       if (Gdx.input.justTouched()){
-      		guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-      		System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
-
+    	  
+    	guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
+      	System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
+    	if (acceptClick.contains(touchPoint)){  	
       		if (screenMode.equals("FullTeam") || screenMode.equals("QueueExit") || screenMode.equals("GameNotFound") || screenMode.equals("LeaderLeft") || screenMode.equals("UserOutOfQueue")){
   				MultiplayerScreen.getInstance().setDefault();
   				game.setScreen(MultiplayerScreen.getInstance());
@@ -110,6 +111,7 @@ public class AcceptScreen implements Screen{
             	//TODO friendsScreen.updateFriends();
   				game.setScreen(ancestor);
   			}
+    	}
       }
       //crear solamente un batcher por pantalla y eliminarlo cuando no se use
         	GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0

@@ -334,17 +334,17 @@ public class MultiplayerScreen implements Screen{
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-      		System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
+      		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (playButtonClick.contains(touchPoint) && amIAdmin() && !inQueue){
 				sfsClient.insertInQueuesRequest(acceptedPlayers, externalPlayers);
       		} else if (inviteButtonClick.contains(touchPoint) && amIAdmin() && !inQueue) {
       			InviteScreen inviteScreen = new InviteScreen();
       			game.setScreen(inviteScreen);
-      		/*}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
+      		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
       			externalPlayers = !externalPlayers;
       			sfsClient.modExternalPlayersRequest(externalPlayers);
-      		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin()){
+      		/*} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin()){
       			if (gameMode == 0) gameMode = 4;
       			else gameMode--;
       			sfsClient.modeChangeRequest(gameMode);

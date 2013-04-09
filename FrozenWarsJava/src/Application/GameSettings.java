@@ -186,7 +186,7 @@ public class GameSettings {
 		}
 	}	
 	
-	public void saveSettings() throws IOException{
+	public void saveSettings(){
 		this.saveXML();
 	}
 }

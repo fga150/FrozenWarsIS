@@ -577,16 +577,44 @@ iglus
   orig: 31, 25
   offset: 0, 0
   index: -1
-TickExternalPlayers
+J4
   rotate: false
   xy: 2017, 2
+  size: 27, 25
+  orig: 27, 25
+  offset: 0, 0
+  index: -1
+J3
+  rotate: false
+  xy: 2017, 29
+  size: 27, 25
+  orig: 27, 25
+  offset: 0, 0
+  index: -1
+J2
+  rotate: false
+  xy: 2017, 56
+  size: 27, 25
+  orig: 27, 25
+  offset: 0, 0
+  index: -1
+J1
+  rotate: false
+  xy: 2017, 83
+  size: 27, 25
+  orig: 27, 25
+  offset: 0, 0
+  index: -1
+TickExternalPlayers
+  rotate: false
+  xy: 2017, 110
   size: 27, 24
   orig: 27, 24
   offset: 0, 0
   index: -1
 ExternalPlayersButton
   rotate: false
-  xy: 2017, 28
+  xy: 2017, 136
   size: 27, 24
   orig: 27, 24
   offset: 0, 0

@@ -182,6 +182,12 @@ private static AtlasRegion barrelWithFissure;
 	    public static AtlasRegion signInWindow;
 	    
 	    public static AtlasRegion okWindow;
+	    
+	    public static AtlasRegion J1;
+	    public static AtlasRegion J2;
+	    public static AtlasRegion J3;
+	    public static AtlasRegion J4;
+	    
 
 	    /**
 	     * Load.
@@ -356,6 +362,12 @@ private static AtlasRegion barrelWithFissure;
 		    signInWindow = atlas.findRegion("SignInWindow");
 		 
 		    okWindow = atlas.findRegion("OkWindow");
+		    
+		    J1 = atlas.findRegion("J1");
+		    J2 = atlas.findRegion("J2");
+		    J3 = atlas.findRegion("J3");
+		    J4 = atlas.findRegion("J4");
+		    
 	    }
 	    
 	    public static AtlasRegion getYouWin() {

@@ -51,6 +51,10 @@ public class SmartFoxServer implements IEventListener {
 		return instance;
 	}
 	
+	public static boolean isInstanced(){
+		return instance!=null;
+	}
+	
 	public boolean isLoggedIn() {
 		return loggedIn;
 	}
@@ -195,7 +199,6 @@ public class SmartFoxServer implements IEventListener {
 		sfsClient.send(new LoginRequest(user,pword, SFS_ZONE));
 		lastUserName = user;
 		lastPass = pword;
-		System.out.println(lastUserName + " " + lastPass);
 
 	}
 	
@@ -587,7 +590,13 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void disconnect(){
-		this.sfsClient.disconnect();
+		if (sfsClient.isConnected()) sfsClient.disconnect();
+		sfsClient = null;
+	}
+
+	public void dispose() {
+		disconnect();
+		instance = null;
 	}
 	
 	
