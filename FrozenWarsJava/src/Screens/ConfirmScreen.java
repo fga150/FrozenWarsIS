@@ -106,7 +106,7 @@ public class ConfirmScreen implements Screen{
       			} else if (screenMode.equals("InvitedDisconnected")){
       				game.setScreen(new InviteScreen());
       			} else if (screenMode.equals("BeFriends?")){
-      				//TODO SmartFoxServer.getInstance().beFriends("yes", user);
+      				SmartFoxServer.getInstance().sendBeFriends("yes", user);
       				//TODO friendsScreen.updateFriends();
       				game.setScreen(ancestor);
       			}
@@ -117,7 +117,7 @@ public class ConfirmScreen implements Screen{
       				SmartFoxServer.getInstance().refuseRequest(user);
       				game.setScreen(ancestor);
       			} else if (screenMode.equals("BeFriends?")){
-      				//TODO SmartFoxServer.getInstance().beFriends("no", user);
+      				SmartFoxServer.getInstance().sendBeFriends("no", user);
       				game.setScreen(ancestor);
       			}
       		}

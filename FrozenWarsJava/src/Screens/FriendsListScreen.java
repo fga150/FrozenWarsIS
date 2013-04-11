@@ -140,7 +140,7 @@ public class FriendsListScreen implements Screen{
       			this.infoPressed = true;
       			System.out.println("user");
       		 } else if (addFriendClick.contains(touchPoint)){
-       			System.out.println("AddFriend");
+       			SmartFoxServer.getInstance().sendFriendRequest(user);
        		 } else {
       			this.infoPressed = false;
       		 }

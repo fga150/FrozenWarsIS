@@ -162,12 +162,10 @@ public class SmartFoxServer implements IEventListener {
 				else if (cmd.equals("dbRegister"))
 					registerResponse(response);
 				else if(cmd.equals("FriendRequestRes"))
-					//DONE JOptionPane.showMessageDialog(null,((ISFSObject)r.get("params")).getUtfString("res"));//TODO show a better dialog
 					AcceptScreen.getInstance().setNewAcceptScreen("AddFriendAdder", ((ISFSObject)r.get("params")).getUtfString("res"));
 				else if(cmd.equals("BeFriends?"))
 					beFriends(response);
 				else if(cmd.equals("AddFriendRes"))
-					//DONDE JOptionPane.showMessageDialog(null,((ISFSObject)r.get("params")).getUtfString("res"));//TODO show a better dialog
 					AcceptScreen.getInstance().setNewAcceptScreen("AddFriendAdded", ((ISFSObject)r.get("params")).getUtfString("res"));
 				else if(cmd.equals("ConnectRes"))
 					connectRes(response);
@@ -530,24 +528,11 @@ public class SmartFoxServer implements IEventListener {
 		SFSObject params2 = new SFSObject();
 		if (params.getSFSArray("Friends")!=null){
 			for(int i= 0;i<params.getSFSArray("Friends").size();i++){
-				int confirmado = JOptionPane.showConfirmDialog(null,((String) params.getSFSArray("Friends").getElementAt(i))+" wants to be your friend");//DONE TODO show a better dialog in which the user can confirm or reject
 				ConfirmScreen.getInstance().setNewConfirmScreen("BeFriends?", ((String) params.getSFSArray("Friends").getElementAt(i)));
-				params2.putUtfString("friend", ((String) params.getSFSArray("Friends").getElementAt(i)));	
-				if (JOptionPane.OK_OPTION == confirmado){
-					   System.out.println("confirmado");	   
-					   params2.putUtfString("res", "yes");
-					}	
-					else{
-					   System.out.println("vale... no borro nada...");
-					   params2.putUtfString("res", "no");
-					}
-				ExtensionRequest request2 = new ExtensionRequest("AddFriend",params2);
-				sfsClient.send(request2);
 			}
 		}
 		if (params.getSFSArray("Friends2")!=null){
 			for(int i=0;i<params.getSFSArray("Friends2").size();i++){
-				// DONE JOptionPane.showMessageDialog(null,((String) params.getSFSArray("Friends2").getElementAt(i))+" accepted your friend request");//TODO show a better dialog
 				AcceptScreen.getInstance().setNewAcceptScreen("AcceptedFriendRequest", ((String) params.getSFSArray("Friends2").getElementAt(i)));
 				params2.putUtfString("friend", ((String) params.getSFSArray("Friends2").getElementAt(i)));
 				ExtensionRequest request2 = new ExtensionRequest("ViewedConfFriend",params2);
@@ -555,6 +540,25 @@ public class SmartFoxServer implements IEventListener {
 			}
 		}
 	
+	}
+	
+	public void sendBeFriends(String conf,String user){
+		SFSObject params2 = new SFSObject();
+		params2.putUtfString("friend", user);
+		params2.putUtfString("res", conf);
+		ExtensionRequest request2 = new ExtensionRequest("AddFriend",params2);
+		sfsClient.send(request2);
+	}
+	
+	public void sendFriendRequest(String friend){
+		 if(!sfsClient.getMySelf().getName().equals(friend)){
+			  SFSObject params = new SFSObject();
+			  params.putUtfString("friend", friend);
+			  ExtensionRequest request2 = new ExtensionRequest("FriendRequest",params);
+			  sfsClient.send(request2);
+		 }else{
+			 //TODO show a dialog to say that you can't add yourself to your friendlist
+		 }
 	}
 	
 	public void  sendAsign(){
