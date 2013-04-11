@@ -174,7 +174,7 @@ private static AtlasRegion barrelWithFissure;
 	     */
 	    public static void load(){
 	    	//Se crea un Texture atlas con la imagen que contiene todos los pngs metidos en la carpeta data
-	        atlas = new TextureAtlas(Gdx.files.internal("data/pack"));
+	        atlas = new TextureAtlas(Gdx.files.internal("data/pack.atlas"));
 	       
 	        //Fondos de pantalla
 	        initialBack = atlas.findRegion("initialBack");
