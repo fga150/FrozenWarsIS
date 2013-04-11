@@ -29,6 +29,8 @@ public class Map {
 	private int maxRangeUpgrades;
 	private int maxNumHarpoonsUpgrades;
 	private int maxThrowUpgrades;
+	private int barrels=20;
+	private int[] upgrades;//vector de barriles indicando que mejora hay en cada barril, -infinito si no hay mejora.
 	
 	//Board Attributes
 	private String mapName;
@@ -41,16 +43,25 @@ public class Map {
 	private WaterTypes[][] waterBoard;
 	private SunkenTypes[][] sunkenBoard;
 	
+	private static Map instance;
+	
 	//LoadFile
 	private String xmlMap;
 	
+	public static Map getInstance() {
+	  if (instance == null) instance = new Map(1,1,"");
+	  return instance;
+	}
+	
 	public Map(int lenght, int width, String mapPath) {
+		this.instance = this;
 		this.length=lenght;
 		this.width=width;
 		this.boardGame = new TypeSquare[lenght][width];
 		this.fissuresBoard = new FissuresTypes[lenght][width];
 		this.waterBoard = new WaterTypes[lenght][width];
 		this.sunkenBoard = new SunkenTypes[lenght][width];
+		this.upgrades = new int[barrels];
 		//Initialize the 3 board with empty square.
 		//Only basic board has another type square unbreakeable square
 		for (int i=0;i<width;i++){
@@ -588,4 +599,24 @@ public class Map {
 	public void setMapName(String mapName) {
 		this.mapName = mapName;
 	}
+	
+	  public void setBarrels(int barrels) {
+		    this.barrels = barrels;
+		  }
+		
+		  public int getBarrels() {
+		    return barrels;
+		  }
+		
+		  public void setPositionUpgrades(int i,int a) {
+		    this.upgrades[i] = a;
+		  }
+		
+		  public int getPositionUpgrades(int i) {
+		    return this.upgrades[i];
+		  }
+		  
+		  public int[] getUpgrades() {
+		   return upgrades;
+		}
 }

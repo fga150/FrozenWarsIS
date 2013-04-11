@@ -13,7 +13,9 @@ import Screens.InviteScreen;
 import Screens.MultiplayerScreen;
 
 import com.badlogic.gdx.math.Vector3;
+import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
+import com.smartfoxserver.v2.entities.data.SFSArray;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.SFSException;
 import sfs2x.client.SmartFox;
@@ -26,7 +28,7 @@ import sfs2x.client.requests.LoginRequest;
 
 public class SmartFoxServer implements IEventListener {
 
-	private static final String SFS_ZONE = "FrozenWars";
+	private static final String SFS_ZONE = "FrozenWarsLogic";
 	private SmartFox sfsClient;
 	private MatchManager manager;
 	private static SmartFoxServer instance;
@@ -133,8 +135,9 @@ public class SmartFoxServer implements IEventListener {
 					getHarpoon(response);
 				else if (cmd.equals("getTime"))
 					getTimeResponse(response);
+				else if (cmd.equals("asignaMejoras"))
+					asignaMejoras(response);
 				}
-
 		});
 	}
 
@@ -431,7 +434,32 @@ public class SmartFoxServer implements IEventListener {
 		manager.putHarpoonEvent(x,y,range,time+delayTime);
 	}
 
-
+	public void  sendAsign(){
+	     SFSObject params = new SFSObject();
+	     ISFSArray array = new SFSArray();
+	     int numBarriles=GameLogic.Map.getInstance().getBarrels();
+	     int maxBootUpgrades=GameLogic.Map.getInstance().getMaxBootUpgrades();
+	     int maxRangeUpgrades=GameLogic.Map.getInstance().getMaxRangeUpgrades();
+	     int maxNumHarpoonsUpgrades=GameLogic.Map.getInstance().getMaxNumHarpoonsUpgrades();
+	     int maxThrowUpgrades=GameLogic.Map.getInstance().getMaxThrowUpgrades();  
+	     array.addInt(maxBootUpgrades);
+	     array.addInt(maxRangeUpgrades);
+	     array.addInt(maxNumHarpoonsUpgrades);
+	     array.addInt(maxThrowUpgrades);      
+	     params.putInt("numBarriles", numBarriles);
+	     params.putSFSArray("arraymejoras", array);
+	     ExtensionRequest request2 = new ExtensionRequest("AsignaMejoras",params);
+		  sfsClient.send(request2);
+	}
+	
+	public void asignaMejoras(ISFSObject params) {
+		 int numBarriles=params.getInt("nBarriles");
+		 for(int i=0;i<numBarriles;i++){
+			 GameLogic.Map.getInstance().setPositionUpgrades(i,(params.getSFSArray("arrayBarriles").getInt(i)));
+			 System.out.println(GameLogic.Map.getInstance().getPositionUpgrades(i));
+		 }
+	}
+	
 	public void dispatch(BaseEvent event) throws SFSException {
 	}
 	
