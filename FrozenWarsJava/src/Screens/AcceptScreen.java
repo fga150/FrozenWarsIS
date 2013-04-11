@@ -3,6 +3,7 @@ package Screens;
 import java.util.Vector;
 
 import Application.Assets;
+import Application.GameSettings;
 import Application.LaunchFrozenWars;
 
 import Server.SmartFoxServer;
@@ -102,13 +103,17 @@ public class AcceptScreen implements Screen{
   					   || screenMode.equals("AlreadyLogged") || screenMode.equals("AddFriendAdder")){
   				game.setScreen(ancestor);
   			} else if (screenMode.equals("AddFriendAdded")){
-  				//TODO if (user.equals("SuccessYes")) friendsScreen.updateFriends();
+  				if (user.equals("SuccessYes")) FriendsListScreen.getInstance().updateFriends();
   				game.setScreen(ancestor);
   			} else if (screenMode.equals("RegisterSuccess")){
-  				if (user.equals("Registered")) game.setScreen(InitialScreen.getInstance()); //TODO conectarse y meterse directamente al MultiplayerScreen + guardar user y contraseña
+  				if (user.equals("Registered")) {
+  					SmartFoxServer.getInstance().conectaSala(GameSettings.getInstance().getUserName(), GameSettings.getInstance().getUserPassword());
+  					game.setScreen(MultiplayerScreen.getInstance()); //TODO conectarse y meterse directamente al MultiplayerScreen + guardar user y contraseña
+  					
+  				}
   				else game.setScreen(ancestor);
   			} else if (screenMode.equals("AcceptedFriendRequest")){
-            	//TODO friendsScreen.updateFriends();
+  				FriendsListScreen.getInstance().updateFriends();
   				game.setScreen(ancestor);
   			}
     	}
@@ -157,12 +162,13 @@ public class AcceptScreen implements Screen{
             	message = "There is another person logged with this account";
             } else if (screenMode.equals("AddFriendAdder")){
             	if (user.equals("Error")) message = "Something unexpected happened!";
-            	else if (user.equals("UserNoExist")) message = "The user doesnt exist";
+            	else if (user.equals("UserNoExits")) message = "The user doesnt exist";
             	else if (user.equals("Friends")) message = "The user is already your friend";
             	else if (user.equals("Success")) message = "You have added the user as friend (he has to accept the invitation)";
+            	else if (user.equals("CantAddYourself")) message = "You cant add yourself";
             } else if (screenMode.equals("AddFriendAdded")){
             	if (user.equals("Error")) message = "Something unexpected happened!";
-            	else if (user.equals("SuccessYes")) message = "You have the user as friend";
+            	else if (user.equals("SuccessYes")) message = "You have added the user as friend";
             	else if (user.equals("SuccessNo")) message = "You will not be friend with that user";
             } else if (screenMode.equals("RegisterSuccess")){
             	if (user.equals("Error")) message = "Something unexpected happened!";

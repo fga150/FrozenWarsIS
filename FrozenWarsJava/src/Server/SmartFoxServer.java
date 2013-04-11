@@ -7,9 +7,6 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JOptionPane;
-
-
 import Application.GameSettings;
 import Application.LaunchFrozenWars;
 import Application.MatchManager;
@@ -379,6 +376,8 @@ public class SmartFoxServer implements IEventListener {
 						params.putUtfString("name", user);
 						params.putUtfString("pword", pword);
 						params.putUtfString("email", email);
+						lastUserName = user;
+						lastPass = pword;
 						sfsClient.send(new ExtensionRequest("register",params));
 					}else{
 						AcceptScreen.getInstance().setNewAcceptScreen("DiffPasswords", "");
@@ -397,6 +396,10 @@ public class SmartFoxServer implements IEventListener {
 	public void registerResponse(ISFSObject response){ //response of the regist call
 		String str=response.getUtfString("res");
 		AcceptScreen.getInstance().setNewAcceptScreen("RegisterSuccess", str);
+		if (str.equals("Registered")){
+			GameSettings.getInstance().setUserName(lastUserName);
+  			GameSettings.getInstance().setUserPassword(lastPass);
+		}
 		
 		sfsClient.send(new LogoutRequest());
 	}
@@ -496,11 +499,11 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	private void leaderLeftResponse(ISFSObject response) {
-		ConfirmScreen.getInstance().setNewConfirmScreen("LeaderLeft", "");
+		AcceptScreen.getInstance().setNewAcceptScreen("LeaderLeft", "");
 	}
 	
 	private void gameNotFound(ISFSObject response) {
-		ConfirmScreen.getInstance().setNewConfirmScreen("GameNotFound", "");
+		AcceptScreen.getInstance().setNewAcceptScreen("GameNotFound", "");
 	} 
 	
 	
@@ -557,7 +560,7 @@ public class SmartFoxServer implements IEventListener {
 			  ExtensionRequest request2 = new ExtensionRequest("FriendRequest",params);
 			  sfsClient.send(request2);
 		 }else{
-			 //TODO show a dialog to say that you can't add yourself to your friendlist
+			  AcceptScreen.getInstance().setNewAcceptScreen("AddFriendAdder", "CantAddYourself");
 		 }
 	}
 	
@@ -590,6 +593,13 @@ public class SmartFoxServer implements IEventListener {
 		}
 	}
 	
+
+	public void getMyFriendsRequest() {
+		// TODO call the method uptadeFriends(Vector<String>: playing, connectedNotPlaying, disconnected); 
+		// TODO that call will be made in the response method, i imagine.
+		
+	}
+	
 	public void dispatch(BaseEvent event) throws SFSException {
 	}
 	
@@ -602,6 +612,7 @@ public class SmartFoxServer implements IEventListener {
 		disconnect();
 		instance = null;
 	}
+
 	
 	
 }

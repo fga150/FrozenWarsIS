@@ -1,33 +1,22 @@
 package Screens;
 
+import java.util.Iterator;
 import java.util.Vector;
 
-import sfs2x.client.requests.ExtensionRequest;
-
-
 import Application.Assets;
-import Application.GameSettings;
 import Application.LaunchFrozenWars;
-import Application.MatchManager;
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.smartfoxserver.v2.entities.data.ISFSArray;
-import com.smartfoxserver.v2.entities.data.SFSArray;
-import com.smartfoxserver.v2.entities.data.SFSObject;
 
 public class FriendsListScreen implements Screen{
 
@@ -39,12 +28,26 @@ public class FriendsListScreen implements Screen{
 		return instance;
 	}
 	
+	private class ConnectedInfo{
+		private String userName;
+		private boolean playing;
+		public boolean isPlaying() {
+			return playing;
+		}
+		public String getUserName() {
+			return userName;
+		}
+		public ConnectedInfo(String userName, boolean playing) {
+			this.userName = userName;
+			this.playing = playing;
+		}
+	}
+	
 	    /** The gui cam. */
 	private OrthographicCamera guiCam;	
 	
 	/** Se utiliza para dibujar y optimizar las imagenes en el renderizado de la pantalla. */
 	private SpriteBatch batcher;
-	private GameSettings gSettings;
 	private Vector3 touchPoint;
 	private Game game;
 	private SmartFoxServer sfsClient;
@@ -54,27 +57,23 @@ public class FriendsListScreen implements Screen{
     private  BoundingBox backButtonClick;
     private  BoundingBox addFriendClick;
 	private BoundingBox userClick;
+	private BoundingBox scrollDownConnectedClick;
+    private BoundingBox scrollUpConnectedClick;
+    private BoundingBox scrollDownDisconnectedClick;
+    private BoundingBox scrollUpDisconnectedClick;
     
-    // Settings
-    private boolean externalPlayers;
-	private int gameMode;
-	private String myName = "";
-	private boolean empiezaPartida;
-	private boolean inQueue;
-
-
-	private String gameAdmin;
-	private int invitedScroll;
+	private int connectedScroll;
+	private int disconnectedScroll;
     
-    private Vector<String> acceptedPlayers;
-    private Vector<String> refusedPlayers;
-    private Vector<String> waitingPlayers;
+    private Vector<String> disconnectedFriends;
+    
+    private Vector<ConnectedInfo> drawConnected;
     
 	private String user;	
 	private long time;
 	private boolean infoPressed;
     
-
+	
 
     public FriendsListScreen() {
 		instance = this;
@@ -86,16 +85,18 @@ public class FriendsListScreen implements Screen{
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 	    font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);
+
+
+	    disconnectedFriends = new Vector<String>();
 	    
-	    acceptedPlayers = new Vector<String>();
-	    refusedPlayers = new Vector<String>();
-	    waitingPlayers = new Vector<String>();
+	    drawConnected = new Vector<ConnectedInfo>();
 	    
 	    infoPressed = false;
 	    user = "";
 	    this.time = System.nanoTime();
 	    
-	    invitedScroll = 0;
+	    connectedScroll = 0;
+	    disconnectedScroll = 0;
 	    
 	    sfsClient = SmartFoxServer.getInstance();
 
@@ -103,6 +104,36 @@ public class FriendsListScreen implements Screen{
 	    addFriendClick = new BoundingBox(new Vector3(615,110,0), new Vector3(660,145,0));
 	    MultiplayerClick = new BoundingBox(new Vector3(30,540,0), new Vector3(510,605,0));
 	    userClick = new BoundingBox(new Vector3(310,105,0), new Vector3(605,140,0));
+	    
+	    scrollDownConnectedClick = new BoundingBox(new Vector3(423,183,0), new Vector3(475,225,0));
+	    scrollUpConnectedClick = new BoundingBox(new Vector3(426,416,0), new Vector3(475,454,0));
+	    scrollDownDisconnectedClick = new BoundingBox(new Vector3(926,185,0), new Vector3(974,224,0));
+	    scrollUpDisconnectedClick = new BoundingBox(new Vector3(925,417,0), new Vector3(977,456,0));
+	    
+	    //------------Testing
+	    disconnectedFriends.add("disconn1");
+	    disconnectedFriends.add("disconn2");
+	    disconnectedFriends.add("disconn3");
+	    disconnectedFriends.add("disconn4");
+	    disconnectedFriends.add("disconn5");
+	    disconnectedFriends.add("disconn6");
+	    disconnectedFriends.add("disconn7");
+	    disconnectedFriends.add("disconn8");
+	    disconnectedFriends.add("disconn9");
+	    
+	    drawConnected.add(new ConnectedInfo("playin1", true));
+	    drawConnected.add(new ConnectedInfo("playin2", true));
+	    drawConnected.add(new ConnectedInfo("playin3", true));
+	    drawConnected.add(new ConnectedInfo("playin4", true));
+	    
+	    drawConnected.add(new ConnectedInfo("noplay1", false));
+	    drawConnected.add(new ConnectedInfo("noplay2", false));
+	    drawConnected.add(new ConnectedInfo("noplay3", false));
+	    drawConnected.add(new ConnectedInfo("noplay4", false));
+	    drawConnected.add(new ConnectedInfo("noplay5", false));
+	    //------------Testing
+	    
+	    
 	}
 
 	
@@ -128,7 +159,7 @@ public class FriendsListScreen implements Screen{
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-      		System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
+      		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			
       		if (backButtonClick.contains(touchPoint)){
@@ -138,10 +169,17 @@ public class FriendsListScreen implements Screen{
       		 } else if (userClick.contains(touchPoint)){
       			Gdx.input.setOnscreenKeyboardVisible(true);
       			this.infoPressed = true;
-      			System.out.println("user");
       		 } else if (addFriendClick.contains(touchPoint)){
        			SmartFoxServer.getInstance().sendFriendRequest(user);
-       		 } else {
+       		 } else if (scrollDownConnectedClick.contains(touchPoint)){
+       			if (connectedScroll < (drawConnected.size()) - 6) connectedScroll++;
+       		 } else if (scrollUpConnectedClick.contains(touchPoint)){
+       			if (connectedScroll != 0) connectedScroll--;     	
+ 			 } else if (scrollDownDisconnectedClick.contains(touchPoint)){
+        		if (disconnectedScroll < (disconnectedFriends.size()) - 6) disconnectedScroll++;
+        	 } else if (scrollUpDisconnectedClick.contains(touchPoint)){
+        		if (disconnectedScroll != 0) disconnectedScroll--;     	
+  			 } else {
       			this.infoPressed = false;
       		 }
 		}
@@ -169,9 +207,9 @@ public class FriendsListScreen implements Screen{
             batcher.draw(Assets.backButton, 320, 20); 
             batcher.draw(Assets.multiplayerButtonUnpressed, 27, 540);
             batcher.draw(Assets.inviteFriendsButtonPressed, 521, 540);
- 
-            batcher.draw(Assets.listOfPeopleOn, 60, 180); 
-            batcher.draw(Assets.listOfPeopleOff, 560, 180); 
+            
+            drawConnected();
+            drawDisconnected();
             
             batcher.draw(Assets.addFriend, 290, 90); 
 
@@ -183,6 +221,9 @@ public class FriendsListScreen implements Screen{
             	this.completeMessagePc();
             	this.time = System.nanoTime();
             }
+            
+            ConfirmScreen.getInstance().createConfirmIfNeeded();
+            AcceptScreen.getInstance().createAcceptIfNeeded();
 	}
 
 	
@@ -200,6 +241,46 @@ public class FriendsListScreen implements Screen{
         if (ScreensKeyboard.delete() && user.length()>0){
 	        user = (String)user.subSequence(0, user.length()-1);    
         }
+	}
+	
+	public void updateFriends(){
+		sfsClient.getMyFriendsRequest();
+	}
+	
+	public void updateFriends(Vector<String> playingFriends, Vector<String> connectedNotPlayingFriends, Vector<String> disconnectedFriends) {
+		drawConnected.clear();
+		
+		Iterator<String> itNotPlaying = connectedNotPlayingFriends.iterator();
+		while (itNotPlaying.hasNext()) drawConnected.add(new ConnectedInfo(itNotPlaying.next(),false));
+		
+		Iterator<String> itPlaying = playingFriends.iterator();
+		while (itPlaying.hasNext()) drawConnected.add(new ConnectedInfo(itPlaying.next(),true));
+		
+		this.disconnectedFriends = disconnectedFriends;
+	}
+	
+	private void drawConnected() {
+		batcher.draw(Assets.listOfPeopleOn, 60, 180);  
+		for (int i = 0; i < Math.min(drawConnected.size(), 6); i++){
+			String name = drawConnected.elementAt(i+connectedScroll).getUserName();
+			
+			font.draw(batcher, name, 125,(447-45*i));
+			if (!drawConnected.elementAt(i+connectedScroll).isPlaying()) 
+				batcher.draw(Assets.statusTick, 75, (415-45*i));
+			else if (drawConnected.elementAt(i+connectedScroll).isPlaying()) 
+				batcher.draw(Assets.statusInterrogation, 75, (415-45*i));
+		}
+	}
+	
+	private void drawDisconnected() {
+		batcher.draw(Assets.listOfPeopleOff, 560, 180); 
+		
+		for (int i = 0; i < Math.min(disconnectedFriends.size(), 6); i++){
+			String name = disconnectedFriends.elementAt(i+disconnectedScroll);
+			
+			font.draw(batcher, name, 615,(447-45*i));
+			batcher.draw(Assets.statusCancel, 575, (415-45*i));
+		}
 	}
 	
 	

@@ -2,9 +2,6 @@ package Screens;
 
 import java.util.Vector;
 
-import sfs2x.client.requests.ExtensionRequest;
-
-
 import Application.Assets;
 import Application.GameSettings;
 import Application.LaunchFrozenWars;
@@ -13,20 +10,13 @@ import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.smartfoxserver.v2.entities.data.ISFSArray;
-import com.smartfoxserver.v2.entities.data.SFSArray;
-import com.smartfoxserver.v2.entities.data.SFSObject;
 
 public class MultiplayerScreen implements Screen{
 
@@ -57,7 +47,6 @@ public class MultiplayerScreen implements Screen{
 	
 	/** Se utiliza para dibujar y optimizar las imagenes en el renderizado de la pantalla. */
 	private SpriteBatch batcher;
-	private GameSettings gSettings;
 	private Vector3 touchPoint;
 	private Game game;
 	private SmartFoxServer sfsClient;
@@ -263,20 +252,6 @@ public class MultiplayerScreen implements Screen{
 	    
 	    sfsClient = SmartFoxServer.getInstance();
 	    
-	    /*Gdx.input.getTextInput(new TextInputListener() {
-	         public void input(String text) {
-	        	 MultiplayerScreen.getInstance().setMyName(text);
-	        	 sfsClient.conectaSala(text,"");//TODO pass also the password
-	         }
-	
-	         public void canceled() {
-	        	 String user = "user".concat(Long.toString(Math.round(Math.random()*1000)));
-	        	 MultiplayerScreen.getInstance().setMyName(user);
-	        	 sfsClient.conectaSala(user,""); //TODO pass also the password
-	         }
-	    }, "Enter user: ","");
-
-	    */
 	    externalPlayerTickClick = new BoundingBox(new Vector3(120,370,0), new Vector3(170,410,0));
 	    
 	    inviteButtonClick = new BoundingBox(new Vector3(500,80,0), new Vector3(740,120,0));
