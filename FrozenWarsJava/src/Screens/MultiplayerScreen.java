@@ -313,6 +313,9 @@ public class MultiplayerScreen implements Screen{
 		GameScreen gameScreen = new GameScreen(game,manager);
 		manager.setGameScreen(gameScreen);
 		game.setScreen(gameScreen);
+		if(sfsClient.getMyPlayerId()==1){     //PROBAR CUANDO DANI SUBA CAMBIOS DEL SERVER
+		       sfsClient.sendAsign();
+		}
 	}
 	
 	@Override
@@ -328,9 +331,10 @@ public class MultiplayerScreen implements Screen{
       		} else if (inviteButtonClick.contains(touchPoint) && amIAdmin() && !inQueue) {
       			InviteScreen inviteScreen = new InviteScreen();
       			game.setScreen(inviteScreen);
-      		/*}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
+      		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
       			externalPlayers = !externalPlayers;
       			sfsClient.modExternalPlayersRequest(externalPlayers);
+      		/*
       		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin()){
       			if (gameMode == 0) gameMode = 4;
       			else gameMode--;
@@ -434,7 +438,7 @@ public class MultiplayerScreen implements Screen{
 	    drawPlayers.clear();
 	    
 	    invitedScroll = 0;
-	    externalPlayers = true;
+	    externalPlayers = false;
 	    gameMode = 0;
 	    inQueue = false;
 	    
