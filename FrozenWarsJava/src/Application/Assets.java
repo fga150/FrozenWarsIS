@@ -52,6 +52,7 @@ public class Assets {
 	    
 	    
 	    private static AtlasRegion harpooon;
+	    private static AtlasRegion lifesPanel;
 	    private static AtlasRegion mapBackground;
 	    private static AtlasRegion lifeIconYellow;
 	    private static AtlasRegion lifeIconRed;
@@ -107,7 +108,7 @@ public class Assets {
 	    public static AtlasRegion add;
 	    public static AtlasRegion minus;
 	    
-private static AtlasRegion barrelWithFissure;
+	    private static AtlasRegion barrelWithFissure;
 	    
 	    
 	    private static AtlasRegion fissureCenter;
@@ -217,6 +218,8 @@ private static AtlasRegion barrelWithFissure;
 		    gameOver = atlas.findRegion("gameOver");
 		    
 		    harpooon = atlas.findRegion("ArponParaBomba");
+		    
+		    lifesPanel =  atlas.findRegion("playerLifes");
 		  //Fissures
 		    barrelWithFissure =  atlas.findRegion("barrelWithFissure");
 		    fissureCenter =  atlas.findRegion("fissureCenter");
@@ -338,6 +341,10 @@ private static AtlasRegion barrelWithFissure;
 
 		public static AtlasRegion getBarrelWithFissure() {
 			return barrelWithFissure;
+		}
+
+		public static AtlasRegion getLifesPanel() {
+			return lifesPanel;
 		}
 
 		public static AtlasRegion getBackground() {

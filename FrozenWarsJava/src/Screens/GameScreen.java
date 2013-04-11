@@ -167,6 +167,8 @@ public class GameScreen implements Screen{
 			}
 		}
 		
+		
+		batcher.draw(Assets.getLifesPanel(),0.5f,7,6,5);
 		paintLifes();
 		paintPlayerStatus();
 		
@@ -243,16 +245,16 @@ public class GameScreen implements Screen{
 			
 	private void paintLifes() {
 		for (int i=0;i<manager.getPlayerLifes(0);i++){
-			batcher.draw(Assets.getLifeIconRed(),1+2*i,10.805f,0.75f,0.75f);
+			batcher.draw(Assets.getLifeIconRed(),4+1.25f*i,10.805f,0.75f,0.75f);
 		}
 		for (int i=0;i<manager.getPlayerLifes(1);i++){		
-			batcher.draw(Assets.getLifeIconGreen(),1+2*i,9.68f,0.75f,0.75f);
+			batcher.draw(Assets.getLifeIconGreen(),4+1.25f*i,9.68f,0.75f,0.75f);
 		}
 		for (int i=0;i<manager.getPlayerLifes(2);i++){
-			batcher.draw(Assets.getLifeIconYellow(),1+2*i,8.55f,0.75f,0.75f);
+			batcher.draw(Assets.getLifeIconYellow(),4+1.25f*i,8.55f,0.75f,0.75f);
 		}
 		for (int i=0;i<manager.getPlayerLifes(3);i++){
-			batcher.draw(Assets.getLifeIconBlue(),1+2*i,7.43f,0.75f,0.75f);
+			batcher.draw(Assets.getLifeIconBlue(),4+1.25f*i,7.43f,0.75f,0.75f);
 		}
 	}
 	
