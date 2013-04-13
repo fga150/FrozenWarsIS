@@ -168,6 +168,8 @@ public class SmartFoxServer implements IEventListener {
 					connectRes(response);
 				else if(cmd.equals("asignaMejoras"))
 					asignaMejoras(response);
+				else if(cmd.equals("getMyFriendsRequestRes"))
+					getMyFriendsRequestRes(response);
 				}
 
 		});
@@ -542,7 +544,6 @@ public class SmartFoxServer implements IEventListener {
 				sfsClient.send(request2);
 			}
 		}
-	
 	}
 	
 	public void sendBeFriends(String conf,String user){
@@ -595,9 +596,24 @@ public class SmartFoxServer implements IEventListener {
 	
 
 	public void getMyFriendsRequest() {
-		// TODO call the method uptadeFriends(Vector<String>: playing, connectedNotPlaying, disconnected); 
-		// TODO that call will be made in the response method, i imagine.
-		
+		 ExtensionRequest request = new ExtensionRequest("GetFriends",null);
+		 sfsClient.send(request);
+	}
+	
+	private void getMyFriendsRequestRes(ISFSObject params) {
+		//connected friends
+		for(int i= 0;i<params.getSFSArray("ConnectedFriends").size();i++){
+			String friend=(String) params.getSFSArray("ConnectedFriends").getElementAt(i);
+		}
+		//disconnected friends
+		for(int i= 0;i<params.getSFSArray("DisconnectedFriends").size();i++){
+			params.getSFSArray("DisconnectedFriends").getElementAt(i);
+			//TODO fede do whatever with each element of the arrays
+		}
+		//friends gaming
+		for(int i= 0;i<params.getSFSArray("PlayingFriends").size();i++){
+			params.getSFSArray("PlayingFriends").getElementAt(i);
+		}
 	}
 	
 	public void dispatch(BaseEvent event) throws SFSException {
