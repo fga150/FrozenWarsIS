@@ -27,7 +27,7 @@ public class FriendRequest extends BaseClientRequestHandler {
 		if (matcher.matches()){
 			try{
 				connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
-				PreparedStatement stmt = connection.prepareStatement("SELECT user FROM users WHERE email=?");
+				PreparedStatement stmt = connection.prepareStatement("SELECT name FROM users WHERE email=?");
 			    stmt.setString(1, friend);
 				ResultSet res= stmt.executeQuery(); // send a query to know if there is a user with that email
 				if (res.next()){

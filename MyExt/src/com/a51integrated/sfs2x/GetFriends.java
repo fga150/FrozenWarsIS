@@ -51,7 +51,7 @@ public class GetFriends  extends BaseClientRequestHandler {
 		rtn.putSFSArray("ConnectedFriends", connectedFriends);
 		rtn.putSFSArray("DisconnectedFriends", disconnectedFriends);
 		rtn.putSFSArray("PlayingFriends", playingFriends);
-		parentEx.send("GetFriendsRes", rtn, player); //Sends the object which contains the users friends
+		parentEx.send("getMyFriendsRequestRes", rtn, player); //Sends the object which contains the users friends
 	}
 
 }
