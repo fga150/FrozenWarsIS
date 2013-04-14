@@ -100,10 +100,10 @@ public class GameScreen implements Screen{
 		batcher.setProjectionMatrix(guiCam.combined);
 		batcher.draw(Assets.getBackground(),0,0,21,13);
 		
-		batcher.draw(Assets.getHorizontalBarDown(),8,0,11,1);
-		batcher.draw(Assets.getHorizontalBarUP(),8,12,11,1);
-		batcher.draw(Assets.getVerticalBarLeft(),7,0,1,13);
-		batcher.draw(Assets.getVerticalBarRigth(),19,0,1,13);
+		batcher.draw(Assets.getHorizontalBarDown(),7,0,13,1);
+		batcher.draw(Assets.getHorizontalBarUP(),7,12,13,1);
+		batcher.draw(Assets.getVerticalBarLeft(),7,1,1,11);
+		batcher.draw(Assets.getVerticalBarRigth(),19,1,1,11);
 		
 		
 		for(int i=0;i<11;i++){
