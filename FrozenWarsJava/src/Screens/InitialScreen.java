@@ -50,16 +50,19 @@ public class InitialScreen implements Screen{
 			//  Assets.music.play();
 			Assets.music.setLooping(true);
 	    }
-		guiCam = new OrthographicCamera(420,380);
-		guiCam.position.set(210,190,0);
-		
+
+
+
+		guiCam = new OrthographicCamera(1024,630);
+		guiCam.position.set(512,315,0);
+	    
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 	    //Esquina inferior izq y superior derecha
-	    playClick = new BoundingBox(new Vector3(30,290,0), new Vector3(200,340,0));
-	    settingsClick = new BoundingBox(new Vector3(230,290,0), new Vector3(400,340,0));
-	    helpClick = new BoundingBox(new Vector3(30,230,0), new Vector3(200,280,0));
-	    exitClick = new BoundingBox(new Vector3(230,225,0), new Vector3(400,275,0));
+	    playClick = new BoundingBox(new Vector3(150,500,0), new Vector3(440,550,0));
+	    helpClick = new BoundingBox(new Vector3(150,400,0), new Vector3(440,445,0));
+	    settingsClick = new BoundingBox(new Vector3(590,500,0), new Vector3(880,540,0));
+	    exitClick = new BoundingBox(new Vector3(590,400,0), new Vector3(880,445,0));
 	    
 	    J1Click = new BoundingBox(new Vector3(184,178,0), new Vector3(212,204,0));
 	    J2Click = new BoundingBox(new Vector3(219,179,0), new Vector3(245,204,0));
@@ -153,17 +156,17 @@ public class InitialScreen implements Screen{
             batcher.disableBlending();
             //se elimina graficamente la transparencia ya que es un fondo
             batcher.begin();
-            batcher.draw(Assets.initialBack,0,0,420,380);
+            batcher.draw(Assets.initialBack,0,0);
             batcher.end();
 
             //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();
 	                
-	        batcher.draw(Assets.play, 25, 300);
-	        batcher.draw(Assets.settings, 225, 300);
-	        batcher.draw(Assets.help, 25, 240);
-	        batcher.draw(Assets.exit, 225, 240);
+	        batcher.draw(Assets.play, 120, 500);
+	        batcher.draw(Assets.settings, 560, 500);
+	        batcher.draw(Assets.help, 120, 400);
+	        batcher.draw(Assets.exit, 560, 400);
 	        
 	        if (developer) {
 	        	batcher.draw(Assets.J1, 185, 180);
