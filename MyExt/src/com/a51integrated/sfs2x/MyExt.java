@@ -1,6 +1,7 @@
 package com.a51integrated.sfs2x;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import com.smartfoxserver.v2.api.CreateRoomSettings;
@@ -99,10 +100,8 @@ public class MyExt extends SFSExtension {
 	
 	public Room creatGame(User a, User b,User c,User d){
 		ISFSObject rtn = new SFSObject();
-		ISFSObject rtna = new SFSObject();
-		ISFSObject rtnb = new SFSObject();
-		ISFSObject rtnc = new SFSObject();
-		ISFSObject rtnd = new SFSObject();
+		ISFSObject rtnNames = new SFSObject();
+		int n=0;
 		try {
 			CreateRoomSettings settings= new CreateRoomSettings();
 			settings.setMaxUsers(4);
@@ -125,21 +124,37 @@ public class MyExt extends SFSExtension {
 				room.addUser(d);
 			}catch(Exception e){};
 			try{
-				//rtn.putUtfString("res", "Partida en marcha con los siguientes jugadores: "+a.getName()+", "+b.getName()+", "+c.getName()+", "+d.getName()+", ");
-				rtna.putInt("id", a.getPlayerId(room));
-				this.send("startGame", rtna, a);
-				rtnb.putInt("id", b.getPlayerId(room));
-				this.send("startGame", rtnb, b);         //Sends the ids of each player at the new room.
-				rtnc.putInt("id", c.getPlayerId(room));
-				this.send("startGame", rtnc, c);
-				rtnd.putInt("id", d.getPlayerId(room));
-				this.send("startGame", rtnd, d);
+				rtn.putInt("id", a.getPlayerId(room));
+				rtnNames.putInt("id1", a.getPlayerId(room));
+				rtnNames.putUtfString("name1", a.getName());
+				n++;
+				this.send("startGame", rtn, a);
+				rtn.putInt("id", b.getPlayerId(room));
+				rtnNames.putInt("id2", b.getPlayerId(room));
+				rtnNames.putUtfString("name2", b.getName());
+				n++;
+				this.send("startGame", rtn, b);         //Sends the ids of each player at the new room.
+				rtn.putInt("id", c.getPlayerId(room));
+				rtnNames.putInt("id3", c.getPlayerId(room));
+				rtnNames.putUtfString("name3", c.getName());
+				n++;
+				this.send("startGame", rtn, c);
+				rtn.putInt("id", d.getPlayerId(room));
+				rtnNames.putInt("id4", d.getPlayerId(room));
+				rtnNames.putUtfString("name4", d.getName());
+				n++;
+				this.send("startGame", rtn, d);
 			}catch(Exception e){};
+				rtnNames.putInt("n", n);
+				Iterator<User> it=room.getPlayersList().iterator();
+				while (it.hasNext()){ // send it to all users of the room
+					this.send("NamesGame",rtnNames, it.next());
+				}
 			return room;
 		} catch (SFSCreateRoomException e) {
 			e.printStackTrace();
-			rtn.putUtfString("ras", "No se ha podido crear la sala");
-			this.send("meter1", rtn, a);
+			rtn.putUtfString("res", "Internal server error");
+			this.send("startGame", rtn, a);
 			return null;
 		}	
 
