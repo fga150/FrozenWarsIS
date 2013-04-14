@@ -137,6 +137,8 @@ public class SmartFoxServer implements IEventListener {
 					getTimeResponse(response);
 				else if (cmd.equals("asignaMejoras"))
 					asignaMejoras(response);
+				else if(cmd.equals("NamesGame"))
+					NamesGame(response);
 				}
 		});
 	}
@@ -458,6 +460,15 @@ public class SmartFoxServer implements IEventListener {
 			 GameLogic.Map.getInstance().setPositionUpgrades(i,(params.getSFSArray("arrayBarriles").getInt(i)));
 			 System.out.println(GameLogic.Map.getInstance().getPositionUpgrades(i));
 		 }
+	}
+	
+		private void NamesGame(ISFSObject response) {
+		for(int i=1;i<=response.getInt("n");i++){
+			String name=response.getUtfString("name"+i);
+			int id=response.getInt("id"+i);
+			//TODO conchi do whatever you have to do with the name and id of all users on game
+		}
+		
 	}
 	
 	public void dispatch(BaseEvent event) throws SFSException {
