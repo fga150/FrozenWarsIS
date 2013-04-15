@@ -53,13 +53,22 @@ public class Assets {
 	    
 	    private static AtlasRegion harpooon;
 	    private static AtlasRegion lifesPanel;
-	    private static AtlasRegion mapBackground;
+	    private static AtlasRegion deadLine;
+	    
+	    private static AtlasRegion gameScreenBackground;
 	    private static AtlasRegion lifeIconYellow;
 	    private static AtlasRegion lifeIconRed;
 	    private static AtlasRegion lifeIconGreen;
 	    private static AtlasRegion lifeIconBlue;
 	    private static AtlasRegion directionPanel;
-	    private static AtlasRegion barrel;
+	    
+	    private static AtlasRegion yellowPlayer;
+	    private static AtlasRegion redPlayer;
+	    private static AtlasRegion bluePlayer;
+	    private static AtlasRegion greenPlayer;
+
+
+		private static AtlasRegion barrel;
 		private static AtlasRegion buttonHarpoon;
 	    private static AtlasRegion box;
 	    private static AtlasRegion igloo;
@@ -249,12 +258,17 @@ public class Assets {
 		    //water 4 open sides
 		    water4SideOpen =  atlas.findRegion("Water4SideOpen");
 		    setIgloo(atlas.findRegion("iglus"));
-			mapBackground = atlas.findRegion("fondoJuego");
-			
+		    gameScreenBackground = atlas.findRegion("gameScreenBackground");
+		    deadLine = atlas.findRegion("deadLine");
 			lifeIconYellow = atlas.findRegion("vidasJugadorAmarillo");
 			lifeIconRed = atlas.findRegion("vidasJugadorRojo");
 			lifeIconBlue = atlas.findRegion("vidasJugadorAzul");
 			lifeIconGreen = atlas.findRegion("vidasJugadorVerde");
+			
+			yellowPlayer = atlas.findRegion("iconoJugadorAmarillo");
+			redPlayer = atlas.findRegion("iconoJugadorRojo");
+			bluePlayer = atlas.findRegion("iconoJugadorAzul");
+			greenPlayer = atlas.findRegion("iconoJugadorVerde");
 			
 			deadIconYellow = atlas.findRegion("deadIconYellow");
 			deadIconRed = atlas.findRegion("deadIconRed");
@@ -269,7 +283,7 @@ public class Assets {
 			VerticalBarRigth=((atlas.findRegion("barraverticalDer")));
 			HorizontalBarUP=((atlas.findRegion("barrahorizontalArriba")));
 			HorizontalBarDown=((atlas.findRegion("barrahorizontalAbajo")));
-			background=atlas.findRegion("fondo");
+			background=atlas.findRegion("gameScreenBackground");
 			
 		    //Componentes de la pantalla de creacion de partida multiplayer
 			backGrey = atlas.findRegion("BackGrey");
@@ -331,7 +345,11 @@ public class Assets {
 		    
 	    }
 	    
-	    public static AtlasRegion getYouWin() {
+	    public static AtlasRegion getLineLifesPanel() {
+			return deadLine;
+		}
+
+		public static AtlasRegion getYouWin() {
 			return youWin;
 		}
 
@@ -475,12 +493,12 @@ public class Assets {
 
 
 		public static AtlasRegion getMapBackground() {
-			return mapBackground;
+			return gameScreenBackground;
 		}
 
 
 		public static void setMapBackground(AtlasRegion mapBackground) {
-			Assets.mapBackground = mapBackground;
+			Assets.gameScreenBackground = mapBackground;
 		}
 
 
@@ -575,6 +593,23 @@ public class Assets {
 		
 		public static AtlasRegion getDeadIconGreen() {
 			return deadIconGreen;
+		}
+		
+	    
+	    public static AtlasRegion getYellowPlayer() {
+			return yellowPlayer;
+		}
+
+		public static AtlasRegion getRedPlayer() {
+			return redPlayer;
+		}
+
+		public static AtlasRegion getBluePlayer() {
+			return bluePlayer;
+		}
+
+		public static AtlasRegion getGreenPlayer() {
+			return greenPlayer;
 		}
 
 	

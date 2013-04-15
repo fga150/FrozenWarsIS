@@ -12,7 +12,7 @@ public class Match {
 	
 	enum TypeGame {Normal}
 	
-	private final int numPlayers = 4;
+	private int numPlayers = 4;
 	private final float playerWidth = 1;
 	private final float playerLength = 1;
 	private final float minimalMove = 0.25f;
@@ -588,6 +588,11 @@ public class Match {
 
 	public boolean canPlay(int i) {
 		return players[i].canPlay();
+	}
+
+	public void setNumPlayers(int i) {
+		this.numPlayers = i;
+		
 	}
 
 }

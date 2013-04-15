@@ -146,7 +146,7 @@ public class SmartFoxServer implements IEventListener {
 	private String getServerIP() {
 		String ip = "";
 		try {
-			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			InetAddress address = InetAddress.getByName(new URL("http://frozenwarsthegame.no-ip.org").getHost());
 			ip = address.getHostAddress();
 		} catch (Exception e){
 			
@@ -463,10 +463,12 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 		private void NamesGame(ISFSObject response) {
-		for(int i=1;i<=response.getInt("n");i++){
+			for(int i=1;i<=response.getInt("n");i++){
 			String name=response.getUtfString("name"+i);
 			int id=response.getInt("id"+i);
-			//TODO conchi do whatever you have to do with the name and id of all users on game
+			//manager.setNumPlayers(response.getInt("n"));
+			manager.setUserName(id,name);
+			
 		}
 		
 	}

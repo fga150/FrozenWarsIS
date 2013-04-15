@@ -19,12 +19,14 @@ public class MatchManager {
 	private GameScreen gameScreen;
 	private int myPlayerId;
 	private long lastMessage;
+	private String[] usersNames;
 	
 	public MatchManager(SmartFoxServer sfs) {
 		this.sfsClient=sfs;
 		this.match = new Match();
 		this.myPlayerId = sfsClient.getMyPlayerId()-1;
 		this.lastMessage = System.currentTimeMillis();
+		this.usersNames = new String[match.getNumPlayers()];
 	}
 	
 	public void movePlayer(Direction dir){
@@ -150,5 +152,18 @@ public class MatchManager {
 
 	public boolean canPlay(int i) {
 		return match.canPlay(i);
+	}
+
+	public void setUserName(int id, String name) {
+		usersNames[id-1] = name;
 	}	
+	
+	public String getUserName(int id){
+		return usersNames[id];
+	}
+
+	public void setNumPlayers(int i) {
+		match.setNumPlayers(i);
+		
+	}
 }

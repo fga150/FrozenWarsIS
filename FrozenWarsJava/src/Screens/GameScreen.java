@@ -40,6 +40,7 @@ public class GameScreen implements Screen{
 	private MatchManager manager;
 	private String name;
 	private BitmapFont font;
+	private BitmapFont font2;
 	private int numPlayer;
 
 	
@@ -48,11 +49,12 @@ public class GameScreen implements Screen{
 		this.name = manager.getMyNamePlayer();
 		numPlayer=manager.getMyIdPlayer();
 		this.manager = manager;
-		font = new BitmapFont();
+		font = new BitmapFont(Gdx.files.internal("data/simpleFont.fnt"), Gdx.files.internal("data/simpleFont.png"), false);
+		font2 =new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);
 		font.setColor(Color.BLACK);
 		guiCam = new OrthographicCamera(21,13);
-		textCam=new OrthographicCamera(21*32,13*32);
-		textCam.position.set((21*32)/2,(13*32)/2,0);
+		textCam=new OrthographicCamera(21*49,13*49);
+		textCam.position.set((21*49)/2,(13*49)/2,0);
 		guiCam.position.set(21f/2,13f/2,0);
 		batcher = new SpriteBatch();
 		touchPoint = new Vector3();
@@ -98,7 +100,11 @@ public class GameScreen implements Screen{
 		batcher.enableBlending();
 		batcher.begin();
 		batcher.setProjectionMatrix(guiCam.combined);
-		batcher.draw(Assets.getBackground(),0,0,21,13);
+		
+		Color c = batcher.getColor();
+        batcher.setColor(c.r, c.g, c.b, 0.40f); //set alpha to 1
+        batcher.draw(Assets.getBackground(),0,0,21,13);
+        batcher.setColor(c.r, c.g, c.b, 1f);
 		
 		batcher.draw(Assets.getHorizontalBarDown(),7,0,13,1);
 		batcher.draw(Assets.getHorizontalBarUP(),7,12,13,1);
@@ -225,15 +231,16 @@ public class GameScreen implements Screen{
  				font.setColor(Color.GREEN);
  				userMessage = userMessage.concat("GREEN player: ");
  			}else if(numPlayer == 2){
+ 				
  				font.setColor(Color.YELLOW);
  				userMessage = userMessage.concat("YELLOW player: ");
  			}else if(numPlayer == 3){
  				font.setColor(Color.BLUE);
  				userMessage = userMessage.concat("BLUE player: ");
  			}
- 			font.draw(batcher,userMessage, 0.5f*32 ,12.5f*32);
+ 			font.draw(batcher,userMessage, 0.5f*49 ,12.35f*49);
  		}else{
- 			String userMessage = "You are dead";
+ 			String userMessage = "You are dead !!! ";
  			batcher.setProjectionMatrix(textCam.combined);
  			if(numPlayer == 0){
  				font.setColor(Color.RED);
@@ -244,79 +251,97 @@ public class GameScreen implements Screen{
  			}else if(numPlayer == 3){
  				font.setColor(Color.BLUE);
  			}
- 			font.draw(batcher,userMessage, 0.5f*32 ,12.5f*32);
+ 			font.draw(batcher,userMessage, 1.5f*49 ,12.35f*49);
  			font.setColor(Color.BLACK);
  		}
  		
  		
  		//Write players name in lifes panel
-		batcher.setProjectionMatrix(textCam.combined);
+//		if(manager.getNumPlayers()>1){
+//			batcher.setProjectionMatrix(textCam.combined);
+//			font.setColor(Color.RED);
+//			font.draw(batcher,cutName(manager.getUserName(0)), 0.9f*32 ,10.4f*32);
+//		
+//			font.setColor(Color.GREEN);
+//			font.draw(batcher,cutName(manager.getUserName(1)), 0.9f*32 ,9.4f*32);
+//			
+//			if(manager.getNumPlayers()>2){
+//				font.setColor(Color.YELLOW);
+//				font.draw(batcher,cutName(manager.getUserName(2)), 0.9f*32 ,8.4f*32);
+//			
+//				if(manager.getNumPlayers()>3){
+//					font.setColor(Color.BLUE);
+//					font.draw(batcher,cutName(manager.getUserName(3)), 0.9f*32 ,7.5f*32);
+//				}
+//			}
+//		}
+							
+		
+ 	}
+	
+	public String cutName(String name){
 		String playerName = name;
 		if(playerName.length()>8){
 			playerName = name.substring(0,8);
 			playerName = playerName.concat("...");
 		}
+		System.out.println(name);
+		return playerName;
 		
-		font.setColor(Color.RED);
-		font.draw(batcher,"Player1Here", 0.9f*32 ,10.4f*32);
-	
-		font.setColor(Color.GREEN);
-		font.draw(batcher,"Player2Here", 0.9f*32 ,9.4f*32);
-	
-		font.setColor(Color.YELLOW);
-		font.draw(batcher,"Player3Here", 0.9f*32 ,8.4f*32);
-	
-		font.setColor(Color.BLUE);
-		font.draw(batcher,"Player4Here", 0.9f*32 ,7.5f*32);		
-		
- 	}
+	}
 	
 	private void paintPlayerStatus(){
+
 		if(!manager.isThePlayerDead(numPlayer)){
 			if (numPlayer==0){
-				batcher.draw(Assets.getLifeIconRed(),5.5f,12,0.8f,0.8f);
+				batcher.draw(Assets.getRedPlayer(),5.75f,11.75f,1,1);
 			}else if(numPlayer==1){
-				batcher.draw(Assets.getLifeIconGreen(),5.5f,12,0.8f,0.8f);
+				batcher.draw(Assets.getGreenPlayer(),5.75f,11.75f,1,1);
 			}else if(numPlayer==2){
-				batcher.draw(Assets.getLifeIconYellow(),5.5f,12,0.8f,0.8f);
+				batcher.draw(Assets.getYellowPlayer(),5.75f,11.75f,1,1);
 			}else if(numPlayer==3){
-				batcher.draw(Assets.getLifeIconBlue(),5.5f,12,0.8f,0.8f);
+				batcher.draw(Assets.getBluePlayer(),5.75f,11.75f,1,1);
 			}
 		}else{
-			//Not included line in assets
-			/*TODO Include line of lifes panel in assets for this method*/
 			if (numPlayer==0){
-				batcher.draw(Assets.getDeadIconRed(),5.5f,11.8f,0.8f,0.8f);
-				//batcher.draw(Assets.getLineLifesPanel(),0.5f,9.85f,1,1);
+				batcher.draw(Assets.getDeadIconRed(),5.5f,11.75f,1,1);
 			}else if(numPlayer==1){
-				batcher.draw(Assets.getDeadIconGreen(),5.5f,11.8f,0.8f,0.8f);
-				//batcher.draw(Assets.getLineLifesPanel(),0.5f,8.82f,1,1);
+				batcher.draw(Assets.getDeadIconGreen(),5.5f,11.75f,1,1);
 			}else if(numPlayer==2){
-				batcher.draw(Assets.getDeadIconYellow(),5.5f,11.8f,0.8f,0.8f);
-				//batcher.draw(Assets.getLineLifesPanel(),0.5f,7.85f,1,1);
+				batcher.draw(Assets.getDeadIconYellow(),5.5f,11.75f,1,1);
 			}else if(numPlayer==3){
-				batcher.draw(Assets.getDeadIconBlue(),5.5f,11.8f,0.8f,0.8f);
-				//batcher.draw(Assets.getLineLifesPanel(),0.5f,6.9f,1,1);
+				batcher.draw(Assets.getDeadIconBlue(),5.5f,11.75f,1,1);
 			}
 			batcher.draw(Assets.getGameOver(),6,4,14,8);
 		}
 		if (manager.imTheWinner(numPlayer)){
 			batcher.draw(Assets.getYouWin(),6,4,14,8);
 		}
+		
+		batcher.setProjectionMatrix(textCam.combined);
+		font2.draw(batcher, "Lives", 0.5f*49, 11.25f*49);
 }
 			
 	private void paintLifes() {
 		for (int i=0;i<manager.getPlayerLifes(0);i++){
 			batcher.draw(Assets.getLifeIconRed(),3.625f+0.975f*i,9.750f,0.75f,0.75f);
+			if(manager.isThePlayerDead(0))
+				batcher.draw(Assets.getLineLifesPanel(),1.625f,9.750f,1,6);
 		}
 		for (int i=0;i<manager.getPlayerLifes(1);i++){		
 			batcher.draw(Assets.getLifeIconGreen(),3.625f+0.975f*i,8.720f,0.75f,0.75f);
+			if(manager.isThePlayerDead(1))
+				batcher.draw(Assets.getLineLifesPanel(),1.625f,8.720f,1,6);
 		}
 		for (int i=0;i<manager.getPlayerLifes(2);i++){
 			batcher.draw(Assets.getLifeIconYellow(),3.625f+0.975f*i,7.75f,0.75f,0.75f);
+			if(manager.isThePlayerDead(2))
+				batcher.draw(Assets.getLineLifesPanel(),1.625f,7.75f,1,6);
 		}
 		for (int i=0;i<manager.getPlayerLifes(3);i++){
 			batcher.draw(Assets.getLifeIconBlue(),3.625f+0.975f*i,6.80f,0.75f,0.75f);
+			if(manager.isThePlayerDead(3))
+				batcher.draw(Assets.getLineLifesPanel(),1.625f,6.80f,1,6);
 		}
 	}
 	
