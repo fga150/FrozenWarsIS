@@ -126,9 +126,9 @@ public class LogInScreen implements Screen {
             font.drawWrapped(batcher, passShown, 450, 365, 240);
             batcher.end();	
  
-            if ( this.infoPressed !=0 && ((System.nanoTime() - this.time) > 135000000)){ //We check if some info's square has been pressed
+            if ( this.infoPressed !=0){ //We check if some info's square has been pressed
             	this.completeMessagePc();
-            	this.time = System.nanoTime();
+            	//this.time = System.nanoTime();
             }
             
             ConfirmScreen.getInstance().createConfirmIfNeeded();
@@ -151,9 +151,11 @@ public class LogInScreen implements Screen {
 	
 	private void completeMessagePc(){
 		char aux = 0;
-		
-		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)){ //We check if some key has been pressed
+		boolean canDelete = false;
+		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)  && ((System.nanoTime() - this.time) > 160000000)){ //We check if some key has been pressed
+			this.time = System.nanoTime();
 			  aux = ScreensKeyboard.keyPc();
+			  canDelete = true;
 		}
 
         if (aux != 0){ //aux would be !=0 if a key has been pressed
@@ -165,13 +167,14 @@ public class LogInScreen implements Screen {
 	        } 
         }  
         
-        if (ScreensKeyboard.delete()){ //If we have pressed delete key, we have to check what info are we editing
+        if (ScreensKeyboard.delete()  && canDelete){ //If we have pressed delete key, we have to check what info are we editing
         	if (this.infoPressed == 1 && user.length()>0){ 
 	        	user = (String)user.subSequence(0, user.length()-1);
 	        } else if (this.infoPressed == 2 && pass.length()>0){
 	        	pass = (String)pass.subSequence(0, pass.length()-1);
 	        	passShown = (String)passShown.subSequence(0, passShown.length()-1);
 	        }
+        	canDelete =false;
         }
 	}
 }

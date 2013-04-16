@@ -168,10 +168,10 @@ public class SignInScreen implements Screen {
             font.drawWrapped(batcher, pass2Shown, 450, 310, 240);
             batcher.end();	
             
-            if ( this.infoPressed !=0 && ((System.nanoTime() - this.time) > 129000000)){
+            if ( this.infoPressed !=0){
             	this.completeMessagePc();
-            	this.time = System.nanoTime();
             }
+            
             ConfirmScreen.getInstance().createConfirmIfNeeded();
             AcceptScreen.getInstance().createAcceptIfNeeded();
 	}
@@ -191,9 +191,12 @@ public class SignInScreen implements Screen {
 	
 	private void completeMessagePc(){ //TODO process also the characters @ and .
 		char aux = 0;
-				
-		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)){
+		boolean canDelete = false;		
+		
+		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)  && ((System.nanoTime() - this.time) > 170000000)){ //We check if some key has been pressed
+			this.time = System.nanoTime();
 			  aux = ScreensKeyboard.keyPc();
+			  canDelete = true;
 		}
 
         if (aux != 0){
@@ -214,7 +217,7 @@ public class SignInScreen implements Screen {
 	        }
         }
 
-        if (ScreensKeyboard.delete()){
+        if (ScreensKeyboard.delete() && canDelete){
         	if (this.infoPressed == 1 && user.length()>0){
 	        	user = (String)user.subSequence(0, user.length()-1);
 	        } else if (this.infoPressed == 2 && email.length()>0){
@@ -226,6 +229,7 @@ public class SignInScreen implements Screen {
 	        	pass2 = (String)pass2.subSequence(0, pass2.length()-1);
 	        	pass2Shown = (String)pass2Shown.subSequence(0, pass2Shown.length()-1);
 	        }
+        	canDelete =false;
         }
 	}
 }
