@@ -176,6 +176,7 @@ public class GameScreen implements Screen{
 		
 		batcher.draw(Assets.getLifesPanel(),0.5f,6.75f,6,5);
 		paintLifes();
+		paintLinesPanelLives();
 		paintPlayerStatus();
 		paintPlayerName();
 		
@@ -221,6 +222,8 @@ public class GameScreen implements Screen{
 	}
 	
 	private void paintPlayerName(){
+		
+		//Paint player status You are dead/you are RED/BLUE/YELLOW/GREEN
  		if(!manager.isThePlayerDead(numPlayer)){
  			String userMessage = "You are ";
  			batcher.setProjectionMatrix(textCam.combined);
@@ -255,29 +258,31 @@ public class GameScreen implements Screen{
  			font.setColor(Color.BLACK);
  		}
  		
- 		
- 		//Write players name in lifes panel
-//		if(manager.getNumPlayers()>1){
-//			batcher.setProjectionMatrix(textCam.combined);
-//			font.setColor(Color.RED);
-//			font.draw(batcher,cutName(manager.getUserName(0)), 0.9f*32 ,10.4f*32);
-//		
-//			font.setColor(Color.GREEN);
-//			font.draw(batcher,cutName(manager.getUserName(1)), 0.9f*32 ,9.4f*32);
-//			
-//			if(manager.getNumPlayers()>2){
-//				font.setColor(Color.YELLOW);
-//				font.draw(batcher,cutName(manager.getUserName(2)), 0.9f*32 ,8.4f*32);
-//			
-//				if(manager.getNumPlayers()>3){
-//					font.setColor(Color.BLUE);
-//					font.draw(batcher,cutName(manager.getUserName(3)), 0.9f*32 ,7.5f*32);
-//				}
-//			}
-//		}
+ 		//Write players name in lives panel
+		if(manager.getNumPlayers()>1){
+			batcher.setProjectionMatrix(textCam.combined);
+			font.setColor(Color.RED);
+			font.draw(batcher,cutName(manager.getUserName(0)), 0.9f*49 ,10.4f*49);
+		
+			font.setColor(Color.GREEN);
+			font.draw(batcher,cutName(manager.getUserName(1)), 0.9f*49 ,9.4f*49);
+		}	
+		if (MatchManager.getUsersNames().length>2){//method temporaly getNumPlayer always return 4
+			if(manager.getNumPlayers()>2){
+				font.setColor(Color.YELLOW);
+				font.draw(batcher,cutName(manager.getUserName(2)), 0.9f*49 ,8.4f*49);
+			if (MatchManager.getUsersNames().length>3){
+				if(manager.getNumPlayers()>3){
+					font.setColor(Color.BLUE);
+					font.draw(batcher,cutName(manager.getUserName(3)), 0.9f*49 ,7.5f*49);
+				}
+			}
+			}
+		}
+		
 							
 		
- 	}
+	}
 	
 	public String cutName(String name){
 		String playerName = name;
@@ -285,7 +290,6 @@ public class GameScreen implements Screen{
 			playerName = name.substring(0,8);
 			playerName = playerName.concat("...");
 		}
-		System.out.println(name);
 		return playerName;
 		
 	}
@@ -323,26 +327,28 @@ public class GameScreen implements Screen{
 }
 			
 	private void paintLifes() {
-		for (int i=0;i<manager.getPlayerLifes(0);i++){
+		for (int i=0;i<manager.getPlayerLifes(0);i++)
 			batcher.draw(Assets.getLifeIconRed(),3.625f+0.975f*i,9.750f,0.75f,0.75f);
-			if(manager.isThePlayerDead(0))
-				batcher.draw(Assets.getLineLifesPanel(),1.625f,9.750f,1,6);
-		}
-		for (int i=0;i<manager.getPlayerLifes(1);i++){		
+		
+		for (int i=0;i<manager.getPlayerLifes(1);i++)	
 			batcher.draw(Assets.getLifeIconGreen(),3.625f+0.975f*i,8.720f,0.75f,0.75f);
-			if(manager.isThePlayerDead(1))
-				batcher.draw(Assets.getLineLifesPanel(),1.625f,8.720f,1,6);
-		}
-		for (int i=0;i<manager.getPlayerLifes(2);i++){
+			
+		for (int i=0;i<manager.getPlayerLifes(2);i++)
 			batcher.draw(Assets.getLifeIconYellow(),3.625f+0.975f*i,7.75f,0.75f,0.75f);
-			if(manager.isThePlayerDead(2))
-				batcher.draw(Assets.getLineLifesPanel(),1.625f,7.75f,1,6);
-		}
-		for (int i=0;i<manager.getPlayerLifes(3);i++){
+		
+		for (int i=0;i<manager.getPlayerLifes(3);i++)
 			batcher.draw(Assets.getLifeIconBlue(),3.625f+0.975f*i,6.80f,0.75f,0.75f);
-			if(manager.isThePlayerDead(3))
-				batcher.draw(Assets.getLineLifesPanel(),1.625f,6.80f,1,6);
-		}
+	}
+	
+	private void paintLinesPanelLives(){
+		if(manager.isThePlayerDead(0))
+			batcher.draw(Assets.getLineLifesPanel(),3.425f,10.05f,3.225f,0.125f);
+		if(manager.isThePlayerDead(1))
+			batcher.draw(Assets.getLineLifesPanel(),3.425f,9.05f,3.225f,0.125f);
+		if(manager.isThePlayerDead(2))
+			batcher.draw(Assets.getLineLifesPanel(),3.425f,8.05f,3.225f,0.125f);
+		if(manager.isThePlayerDead(3))
+			batcher.draw(Assets.getLineLifesPanel(),3.425f,7.1f,3.225f,0.125f);
 	}
 	
 	public void movePlayer(Direction dir, int playerId, Vector3 position) {                                     

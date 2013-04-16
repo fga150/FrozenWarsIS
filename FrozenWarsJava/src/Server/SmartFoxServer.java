@@ -462,15 +462,15 @@ public class SmartFoxServer implements IEventListener {
 		 }
 	}
 	
-		private void NamesGame(ISFSObject response) {
-			for(int i=1;i<=response.getInt("n");i++){
-			String name=response.getUtfString("name"+i);
-			int id=response.getInt("id"+i);
-			//manager.setNumPlayers(response.getInt("n"));
-			manager.setUserName(id,name);
-			
-		}
-		
+	private void NamesGame(ISFSObject response) {
+			int numPlayers = response.getInt("n");
+			String[] usersName = new String[numPlayers];
+			for(int i=1;i<=numPlayers;i++){
+				String name=response.getUtfString("name"+i);
+				int id=response.getInt("id"+i);
+				usersName[id-1] = name;
+			}
+			Application.MatchManager.setUserName(usersName);	
 	}
 	
 	public void dispatch(BaseEvent event) throws SFSException {

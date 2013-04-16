@@ -795,7 +795,7 @@ TickExternalPlayers
   offset: 0, 0
   index: -1
 
-pack3.png
+pack2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -854,7 +854,7 @@ UpgradesHelpText
   offset: 0, 0
   index: -1
 
-pack6.png
+pack5.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -873,7 +873,7 @@ gameScreenBackground
   offset: 0, 0
   index: -1
 
-pack2.png
+pack3.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -1669,7 +1669,7 @@ TickExternalPlayers
   offset: 0, 0
   index: -1
 
-pack5.png
+pack6.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
