@@ -7,6 +7,8 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JOptionPane;
+
 import Application.GameSettings;
 import Application.LaunchFrozenWars;
 import Application.MatchManager;
@@ -170,8 +172,9 @@ public class SmartFoxServer implements IEventListener {
 					asignaMejoras(response);
 				else if(cmd.equals("getMyFriendsRequestRes"))
 					getMyFriendsRequestRes(response);
-				}
-
+				else if(cmd.equals("ExitGameRes"))
+					exitGameRes(response);
+			}
 		});
 	}
 
@@ -614,6 +617,21 @@ public class SmartFoxServer implements IEventListener {
 		for(int i= 0;i<params.getSFSArray("PlayingFriends").size();i++){
 			params.getSFSArray("PlayingFriends").getElementAt(i);
 		}
+	}
+	
+	/**method when you want to exit from the game*/
+	public void exitGame(){
+		ExtensionRequest request2 = new ExtensionRequest("ExitGame",null);
+		sfsClient.send(request2);
+	}
+	/**response of the server when you want to exit from the game*/
+	private void exitGameRes(ISFSObject response) {
+		if (response.getUtfString("res")=="Success"){
+			//TODO fede when you have exit from the game are you are now in the lobby show a message? and go to the multiplayer screen?
+		}else if (response.getUtfString("res")=="Error"){
+			//TODO show a error message (Like the ones of adding friends)
+		}
+		
 	}
 	
 	public void dispatch(BaseEvent event) throws SFSException {
