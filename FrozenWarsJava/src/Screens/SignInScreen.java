@@ -193,7 +193,7 @@ public class SignInScreen implements Screen {
 		char aux = 0;
 		boolean canDelete = false;		
 		
-		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)  && ((System.nanoTime() - this.time) > 170000000)){ //We check if some key has been pressed
+		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)  && ((System.nanoTime() - this.time) > 175000000)){ //We check if some key has been pressed
 			this.time = System.nanoTime();
 			  aux = ScreensKeyboard.keyPc();
 			  canDelete = true;

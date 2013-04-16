@@ -152,7 +152,7 @@ public class LogInScreen implements Screen {
 	private void completeMessagePc(){
 		char aux = 0;
 		boolean canDelete = false;
-		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)  && ((System.nanoTime() - this.time) > 160000000)){ //We check if some key has been pressed
+		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)  && ((System.nanoTime() - this.time) > 175000000)){ //We check if some key has been pressed
 			this.time = System.nanoTime();
 			  aux = ScreensKeyboard.keyPc();
 			  canDelete = true;

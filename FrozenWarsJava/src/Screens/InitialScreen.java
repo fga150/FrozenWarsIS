@@ -69,7 +69,7 @@ public class InitialScreen implements Screen{
 	    J3Click = new BoundingBox(new Vector3(185,144,0), new Vector3(211,168,0));
 	    J4Click = new BoundingBox(new Vector3(219,145,0), new Vector3(246,168,0));
 	    
-	   // developer = true;
+	    developer = true;
 	              
 	}
 

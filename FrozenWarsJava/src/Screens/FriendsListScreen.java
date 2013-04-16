@@ -217,9 +217,8 @@ public class FriendsListScreen implements Screen{
  
             batcher.end();
             
-            if ( this.infoPressed && ((System.nanoTime() - this.time) > 135000000)){
+            if ( this.infoPressed){
             	this.completeMessagePc();
-            	this.time = System.nanoTime();
             }
             
             ConfirmScreen.getInstance().createConfirmIfNeeded();
@@ -230,16 +229,21 @@ public class FriendsListScreen implements Screen{
 	private void completeMessagePc(){
 		char aux = 0;
 		
-		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)){
-			aux = ScreensKeyboard.keyPc();
+		boolean canDelete = false;		
+		
+		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)  && ((System.nanoTime() - this.time) > 175000000)){ //We check if some key has been pressed
+			this.time = System.nanoTime();
+			  aux = ScreensKeyboard.keyPc();
+			  canDelete = true;
 		}
 
         if (aux != 0){
 	        user += aux;	        
         }  
         
-        if (ScreensKeyboard.delete() && user.length()>0){
+        if (ScreensKeyboard.delete() && user.length()>0 && canDelete){
 	        user = (String)user.subSequence(0, user.length()-1);    
+        	canDelete =false;
         }
 	}
 	
