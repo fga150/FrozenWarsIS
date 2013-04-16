@@ -77,6 +77,11 @@ public class Assets {
 	    private static AtlasRegion HorizontalBarUP;
 	    private static AtlasRegion HorizontalBarDown;
 	    
+	    private static AtlasRegion bootUpgrade;
+	    private static AtlasRegion rangeUpgrade;
+	    private static AtlasRegion numHarpoonUpgrade;
+	    private static AtlasRegion throwUpgrade;
+	    
 	    //Componentes de la pantalla de creacion de partida multiplayer
 	    public static AtlasRegion backGrey;
 	    
@@ -275,6 +280,13 @@ public class Assets {
 			deadIconBlue = atlas.findRegion("deadIconBlue");
 			deadIconGreen = atlas.findRegion("deadIconGreen");
 			
+			//Improves
+			
+			bootUpgrade= atlas.findRegion("MejoraAndaRapido");
+		    rangeUpgrade= atlas.findRegion("MejoraMasArea");
+		    numHarpoonUpgrade= atlas.findRegion("MejoraMasArpon");
+		    throwUpgrade= atlas.findRegion("MejoraDesplArpon");
+			
 			directionPanel=(atlas.findRegion("MandoDirecciones"));
 			buttonHarpoon = atlas.findRegion("BotonLanza"); 
 			barrel = atlas.findRegion("barril");
@@ -345,7 +357,23 @@ public class Assets {
 		    
 	    }
 	    
-	    public static AtlasRegion getLineLifesPanel() {
+	    public static AtlasRegion getBootUpgrade() {
+			return bootUpgrade;
+		}
+
+		public static AtlasRegion getRangeUpgrade() {
+			return rangeUpgrade;
+		}
+
+		public static AtlasRegion getNumHarpoonUpgrade() {
+			return numHarpoonUpgrade;
+		}
+
+		public static AtlasRegion getThrowUpgrade() {
+			return throwUpgrade;
+		}
+
+		public static AtlasRegion getLineLifesPanel() {
 			return deadLine;
 		}
 

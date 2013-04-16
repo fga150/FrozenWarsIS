@@ -15,7 +15,8 @@ public class Desktop {
 		Settings settings = new Settings();
         settings.maxHeight=2048;
         settings.maxWidth=2048;
-        TexturePacker2.process(settings, "./image", "./data","pack");  
+        
+       // TexturePacker2.process(settings, "./image", "./data","pack");  
 		
 		/*
 		 * Para poder lanzar el juego tenemos que hacer

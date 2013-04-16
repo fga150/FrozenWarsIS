@@ -54,6 +54,7 @@ public class MatchManager {
 	public void movePlayerEvent(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition){
 		if (match.checkCorrectMove(dir,playerId)){ 
 			match.movePlayer(dir,playerId,xPlayerPosition,yPlayerPosition);
+			//match.checkUpgrade(dir,playerId);
 			gameScreen.movePlayer(dir,playerId,match.getMyPlayerPosition(playerId));
 		}
 	}                

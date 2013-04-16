@@ -269,6 +269,7 @@ public class Match {
 		map.putSunkenHarpoonAt((int)position.x,(int)position.y);
 		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
 		map.addAllFissures(harpoonManager.getActiveHarpoonList());
+		
 	}
 	
 	private void harpoonRangeDamage(Harpoon harpoon) {
@@ -594,5 +595,18 @@ public class Match {
 		this.numPlayers = i;
 		
 	}
+
+	public void checkUpgrade(Direction dir, int myPlayer) {
+		Vector3[] positions = players[myPlayer].getPositions();
+		if (map.existUpgrade(positions[0])) UpgradePlayer(positions[0]);
+		else if (map.existUpgrade(positions[1]))UpgradePlayer(positions[1]);
+	}
+
+	private void UpgradePlayer(Vector3 pos) {
+
+		
+	}
+
+
 
 }

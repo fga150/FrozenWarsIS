@@ -135,7 +135,15 @@ public class GameScreen implements Screen{
 					if (typeBasicMatrix.equals(TypeSquare.unbreakable)) texture = Assets.getIgloo();
 					else if (typeBasicMatrix.equals(TypeSquare.harpoon)) texture = Assets.getHarpoon();				
 					else if (typeBasicMatrix.equals(TypeSquare.breakable)) texture  = Assets.getBarrel();
-					batcher.draw(texture,i+8,j+1,1,1);
+					else if (typeBasicMatrix.equals(TypeSquare.bootUpgrade)) texture  = Assets.getBootUpgrade();
++					else if (typeBasicMatrix.equals(TypeSquare.rangeUpgrade)) texture  = Assets.getRangeUpgrade();
++					else if (typeBasicMatrix.equals(TypeSquare.numHarpoonUpgrade)) texture  = Assets.getNumHarpoonUpgrade();
++					else if (typeBasicMatrix.equals(TypeSquare.throwUpgrade)) texture  = Assets.getThrowUpgrade();
++					if (typeBasicMatrix.equals(TypeSquare.unbreakable)||(typeBasicMatrix.equals(TypeSquare.harpoon))||(typeBasicMatrix.equals(TypeSquare.breakable))){
++						batcher.draw(texture,i+8,j+1,1,1);
++					}else	batcher.draw(texture,i+8.20f,j+1.20f,0.65f,0.65f);
++				
+
 				}
 				if(!typeWaterMatrix.equals(WaterTypes.empty)){
 					if (typeWaterMatrix.equals(WaterTypes.water1SOpN)) texture  = Assets.getWater1SideOpenN();
