@@ -55,6 +55,8 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("ViewedConfFriend", ViewedConfFriend.class);
 		this.addRequestHandler("GetFriends",GetFriends.class);//handler fired when we want to know all friends, connected or not
 		this.addRequestHandler("AsignaMejoras", AsignImprovementsHandler.class);
+		this.addRequestHandler("ExitGame", ExitGame.class);
+		
 		nRooms=0;
 	}
 
