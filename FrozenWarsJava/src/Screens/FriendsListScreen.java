@@ -70,6 +70,7 @@ public class FriendsListScreen implements Screen{
     private Vector<ConnectedInfo> drawConnected;
     
 	private String user;	
+	private String userShown;	
 	private long time;
 	private boolean infoPressed;
     
@@ -92,7 +93,7 @@ public class FriendsListScreen implements Screen{
 	    drawConnected = new Vector<ConnectedInfo>();
 	    
 	    infoPressed = false;
-	    user = "";
+	    user = userShown = "";
 	    this.time = System.nanoTime();
 	    
 	    connectedScroll = 0;
@@ -212,8 +213,16 @@ public class FriendsListScreen implements Screen{
             drawDisconnected();
             
             batcher.draw(Assets.addFriend, 290, 90); 
+            
+            userShown = user;
+            if (font.getBounds(userShown).width > 260){
+				int j = 0;
+				while (font.getBounds(userShown.substring(j, userShown.length())).width > 260) j++;
+					userShown = userShown.substring(j, userShown.length());
+			}
 
-            font.drawWrapped(batcher, user, 320,140, 260);
+            
+            font.drawWrapped(batcher, userShown, 320,140, 260);
  
             batcher.end();
             

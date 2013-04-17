@@ -58,8 +58,14 @@ public class SignInScreen implements Screen {
 	private String email;
 	private String pass1;
 	private String pass2;
+	private String pass1S;
+	private String pass2S;	
+	
+	private String userShown;
+	private String emailShown;
 	private String pass1Shown;
-	private String pass2Shown;	
+	private String pass2Shown;
+	
 	private long time;
 
 
@@ -70,7 +76,7 @@ public class SignInScreen implements Screen {
 		this.time = System.nanoTime();
 		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);;
 		
-		this.user = this.email = this.pass1 = this.pass2 = this.pass1Shown = this.pass2Shown = "";
+		this.user = this.email = this.pass1 = this.pass2 = this.pass1Shown = this.pass2Shown = this.userShown = this.emailShown = this.pass1S = this.pass2S =  "";
 		guiCam = new OrthographicCamera(1024,630);
 		guiCam.position.set(512,315,0);
 
@@ -162,8 +168,37 @@ public class SignInScreen implements Screen {
             batcher.draw(Assets.signInWindow, 300, 100);
             
 
-            font.drawWrapped(batcher, user, 450, 500, 240);
-            font.drawWrapped(batcher, email, 450, 440, 240);
+            userShown = user;
+            emailShown = email;
+            pass1Shown = pass1S;
+            pass2Shown = pass2S;
+            
+            if (font.getBounds(userShown).width > 240){
+				int j = 0;
+				while (font.getBounds(userShown.substring(j, userShown.length())).width > 240) j++;
+					userShown = userShown.substring(j, userShown.length());
+			}
+            
+            if (font.getBounds(pass1Shown).width > 240){
+				int j = 0;
+				while (font.getBounds(pass1Shown.substring(j, pass1Shown.length())).width > 240) j++;
+					pass1Shown = pass1Shown.substring(j, pass1Shown.length());
+			}
+            if (font.getBounds(emailShown).width > 240){
+				int j = 0;
+				while (font.getBounds(emailShown.substring(j, emailShown.length())).width > 240) j++;
+					emailShown = emailShown.substring(j, emailShown.length());
+			}
+            
+            if (font.getBounds(pass2Shown).width > 240){
+				int j = 0;
+				while (font.getBounds(pass2Shown.substring(j, pass2Shown.length())).width > 240) j++;
+					pass2Shown = pass2Shown.substring(j, pass2Shown.length());
+			}
+            
+            
+            font.drawWrapped(batcher, userShown, 450, 500, 240);
+            font.drawWrapped(batcher, emailShown, 450, 440, 240);
             font.drawWrapped(batcher, pass1Shown, 450, 375, 240);
             font.drawWrapped(batcher, pass2Shown, 450, 310, 240);
             batcher.end();	
@@ -208,11 +243,11 @@ public class SignInScreen implements Screen {
 	        	System.out.println("email: " + email);
 	        } else if (this.infoPressed == 3){
 	        	pass1 += aux;
-	        	pass1Shown +='$';
+	        	pass1S +='$';
 	        	System.out.println("pass1: " + pass1);
 	        } else if (this.infoPressed == 4){
 	        	pass2 += aux;
-	        	pass2Shown +='$';
+	        	pass2S +='$';
 	        	System.out.println("pass2: " + pass2);
 	        }
         }
@@ -224,10 +259,10 @@ public class SignInScreen implements Screen {
 	        	email = (String)email.subSequence(0, email.length()-1);
 	        } else if (this.infoPressed == 3 && pass1.length()>0){
 	        	pass1 = (String)pass1.subSequence(0, pass1.length()-1);
-	        	pass1Shown = (String)pass1Shown.subSequence(0, pass1Shown.length()-1);
+	        	pass1S = (String)pass1Shown.subSequence(0, pass1Shown.length()-1);
 	        } else if (this.infoPressed == 4 && pass2.length()>0){
 	        	pass2 = (String)pass2.subSequence(0, pass2.length()-1);
-	        	pass2Shown = (String)pass2Shown.subSequence(0, pass2Shown.length()-1);
+	        	pass2S = (String)pass2S.subSequence(0, pass2S.length()-1);
 	        }
         	canDelete =false;
         }

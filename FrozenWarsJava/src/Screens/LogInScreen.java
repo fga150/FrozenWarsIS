@@ -37,8 +37,10 @@ public class LogInScreen implements Screen {
 	private BitmapFont font;
 	private int infoPressed;
 	private String user;
+	private String userShown;
 	private String pass;
 	private String passShown;	
+	private String passS;
 	private long time;
 
 	
@@ -48,7 +50,7 @@ public class LogInScreen implements Screen {
 		this.time = System.nanoTime();
 		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);;
 		
-		this.user = this.pass = this.passShown = "";
+		this.user = this.pass = this.passShown = this.passS  = "";
 	
 		guiCam = new OrthographicCamera(1024,630);
 		guiCam.position.set(512,315,0);
@@ -57,6 +59,7 @@ public class LogInScreen implements Screen {
 
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
+	    
 
 	    //Bounding boxes to check if some component's screen has been touched
 	    userClick = new BoundingBox(new Vector3(440,395,0), new Vector3(670,440,0));
@@ -121,8 +124,23 @@ public class LogInScreen implements Screen {
             batcher.enableBlending();
             batcher.begin();    
             batcher.draw(Assets.logInWindow, 300, 200);
-
-            font.drawWrapped(batcher, user, 450, 435, 240);
+            
+            userShown = user;
+            passShown = passS;
+            
+            if (font.getBounds(userShown).width > 240){
+				int j = 0;
+				while (font.getBounds(userShown.substring(j, userShown.length())).width > 240) j++;
+					userShown = userShown.substring(j, userShown.length());
+			}
+            
+            if (font.getBounds(passShown).width > 240){
+				int j = 0;
+				while (font.getBounds(passShown.substring(j, passShown.length())).width > 240) j++;
+					passShown = passShown.substring(j, passShown.length());
+			}
+            
+            font.drawWrapped(batcher, userShown, 450, 435, 240);
             font.drawWrapped(batcher, passShown, 450, 365, 240);
             batcher.end();	
  
@@ -163,7 +181,7 @@ public class LogInScreen implements Screen {
 	        	user += aux;    //We add the char pressed
 	        } else if (this.infoPressed == 2){  //If we are writing pass
 	        	pass += aux; //We add the char pressed
-	        	passShown +='$'; 
+	        	passS +='$'; 
 	        } 
         }  
         
@@ -172,7 +190,7 @@ public class LogInScreen implements Screen {
 	        	user = (String)user.subSequence(0, user.length()-1);
 	        } else if (this.infoPressed == 2 && pass.length()>0){
 	        	pass = (String)pass.subSequence(0, pass.length()-1);
-	        	passShown = (String)passShown.subSequence(0, passShown.length()-1);
+	        	passS = (String)passS.subSequence(0, passS.length()-1);
 	        }
         	canDelete =false;
         }
