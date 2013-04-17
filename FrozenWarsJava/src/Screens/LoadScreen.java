@@ -20,8 +20,8 @@ public class LoadScreen implements Screen{
 	public LoadScreen(){
 		this.game = LaunchFrozenWars.getGame();
 		this.showed = false;
-		guiCam = new OrthographicCamera(420,380);
-		guiCam.position.set(210,190,0);
+		guiCam = new OrthographicCamera(1024,630);
+		guiCam.position.set(512,315,0);
 		batcher = new SpriteBatch(); 
 		t0 =  System.currentTimeMillis(); //Hora de  creacion de la pantalla	
 	}	
@@ -59,7 +59,7 @@ public class LoadScreen implements Screen{
         }
  
         GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0
-        gl.glClearColor(0,1,0,1);
+        gl.glClearColor(0,0,0,0);
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
         guiCam.update();
@@ -69,15 +69,20 @@ public class LoadScreen implements Screen{
         batcher.disableBlending();
         //se elimina graficamente la transparencia ya que es un fondo
         batcher.begin();
-        
-        batcher.draw(Assets.backConf,0,0,420,380);
-        batcher.enableBlending();
-        batcher.draw(Assets.fwlogo,30,50,360,256);
+        //Conchi linea
+        batcher.draw(Assets.backConf,0,0);
+
         batcher.end();
-   
-       
+        
+        batcher.enableBlending();
+          batcher.begin();
+        batcher.draw(Assets.logo,50,50);
+        batcher.end();
+        
+     /*   batcher.enableBlending();
         //se elimina graficamente la transparencia ya que es un fondo
-         switch ((int)((t1-t0)/1000)){ //Se mira el tiempo restante para cerrar la ventana para mostrarlo por pantalla
+         switch (){ //Se mira el tiempo restante para cerrar la ventana para mostrarlo por pantalla
+         if ((int)((t1-t0)/1000))
          	case 1:
          		batcher.begin();
          		batcher.draw(Assets.cuatroSec,50,170);
@@ -98,7 +103,7 @@ public class LoadScreen implements Screen{
          		batcher.draw(Assets.unSec,50,170);
          		batcher.end();
          		break;
-          }
+          }*/
 	}
 
 	@Override
