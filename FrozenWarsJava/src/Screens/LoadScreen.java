@@ -69,10 +69,13 @@ public class LoadScreen implements Screen{
         batcher.disableBlending();
         //se elimina graficamente la transparencia ya que es un fondo
         batcher.begin();
+        
         batcher.draw(Assets.backConf,0,0,420,380);
+        batcher.enableBlending();
+        batcher.draw(Assets.fwlogo,30,50,360,256);
         batcher.end();
    
-        batcher.enableBlending();
+       
         //se elimina graficamente la transparencia ya que es un fondo
          switch ((int)((t1-t0)/1000)){ //Se mira el tiempo restante para cerrar la ventana para mostrarlo por pantalla
          	case 1:

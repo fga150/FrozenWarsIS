@@ -16,6 +16,7 @@ public class Assets {
 	    public static AtlasRegion initialBack;
 	    public static AtlasRegion secondBack;
 	    public static AtlasRegion backConf;
+	    public static AtlasRegion fwlogo;
 
 	    //Componentes de la pantalla de inicio
 	    public static AtlasRegion play;
@@ -199,7 +200,8 @@ private static AtlasRegion barrelWithFissure;
 	        //Fondos de pantalla
 	        initialBack = atlas.findRegion("initialBack");
 	        secondBack = atlas.findRegion("secondBack");
-	        backConf = atlas.findRegion("backConf");
+	        backConf = atlas.findRegion("gameScreenBackground");
+	        fwlogo = atlas.findRegion("frozenWars");
 
 	        //Componentes de la pantalla de inicio
 	        play = atlas.findRegion("Play");
