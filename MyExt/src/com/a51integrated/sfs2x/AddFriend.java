@@ -47,7 +47,7 @@ public class AddFriend extends BaseClientRequestHandler {
 					        		if(uFriend.getJoinedRooms().iterator().next().getName().equals("The Lobby")){//si esta conectado y no jugando el amigo le mando la peticion directamente
 					        		ISFSObject response2 = new SFSObject();
 					        		ISFSArray friends = new SFSArray();
-					        		friends.addUtfString(friend);
+					        		friends.addUtfString(player.getName());
 					        		response2.putSFSArray("Friends2", friends);
 					        		send("BeFriends?",response2,uFriend);
 					        		}
