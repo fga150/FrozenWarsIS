@@ -7,6 +7,7 @@ import Application.Assets;
 import Application.GameSettings;
 import Application.LaunchFrozenWars;
 import Application.MatchManager;
+import GameLogic.XMLMapReader;
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
@@ -287,7 +288,7 @@ public class MultiplayerScreen implements Screen{
 	    
 	    inQueue = false;
 	    empiezaPartida = false;
-	    externalPlayers = true;
+	    externalPlayers = false;
 	    gameMode = 0;
 	}
 
@@ -308,13 +309,11 @@ public class MultiplayerScreen implements Screen{
 	}
 
 	public void creaPartida(){
-		MatchManager manager = new MatchManager(sfsClient);
+		XMLMapReader xmlMapReader = new XMLMapReader("mapaPrueba.xml");
+		MatchManager manager = new MatchManager(sfsClient,xmlMapReader);
 		sfsClient.addManager(manager);
-		GameScreen gameScreen = new GameScreen(game,manager);
-		manager.setGameScreen(gameScreen);
-		game.setScreen(gameScreen);
 		if(sfsClient.getMyPlayerId()==1){     //PROBAR CUANDO DANI SUBA CAMBIOS DEL SERVER
-		       sfsClient.sendAsign();
+		       manager.sendAsign();
 		}
 	}
 	
@@ -353,7 +352,10 @@ public class MultiplayerScreen implements Screen{
       		}
 		}
 		
-		if (empiezaPartida) creaPartida();
+		if (empiezaPartida) {
+			creaPartida();
+			empiezaPartida=!empiezaPartida;
+		}
 		//crear solamente un batcher por pantalla y eliminarlo cuando no se use
 	
       		GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0
@@ -403,7 +405,7 @@ public class MultiplayerScreen implements Screen{
             batcher.end();
             
             ConfirmScreen.getInstance().createConfirmIfNeeded();
-
+            
 	}
 
 	private void drawInvited() {

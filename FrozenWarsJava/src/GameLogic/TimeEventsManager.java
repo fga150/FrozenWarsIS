@@ -26,6 +26,16 @@ public class TimeEventsManager{
 		this.activeHarpoonTimer = new HashMap<Harpoon,Timer>();
 	}
 	
+	
+	/**
+	 * <p>
+	 * This method <b>stops</b> the harpoon timers. He gets the harpoons
+	 * from the activeHarpoonTimer list, stop the timer and remove
+	 * it from the list. 
+	 * 
+	 * @param harpoon - The harpoon which wants to stop.
+	 */
+	
 	public void stopTimer(Harpoon harpoon) {
 		Timer timer = activeHarpoonTimer.get(harpoon);
 		timer.stop();

@@ -1,10 +1,7 @@
 package GameLogic;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.ArrayList;
 import java.util.Iterator;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector3;
 
 public class Map {
@@ -30,7 +27,6 @@ public class Map {
 	private int maxRangeUpgrades;
 	private int maxNumHarpoonsUpgrades;
 	private int maxThrowUpgrades;
-	private int barrels=20;
 	private int[] upgrades;//vector de barriles indicando que mejora hay en cada barril, -infinito si no hay mejora.
 	private int numBarrels;
 	
@@ -45,26 +41,15 @@ public class Map {
 	private WaterTypes[][] waterBoard;
 	private SunkenTypes[][] sunkenBoard;
 	
-	private static Map instance;
-	
-	//LoadFile
-	private String xmlMap;
-	
-	public static Map getInstance() {
-	  if (instance == null) instance = new Map(1,1,"");
-	  return instance;
-	}
-	
-	public Map(int lenght, int width, String mapPath) {
-		this.instance = this;
+	public Map(int lenght, int width, int[] upgrades,XMLMapReader xmlMapReader) {
 		this.length=lenght;
 		this.width=width;
+		this.numBarrels = 0;
+		this.upgrades = upgrades;
 		this.boardGame = new TypeSquare[lenght][width];
 		this.fissuresBoard = new FissuresTypes[lenght][width];
 		this.waterBoard = new WaterTypes[lenght][width];
 		this.sunkenBoard = new SunkenTypes[lenght][width];
-		this.upgrades = new int[barrels];
-		numBarrels=0;
 		//Initialize the 3 board with empty square.
 		//Only basic board has another type square unbreakeable square
 		for (int i=0;i<width;i++){
@@ -76,92 +61,9 @@ public class Map {
 				sunkenBoard[i][j] = SunkenTypes.empty;
 			}	
 		}
-		//load atributes of a XML map
-		loadMap(mapPath);
+		xmlMapReader.loadMap(this);
 	}
 
-	
-	//Methods of XML
-	
-	private String getData(String xml, String data){
-		int begin;
-		int end;
-		begin = xml.indexOf("<".concat(data).concat(">")) + data.length() + 2;
-		end = xml.indexOf("</".concat(data).concat(">"));
-		return xml.substring(begin, end);
-	}
-	
-	private void loadMap(String mapPath) {
-		loadXML(mapPath);
-		if (xmlMap.equals("")){
-			maxBootUpgrades = 8;
-			maxRangeUpgrades = 8;
-			maxNumHarpoonsUpgrades = 8;
-			maxThrowUpgrades = 8;
-		} else {
-			xmlMap = getData(xmlMap, "Map");
-			loadName();
-			loadUpgrades();
-			loadBoxes();
-		}	
-	}
-
-	private void loadXML(String mapPath) {
-		/*xmlMap = "<Map> <Name>mapaGuay</Name> <Upgrades> <Boots>5</Boots> <MaxRange>4</MaxRange> <NumLances>6</NumLances> <Throw>4</Throw> </Upgrades>" +
-				" <Boxes> <Breakable>4-5</Breakable> <Breakable>1-4</Breakable> <Breakable>2-4</Breakable> <Breakable>5-6</Breakable> " +
-				"<Breakable>4-6</Breakable> <Breakable>8-5</Breakable> </Boxes> </Map>";*/
-		try {
-			FileHandle handle = Gdx.files.internal("data/".concat(mapPath)); //Gdx.files.getFileHandle("data/".concat("mapaPrueba.xml"), FileType.External);
-			xmlMap = handle.readString();
-		} catch (Exception e) {
-			System.out.println("Error de carga de fichero");
-		}
-	}	
-	
-	private void loadName(){
-		mapName = getData(xmlMap, "Name");
-	}
-	
-	private void loadUpgrades(){
-		String xmlUpgrades = getData(xmlMap, "Upgrades");
-		
-		maxBootUpgrades = Integer.parseInt(getData(xmlUpgrades, "Boots"));
-		maxRangeUpgrades = Integer.parseInt(getData(xmlUpgrades, "MaxRange"));
-		maxNumHarpoonsUpgrades = Integer.parseInt(getData(xmlUpgrades, "NumLances"));
-		maxThrowUpgrades = Integer.parseInt(getData(xmlUpgrades, "Throw"));			
-	}
-	
-	private void loadBoxes(){
-		String xmlBoxes = getData(xmlMap, "Boxes");
-		String box;
-		
-		while (xmlBoxes.contains("Breakable")){
-			box = getData(xmlBoxes, "Breakable");
-			loadBox(box, TypeSquare.breakable);
-			xmlBoxes = xmlBoxes.replaceFirst("<Breakable>".concat(box).concat("</Breakable>"), "");
-		}	
-		while (xmlBoxes.contains("Unbreakable")){
-			box = getData(xmlBoxes, "Unbreakable");
-			loadBox(box, TypeSquare.unbreakable);
-			xmlBoxes = xmlBoxes.replaceFirst("<Unbreakable>".concat(box).concat("</Unbreakable>"), "");
-		}
-		while (xmlBoxes.contains("Empty")){
-			box = getData(xmlBoxes, "Empty");
-			loadBox(box, TypeSquare.empty);
-			xmlBoxes = xmlBoxes.replaceFirst("<Empty>".concat(box).concat("</Empty>"), "");
-		}
-	}
-	
-	private void loadBox(String box, TypeSquare type){
-		int dash = box.indexOf("-");
-		int x = Integer.parseInt(box.substring(0, dash));
-		int y = Integer.parseInt(box.substring(dash+1, box.length()));
-		if (x < width && y < length && x >= 0 && y >=0) boardGame[x][y] = type;
-	}
-	
-
-	
-	
 	//METHODS OF PUT FISSURE
 	
 	public void putHarpoonAt(int xHarpoonPosition, int yHarpoonPosition) {
@@ -185,6 +87,7 @@ public class Map {
 	 * @param yHarpoonPosition
 	 * @param fissureRange
 	 */
+	
 	public void putfissureAt(int xHarpoonPosition, int yHarpoonPosition, int fissureRange) {
 		//The fissure center is in the same position that the harpoon
 		if(fissuresBoard[xHarpoonPosition][yHarpoonPosition]!=FissuresTypes.fissureC)
@@ -335,10 +238,9 @@ public class Map {
 				&& boardGame[xHarpoonPosition][yHarpoonPosition+i] == TypeSquare.breakable)){
 
 				fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.empty;
-				int typeImprovement=upgrades[numBarrels];
+				int typeImprovement = upgrades[numBarrels];
 				numBarrels++;
 				if (typeImprovement==0){
-
 					boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.bootUpgrade;
 				}else if (typeImprovement==1){
 					boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.rangeUpgrade;
@@ -591,8 +493,12 @@ public class Map {
 		return boardGame[x][y];
 	}
 	
-	public void setBasicMatrixSquare(int x, int y) {
+	public void setEmptyBasicMatrixSquare(int x, int y) {
 		boardGame[x][y] = TypeSquare.empty;
+	}
+	
+	public void setBasicMatrixSquare(int x, int y,TypeSquare type) {
+		if (x < width && y < length && x >= 0 && y >=0) boardGame[x][y] = type;
 	}
 	
 	public FissuresTypes getFissureMatrixSquare(int x,int y) {
@@ -647,28 +553,24 @@ public class Map {
 	public void setMapName(String mapName) {
 		this.mapName = mapName;
 	}
-	
-	  public void setBarrels(int barrels) {
-		    this.barrels = barrels;
-		  }
 		
-		  public int getBarrels() {
-		    return barrels;
-		  }
+	public void setPositionUpgrades(int i,int a) {
+	    this.upgrades[i] = a;
+	}
 		
-		  public void setPositionUpgrades(int i,int a) {
-		    this.upgrades[i] = a;
-		  }
-		
-		  public int getPositionUpgrades(int i) {
-		    return this.upgrades[i];
-		  }
+	public int getPositionUpgrades(int i) {
+	    return this.upgrades[i];
+	}
 		  
-		  public int[] getUpgrades() {
-		   return upgrades;
-		}
+	public int[] getUpgrades() {
+	   return upgrades;
+	}
+	
+	public void setEmpty(int x,int y) {
+		boardGame[x][y]=TypeSquare.empty;
+	}
 
-		public boolean existUpgrade(Vector3 pos) {
+	public boolean existUpgrade(Vector3 pos) {
 		return boardGame[(int) pos.x][(int) pos.y]==TypeSquare.bootUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.rangeUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.numHarpoonUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.throwUpgrade;
-		}
+	}
 }

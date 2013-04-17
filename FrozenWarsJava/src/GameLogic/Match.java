@@ -16,6 +16,7 @@ public class Match {
 	private final float playerWidth = 1;
 	private final float playerLength = 1;
 	private final float minimalMove = 0.25f;
+	private final int maxSize = 11;
 	
 	private Map map;
 	private TimeEventsManager timeEventsManager;
@@ -26,10 +27,11 @@ public class Match {
 	private long matchTime;
 	private Vector3 coord;
 
-	/*** ***/
+	/**
+	 * @param upgrades * ***/
 	
-	public Match(){
-		this.map = new Map(11,11,"mapaPrueba.xml");
+	public Match(int[] upgrades,XMLMapReader xmlMapReader){
+		this.map = new Map(maxSize,maxSize,upgrades,xmlMapReader);
 		this.harpoonManager = new HarpoonManager(numPlayers);
 		this.players = new Player[numPlayers];
 		this.timeEventsManager = new TimeEventsManager(this);
@@ -237,6 +239,7 @@ public class Match {
 		if (!players[playerId].isInvincible() && isSunkenPenguin(playerId)){
 			loseLife(playerId);
 		}
+		checkUpgrade(dir,playerId);
 	}
 	
 	public boolean isSunkenPenguin(int myPlayerId){
@@ -484,6 +487,24 @@ public class Match {
 		return map.isEmptySquare(x,y);
 	}
 	
+	public void checkUpgrade(Direction dir, int myPlayer) {
+		Vector3[] positions = players[myPlayer].getPositions();
+		if (positions[0].equals(positions[1]) && map.existUpgrade(positions[0])) {
+			players[myPlayer].upgradePlayer(map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y));
+			map.setEmpty((int)positions[0].x,(int)positions[0].y);
+		}
+		else {
+			if (map.existUpgrade(positions[0])){
+					players[myPlayer].upgradePlayer(map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y));
+					map.setEmpty((int)positions[0].x,(int)positions[0].y);
+			}
+			else if (map.existUpgrade(positions[1])){
+				players[myPlayer].upgradePlayer(map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y));
+				map.setEmpty((int)positions[1].x,(int)positions[1].y);
+			}
+		}
+	}
+	
 	//Getters and Setters
 
 	public Map getMap() {
@@ -595,18 +616,5 @@ public class Match {
 		this.numPlayers = i;
 		
 	}
-
-	public void checkUpgrade(Direction dir, int myPlayer) {
-		Vector3[] positions = players[myPlayer].getPositions();
-		if (map.existUpgrade(positions[0])) UpgradePlayer(positions[0]);
-		else if (map.existUpgrade(positions[1]))UpgradePlayer(positions[1]);
-	}
-
-	private void UpgradePlayer(Vector3 pos) {
-
-		
-	}
-
-
 
 }

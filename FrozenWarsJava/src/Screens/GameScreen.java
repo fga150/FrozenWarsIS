@@ -8,7 +8,6 @@ import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -23,8 +22,8 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 
 
 public class GameScreen implements Screen{
-	private Game game;
 	private OrthographicCamera guiCam;
+	private boolean enable;
 	private OrthographicCamera textCam;
 	private SpriteBatch batcher;
 	private Vector3 touchPoint;
@@ -44,16 +43,16 @@ public class GameScreen implements Screen{
 	private int numPlayer;
 
 	
-	public GameScreen(Game game, MatchManager manager){
-		this.game=game;
-		this.name = manager.getMyNamePlayer();
-		numPlayer=manager.getMyIdPlayer();
-		this.manager = manager;
-		font = new BitmapFont(Gdx.files.internal("data/simpleFont.fnt"), Gdx.files.internal("data/simpleFont.png"), false);
+	public GameScreen(MatchManager manag){
+		enable = false;
+		name = manager.getMyNamePlayer();
+		numPlayer = manager.getMyIdPlayer();
+		manager = manag;
+		font =new BitmapFont(Gdx.files.internal("data/simpleFont.fnt"), Gdx.files.internal("data/simpleFont.png"), false);
 		font2 =new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);
 		font.setColor(Color.BLACK);
 		guiCam = new OrthographicCamera(21,13);
-		textCam=new OrthographicCamera(21*49,13*49);
+		textCam = new OrthographicCamera(21*49,13*49);
 		textCam.position.set((21*49)/2,(13*49)/2,0);
 		guiCam.position.set(21f/2,13f/2,0);
 		batcher = new SpriteBatch();
@@ -63,17 +62,18 @@ public class GameScreen implements Screen{
 		fiBounds= new BoundingBox(new Vector3(0.25f,2.5f,0), new Vector3(2.75f,4.5f,0));
 		farBounds= new BoundingBox(new Vector3(2.75f,4.6f,0), new Vector3(4.75f,7,0));
 		fabBounds= new BoundingBox(new Vector3(2.75f,0,0), new Vector3(4.75f,2.4f,0));
-
 		harpoonBounds= new BoundingBox(new Vector3(19,0,0), new Vector3(21,4,0));
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		//--------------------------------------------------------------------
-		penguinAnimations = new PenguinAnimation[4];
-		penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/pClarosRojo.png"),manager.getLookAt(0));
-		penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"),manager.getLookAt(1));
-		penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pClarosAmarillo.png"),manager.getLookAt(2));
-		penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pClarosAzul.png"),manager.getLookAt(3));
         stateTime = 0f;     
+        loadAnimations();
+	}
+	
+	public void loadAnimations(){
+		penguinAnimations = new PenguinAnimation[4];
+		penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/pClarosRojo.png"));
+		penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"));
+		penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pClarosAmarillo.png"));
+		penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pClarosAzul.png"));
 	}
 	
 	@Override
@@ -93,7 +93,7 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
-		Vector3 position;
+	if(enable){
 		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		stateTime += Gdx.graphics.getDeltaTime();
@@ -136,13 +136,13 @@ public class GameScreen implements Screen{
 					else if (typeBasicMatrix.equals(TypeSquare.harpoon)) texture = Assets.getHarpoon();				
 					else if (typeBasicMatrix.equals(TypeSquare.breakable)) texture  = Assets.getBarrel();
 					else if (typeBasicMatrix.equals(TypeSquare.bootUpgrade)) texture  = Assets.getBootUpgrade();
-+					else if (typeBasicMatrix.equals(TypeSquare.rangeUpgrade)) texture  = Assets.getRangeUpgrade();
-+					else if (typeBasicMatrix.equals(TypeSquare.numHarpoonUpgrade)) texture  = Assets.getNumHarpoonUpgrade();
-+					else if (typeBasicMatrix.equals(TypeSquare.throwUpgrade)) texture  = Assets.getThrowUpgrade();
-+					if (typeBasicMatrix.equals(TypeSquare.unbreakable)||(typeBasicMatrix.equals(TypeSquare.harpoon))||(typeBasicMatrix.equals(TypeSquare.breakable))){
-+						batcher.draw(texture,i+8,j+1,1,1);
-+					}else	batcher.draw(texture,i+8.20f,j+1.20f,0.65f,0.65f);
-+				
+					else if (typeBasicMatrix.equals(TypeSquare.rangeUpgrade)) texture  = Assets.getRangeUpgrade();
+					else if (typeBasicMatrix.equals(TypeSquare.numHarpoonUpgrade)) texture  = Assets.getNumHarpoonUpgrade();
+					else if (typeBasicMatrix.equals(TypeSquare.throwUpgrade)) texture  = Assets.getThrowUpgrade();
+					if (typeBasicMatrix.equals(TypeSquare.unbreakable)||(typeBasicMatrix.equals(TypeSquare.harpoon))||(typeBasicMatrix.equals(TypeSquare.breakable))){
+						batcher.draw(texture,i+8,j+1,1,1);
+					}else	batcher.draw(texture,i+8.20f,j+1.20f,0.65f,0.65f);
+				
 
 				}
 				if(!typeWaterMatrix.equals(WaterTypes.empty)){
@@ -176,7 +176,7 @@ public class GameScreen implements Screen{
 		
 		for (int i=0;i<manager.getNumPlayers();i++){
 			if(manager.canPlay(i)){
-				position = manager.getPlayerPosition(i);
+				Vector3 position = manager.getPlayerPosition(i);
 				batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
 			}
 		}
@@ -227,6 +227,7 @@ public class GameScreen implements Screen{
 				}
 			}
 		}
+	}
 	}
 	
 	private void paintPlayerName(){
@@ -366,13 +367,19 @@ public class GameScreen implements Screen{
         else if (dir.equals(Direction.down)) currentFrame = penguinAnimations[playerId].getwalkAnimationD().getKeyFrame(stateTime, true);
         penguinAnimations[playerId].setCurrentFrame(currentFrame);     
 	}
+	
+	public void enable() {
+		this.enable = true;
+		reloadAnimations();
+	}
 
-	public Game getGame() {
-		return game;
+	private void reloadAnimations() {
+		for (int i=0;i<4;i++){
+			penguinAnimations[i].setCurrentFrame(manager.getLookAt(i)); 
+		}
 	}
-	public void setGame(Game game) {
-		this.game = game;
-	}
+	
+
 	public MatchManager getManager() {
 		return manager;
 	}
@@ -387,11 +394,13 @@ public class GameScreen implements Screen{
 	}
 
 	@Override
-	public void resume() {		
+	public void resume(){
+		
 	}
 
 	@Override
-	public void show() {		
+	public void show(){
+		
 	}
 	
 	public PenguinAnimation[] getPreguinAnimations() {
@@ -412,6 +421,5 @@ public class GameScreen implements Screen{
 	public void setFont(BitmapFont font) {
 		this.font = font;
 	}
-
 
 }

@@ -6,6 +6,7 @@ import GameLogic.Map.TypeSquare;
 import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
 import GameLogic.Match;
+import GameLogic.XMLMapReader;
 import Screens.GameScreen;
 import Server.SmartFoxServer;
 
@@ -19,13 +20,14 @@ public class MatchManager {
 	private GameScreen gameScreen;
 	private int myPlayerId;
 	private long lastMessage;
+	private XMLMapReader xmlMapReader;
 	private static String[] usersNames;
 	
-	public MatchManager(SmartFoxServer sfs) {
+	public MatchManager(SmartFoxServer sfs, XMLMapReader xmlMapReader) {
 		this.sfsClient=sfs;
-		this.match = new Match();
 		this.myPlayerId = sfsClient.getMyPlayerId()-1;
-		this.lastMessage = System.currentTimeMillis();
+		this.xmlMapReader = xmlMapReader;
+		this.gameScreen = new GameScreen(this);
 	}
 	
 	public void movePlayer(Direction dir){
@@ -54,7 +56,6 @@ public class MatchManager {
 	public void movePlayerEvent(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition){
 		if (match.checkCorrectMove(dir,playerId)){ 
 			match.movePlayer(dir,playerId,xPlayerPosition,yPlayerPosition);
-			//match.checkUpgrade(dir,playerId);
 			gameScreen.movePlayer(dir,playerId,match.getMyPlayerPosition(playerId));
 		}
 	}                
@@ -74,6 +75,17 @@ public class MatchManager {
 
 	}
 	
+	public void startGame(int[] upgrades) {
+		match = new Match(upgrades,xmlMapReader);
+		gameScreen.enable();
+		LaunchFrozenWars.getGame().setScreen(gameScreen);
+	}
+	
+	public void sendAsign() {
+		int numBreakable = xmlMapReader.getNumBreakable();
+		int[] upgrades = xmlMapReader.getUpgrades();
+		sfsClient.sendAsign(numBreakable,upgrades[0],upgrades[1],upgrades[2],upgrades[3]);
+	}
 	
 	// Getters and Setters
 	
@@ -170,7 +182,7 @@ public class MatchManager {
 	}
 
 	public void setNumPlayers(int i) {
-		match.setNumPlayers(i);
-		
+		match.setNumPlayers(i);		
 	}
+
 }

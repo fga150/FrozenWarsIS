@@ -4,14 +4,11 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.Map;
 import java.util.Vector;
-
-
 import Application.MatchManager;
 import Application.MatchManager.Direction;
 import Screens.ConfirmScreen;
 import Screens.InviteScreen;
 import Screens.MultiplayerScreen;
-
 import com.badlogic.gdx.math.Vector3;
 import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
@@ -55,7 +52,7 @@ public class SmartFoxServer implements IEventListener {
 		myId = -999;
 		String ip = getServerIP();
 		sfsClient = new SmartFox(false);
-		sfsClient.connect(ip,9933);
+		sfsClient.connect("127.0.0.1",9933);
 		addEventListeners();
 	}
 	
@@ -169,12 +166,10 @@ public class SmartFoxServer implements IEventListener {
 		ISFSObject params = new SFSObject();
 		params.putUtfString("message", "M"+Integer.toString(dirCod)+Integer.toString(myPlayerId)+"X"+ position.x +"Y" + position.y);
 		ExtensionRequest request = new ExtensionRequest("GameMessage",params);
-		sfsClient.send(request);
-		//sfsClient.send(new PublicMessageRequest("M"+Integer.toString(dirCod)+Integer.toString(myPlayerId)+"X"+ position.x +"Y" + position.y));	
+		sfsClient.send(request);	
 	}
 	
 	public void sendLance(int x,int y) {
-		//sfsClient.send(new PublicMessageRequest("H"+"X"+x+"Y"+y));
 		ISFSObject params = new SFSObject();
 		params.putUtfString("message", "H"+"X"+x+"Y"+y);
 		ExtensionRequest request = new ExtensionRequest("GameMessage",params);
@@ -365,8 +360,7 @@ public class SmartFoxServer implements IEventListener {
 		params.putUtfString("Inviter", name);
 		ExtensionRequest request = new ExtensionRequest("ExitGroup",params);
 		sfsClient.send(request);
-		 MultiplayerScreen.getInstance().setDefault();
-		
+		MultiplayerScreen.getInstance().setDefault();	
 	}
 	
 	public void gameMessage(ISFSObject response){
@@ -436,30 +430,27 @@ public class SmartFoxServer implements IEventListener {
 		manager.putHarpoonEvent(x,y,range,time+delayTime);
 	}
 
-	public void  sendAsign(){
+	public void  sendAsign(int numBarriles,int maxBootUpgrades,int maxRangeUpgrades,int maxNumHarpoonsUpgrades, int maxThrowUpgrades){
 	     SFSObject params = new SFSObject();
 	     ISFSArray array = new SFSArray();
-	     int numBarriles=GameLogic.Map.getInstance().getBarrels();
-	     int maxBootUpgrades=GameLogic.Map.getInstance().getMaxBootUpgrades();
-	     int maxRangeUpgrades=GameLogic.Map.getInstance().getMaxRangeUpgrades();
-	     int maxNumHarpoonsUpgrades=GameLogic.Map.getInstance().getMaxNumHarpoonsUpgrades();
-	     int maxThrowUpgrades=GameLogic.Map.getInstance().getMaxThrowUpgrades();  
 	     array.addInt(maxBootUpgrades);
 	     array.addInt(maxRangeUpgrades);
 	     array.addInt(maxNumHarpoonsUpgrades);
 	     array.addInt(maxThrowUpgrades);      
 	     params.putInt("numBarriles", numBarriles);
 	     params.putSFSArray("arraymejoras", array);
-	     ExtensionRequest request2 = new ExtensionRequest("AsignaMejoras",params);
-		  sfsClient.send(request2);
+	     ExtensionRequest request = new ExtensionRequest("AsignaMejoras",params);
+		 sfsClient.send(request);
 	}
 	
 	public void asignaMejoras(ISFSObject params) {
 		 int numBarriles=params.getInt("nBarriles");
+		 System.out.println("llego 2");
+		 int upgrades[] = new int[numBarriles];
 		 for(int i=0;i<numBarriles;i++){
-			 GameLogic.Map.getInstance().setPositionUpgrades(i,(params.getSFSArray("arrayBarriles").getInt(i)));
-			 System.out.println(GameLogic.Map.getInstance().getPositionUpgrades(i));
+			 upgrades[i]= (params.getSFSArray("arrayBarriles").getInt(i));
 		 }
+		 manager.startGame(upgrades);
 	}
 	
 	private void NamesGame(ISFSObject response) {
@@ -473,9 +464,8 @@ public class SmartFoxServer implements IEventListener {
 			Application.MatchManager.setUserName(usersName);	
 	}
 	
-	public void dispatch(BaseEvent event) throws SFSException {
+	public void dispatch(BaseEvent event) throws SFSException{
+		
 	}
-	
-	
 	
 }

@@ -1,6 +1,8 @@
 package GameLogic;
 
 import Application.MatchManager.Direction;
+import GameLogic.Map.TypeSquare;
+
 import com.badlogic.gdx.math.Vector3;
 
 /** 
@@ -228,5 +230,9 @@ public class Player {
 
 	public boolean canPlay() {
 		return canPlay;
+	}
+
+	public void upgradePlayer(TypeSquare basicMatrixSquare) {
+				
 	}
 }
