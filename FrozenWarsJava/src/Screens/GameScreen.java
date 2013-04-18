@@ -22,6 +22,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 
 
 public class GameScreen implements Screen{
+	
 	private OrthographicCamera guiCam;
 	private boolean enable;
 	private OrthographicCamera textCam;
@@ -180,6 +181,7 @@ public class GameScreen implements Screen{
 		}
 		
 		batcher.draw(Assets.getLifesPanel(),0.5f,6.75f,6,5);
+		paintUpgrades();
 		paintLifes();
 		paintLinesPanelLives();
 		paintPlayerStatus();
@@ -227,6 +229,54 @@ public class GameScreen implements Screen{
 	}
 	}
 	
+	private void paintUpgrades() {
+		int speedUpgrade = manager.getSpeed(numPlayer);
+		int harpoonUpgrade = manager.getHarpoonsAllow(numPlayer);
+		int rangeUpgrade = manager.getRange(numPlayer);
+		if (speedUpgrade == 1) {
+			batcher.setColor(new Color(50,50,50,0.25f));
+			batcher.draw(Assets.getBootUpgrade(),20,11.5f,1,1);
+			batcher.setColor(Color.WHITE);
+		}
+		else{
+			batcher.draw(Assets.getBootUpgrade(),20,11.5f,1,1);
+			if (speedUpgrade==5)printText("MAX",0.75f,Color.RED,20.15f,11.75f);
+			else printText(Integer.toString(speedUpgrade-1),1,Color.BLACK,20.6f,11.75f);
+		}
+		if (harpoonUpgrade == 1){
+			batcher.setColor(new Color(50,50,50,0.25f));
+			batcher.draw(Assets.getNumHarpoonUpgrade(),20,9.5f,1,1);
+			batcher.setColor(Color.WHITE);
+		}
+		else {
+			batcher.draw(Assets.getNumHarpoonUpgrade(),20,9.5f,1,1);
+			if (harpoonUpgrade==5)printText("MAX",0.75f,Color.RED,20.15f,9.75f);
+			else printText(Integer.toString(harpoonUpgrade-1),1,Color.BLACK,20.6f,9.75f);
+		}
+		if (rangeUpgrade == 1) {
+			batcher.setColor(new Color(50,50,50,0.25f));
+			batcher.draw(Assets.getRangeUpgrade(),20,7.5f,1,1);
+			batcher.setColor(Color.WHITE);
+		}
+		else{
+			batcher.draw(Assets.getRangeUpgrade(),20,7.5f,1,1);
+			if (rangeUpgrade==5)printText("MAX",0.75f,Color.RED,20.15f,7.75f);
+			else printText(Integer.toString(rangeUpgrade-1),1,Color.BLACK,20.6f,7.75f);
+		}
+
+	}
+	
+	private void printText(String text,float scale,Color color,float posx,float posy){
+		batcher.setProjectionMatrix(textCam.combined);
+		Color aux = font.getColor();
+		font.setColor(color);
+		font.setScale(scale);
+		font.draw(batcher,text, posx*49 ,posy*49);
+		batcher.setProjectionMatrix(guiCam.combined);
+		font.setColor(aux);
+		font.setScale(1);
+	}
+
 	private void paintPlayerName(){
 		
 		//Paint player status You are dead/you are RED/BLUE/YELLOW/GREEN

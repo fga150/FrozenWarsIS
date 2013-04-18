@@ -194,4 +194,16 @@ public class MatchManager {
 		match.setNumPlayers(i);		
 	}
 
+	public int getSpeed(int numPlayer) {
+		return match.getPlayerSpeed(numPlayer);
+	}
+
+	public int getHarpoonsAllow(int numPlayer) {
+		return match.getPlayerHarpoonAllow(numPlayer);
+	}
+
+	public int getRange(int numPlayer) {
+		return match.getPlayerRange(numPlayer);
+	}
+
 }

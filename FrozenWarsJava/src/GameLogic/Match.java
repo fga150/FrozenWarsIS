@@ -625,4 +625,12 @@ public class Match {
 		return players[playerId].getSpeed();
 	}
 
+	public int getPlayerHarpoonAllow(int playerId) {
+		return players[playerId].getMaxHarpoonsAllow();
+	}
+
+	public int getPlayerRange(int playerId) {
+		return players[playerId].getRange();
+	}
+
 }

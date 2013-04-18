@@ -69,8 +69,8 @@ public class Player {
 	public void initialitePlayer(){
 		this.lives = 3;
 		this.speed = 1;
-		this.range = 2;
-		this.maxHarpoonsAllow = 3;
+		this.range = 1;
+		this.maxHarpoonsAllow = 1;
 		this.canPlay=true;
 		this.throwSkill=false;
 		this.specialMove=false;
