@@ -1,7 +1,5 @@
 package Application;
 
-import java.io.IOException;
-
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

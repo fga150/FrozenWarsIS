@@ -1,16 +1,5 @@
 package Screens;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import javax.swing.JTextArea;
-
-import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
-
 import Application.Assets;
 import Application.LaunchFrozenWars;
 
@@ -18,9 +7,7 @@ import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -28,9 +15,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-
-/*TODO: Poner singleton*/
 
 public class SignInScreen implements Screen {
 	
@@ -71,6 +55,7 @@ public class SignInScreen implements Screen {
 
 
 	public SignInScreen() {
+		instance = this;
 		this.game = LaunchFrozenWars.getGame();
 		this.infoPressed = 0;
 		this.time = System.nanoTime();
@@ -207,6 +192,7 @@ public class SignInScreen implements Screen {
             	this.completeMessagePc();
             }
             
+            MultiplayerScreen.getInstance().changeToThisIfNeeded();
             ConfirmScreen.getInstance().createConfirmIfNeeded();
             AcceptScreen.getInstance().createAcceptIfNeeded();
 	}

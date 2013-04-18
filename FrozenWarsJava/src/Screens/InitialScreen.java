@@ -39,7 +39,7 @@ public class InitialScreen implements Screen{
 	private BoundingBox J3Click;
 	private BoundingBox J4Click;
 	private Game game;
-	private boolean developer;
+	private boolean developer;	
 	
 	public InitialScreen() {
 		instance = this;
@@ -177,11 +177,13 @@ public class InitialScreen implements Screen{
 	        
             batcher.end();
             
+            MultiplayerScreen.getInstance().changeToThisIfNeeded();
             ConfirmScreen.getInstance().createConfirmIfNeeded();
             AcceptScreen.getInstance().createAcceptIfNeeded();
 
 	}
 
+	
 	@Override
 	public void resize(int arg0, int arg1) {
 		// TODO Auto-generated method stub
@@ -199,4 +201,5 @@ public class InitialScreen implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
+
 }

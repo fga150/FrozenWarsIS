@@ -3,7 +3,6 @@ package Screens;
 import java.util.Vector;
 
 import Application.Assets;
-import Application.GameSettings;
 import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Server.SmartFoxServer;
@@ -59,10 +58,10 @@ public class MultiplayerScreen implements Screen{
     private  BoundingBox backButtonClick;
     private  BoundingBox leaveGroupButtonClick;
     
-    private  BoundingBox mapLeftArrowClick;
+    /*private  BoundingBox mapLeftArrowClick;
     private  BoundingBox mapRightArrowClick;
     private  BoundingBox modeLeftArrowClick;
-    private  BoundingBox modeRightArrowClick;
+    private  BoundingBox modeRightArrowClick;*/
 	
     private BoundingBox scrollDownPlayersClick;
     private BoundingBox scrollUpPlayersClick;
@@ -85,6 +84,8 @@ public class MultiplayerScreen implements Screen{
     private Vector<String> waitingPlayers;
     
     private Vector<InvitedInfo> drawPlayers;
+    
+    private boolean changeToThis;
     
     public void setAcceptedPlayers(Vector<String> acceptedPlayers) {
 		this.acceptedPlayers = acceptedPlayers;
@@ -232,6 +233,18 @@ public class MultiplayerScreen implements Screen{
 		return inQueue;
 	}
 	
+
+	public void setChangeToThis(boolean b) {
+		changeToThis = b;
+	}
+	
+	public void changeToThisIfNeeded(){
+		if (changeToThis) {
+			game.setScreen(this);
+			setChangeToThis(false);
+		}
+	}
+	
     public MultiplayerScreen() {
 		instance = this;
     	this.game = LaunchFrozenWars.getGame();
@@ -259,10 +272,10 @@ public class MultiplayerScreen implements Screen{
 	    backButtonClick = new BoundingBox(new Vector3(320,20,0), new Vector3(560,60,0));
 	    leaveGroupButtonClick = new BoundingBox(new Vector3(650,20,0), new Vector3(890,64,0));
 	    
-	    mapLeftArrowClick = new BoundingBox(new Vector3(50,200,0), new Vector3(100,290,0));
+	    /*mapLeftArrowClick = new BoundingBox(new Vector3(50,200,0), new Vector3(100,290,0));
 	    mapRightArrowClick = new BoundingBox(new Vector3(450,200,0), new Vector3(510,280,0));
 	    modeLeftArrowClick = new BoundingBox(new Vector3(80,450,0), new Vector3(120,500,0));
-	    modeRightArrowClick = new BoundingBox(new Vector3(425,450,0), new Vector3(460,500,0));
+	    modeRightArrowClick = new BoundingBox(new Vector3(425,450,0), new Vector3(460,500,0));*/
 	    
 	    scrollDownPlayersClick = new BoundingBox(new Vector3(900,190,0), new Vector3(950,225,0));
 	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,400,0));
@@ -335,7 +348,7 @@ public class MultiplayerScreen implements Screen{
       		} else if (leaveGroupButtonClick.contains(touchPoint) && !inQueue && (acceptedPlayers.size() > 1 || waitingPlayers.size() > 0)){
       			sfsClient.groupExitRequest(gameAdmin);
       		} else if (friendsListClick.contains(touchPoint)){
-      			this.game.setScreen(FriendsListScreen.getInstance());
+      			this.game.setScreen(new FriendsListScreen());
       		}
 		}
 		
@@ -443,8 +456,6 @@ public class MultiplayerScreen implements Screen{
 		gameAdmin = myName;
 	}
 	
-
-	
 	
 	@Override
 	public void resize(int arg0, int arg1) {
@@ -460,6 +471,7 @@ public class MultiplayerScreen implements Screen{
 	public void show() {
 		
 	}
+
 
 
 

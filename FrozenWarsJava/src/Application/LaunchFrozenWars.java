@@ -1,6 +1,8 @@
 	package Application;
 
+import Screens.InitialScreen;
 import Screens.LoadScreen;
+import Screens.MultiplayerScreen;
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
@@ -24,9 +26,14 @@ public class LaunchFrozenWars extends Game {
 	}
 	
 	public void dispose(){
-		if (SmartFoxServer.isInstanced()) SmartFoxServer.getInstance().dispose();
+		if (SmartFoxServer.isInstanced()) {
+			SmartFoxServer.getInstance().dispose();
+			MultiplayerScreen.getInstance().dispose();
+		}
+		InitialScreen.getInstance().dispose();
 		GameSettings.getInstance().saveSettings();
 		instance = null;
+		System.exit(0);
 	}
 
 }

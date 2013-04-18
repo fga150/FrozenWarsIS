@@ -107,7 +107,7 @@ public class ConfirmScreen implements Screen{
       				game.setScreen(new InviteScreen());
       			} else if (screenMode.equals("BeFriends?")){
       				SmartFoxServer.getInstance().sendBeFriends("yes", user);
-      				//TODO friendsScreen.updateFriends();
+      				FriendsListScreen.getInstance().updateFriends();
       				game.setScreen(ancestor);
       			}
       			

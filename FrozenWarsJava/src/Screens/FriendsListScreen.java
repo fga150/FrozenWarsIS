@@ -79,7 +79,8 @@ public class FriendsListScreen implements Screen{
     public FriendsListScreen() {
 		instance = this;
     	this.game = LaunchFrozenWars.getGame();
-
+	    sfsClient = SmartFoxServer.getInstance();
+    	
 		guiCam = new OrthographicCamera(1024,630);
 		guiCam.position.set(512,315,0);
 		
@@ -92,14 +93,14 @@ public class FriendsListScreen implements Screen{
 	    
 	    drawConnected = new Vector<ConnectedInfo>();
 	    
+	    updateFriends();
+	    
 	    infoPressed = false;
 	    user = userShown = "";
 	    this.time = System.nanoTime();
 	    
 	    connectedScroll = 0;
 	    disconnectedScroll = 0;
-	    
-	    sfsClient = SmartFoxServer.getInstance();
 
 	    backButtonClick = new BoundingBox(new Vector3(320,20,0), new Vector3(560,60,0));
 	    addFriendClick = new BoundingBox(new Vector3(615,110,0), new Vector3(660,145,0));
@@ -110,31 +111,6 @@ public class FriendsListScreen implements Screen{
 	    scrollUpConnectedClick = new BoundingBox(new Vector3(426,416,0), new Vector3(475,454,0));
 	    scrollDownDisconnectedClick = new BoundingBox(new Vector3(926,185,0), new Vector3(974,224,0));
 	    scrollUpDisconnectedClick = new BoundingBox(new Vector3(925,417,0), new Vector3(977,456,0));
-	    
-	    //------------Testing
-	    disconnectedFriends.add("disconn1");
-	    disconnectedFriends.add("disconn2");
-	    disconnectedFriends.add("disconn3");
-	    disconnectedFriends.add("disconn4");
-	    disconnectedFriends.add("disconn5");
-	    disconnectedFriends.add("disconn6");
-	    disconnectedFriends.add("disconn7");
-	    disconnectedFriends.add("disconn8");
-	    disconnectedFriends.add("disconn9");
-	    
-	    drawConnected.add(new ConnectedInfo("playin1", true));
-	    drawConnected.add(new ConnectedInfo("playin2", true));
-	    drawConnected.add(new ConnectedInfo("playin3", true));
-	    drawConnected.add(new ConnectedInfo("playin4", true));
-	    
-	    drawConnected.add(new ConnectedInfo("noplay1", false));
-	    drawConnected.add(new ConnectedInfo("noplay2", false));
-	    drawConnected.add(new ConnectedInfo("noplay3", false));
-	    drawConnected.add(new ConnectedInfo("noplay4", false));
-	    drawConnected.add(new ConnectedInfo("noplay5", false));
-	    //------------Testing
-	    
-	    
 	}
 
 	
@@ -156,7 +132,6 @@ public class FriendsListScreen implements Screen{
 	
 	@Override
 	public void render(float arg0) {
-		
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));

@@ -108,7 +108,7 @@ public class AcceptScreen implements Screen{
   			} else if (screenMode.equals("RegisterSuccess")){
   				if (user.equals("Registered")) {
   					SmartFoxServer.getInstance().conectaSala(GameSettings.getInstance().getUserName(), GameSettings.getInstance().getUserPassword());
-  					game.setScreen(MultiplayerScreen.getInstance()); //TODO conectarse y meterse directamente al MultiplayerScreen + guardar user y contraseña
+  					game.setScreen(MultiplayerScreen.getInstance());
   					
   				}
   				else game.setScreen(ancestor);
@@ -170,14 +170,16 @@ public class AcceptScreen implements Screen{
             	if (user.equals("Error")) message = "Something unexpected happened!";
             	else if (user.equals("SuccessYes")) message = "You have added the user as friend";
             	else if (user.equals("SuccessNo")) message = "You will not be friend with that user";
+            	FriendsListScreen.getInstance().updateFriends();
             } else if (screenMode.equals("RegisterSuccess")){
             	if (user.equals("Error")) message = "Something unexpected happened!";
-            	else if (user.equals("UserExits")) message = "There is a user with that name already"; //TODO deberia ser UserExists (mirar los demas tambien)
-            	else if (user.equals("EmailExits")) message = "There is a user with that email already"; //TODO deberia ser EmailExists
+            	else if (user.equals("UserExits")) message = "There is a user with that name already"; 
+            	else if (user.equals("EmailExits")) message = "There is a user with that email already";
             	else if (user.equals("Registered")) message = "You have been correctly registered";
             	else message = user;
             } else if (screenMode.equals("AcceptedFriendRequest")){
             	message = user.concat(" accepted your friend request");
+            	FriendsListScreen.getInstance().updateFriends();
             }
             
             font.drawWrapped(batcher, message, 350, 538, 330);

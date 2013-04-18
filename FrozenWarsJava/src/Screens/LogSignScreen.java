@@ -4,16 +4,12 @@ package Screens;
 import Application.Assets;
 import Application.LaunchFrozenWars;
 
-import Server.SmartFoxServer;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
@@ -109,6 +105,7 @@ public class LogSignScreen implements Screen{
 	            batcher.draw(Assets.logSignWindow, 300, 200);
 	            batcher.end();	
 	            
+	            MultiplayerScreen.getInstance().changeToThisIfNeeded();
 	            ConfirmScreen.getInstance().createConfirmIfNeeded();
 	            AcceptScreen.getInstance().createAcceptIfNeeded();
 		}

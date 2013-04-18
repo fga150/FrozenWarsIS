@@ -76,7 +76,7 @@ public class LoadScreen implements Screen{
         
         batcher.enableBlending();
           batcher.begin();
-        batcher.draw(Assets.logo,50,50);
+        batcher.draw(Assets.fwlogo,50,50);
         batcher.end();
         
      /*   batcher.enableBlending();

@@ -45,6 +45,7 @@ public class LogInScreen implements Screen {
 
 	
 	public LogInScreen() {
+		instance = this;
 		this.game = LaunchFrozenWars.getGame();
 		this.infoPressed = 0;
 		this.time = System.nanoTime();
@@ -149,6 +150,7 @@ public class LogInScreen implements Screen {
             	//this.time = System.nanoTime();
             }
             
+            MultiplayerScreen.getInstance().changeToThisIfNeeded();
             ConfirmScreen.getInstance().createConfirmIfNeeded();
             AcceptScreen.getInstance().createAcceptIfNeeded();
             

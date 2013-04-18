@@ -7,14 +7,12 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JOptionPane;
-
 import Application.GameSettings;
-import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
 import Screens.AcceptScreen;
 import Screens.ConfirmScreen;
+import Screens.FriendsListScreen;
 import Screens.InviteScreen;
 import Screens.MultiplayerScreen;
 
@@ -204,12 +202,12 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void connectRes(ISFSObject response) {
 		if (response.getUtfString("Response").equals("Success")){
-			//FIXME probablemente no funcione (alguna imagen se pinte mal, pinguinos desaparezcan...). Contactar con Fede. 
+			//FIXME probablemente no funcione (alguna imagen se pinte mal, pinguinos desaparezcan...). Deberia estar arreglado (probando) 
 			MultiplayerScreen.getInstance().setMyName(sfsClient.getMySelf().getName());
 			loggedIn = true;
   			GameSettings.getInstance().setUserName(lastUserName);
   			GameSettings.getInstance().setUserPassword(lastPass);
-			LaunchFrozenWars.getGame().setScreen(MultiplayerScreen.getInstance());
+  			MultiplayerScreen.getInstance().setChangeToThis(true);
         	ExtensionRequest request2 = new ExtensionRequest("GetFriendsRequests",new SFSObject());
 			sfsClient.send(request2);
 		}
@@ -604,19 +602,24 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	private void getMyFriendsRequestRes(ISFSObject params) {
+		Vector<String> connectedFriends = new Vector<String>();
+		Vector<String> disconnectedFriends = new Vector<String>();
+		Vector<String> playingFriends = new Vector<String>();
+		
+		//TODO GONZALO. PLAYING AND CONNECTED FRIENDS ARE SAVED SWITCHING THE NAMES OF THE ARRAYS.
 		//connected friends
 		for(int i= 0;i<params.getSFSArray("ConnectedFriends").size();i++){
-			String friend=(String) params.getSFSArray("ConnectedFriends").getElementAt(i);
+			playingFriends.add((String) params.getSFSArray("ConnectedFriends").getElementAt(i));
 		}
 		//disconnected friends
 		for(int i= 0;i<params.getSFSArray("DisconnectedFriends").size();i++){
-			params.getSFSArray("DisconnectedFriends").getElementAt(i);
-			//TODO fede do whatever with each element of the arrays
+			disconnectedFriends.add((String)params.getSFSArray("DisconnectedFriends").getElementAt(i));
 		}
 		//friends gaming
 		for(int i= 0;i<params.getSFSArray("PlayingFriends").size();i++){
-			params.getSFSArray("PlayingFriends").getElementAt(i);
+			connectedFriends.add((String)params.getSFSArray("PlayingFriends").getElementAt(i));
 		}
+		FriendsListScreen.getInstance().updateFriends(playingFriends, connectedFriends, disconnectedFriends);
 	}
 	
 	/**method when you want to exit from the game*/
