@@ -489,8 +489,13 @@ public class Map {
 	
 // Getters and Setters
 	
-	public TypeSquare getBasicMatrixSquare(int x,int y) {
-		return boardGame[x][y];
+	public TypeSquare getBasicMatrixSquare(int x,int y){
+		try{
+			return boardGame[x][y];
+		}
+		catch (Exception e){
+			return TypeSquare.empty;
+		}
 	}
 	
 	public void setEmptyBasicMatrixSquare(int x, int y) {

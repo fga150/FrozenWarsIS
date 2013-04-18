@@ -12,7 +12,6 @@ import Server.SmartFoxServer;
 
 public class MatchManager {
 	
-	//FIXME: Do a class for sharing with all classes of the project
 	public enum Direction{left,right,up,down} 
 	
 	private SmartFoxServer sfsClient;
@@ -32,7 +31,7 @@ public class MatchManager {
 	
 	public void movePlayer(Direction dir){
 		long currentTime = System.currentTimeMillis();
-		if ((currentTime-lastMessage)>=100){
+		if ((currentTime-lastMessage)*speedFactor()>=100){
 			if(match.insideBoardMove(dir,myPlayerId)){
 				if (match.isSpecialMove(dir,myPlayerId)){
 					sfsClient.sendMove(match.getSpecialMoveDir(myPlayerId),myPlayerId,match.getMyPlayerPosition(myPlayerId));
@@ -45,10 +44,20 @@ public class MatchManager {
 		}
 	}
 	
+	private float speedFactor() {
+		int speed = match.getPlayerSpeed(myPlayerId);
+		if (speed == 1) return 1;
+		else if (speed == 2) return 1.3f;
+		else if (speed == 3) return 1.5f;
+		else if (speed == 4) return 1.7f;
+		else if (speed == 5) return 2f;
+		return 0;
+	}
+
 	public void putHarpoon(){
 		if (match.canPutHarpoon(myPlayerId)){
 			Vector3 coord=match.getCoord();
-			sfsClient.putHarpoon((int)coord.x,(int)coord.y,match.getMyPlayerRange(myPlayerId));
+			sfsClient.putHarpoon((int)coord.x,(int)coord.y,match.getMyPlayerRange(myPlayerId),myPlayerId);
 			this.lastMessage = System.currentTimeMillis();
 		}
 	}
@@ -60,9 +69,9 @@ public class MatchManager {
 		}
 	}                
 	
-	public void putHarpoonEvent(int x, int y, int range, long time) {
+	public void putHarpoonEvent(int x, int y, int range, int playerId, long time) {
 		if (match.checkHarpoon(x,y)){
-			match.putHarpoonAt(x,y,range,time);
+			match.putHarpoonAt(x,y,range,playerId,time);
 		}
 	}
 	
@@ -76,7 +85,7 @@ public class MatchManager {
 	}
 	
 	public void startGame(int[] upgrades) {
-		match = new Match(upgrades,xmlMapReader);
+		match = new Match(upgrades,xmlMapReader,myPlayerId);
 		gameScreen.enable();
 		LaunchFrozenWars.getGame().setScreen(gameScreen);
 	}

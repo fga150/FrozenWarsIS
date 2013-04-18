@@ -30,7 +30,7 @@ public class SmartFoxServer implements IEventListener {
 	private MatchManager manager;
 	private static SmartFoxServer instance;
 	private long delayTime;
-	private int myId;
+	private int myPlayerId;
 	
 	public static SmartFoxServer getInstance() {
 		if (instance == null) instance = new SmartFoxServer();
@@ -49,10 +49,10 @@ public class SmartFoxServer implements IEventListener {
 	
 	public SmartFoxServer(){
 		instance = this;
-		myId = -999;
+		myPlayerId = -999;
 		String ip = getServerIP();
 		sfsClient = new SmartFox(false);
-		sfsClient.connect("127.0.0.1",9933);
+		sfsClient.connect(ip,9933);
 		addEventListeners();
 	}
 	
@@ -62,7 +62,7 @@ public class SmartFoxServer implements IEventListener {
 	
 	
 	public int getMyPlayerId(){
-		return myId;
+		return myPlayerId;
 	}
 	
 	private void addEventListeners() {
@@ -261,7 +261,7 @@ public class SmartFoxServer implements IEventListener {
 	}
 		
 	public void insertInQueuesResponse(ISFSObject response){
-		myId = response.getInt("id");
+		myPlayerId = response.getInt("id");
 		MultiplayerScreen.getInstance().setEmpiezaPartida(true);
 	} 
 
@@ -414,20 +414,22 @@ public class SmartFoxServer implements IEventListener {
 		return sfsClient.getMySelf().getName();		
 	}
 	
-	public void putHarpoon(int x,int y,int range){
+	public void putHarpoon(int x,int y,int range, int myPlayerId){
 		SFSObject params = new SFSObject();
 		params.putInt("range", range);
 		params.putInt("x", x);
 		params.putInt("y", y);
+		params.putInt("playerId",myPlayerId);
 		sfsClient.send(new ExtensionRequest("putHarpoon",params));
 	}
 	
 	public void getHarpoon(ISFSObject response){
-		long time=response.getLong("time");		
-		int x=response.getInt("x");
-		int y=response.getInt("y");
-		int range=response.getInt("range");
-		manager.putHarpoonEvent(x,y,range,time+delayTime);
+		long time = response.getLong("time");		
+		int x = response.getInt("x");
+		int y = response.getInt("y");
+		int range = response.getInt("range");
+		int playerId = response.getInt("playerId"); 
+		manager.putHarpoonEvent(x,y,range,playerId,time+delayTime);
 	}
 
 	public void  sendAsign(int numBarriles,int maxBootUpgrades,int maxRangeUpgrades,int maxNumHarpoonsUpgrades, int maxThrowUpgrades){
@@ -445,7 +447,6 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void asignaMejoras(ISFSObject params) {
 		 int numBarriles=params.getInt("nBarriles");
-		 System.out.println("llego 2");
 		 int upgrades[] = new int[numBarriles];
 		 for(int i=0;i<numBarriles;i++){
 			 upgrades[i]= (params.getSFSArray("arrayBarriles").getInt(i));

@@ -43,11 +43,11 @@ public class GameScreen implements Screen{
 	private int numPlayer;
 
 	
-	public GameScreen(MatchManager manag){
+	public GameScreen(MatchManager manager){
 		enable = false;
+		this.manager = manager;
 		name = manager.getMyNamePlayer();
 		numPlayer = manager.getMyIdPlayer();
-		manager = manag;
 		font =new BitmapFont(Gdx.files.internal("data/simpleFont.fnt"), Gdx.files.internal("data/simpleFont.png"), false);
 		font2 =new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);
 		font.setColor(Color.BLACK);
@@ -109,8 +109,7 @@ public class GameScreen implements Screen{
 		batcher.draw(Assets.getHorizontalBarDown(),7,0,13,1);
 		batcher.draw(Assets.getHorizontalBarUP(),7,12,13,1);
 		batcher.draw(Assets.getVerticalBarLeft(),7,1,1,11);
-		batcher.draw(Assets.getVerticalBarRigth(),19,1,1,11);
-		
+		batcher.draw(Assets.getVerticalBarRigth(),19,1,1,11);	
 		
 		for(int i=0;i<11;i++){
 			for (int j=0;j<11;j++){
@@ -170,7 +169,6 @@ public class GameScreen implements Screen{
 			}
 		}
 		
-		
 		batcher.draw(Assets.getDirectionPanel(),0.25f,0,7,7);
 		batcher.draw(Assets.getButtonHarpoon(),19,0,2,4);
 		
@@ -180,7 +178,6 @@ public class GameScreen implements Screen{
 				batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
 			}
 		}
-		
 		
 		batcher.draw(Assets.getLifesPanel(),0.5f,6.75f,6,5);
 		paintLifes();

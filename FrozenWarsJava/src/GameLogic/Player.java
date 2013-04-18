@@ -17,13 +17,16 @@ public class Player {
 	private Direction specialMoveDir;
 	private Direction lookAt;
 	private int lives;
+	private boolean invincible;
+	private boolean canPlay;
+	private boolean specialMove;
+	
+	//Upgrades
+	
 	private int speed;
 	private int range;
 	private int maxHarpoonsAllow;
-	private boolean invincible;
-	private boolean canPlay;
 	private boolean throwSkill;
-	private boolean specialMove;
 	
 	
 	/**
@@ -67,7 +70,7 @@ public class Player {
 		this.lives = 3;
 		this.speed = 1;
 		this.range = 2;
-		this.maxHarpoonsAllow = 1;
+		this.maxHarpoonsAllow = 3;
 		this.canPlay=true;
 		this.throwSkill=false;
 		this.specialMove=false;
@@ -126,6 +129,12 @@ public class Player {
 			invincible = true;
 			canPlay = false;
 		}
+	}
+	
+	public void upgradePlayer(TypeSquare basicMatrixSquare) {
+		if (basicMatrixSquare.equals(TypeSquare.bootUpgrade) && (speed<5)) speed++;
+		else if (basicMatrixSquare.equals(TypeSquare.rangeUpgrade) && (range<5)) range++;
+		else if (basicMatrixSquare.equals(TypeSquare.numHarpoonUpgrade) && (maxHarpoonsAllow<5)) maxHarpoonsAllow++;
 	}
 	
 	//Getters and Setters
@@ -230,9 +239,5 @@ public class Player {
 
 	public boolean canPlay() {
 		return canPlay;
-	}
-
-	public void upgradePlayer(TypeSquare basicMatrixSquare) {
-				
 	}
 }
