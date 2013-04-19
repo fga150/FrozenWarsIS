@@ -4,7 +4,7 @@
 		<Boots>10</Boots>
 		<MaxRange>10</MaxRange>
 		<NumLances>10</NumLances>
-		<Throw>10</Throw>
+		<Invisible>10</Invisible>
 	</Upgrades>
 	<Boxes>
 		<Breakable>2-0</Breakable>

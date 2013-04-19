@@ -451,133 +451,147 @@ VibrationOn
   orig: 170, 30
   offset: 0, 0
   index: -1
-deadIconBlue
+MejoraInvisibilidadMaxSize
   rotate: false
   xy: 1948, 1995
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
   index: -1
-deadIconGreen
+deadIconBlue
   rotate: false
   xy: 1945, 1943
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
   index: -1
-deadIconRed
+deadIconGreen
   rotate: false
   xy: 1997, 1943
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
   index: -1
-deadIconYellow
+deadIconRed
   rotate: false
   xy: 1871, 1420
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
   index: -1
-iconoJugadorAmarillo
+deadIconYellow
   rotate: false
   xy: 1668, 843
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
   index: -1
-iconoJugadorAzul
+iconoJugadorAmarillo
   rotate: false
   xy: 1749, 497
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
   index: -1
-iconoJugadorRojo
+iconoJugadorAzul
   rotate: false
   xy: 1945, 1891
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
   index: -1
-iconoJugadorVerde
+iconoJugadorRojo
   rotate: false
   xy: 1997, 1891
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
   index: -1
+iconoJugadorVerde
+  rotate: false
+  xy: 1871, 1368
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+MejoraMasArponMaxSize
+  rotate: false
+  xy: 1801, 497
+  size: 49, 50
+  orig: 49, 50
+  offset: 0, 0
+  index: -1
 IgluDerecha
-  rotate: false
-  xy: 1871, 1369
-  size: 49, 49
-  orig: 49, 49
-  offset: 0, 0
-  index: -1
-IgluIzquierda
-  rotate: false
-  xy: 1801, 498
-  size: 49, 49
-  orig: 49, 49
-  offset: 0, 0
-  index: -1
-IgluTrasero
   rotate: false
   xy: 1945, 1840
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water1SideOpenEast
+IgluIzquierda
   rotate: false
   xy: 1852, 498
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water1SideOpenNorth
+IgluTrasero
   rotate: false
   xy: 1945, 1789
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water1SideOpenSouth
+MejoraAndaRapidoMaxSize
   rotate: false
   xy: 1996, 1840
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water1SideOpenWest
+MejoraMasAreaMaxSize
   rotate: false
   xy: 1996, 1789
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water2SideOpenBridgeX
+Water1SideOpenEast
   rotate: false
   xy: 1749, 446
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water2SideOpenBridgeY
+Water1SideOpenNorth
+  rotate: false
+  xy: 1800, 446
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water1SideOpenSouth
   rotate: false
   xy: 1743, 395
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water2SideOpenCornerEN
+Water1SideOpenWest
+  rotate: false
+  xy: 1794, 395
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water2SideOpenBridgeX
   rotate: false
   xy: 1499, 170
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water2SideOpenCornerNW
+Water2SideOpenBridgeY
   rotate: false
   xy: 577, 36
   size: 49, 49
@@ -591,21 +605,21 @@ StatusTick
   orig: 45, 40
   offset: 0, 0
   index: -1
-Water2SideOpenCornerSE
+Water2SideOpenCornerEN
   rotate: false
   xy: 1550, 170
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water2SideOpenCornerWS
+Water2SideOpenCornerNW
   rotate: false
   xy: 1127, 4
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water3SideEastOpen
+Water2SideOpenCornerSE
   rotate: false
   xy: 1178, 4
   size: 49, 49
@@ -619,58 +633,72 @@ Add
   orig: 40, 40
   offset: 0, 0
   index: -1
-Water3SideNorthOpen
+Water2SideOpenCornerWS
   rotate: false
   xy: 1661, 320
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water3SideSouthOpen
+Water3SideEastOpen
   rotate: false
   xy: 1651, 269
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water3SideWestOpen
+Water3SideNorthOpen
   rotate: false
   xy: 1712, 320
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water4SideOpen
+Water3SideSouthOpen
   rotate: false
   xy: 1702, 269
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-barrelWithFissure
+Water3SideWestOpen
   rotate: false
   xy: 1491, 119
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-barril
+Water4SideOpen
   rotate: false
   xy: 1542, 119
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-casilla
+barrelWithFissure
   rotate: false
   xy: 1475, 68
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-fissureCenter
+barril
   rotate: false
   xy: 1526, 68
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+casilla
+  rotate: false
+  xy: 1763, 344
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+fissureCenter
+  rotate: false
+  xy: 1814, 344
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
@@ -689,34 +717,6 @@ fissureSideX
   orig: 49, 49
   offset: 0, 0
   index: -1
-Minus
-  rotate: false
-  xy: 1271, 6
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-StatusCancel
-  rotate: false
-  xy: 1313, 6
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-StatusInterrogation
-  rotate: false
-  xy: 1355, 6
-  size: 40, 40
-  orig: 40, 40
-  offset: 0, 0
-  index: -1
-vidasJugadorAmarillo
-  rotate: false
-  xy: 1397, 8
-  size: 38, 38
-  orig: 38, 38
-  offset: 0, 0
-  index: -1
 fissureSideY
   rotate: false
   xy: 1923, 1406
@@ -724,46 +724,88 @@ fissureSideY
   orig: 49, 49
   offset: 0, 0
   index: -1
-vidasJugadorAzul
+Minus
   rotate: false
-  xy: 1922, 1366
-  size: 38, 38
-  orig: 38, 38
+  xy: 1923, 1364
+  size: 40, 40
+  orig: 40, 40
   offset: 0, 0
   index: -1
 iglus
   rotate: false
-  xy: 1925, 1315
+  xy: 1925, 1313
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
 sunkenObject
   rotate: false
-  xy: 1925, 1264
+  xy: 1925, 1262
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-ArponParaBomba
+StatusCancel
   rotate: false
-  xy: 1945, 1755
-  size: 32, 32
-  orig: 32, 32
+  xy: 1271, 6
+  size: 40, 40
+  orig: 40, 40
   offset: 0, 0
   index: -1
-vidasJugadorRojo
+StatusInterrogation
   rotate: false
-  xy: 1979, 1749
+  xy: 1313, 6
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+vidasJugadorAmarillo
+  rotate: false
+  xy: 1355, 8
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
+vidasJugadorAzul
+  rotate: false
+  xy: 1395, 8
+  size: 38, 38
+  orig: 38, 38
+  offset: 0, 0
+  index: -1
+MejoraInvisibilidad
+  rotate: false
+  xy: 1945, 1754
+  size: 33, 33
+  orig: 33, 33
+  offset: 0, 0
+  index: -1
+vidasJugadorRojo
+  rotate: false
+  xy: 1980, 1749
+  size: 38, 38
+  orig: 38, 38
+  offset: 0, 0
+  index: -1
+ExternalPlayersButton
+  rotate: false
+  xy: 2020, 1763
+  size: 27, 24
+  orig: 27, 24
+  offset: 0, 0
+  index: -1
 ModeLeftArrow
   rotate: false
-  xy: 1437, 2
+  xy: 1435, 2
   size: 30, 44
   orig: 30, 44
+  offset: 0, 0
+  index: -1
+TickExternalPlayers
+  rotate: false
+  xy: 2020, 1737
+  size: 27, 24
+  orig: 27, 24
   offset: 0, 0
   index: -1
 ModeRightArrow
@@ -780,46 +822,39 @@ vidasJugadorVerde
   orig: 38, 38
   offset: 0, 0
   index: -1
-MejoraAndaRapido
+ArponParaBomba
   rotate: false
   xy: 1921, 749
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-MejoraDesplArpon
+MejoraAndaRapido
   rotate: false
   xy: 1921, 715
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-MejoraMasArea
+MejoraDesplArpon
   rotate: false
   xy: 1921, 681
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-MejoraMasArpon
+MejoraMasArea
   rotate: false
   xy: 1921, 647
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-ExternalPlayersButton
+MejoraMasArpon
   rotate: false
-  xy: 1637, 1533
-  size: 27, 24
-  orig: 27, 24
-  offset: 0, 0
-  index: -1
-TickExternalPlayers
-  rotate: false
-  xy: 1720, 869
-  size: 27, 24
-  orig: 27, 24
+  xy: 1921, 613
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 

@@ -191,7 +191,7 @@ public class GameScreen implements Screen{
 		paintLifes();
 		paintLinesPanelLives();
 		paintPlayerStatus();
-		//paintPlayerName();
+		paintPlayerName();
 		
 		batcher.end();
 		guiCam.update();
@@ -290,7 +290,7 @@ public class GameScreen implements Screen{
 		font.setColor(aux);
 		font.setScale(1);
 	}
-/*
+
 	private void paintPlayerName(){
 	
 		//Paint player status You are dead/you are RED/BLUE/YELLOW/GREEN
@@ -363,7 +363,7 @@ public class GameScreen implements Screen{
 		return playerName;
 		
 	}
-	*/
+	
 	private void paintPlayerStatus(){
 
 		if(!manager.isThePlayerDead(numPlayer)){

@@ -22,7 +22,7 @@ public class MatchManager {
 	private int numPlayers;
 	private long lastMessage;
 	private int mode;
-	private String[] usersNames;
+	private static String[] usersNames;
 	private XMLMapReader xmlMapReader;
 
 	
@@ -195,8 +195,8 @@ public class MatchManager {
 	public boolean canPlay(int i) {
 		return match.canPlay(i);
 	}
-/*
-	public void setUserName(String[] names) {
+
+	public static void setUserName(String[] names) {
 		usersNames = new String[2];
 		for(int i = 0; i<names.length; i++){
 			usersNames[i] = names[i];
@@ -206,7 +206,7 @@ public class MatchManager {
 	public String getUserName(int id){
 		return usersNames[id];
 	}
-*/
+
 	public int getSpeed(int numPlayer){
 		return match.getPlayerSpeed(numPlayer);
 	}
