@@ -1,0 +1,66 @@
+<Map>
+	<Name>mapaGuay</Name>
+	<Upgrades>
+		<Boots>5</Boots>
+		<MaxRange>4</MaxRange>
+		<NumLances>6</NumLances>
+		<Throw>4</Throw>
+	</Upgrades>
+	<Boxes>
+		<Breakable>2-0</Breakable>
+		<Breakable>4-0</Breakable>
+		<Breakable>5-0</Breakable>
+		<Breakable>6-0</Breakable>
+		<Breakable>8-0</Breakable>
+		<Breakable>2-1</Breakable>
+		<Breakable>4-1</Breakable>
+		<Breakable>6-1</Breakable>
+		<Breakable>8-1</Breakable>
+		<Breakable>0-2</Breakable>
+		<Breakable>1-2</Breakable>	
+		<Breakable>3-2</Breakable>
+		<Breakable>5-2</Breakable>
+		<Breakable>7-2</Breakable>
+		<Breakable>9-2</Breakable>
+		<Breakable>2-3</Breakable>
+		<Breakable>6-3</Breakable>
+		<Breakable>10-3</Breakable>
+		<Breakable>0-4</Breakable>
+		<Breakable>2-4</Breakable>
+		<Breakable>4-4</Breakable>
+		<Breakable>7-4</Breakable>
+		<Breakable>8-4</Breakable>
+		<Breakable>8-4</Breakable>
+		<Breakable>10-4</Breakable>
+		<Breakable>0-5</Breakable>
+		<Breakable>2-5</Breakable>
+		
+		
+		<Breakable>8-10</Breakable>
+		<Breakable>6-10</Breakable>
+		<Breakable>5-10</Breakable>
+		<Breakable>4-10</Breakable>
+		<Breakable>2-10</Breakable>
+		<Breakable>8-9</Breakable>
+		<Breakable>6-9</Breakable>
+		<Breakable>4-9</Breakable>
+		<Breakable>2-9</Breakable>
+		<Breakable>10-8</Breakable>
+		<Breakable>9-8</Breakable>	
+		<Breakable>7-8</Breakable>
+		<Breakable>5-8</Breakable>
+		<Breakable>3-8</Breakable>
+		<Breakable>1-8</Breakable>
+		<Breakable>8-7</Breakable>
+		<Breakable>4-7</Breakable>
+		<Breakable>0-7</Breakable>
+		<Breakable>10-6</Breakable>
+		<Breakable>8-6</Breakable>
+		<Breakable>6-6</Breakable>
+		<Breakable>3-6</Breakable>
+		<Breakable>2-6</Breakable>
+		<Breakable>1-6</Breakable>
+		<Breakable>0-6</Breakable>
+
+	</Boxes>
+</Map>
