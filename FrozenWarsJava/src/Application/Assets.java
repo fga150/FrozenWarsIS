@@ -80,6 +80,13 @@ public class Assets {
 	    private static AtlasRegion bootUpgrade;
 	    private static AtlasRegion rangeUpgrade;
 	    private static AtlasRegion numHarpoonUpgrade;
+	    private static AtlasRegion invisibleUpgrade;
+	    
+	    private static AtlasRegion bootUpgradeMaxSize;
+		private static AtlasRegion rangeUpgradeMaxSize;
+	    private static AtlasRegion numHarpoonUpgradeMaxSize;
+	    private static AtlasRegion invisibleUpgradeMaxSize;
+	    
 	    private static AtlasRegion throwUpgrade;
 	    
 	    //Componentes de la pantalla de creacion de partida multiplayer
@@ -285,7 +292,13 @@ public class Assets {
 			bootUpgrade= atlas.findRegion("MejoraAndaRapido");
 		    rangeUpgrade= atlas.findRegion("MejoraMasArea");
 		    numHarpoonUpgrade= atlas.findRegion("MejoraMasArpon");
-		    throwUpgrade= atlas.findRegion("MejoraDesplArpon");
+		    invisibleUpgrade= atlas.findRegion("MejoraInvisibilidad");
+		    
+		    bootUpgradeMaxSize= atlas.findRegion("MejoraAndaRapidoMaxSize");
+		    rangeUpgradeMaxSize= atlas.findRegion("MejoraMasAreaMaxSize");
+		    numHarpoonUpgradeMaxSize= atlas.findRegion("MejoraMasArponMaxSize");
+		    invisibleUpgradeMaxSize= atlas.findRegion("MejoraInvisibilidadMaxSize");
+		    
 			
 			directionPanel=(atlas.findRegion("MandoDirecciones"));
 			buttonHarpoon = atlas.findRegion("BotonLanza"); 
@@ -367,6 +380,26 @@ public class Assets {
 
 		public static AtlasRegion getNumHarpoonUpgrade() {
 			return numHarpoonUpgrade;
+		}
+
+		public static AtlasRegion getInvisibleUpgrade() {
+			return invisibleUpgrade;
+		}
+
+		public static AtlasRegion getBootUpgradeMaxSize() {
+			return bootUpgradeMaxSize;
+		}
+
+		public static AtlasRegion getRangeUpgradeMaxSize() {
+			return rangeUpgradeMaxSize;
+		}
+
+		public static AtlasRegion getNumHarpoonUpgradeMaxSize() {
+			return numHarpoonUpgradeMaxSize;
+		}
+
+		public static AtlasRegion getInvisibleUpgradeMaxSize() {
+			return invisibleUpgradeMaxSize;
 		}
 
 		public static AtlasRegion getThrowUpgrade() {

@@ -131,20 +131,7 @@ public class GameScreen implements Screen{
 					
 					batcher.draw(texture,i+8,j+1,1,1);
 				}
-				if (!typeBasicMatrix.equals(TypeSquare.empty)){
-					if (typeBasicMatrix.equals(TypeSquare.unbreakable)) texture = Assets.getIgloo();
-					else if (typeBasicMatrix.equals(TypeSquare.harpoon)) texture = Assets.getHarpoon();				
-					else if (typeBasicMatrix.equals(TypeSquare.breakable)) texture  = Assets.getBarrel();
-					else if (typeBasicMatrix.equals(TypeSquare.bootUpgrade)) texture  = Assets.getBootUpgrade();
-					else if (typeBasicMatrix.equals(TypeSquare.rangeUpgrade)) texture  = Assets.getRangeUpgrade();
-					else if (typeBasicMatrix.equals(TypeSquare.numHarpoonUpgrade)) texture  = Assets.getNumHarpoonUpgrade();
-					else if (typeBasicMatrix.equals(TypeSquare.throwUpgrade)) texture  = Assets.getThrowUpgrade();
-					if (typeBasicMatrix.equals(TypeSquare.unbreakable)||(typeBasicMatrix.equals(TypeSquare.harpoon))||(typeBasicMatrix.equals(TypeSquare.breakable))){
-						batcher.draw(texture,i+8,j+1,1,1);
-					}else	batcher.draw(texture,i+8.20f,j+1.20f,0.65f,0.65f);
 				
-
-				}
 				if(!typeWaterMatrix.equals(WaterTypes.empty)){
 					if (typeWaterMatrix.equals(WaterTypes.water1SOpN)) texture  = Assets.getWater1SideOpenN();
 					else if (typeWaterMatrix.equals(WaterTypes.water1SOpS)) texture  = Assets.getWater1SideOpenS();
@@ -162,6 +149,21 @@ public class GameScreen implements Screen{
 					else if (typeWaterMatrix.equals(WaterTypes.water3SOpW)) texture  = Assets.getWater3SideWOpen();
 					else if (typeWaterMatrix.equals(WaterTypes.water4SOp)) texture  = Assets.getWater4SideOpen();
 					batcher.draw(texture,i+8,j+1,1,1);		
+				}
+				
+				if (!typeBasicMatrix.equals(TypeSquare.empty)){
+					if (typeBasicMatrix.equals(TypeSquare.unbreakable)) texture = Assets.getIgloo();
+					else if (typeBasicMatrix.equals(TypeSquare.harpoon)) texture = Assets.getHarpoon();				
+					else if (typeBasicMatrix.equals(TypeSquare.breakable)) texture  = Assets.getBarrel();
+					else if (typeBasicMatrix.equals(TypeSquare.bootUpgrade)) texture  = Assets.getBootUpgrade();
+					else if (typeBasicMatrix.equals(TypeSquare.rangeUpgrade)) texture  = Assets.getRangeUpgrade();
+					else if (typeBasicMatrix.equals(TypeSquare.numHarpoonUpgrade)) texture  = Assets.getNumHarpoonUpgrade();
+					else if (typeBasicMatrix.equals(TypeSquare.throwUpgrade)) texture  = Assets.getThrowUpgrade();
+					if (typeBasicMatrix.equals(TypeSquare.unbreakable)||(typeBasicMatrix.equals(TypeSquare.harpoon))||(typeBasicMatrix.equals(TypeSquare.breakable))){
+						batcher.draw(texture,i+8,j+1,1,1);
+					}else	batcher.draw(texture,i+8.20f,j+1.20f,0.65f,0.65f);
+				
+
 				}
 				if(!typeSunkenMatrix.equals(SunkenTypes.empty)){
 					 texture  = Assets.getSunkenObject();
@@ -235,31 +237,31 @@ public class GameScreen implements Screen{
 		int rangeUpgrade = manager.getRange(numPlayer);
 		if (speedUpgrade == 1) {
 			batcher.setColor(new Color(50,50,50,0.25f));
-			batcher.draw(Assets.getBootUpgrade(),20,11.5f,1,1);
+			batcher.draw(Assets.getBootUpgradeMaxSize(),20,11.5f,1,1);
 			batcher.setColor(Color.WHITE);
 		}
 		else{
-			batcher.draw(Assets.getBootUpgrade(),20,11.5f,1,1);
+			batcher.draw(Assets.getBootUpgradeMaxSize(),20,11.5f,1,1);
 			if (speedUpgrade==5)printText("MAX",0.75f,Color.RED,20.15f,11.75f);
 			else printText(Integer.toString(speedUpgrade-1),1,Color.BLACK,20.6f,11.75f);
 		}
 		if (harpoonUpgrade == 1){
 			batcher.setColor(new Color(50,50,50,0.25f));
-			batcher.draw(Assets.getNumHarpoonUpgrade(),20,9.5f,1,1);
+			batcher.draw(Assets.getNumHarpoonUpgradeMaxSize(),20,9.5f,1,1);
 			batcher.setColor(Color.WHITE);
 		}
 		else {
-			batcher.draw(Assets.getNumHarpoonUpgrade(),20,9.5f,1,1);
+			batcher.draw(Assets.getNumHarpoonUpgradeMaxSize(),20,9.5f,1,1);
 			if (harpoonUpgrade==5)printText("MAX",0.75f,Color.RED,20.15f,9.75f);
 			else printText(Integer.toString(harpoonUpgrade-1),1,Color.BLACK,20.6f,9.75f);
 		}
 		if (rangeUpgrade == 1) {
 			batcher.setColor(new Color(50,50,50,0.25f));
-			batcher.draw(Assets.getRangeUpgrade(),20,7.5f,1,1);
+			batcher.draw(Assets.getRangeUpgradeMaxSize(),20,7.5f,1,1);
 			batcher.setColor(Color.WHITE);
 		}
 		else{
-			batcher.draw(Assets.getRangeUpgrade(),20,7.5f,1,1);
+			batcher.draw(Assets.getRangeUpgradeMaxSize(),20,7.5f,1,1);
 			if (rangeUpgrade==5)printText("MAX",0.75f,Color.RED,20.15f,7.75f);
 			else printText(Integer.toString(rangeUpgrade-1),1,Color.BLACK,20.6f,7.75f);
 		}
