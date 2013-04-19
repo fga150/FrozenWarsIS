@@ -343,7 +343,7 @@ public class Match {
 		if (!isBlocked[0] && (map.getBasicMatrixSquare(x, y+range).equals(TypeSquare.harpoon))){		
 			Harpoon newHarpoon = harpoonManager.getHarpoon(x,y+range);
 			harpoonManager.sinkHarpoon(newHarpoon);
-			timeEventsManager.stopTimer(newHarpoon);
+			timeEventsManager.stopHarpoonTimer(newHarpoon);
 			map.putSunkenHarpoonAt(x,y);
 			harpoonRangeDamageChain(newHarpoon,isCought);
 			timeEventsManager.freezeWaterEvent(newHarpoon);
@@ -351,7 +351,7 @@ public class Match {
 		else if (!isBlocked[1] && (map.getBasicMatrixSquare(x, y-range).equals(TypeSquare.harpoon))){
 			Harpoon newHarpoon = harpoonManager.getHarpoon(x,y-range);
 			harpoonManager.sinkHarpoon(newHarpoon);
-			timeEventsManager.stopTimer(newHarpoon);
+			timeEventsManager.stopHarpoonTimer(newHarpoon);
 			map.putSunkenHarpoonAt(x,y);
 			harpoonRangeDamageChain(newHarpoon,isCought);
 			timeEventsManager.freezeWaterEvent(newHarpoon);
@@ -359,7 +359,7 @@ public class Match {
 		else if (!isBlocked[2] && (map.getBasicMatrixSquare(x-range,y).equals(TypeSquare.harpoon))){
 			Harpoon newHarpoon = harpoonManager.getHarpoon(x-range,y);
 			harpoonManager.sinkHarpoon(newHarpoon);
-			timeEventsManager.stopTimer(newHarpoon);
+			timeEventsManager.stopHarpoonTimer(newHarpoon);
 			map.putSunkenHarpoonAt(x,y);
 			harpoonRangeDamageChain(newHarpoon,isCought);
 			timeEventsManager.freezeWaterEvent(newHarpoon);
@@ -367,7 +367,7 @@ public class Match {
 		else if (!isBlocked[3] && (map.getBasicMatrixSquare(x+range,y).equals(TypeSquare.harpoon))){
 			Harpoon newHarpoon = harpoonManager.getHarpoon(x+range,y);
 			harpoonManager.sinkHarpoon(newHarpoon);
-			timeEventsManager.stopTimer(newHarpoon);
+			timeEventsManager.stopHarpoonTimer(newHarpoon);
 			map.putSunkenHarpoonAt(x,y);
 			harpoonRangeDamageChain(newHarpoon,isCought);
 			timeEventsManager.freezeWaterEvent(newHarpoon);
@@ -532,19 +532,35 @@ public class Match {
 		Player player = getPlayer(playerId);
 		Vector3[] positions = player.getPositions();
 		if (positions[0].equals(positions[1]) && map.existUpgrade(positions[0])) {
-			player.upgradePlayer(map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y));
+			TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y);
+			if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
+			else player.upgradePlayer(typeSquare);
 			map.setEmpty((int)positions[0].x,(int)positions[0].y);
 		}
 		else {
 			if (map.existUpgrade(positions[0])){
-					player.upgradePlayer(map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y));
-					map.setEmpty((int)positions[0].x,(int)positions[0].y);
+				TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y);
+				if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
+				else player.upgradePlayer(typeSquare);
+				map.setEmpty((int)positions[0].x,(int)positions[0].y);
 			}
 			else if (map.existUpgrade(positions[1])){
-				player.upgradePlayer(map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y));
+				TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y);
+				if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
+				else player.upgradePlayer(typeSquare);
 				map.setEmpty((int)positions[1].x,(int)positions[1].y);
 			}
 		}
+	}
+	
+	private void makeInvisible(Player player){
+		if (player.isInvisible()) timeEventsManager.removeInvisibleTimer(player);
+		player.setInvisible(true);
+		timeEventsManager.invisibleEvent(player);
+	}
+	
+	public void endInvisible(Player player) {
+		player.setInvisible(false);
 	}
 	
 	//Getters and Setters
@@ -678,6 +694,7 @@ public class Match {
 	public void setNumPlayers(int numPlayers) {
 		this.numPlayers = numPlayers;
 	}
-
-
+	public boolean isInvisible(int playerId){
+		return getPlayer(playerId).isInvisible();
+	}
 }

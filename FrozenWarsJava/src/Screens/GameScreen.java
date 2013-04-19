@@ -159,6 +159,7 @@ public class GameScreen implements Screen{
 					else if (typeBasicMatrix.equals(TypeSquare.bootUpgrade)) texture  = Assets.getBootUpgrade();
 					else if (typeBasicMatrix.equals(TypeSquare.rangeUpgrade)) texture  = Assets.getRangeUpgrade();
 					else if (typeBasicMatrix.equals(TypeSquare.numHarpoonUpgrade)) texture  = Assets.getNumHarpoonUpgrade();
+					else if (typeBasicMatrix.equals(TypeSquare.invisible)) texture  = Assets.getInvisibleUpgrade();
 					if (typeBasicMatrix.equals(TypeSquare.unbreakable)||(typeBasicMatrix.equals(TypeSquare.harpoon))||(typeBasicMatrix.equals(TypeSquare.breakable))){
 						batcher.draw(texture,i+8,j+1,1,1);
 					}else	batcher.draw(texture,i+8.20f,j+1.20f,0.65f,0.65f);
@@ -178,7 +179,10 @@ public class GameScreen implements Screen{
 		for (int i=0;i<numPlayers;i++){
 			if(manager.canPlay(i)){
 				Vector3 position = manager.getPlayerPosition(i);
+				if (manager.isInvisible(i) && (i == numPlayer)) batcher.setColor(new Color(255,255,255,0.45f));
+				else if(manager.isInvisible(i) && (i != numPlayer)) batcher.setColor(new Color(255,255,255,0.15f));
 				batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
+				batcher.setColor(new Color(255,255,255,1));
 			}
 		}
 		
@@ -235,6 +239,7 @@ public class GameScreen implements Screen{
 		int speedUpgrade = manager.getSpeed(numPlayer);
 		int harpoonUpgrade = manager.getHarpoonsAllow(numPlayer);
 		int rangeUpgrade = manager.getRange(numPlayer);
+		boolean invisibleUpgrade = manager.isInvisible(numPlayer);
 		if (speedUpgrade == 1) {
 			batcher.setColor(new Color(50,50,50,0.25f));
 			batcher.draw(Assets.getBootUpgradeMaxSize(),20,11.5f,1,1);
@@ -265,7 +270,14 @@ public class GameScreen implements Screen{
 			if (rangeUpgrade==5)printText("MAX",0.75f,Color.RED,20.15f,7.75f);
 			else printText(Integer.toString(rangeUpgrade-1),1,Color.BLACK,20.6f,7.75f);
 		}
-
+		if (invisibleUpgrade){
+			batcher.draw(Assets.getInvisibleUpgradeMaxSize(),20,5.5f,1,1);
+		}
+		else{
+			batcher.setColor(new Color(50,50,50,0.25f));
+			batcher.draw(Assets.getInvisibleUpgradeMaxSize(),20,5.5f,1,1);
+			batcher.setColor(Color.WHITE);
+		}
 	}
 	
 	private void printText(String text,float scale,Color color,float posx,float posy){

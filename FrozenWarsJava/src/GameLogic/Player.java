@@ -28,7 +28,7 @@ public class Player {
 	private int speed;
 	private int range;
 	private int maxHarpoonsAllow;
-	private boolean throwSkill;
+	private boolean invisible;
 	
 	
 	/**
@@ -116,7 +116,7 @@ public class Player {
 			this.range = 1;
 			this.maxHarpoonsAllow = 1;
 			this.canPlay=true;
-			this.throwSkill=false;
+			this.invisible=false;
 			this.specialMove=false;
 			this.invincible=false;
 		}
@@ -234,12 +234,12 @@ public class Player {
 		this.maxHarpoonsAllow = maxHarpoonsAllow;
 	}
 	
-	public boolean isThrowSkill() {
-		return throwSkill;
+	public boolean isInvisible() {
+		return invisible;
 	}
 	
-	public void setThrowSkill(boolean throwSkill) {
-		this.throwSkill = throwSkill;
+	public void setInvisible(boolean invisible) {
+		this.invisible = invisible;
 	}
 
 	public Direction getLookAt() {

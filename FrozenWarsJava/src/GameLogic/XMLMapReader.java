@@ -34,7 +34,7 @@ public class XMLMapReader {
 		upgrades[0] = Integer.parseInt(getData(xmlUpgrades,"Boots"));
 		upgrades[1] = Integer.parseInt(getData(xmlUpgrades,"MaxRange"));
 		upgrades[2] = Integer.parseInt(getData(xmlUpgrades,"NumLances"));
-		upgrades[3] = Integer.parseInt(getData(xmlUpgrades,"Throw"));		
+		upgrades[3] = Integer.parseInt(getData(xmlUpgrades,"Invisible"));		
 		return upgrades;
 	}
 	

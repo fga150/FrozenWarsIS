@@ -16,13 +16,16 @@ import com.badlogic.gdx.utils.Timer;
 public class TimeEventsManager{
 	
 	private final float sunkenTime = 0.5f;
+	private final float invisibleTime = 10;
 	private final float sinkPenguinTime = 1;
 	
 	private Match match;
+	private HashMap<Player,Timer> invisiblePlayers;
 	private HashMap<Harpoon,Timer> activeHarpoonTimer;
 	
 	public TimeEventsManager(Match match){
 		this.match = match;
+		this.invisiblePlayers = new HashMap<Player,Timer>();
 		this.activeHarpoonTimer = new HashMap<Harpoon,Timer>();
 	}
 	
@@ -36,7 +39,7 @@ public class TimeEventsManager{
 	 * @param harpoon - The harpoon which wants to stop.
 	 */
 	
-	public void stopTimer(Harpoon harpoon) {
+	public void stopHarpoonTimer(Harpoon harpoon) {
 		Timer timer = activeHarpoonTimer.get(harpoon);
 		timer.stop();
 		activeHarpoonTimer.remove(harpoon);
@@ -54,6 +57,20 @@ public class TimeEventsManager{
 		Timer timer = new Timer();
 		timer.scheduleTask(timerTask,sinkPenguinTime);
 		timer.start();
+	}
+	
+	public void invisibleEvent(Player player){
+		TimeEventsTask timerTask = new TimeEventsTask(this,player,TypeEvent.invisible);
+		Timer timer = new Timer();
+		invisiblePlayers.put(player,timer);
+		timer.scheduleTask(timerTask,invisibleTime);
+		timer.start();
+	}
+	
+	public void removeInvisibleTimer(Player player) {
+		Timer timer = invisiblePlayers.get(player);
+		timer.stop();
+		invisiblePlayers.remove(player);
 	}
 	
 	public void sinkHarpoonEvent(Harpoon harpoon,long time){
@@ -80,6 +97,10 @@ public class TimeEventsManager{
 		else if (type.equals(TypeEvent.sinkPenguin)){
 			Player player = (Player)taskObject;
 			match.sinkPenguinFinish(player);
+		}
+		else if (type.equals(TypeEvent.invisible)){
+			Player player = (Player)taskObject;
+			match.endInvisible(player);
 		}
 	}
 

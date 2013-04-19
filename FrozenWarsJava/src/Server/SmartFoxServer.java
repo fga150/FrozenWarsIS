@@ -446,6 +446,7 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void asignaMejoras(ISFSObject params) {
+		 while (manager==null);
 		 int numBarriles=params.getInt("nBarriles");
 		 int upgrades[] = new int[numBarriles];
 		 for(int i=0;i<numBarriles;i++){

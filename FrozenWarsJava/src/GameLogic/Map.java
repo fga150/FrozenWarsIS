@@ -20,7 +20,7 @@ public class Map {
 	
 	//Type of Basic Square in the boardGame
 	public enum TypeSquare{empty,unbreakable,breakable,bootUpgrade,rangeUpgrade,numHarpoonUpgrade,
-		throwUpgrade,harpoon}
+		invisible,harpoon}
 	
 	//Total number of each Upgrade
 	private int maxBootUpgrades;
@@ -247,7 +247,7 @@ public class Map {
 				}else if (typeImprovement==2){
 					boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.numHarpoonUpgrade;
 				}else if (typeImprovement==3){
-					boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.throwUpgrade;
+					boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.invisible;
 				}else{
 					boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.empty;
 				}
@@ -279,7 +279,7 @@ public class Map {
 					}else if (typeImprovement==2){
 						boardGame[xHarpoonPosition][yHarpoonPosition-i] = TypeSquare.numHarpoonUpgrade;
 					}else if (typeImprovement==3){
-						boardGame[xHarpoonPosition][yHarpoonPosition-i] = TypeSquare.throwUpgrade;
+						boardGame[xHarpoonPosition][yHarpoonPosition-i] = TypeSquare.invisible;
 					}else{
 						boardGame[xHarpoonPosition][yHarpoonPosition-i] = TypeSquare.empty;
 					}
@@ -311,7 +311,7 @@ public class Map {
 				}else if (typeImprovement==2){
 					boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.numHarpoonUpgrade;
 				}else if (typeImprovement==3){
-					boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.throwUpgrade;
+					boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.invisible;
 				}else{
 					boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.empty;
 				}
@@ -331,7 +331,6 @@ public class Map {
 			}else if(fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.barrelWithFissure
 				|| (fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.invisibleFissureSX 
 				&& boardGame[xHarpoonPosition-i][yHarpoonPosition] == TypeSquare.breakable)){
-
 					fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.empty;
 					int typeImprovement=upgrades[numBarrels];
 					numBarrels++;
@@ -342,7 +341,7 @@ public class Map {
 					}else if (typeImprovement==2){
 						boardGame[xHarpoonPosition-i][yHarpoonPosition] = TypeSquare.numHarpoonUpgrade;
 					}else if (typeImprovement==3){
-						boardGame[xHarpoonPosition-i][yHarpoonPosition] = TypeSquare.throwUpgrade;
+						boardGame[xHarpoonPosition-i][yHarpoonPosition] = TypeSquare.invisible;
 					}else{
 						boardGame[xHarpoonPosition-i][yHarpoonPosition] = TypeSquare.empty;
 					}
@@ -576,6 +575,6 @@ public class Map {
 	}
 
 	public boolean existUpgrade(Vector3 pos) {
-		return boardGame[(int) pos.x][(int) pos.y]==TypeSquare.bootUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.rangeUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.numHarpoonUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.throwUpgrade;
+		return boardGame[(int) pos.x][(int) pos.y]==TypeSquare.bootUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.rangeUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.numHarpoonUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.invisible;
 	}
 }

@@ -207,11 +207,11 @@ public class MatchManager {
 		return usersNames[id];
 	}
 */
-	public int getSpeed(int numPlayer) {
+	public int getSpeed(int numPlayer){
 		return match.getPlayerSpeed(numPlayer);
 	}
 
-	public int getHarpoonsAllow(int numPlayer) {
+	public int getHarpoonsAllow(int numPlayer){
 		return match.getPlayerHarpoonAllow(numPlayer);
 	}
 	
@@ -221,6 +221,10 @@ public class MatchManager {
 
 	public int getRange(int numPlayer) {
 		return match.getPlayerRange(numPlayer);
+	}
+
+	public boolean isInvisible(int numPlayer) {
+		return match.isInvisible(numPlayer);
 	}
 
 }
