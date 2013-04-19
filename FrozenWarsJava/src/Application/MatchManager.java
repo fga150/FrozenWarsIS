@@ -6,6 +6,7 @@ import GameLogic.Map.TypeSquare;
 import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
 import GameLogic.Match;
+import GameLogic.Match.TypeGame;
 import GameLogic.XMLMapReader;
 import Screens.GameScreen;
 import Server.SmartFoxServer;
@@ -18,15 +19,19 @@ public class MatchManager {
 	private Match match;
 	private GameScreen gameScreen;
 	private int myPlayerId;
+	private int numPlayers;
 	private long lastMessage;
+	private int mode;
+	private String[] usersNames;
 	private XMLMapReader xmlMapReader;
-	private static String[] usersNames;
+
 	
-	public MatchManager(SmartFoxServer sfs, XMLMapReader xmlMapReader) {
+	public MatchManager(SmartFoxServer sfs, XMLMapReader xmlMapReader,int mode) {
 		this.sfsClient=sfs;
 		this.myPlayerId = sfsClient.getMyPlayerId()-1;
 		this.xmlMapReader = xmlMapReader;
 		this.gameScreen = new GameScreen(this);
+		this.mode = mode;
 	}
 	
 	public void movePlayer(Direction dir){
@@ -84,12 +89,24 @@ public class MatchManager {
 
 	}
 	
-	public void startGame(int[] upgrades) {
-		match = new Match(upgrades,xmlMapReader,myPlayerId);
+	public void startGame(int[] upgrades, int numPlayers) {
+		TypeGame type = getTypeGame(mode);
+		this.numPlayers = numPlayers;
+		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,type);
 		gameScreen.enable();
 		LaunchFrozenWars.getGame().setScreen(gameScreen);
 	}
 	
+	private TypeGame getTypeGame(int mode) {
+		TypeGame type = TypeGame.Normal;
+		if (mode == 0) type = TypeGame.Normal;
+		else if (mode == 1) type = TypeGame.Teams;
+		else if (mode == 2) type = TypeGame.OneVsAll;
+		else if (mode == 3) type = TypeGame.Survival;
+		else if (mode == 4) type = TypeGame.BattleRoyale;
+		return type;
+	}
+
 	public void sendAsign() {
 		int numBreakable = xmlMapReader.getNumBreakable();
 		int[] upgrades = xmlMapReader.getUpgrades();
@@ -159,12 +176,12 @@ public class MatchManager {
 			return match.getPlayerLifes(i);
 	}
 		
-	public static String[] getUsersNames() {
+	public String[] getUsersNames() {
 		return usersNames;
 	}
 
 	public String getMyNamePlayer() {
-			return sfsClient.getMyName();		
+		return sfsClient.getMyName();		
 	}
 
 	public int getNumPlayers() {
@@ -178,9 +195,9 @@ public class MatchManager {
 	public boolean canPlay(int i) {
 		return match.canPlay(i);
 	}
-
-	public static void setUserName(String[] names) {
-		usersNames = new String[names.length];
+/*
+	public void setUserName(String[] names) {
+		usersNames = new String[2];
 		for(int i = 0; i<names.length; i++){
 			usersNames[i] = names[i];
 		}
@@ -189,17 +206,17 @@ public class MatchManager {
 	public String getUserName(int id){
 		return usersNames[id];
 	}
-
-	public void setNumPlayers(int i) {
-		match.setNumPlayers(i);		
-	}
-
+*/
 	public int getSpeed(int numPlayer) {
 		return match.getPlayerSpeed(numPlayer);
 	}
 
 	public int getHarpoonsAllow(int numPlayer) {
 		return match.getPlayerHarpoonAllow(numPlayer);
+	}
+	
+	public void setNumPlayers(int numPlayers) {
+		match.setNumPlayers(numPlayers);
 	}
 
 	public int getRange(int numPlayer) {

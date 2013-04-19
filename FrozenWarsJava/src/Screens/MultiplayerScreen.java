@@ -310,7 +310,7 @@ public class MultiplayerScreen implements Screen{
 
 	public void creaPartida(){
 		XMLMapReader xmlMapReader = new XMLMapReader("mapaPrueba.xml");
-		MatchManager manager = new MatchManager(sfsClient,xmlMapReader);
+		MatchManager manager = new MatchManager(sfsClient,xmlMapReader,gameMode);
 		sfsClient.addManager(manager);
 		if(sfsClient.getMyPlayerId()==1){     //PROBAR CUANDO DANI SUBA CAMBIOS DEL SERVER
 		       manager.sendAsign();

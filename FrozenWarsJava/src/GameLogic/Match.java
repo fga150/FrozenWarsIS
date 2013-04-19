@@ -1,5 +1,8 @@
 package GameLogic;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.badlogic.gdx.math.Vector3;
 
 import Application.MatchManager.Direction;
@@ -10,37 +13,67 @@ import GameLogic.Map.WaterTypes;
 
 public class Match {
 	
-	enum TypeGame {Normal}
+	public enum TypeGame {Normal,Teams,OneVsAll,Survival,BattleRoyale}
 	
-	private int numPlayers = 4;
-	private final float playerWidth = 1;
-	private final float playerLength = 1;
-	private final float minimalMove = 0.25f;
-	private final int maxSize = 11;
+	private final static float playerWidth = 1;
+	private final static float playerLength = 1;
+	private final static float minimalMove = 0.25f;
+	private final static int maxSize = 11;
 	
 	private Map map;
 	private TimeEventsManager timeEventsManager;
 	private HarpoonManager harpoonManager;
 	private TypeGame type;
-	private Player[] players;
-	private int numUpgrades;
-	private long matchTime;
+	private ArrayList<Team> teams;
 	private Vector3 coord;
+	private long matchTime;
 	private int myPlayerId;
+	private int numPlayers;
 	
-	public Match(int[] upgrades,XMLMapReader xmlMapReader,int playerId){
+	public Match(int[] upgrades,XMLMapReader xmlMapReader,int playerId, int numPlayers,TypeGame type){
 		this.myPlayerId = playerId;
+		this.numPlayers = numPlayers;
+		this.type = type;
 		this.map = new Map(maxSize,maxSize,upgrades,xmlMapReader);
+		this.teams = initializeTeams(numPlayers,type);
 		this.harpoonManager = new HarpoonManager(numPlayers);
-		this.players = new Player[numPlayers];
 		this.timeEventsManager = new TimeEventsManager(this);
-		for (int i=0;i<numPlayers;i++){
-			players[i] = new Player(i);
-		}
 		coord=new Vector3();
-		this.numUpgrades = 0;
 	}
 	
+	private ArrayList<Team> initializeTeams(int numPlayers, TypeGame type) {
+		ArrayList<Team> teams = null;
+		if (type.equals(TypeGame.Normal)) teams = normalGame(numPlayers,type); 
+		return teams;
+	}
+
+	private ArrayList<Team> normalGame(int numPlayers,TypeGame type) {
+		ArrayList<Team> teams = new ArrayList<Team>();
+		int playerId = 0;
+		for (int i=0;i<numPlayers;i++){
+			teams.add(new Team(numPlayers,i,1,playerId,type));
+			playerId += 1;
+		}
+		return teams;
+	}
+	
+	private Player getPlayer(int playerId){
+		Player player = null;
+		boolean found = false;
+		Team team;
+		Iterator<Player> playerIterator;
+		Iterator<Team> teamIterator = teams.iterator();
+		while (teamIterator.hasNext() && !found){
+			team = teamIterator.next();
+			playerIterator = team.getPlayers().iterator();
+			while (playerIterator.hasNext() && !found){
+				player = playerIterator.next();
+				found = (playerId == player.getPlayerId());
+			}
+		}
+		return player;
+	}
+
 	private boolean newSquare(int x, int y){
 		TypeSquare square = map.getBasicMatrixSquare(x,y);
 		return !(square.equals(TypeSquare.unbreakable)|| square.equals(TypeSquare.breakable) 
@@ -48,9 +81,9 @@ public class Match {
 	}
 
 	public boolean insideBoardMove(Direction dir, int playerId) {
+		Player player = getPlayer(playerId);
 		boolean valid = false;
-		
-		Vector3 position = players[playerId].getPosition();
+		Vector3 position = player.getPosition();
 		float limitX = map.getLength();
 		float limitY = map.getWidth();
 		float newPositionX = position.x;
@@ -63,20 +96,22 @@ public class Match {
 		
 		valid = ((newPositionX>=0.0) && (newPositionX<=(limitX-playerLength)) && 
 				(newPositionY>=0.0) && (newPositionY<=(limitY-playerWidth))) || 
-				(!dir.equals(players[playerId].getLookAt()));
+				(!dir.equals(player.getLookAt()));
 		
 		return valid;
 	}
 	
 	public Direction getSpecialMoveDir(int myPlayerId) {
-		return players[myPlayerId].getSpecialMoveDir();
+		Player player = getPlayer(myPlayerId);
+		return player.getSpecialMoveDir();
 	}
 		
 	public boolean isSpecialMove(Direction dir, int playerId) {
+		Player player = getPlayer(playerId);
 		boolean valid=false;
-		Vector3 position=players[playerId].getPosition();
-		if (players[playerId].getSpecialMove()){
-			Direction dirPlayer=players[playerId].getLookAt();
+		Vector3 position=player.getPosition();
+		if (player.getSpecialMove()){
+			Direction dirPlayer=player.getLookAt();
 			if(dirPlayer.equals(Direction.left)){
 				if(dir.equals(Direction.up)){
 					valid=newSquare((int)position.x,(int) position.y+1);
@@ -84,7 +119,7 @@ public class Match {
 					valid=newSquare((int)position.x,(int) position.y-1);
 				}
 				if (valid){
-					players[playerId].setSpecialMove(!((int)(position.x-0.25f)==(position.x-0.25f)));
+					player.setSpecialMove(!((int)(position.x-0.25f)==(position.x-0.25f)));
 				}
 			}else if(dirPlayer.equals(Direction.right)){
 				if(dir.equals(Direction.up)){
@@ -93,7 +128,7 @@ public class Match {
 					valid=newSquare((int)position.x+1,(int) position.y-1);
 				}
 				if (valid){
-					players[playerId].setSpecialMove(!((int)(position.x+0.25f)==(position.x+0.25f)));
+					player.setSpecialMove(!((int)(position.x+0.25f)==(position.x+0.25f)));
 				}
 			}else if(dirPlayer.equals(Direction.up)){
 				if(dir.equals(Direction.right)){
@@ -102,7 +137,7 @@ public class Match {
 					valid=newSquare((int)position.x-1,(int) position.y+1);
 				}
 				if (valid){
-					players[playerId].setSpecialMove(!((int)(position.y+0.25f)==(position.y+0.25f)));
+					player.setSpecialMove(!((int)(position.y+0.25f)==(position.y+0.25f)));
 				}
 			}else if(dirPlayer.equals(Direction.down)){
 				if(dir.equals(Direction.right)){
@@ -111,69 +146,69 @@ public class Match {
 					valid=newSquare((int)position.x-1,(int) position.y);
 				}
 				if (valid){
-					players[playerId].setSpecialMove(!((int)(position.y-0.25f)==(position.y-0.25f)));
+					player.setSpecialMove(!((int)(position.y-0.25f)==(position.y-0.25f)));
 				}
 			}
 		}else{
-			if(dir.equals(players[playerId].getLookAt())){
+			if(dir.equals(player.getLookAt())){
 				if(dir.equals(Direction.left)){
 					if(((position.y-(int)position.y)==0.5f)||((position.y-(int)position.y)==0.25f)){
 							if((newSquare((int)position.x-1,(int)position.y))&&!(newSquare((int)position.x-1,(int)position.y+1))){
 								valid=true;
-								players[playerId].setSpecialMove(true);
-								players[playerId].setSpecialMoveDir(Direction.down);
+								player.setSpecialMove(true);
+								player.setSpecialMoveDir(Direction.down);
 							}					
 						}
 					if (((position.y-(int)position.y)==0.75f)||((position.y-(int)position.y)==0.5f)){
 						if((newSquare((int)position.x-1,(int)position.y+1))&&!(newSquare((int)position.x-1,(int)position.y))){
 							valid=true;
-							players[playerId].setSpecialMove(true);
-							players[playerId].setSpecialMoveDir(Direction.up);
+							player.setSpecialMove(true);
+							player.setSpecialMoveDir(Direction.up);
 							}	
 						}
 					} else if(dir.equals(Direction.right)){
 					if(((position.y-(int)position.y)==0.5f)||((position.y-(int)position.y)==0.25f)){
 							if((newSquare((int)position.x+1,(int)position.y))&&!(newSquare((int)position.x+1,(int)position.y+1))){
 								valid=true;
-								players[playerId].setSpecialMove(true);
-								players[playerId].setSpecialMoveDir(Direction.down);
+								player.setSpecialMove(true);
+								player.setSpecialMoveDir(Direction.down);
 							}					
 						}
 					if (((position.y-(int)position.y)==0.75f)||((position.y-(int)position.y)==0.5f)){
 						if((newSquare((int)position.x+1,(int)position.y+1))&&!(newSquare((int)position.x+1,(int)position.y))){
 							valid=true;
-							players[playerId].setSpecialMove(true);
-							players[playerId].setSpecialMoveDir(Direction.up);
+							player.setSpecialMove(true);
+							player.setSpecialMoveDir(Direction.up);
 							}	
 						}
 					} else if(dir.equals(Direction.up)){
 					if(((position.x-(int)position.x)==0.5f)||((position.x-(int)position.x)==0.25f)){
 							if((newSquare((int)position.x,(int)position.y+1))&&!(newSquare((int)position.x+1,(int)position.y+1))){
 								valid=true;
-								players[playerId].setSpecialMove(true);
-								players[playerId].setSpecialMoveDir(Direction.left);
+								player.setSpecialMove(true);
+								player.setSpecialMoveDir(Direction.left);
 							}					
 						}
 					if (((position.x-(int)position.x)==0.75f)||((position.x-(int)position.x)==0.5f)){
 						if((newSquare((int)position.x+1,(int)position.y+1))&&!(newSquare((int)position.x,(int)position.y+1))){
 							valid=true;
-							players[playerId].setSpecialMove(true);
-							players[playerId].setSpecialMoveDir(Direction.right);
+							player.setSpecialMove(true);
+							player.setSpecialMoveDir(Direction.right);
 							}	
 						}
 					}else if(dir.equals(Direction.down)){
 					if(((position.x-(int)position.x)==0.5f)||((position.x-(int)position.x)==0.25f)){
 							if((newSquare((int)position.x,(int)position.y-1))&&!(newSquare((int)position.x+1,(int)position.y-1))){
 								valid=true;
-								players[playerId].setSpecialMove(true);
-								players[playerId].setSpecialMoveDir(Direction.left);
+								player.setSpecialMove(true);
+								player.setSpecialMoveDir(Direction.left);
 							}					
 						}
 					if (((position.x-(int)position.x)==0.75f)||((position.x-(int)position.x)==0.5f)){
 						if((newSquare((int)position.x+1,(int)position.y-1))&&!(newSquare((int)position.x,(int)position.y-1))){
 							valid=true;
-							players[playerId].setSpecialMove(true);
-							players[playerId].setSpecialMoveDir(Direction.right);
+							player.setSpecialMove(true);
+							player.setSpecialMoveDir(Direction.right);
 							}	
 						}
 					}
@@ -183,9 +218,10 @@ public class Match {
 		}
 
 	public boolean isNormalMove(Direction dir, int playerId) {
+		Player player = getPlayer(playerId);
 		boolean valid = false;
-		if(dir.equals(players[playerId].getLookAt())){
-			Vector3 position=players[playerId].getPosition();
+		if(dir.equals(player.getLookAt())){
+			Vector3 position=player.getPosition();
 			if ((dir.equals(Direction.left)||dir.equals(Direction.right))&&((int)position.y==position.y)){
 				if ((int)position.x==position.x){
 					if(dir.equals(Direction.left)){
@@ -209,32 +245,34 @@ public class Match {
 				}
 			}
 		}else valid=true;
-		if (valid) players[playerId].setSpecialMove(false);
+		if (valid) player.setSpecialMove(false);
 		return valid;
 	}
 	
 	private void loseLife(int playerId) {
-		timeEventsManager.sinkPenguinEvent(players[playerId]);
-		players[playerId].removeLive();
+		Player player = getPlayer(playerId);
+		timeEventsManager.sinkPenguinEvent(player);
+		player.removeLive();
 	}
 	
 	public void movePlayer(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition) {
-		Player myPlayer = players[playerId];
-		if (!dir.equals(players[playerId].getLookAt())) players[playerId].setLookAt(dir);
+		Player player = getPlayer(playerId);
+		if (!dir.equals(player.getLookAt())) player.setLookAt(dir);
 		else {
-			if (dir.equals(Direction.left)) myPlayer.setPositionX(xPlayerPosition-minimalMove);
-			else if (dir.equals(Direction.right)) myPlayer.setPositionX(xPlayerPosition+minimalMove);
-			else if (dir.equals(Direction.up)) myPlayer.setPositionY(yPlayerPosition+minimalMove);
-			else if (dir.equals(Direction.down)) myPlayer.setPositionY(yPlayerPosition-minimalMove);
+			if (dir.equals(Direction.left)) player.setPositionX(xPlayerPosition-minimalMove);
+			else if (dir.equals(Direction.right)) player.setPositionX(xPlayerPosition+minimalMove);
+			else if (dir.equals(Direction.up)) player.setPositionY(yPlayerPosition+minimalMove);
+			else if (dir.equals(Direction.down)) player.setPositionY(yPlayerPosition-minimalMove);
 		}
-		if (!players[playerId].isInvincible() && isSunkenPenguin(playerId)){
+		if (!player.isInvincible() && isSunkenPenguin(playerId)){
 			loseLife(playerId);
 		}
 		checkUpgrade(dir,playerId);
 	}
 	
 	public boolean isSunkenPenguin(int playerId){
-		Vector3[] positions = players[playerId].getPositions();
+		Player player = getPlayer(playerId);
+		Vector3[] positions = player.getPositions();
 		boolean isSunken = false;
 		if(map.getWaterMatrixSquare((int)positions[0].x,(int)positions[0].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[0].x,(int)positions[0].y);
@@ -277,13 +315,15 @@ public class Match {
 	}
 
 	private void harpoonRangeDamageChain(Harpoon harpoon, boolean[] isCought) {
+		
 		boolean[] isBlocked = new boolean [4];
 		for (int i=0;i<4;i++) isBlocked[i] = false;
 		int range = harpoon.getRange();
 		for (int i=0;i<=range;i++){
 			for (int j=0;j<numPlayers;j++){
-				if (!players[j].isInvincible()){
-					Vector3[] positions = players[j].getPositions();
+				Player player = getPlayer(j);
+				if (!player.isInvincible()){
+					Vector3[] positions = player.getPositions();
 					if (isCought(harpoon,i,positions,isBlocked)){
 						isCought[j] = true;
 					}
@@ -381,9 +421,10 @@ public class Match {
 	}
 	
 	private boolean isLegalMove(Direction dir, int playerId){
+		Player player = getPlayer(playerId);
 		boolean valid = false;
-		if(dir.equals(players[playerId].getLookAt())){
-			Vector3 position=players[playerId].getPosition();
+		if(dir.equals(player.getLookAt())){
+			Vector3 position=player.getPosition();
 			if ((dir.equals(Direction.left)||dir.equals(Direction.right))&&((int)position.y==position.y)){
 				if ((int)position.x==position.x){
 					if(dir.equals(Direction.left)){
@@ -411,8 +452,9 @@ public class Match {
 	}
 	
 	public boolean canPutHarpoon(int playerId){
-		Vector3 position=players[playerId].getPosition();
-		if(players[playerId].getLookAt().equals(Direction.right)){
+		Player player = getPlayer(playerId);
+		Vector3 position=player.getPosition();
+		if(player.getLookAt().equals(Direction.right)){
 			if ((position.x-(int)position.x)==0){
 				coord.x=position.x;
 				coord.y=position.y;
@@ -420,11 +462,11 @@ public class Match {
 				coord.x=position.x+1;
 				coord.y=position.y;
 			}
-		}else if(players[playerId].getLookAt().equals(Direction.left)){
+		}else if(player.getLookAt().equals(Direction.left)){
 				coord.x=position.x;
 				coord.y=position.y;
 			
-		}else if(players[playerId].getLookAt().equals(Direction.up)){
+		}else if(player.getLookAt().equals(Direction.up)){
 			if ((position.y-(int)position.y)==0){
 				coord.x=position.x;
 				coord.y=position.y;
@@ -432,7 +474,7 @@ public class Match {
 				coord.x=position.x;
 				coord.y=position.y+1;
 			}
-		}else if(players[playerId].getLookAt().equals(Direction.down)){
+		}else if(player.getLookAt().equals(Direction.down)){
 				coord.x=position.x;
 				coord.y=position.y;
 			
@@ -441,28 +483,30 @@ public class Match {
 	}	
 
 	private boolean playerAllowed(int playerId){
-		return (players[playerId].getMaxHarpoonsAllow()-harpoonManager.getCurrentPlayerHarpoons())>0;
+		Player player = getPlayer(playerId);
+		return (player.getMaxHarpoonsAllow()-harpoonManager.getCurrentPlayerHarpoons())>0;
 	}
 
-	public boolean imTheWinner(int numPlayer){
-		boolean win = !players[numPlayer].isThePlayerDead();
+	public boolean imTheWinner(int playerId){
+		Player player = getPlayer(playerId);
+		boolean win = !player.isThePlayerDead();
 		for(int i = 0; i< numPlayers; i++){
-			if(i != numPlayer){
-				win = win && players[i].isThePlayerDead();
+			if(i != playerId){
+				win = win && player.isThePlayerDead();
 			}
 		}
 		return win;
 	}
 		
 	public int getIntegerCoordX(int playerId) {
-		Player myPlayer = players[playerId];
-		Vector3 position = myPlayer.getPosition();
+		Player player = getPlayer(playerId);
+		Vector3 position = player.getPosition();
 		return (int)position.x;
 	}
 	
 	public int getIntegerCoordY(int playerId) {
-		Player myPlayer = players[playerId];
-		Vector3 position = myPlayer.getPosition();
+		Player player = getPlayer(playerId);
+		Vector3 position = player.getPosition();
 		return (int)position.y;
 	}
 	
@@ -472,7 +516,8 @@ public class Match {
 	}
 
 	public int getMyPlayerRange(int playerId) {
-		return players[playerId].getRange();
+		Player player = getPlayer(playerId);
+		return player.getRange();
 	}
 	
 	public boolean checkCorrectMove(Direction dir, int playerId){
@@ -484,18 +529,19 @@ public class Match {
 	}
 	
 	public void checkUpgrade(Direction dir, int playerId) {
-		Vector3[] positions = players[playerId].getPositions();
+		Player player = getPlayer(playerId);
+		Vector3[] positions = player.getPositions();
 		if (positions[0].equals(positions[1]) && map.existUpgrade(positions[0])) {
-			players[playerId].upgradePlayer(map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y));
+			player.upgradePlayer(map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y));
 			map.setEmpty((int)positions[0].x,(int)positions[0].y);
 		}
 		else {
 			if (map.existUpgrade(positions[0])){
-					players[playerId].upgradePlayer(map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y));
+					player.upgradePlayer(map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y));
 					map.setEmpty((int)positions[0].x,(int)positions[0].y);
 			}
 			else if (map.existUpgrade(positions[1])){
-				players[playerId].upgradePlayer(map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y));
+				player.upgradePlayer(map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y));
 				map.setEmpty((int)positions[1].x,(int)positions[1].y);
 			}
 		}
@@ -515,26 +561,7 @@ public class Match {
 	public void setType(TypeGame type) {
 		this.type = type;
 	}
-	public Player[] getPlayers() {
-		return players;
-	}
-	
-	public Player getPlayers(int i) {
-		return players[i];
-	}
-	
-	public void setPlayers(Player[] players) {
-		this.players = players;
-	}
-	public int getNumPlayers() {
-		return numPlayers;
-	}
-	public int getNumUpgrades() {
-		return numUpgrades;
-	}
-	public void setNumUpgrades(int numUpgrades) {
-		this.numUpgrades = numUpgrades;
-	}
+
 	public long getTime() {
 		return matchTime;
 	}
@@ -543,8 +570,8 @@ public class Match {
 	}
 
 	public Vector3 getMyPlayerPosition(int playerId) {
-		Player myPlayer = players[playerId];
-		Vector3 currentPosition = new Vector3(myPlayer.getPosition().x,myPlayer.getPosition().y,0);
+		Player player = getPlayer(playerId);
+		Vector3 currentPosition = new Vector3(player.getPosition().x,player.getPosition().y,0);
 		return currentPosition;
 	}
 
@@ -566,8 +593,9 @@ public class Match {
 	}
 	
 
-	public Direction getPlayerDirection(int i) {
-		return players[i].getLookAt();
+	public Direction getPlayerDirection(int playerId) {
+		Player player = getPlayer(playerId);
+		return player.getLookAt();
 	}
 	public Vector3 getCoord() {
 		return coord;
@@ -576,8 +604,9 @@ public class Match {
 	public void setCoord(Vector3 coord) {
 		this.coord = coord;
 	}
-	public int getPlayerLifes(int i) {
-		return players[i].getLifes();
+	public int getPlayerLifes(int playerId) {
+		Player player = getPlayer(playerId);
+		return player.getLifes();
 	}
 
 	public HarpoonManager getHarpoonManager() {
@@ -596,21 +625,19 @@ public class Match {
 		this.timeEventsManager = timeEventsManager;
 	}
 
-	public boolean isThePlayerDead(int numPlayer) {
-		return players[numPlayer].isThePlayerDead();
+	public boolean isThePlayerDead(int playerId) {
+		Player player = getPlayer(playerId);
+		return player.isThePlayerDead();
 	}
 
-	public Direction getLookAt(int i) {
-		return players[i].getLookAt();
+	public Direction getLookAt(int playerId) {
+		Player player = getPlayer(playerId);
+		return player.getLookAt();
 	}
 
-	public boolean canPlay(int i) {
-		return players[i].canPlay();
-	}
-
-	public void setNumPlayers(int i) {
-		this.numPlayers = i;
-		
+	public boolean canPlay(int playerId) {
+		Player player = getPlayer(playerId);
+		return player.canPlay();
 	}
 
 	public int getMyPlayerId() {
@@ -621,16 +648,36 @@ public class Match {
 		this.myPlayerId = myPlayerId;
 	}
 
-	public int getPlayerSpeed(int playerId) {
-		return players[playerId].getSpeed();
+	public int getPlayerSpeed(int playerId){
+		Player player = getPlayer(playerId);
+		return player.getSpeed();
 	}
 
 	public int getPlayerHarpoonAllow(int playerId) {
-		return players[playerId].getMaxHarpoonsAllow();
+		Player player = getPlayer(playerId);
+		return player.getMaxHarpoonsAllow();
 	}
 
-	public int getPlayerRange(int playerId) {
-		return players[playerId].getRange();
+	public int getPlayerRange(int playerId){
+		Player player = getPlayer(playerId);
+		return player.getRange();
 	}
+
+	public ArrayList<Team> getTeams() {
+		return teams;
+	}
+
+	public void setTeams(ArrayList<Team> teams) {
+		this.teams = teams;
+	}
+
+	public int getNumPlayers() {
+		return this.numPlayers;
+	}
+
+	public void setNumPlayers(int numPlayers) {
+		this.numPlayers = numPlayers;
+	}
+
 
 }

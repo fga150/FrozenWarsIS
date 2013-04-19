@@ -52,7 +52,7 @@ public class SmartFoxServer implements IEventListener {
 		myPlayerId = -999;
 		String ip = getServerIP();
 		sfsClient = new SmartFox(false);
-		sfsClient.connect(ip,9933);
+		sfsClient.connect("127.0.0.1",9933);
 		addEventListeners();
 	}
 	
@@ -134,8 +134,8 @@ public class SmartFoxServer implements IEventListener {
 					getTimeResponse(response);
 				else if (cmd.equals("asignaMejoras"))
 					asignaMejoras(response);
-				else if(cmd.equals("NamesGame"))
-					NamesGame(response);
+				//else if(cmd.equals("NamesGame"))
+		//			NamesGame(response);
 				}
 		});
 	}
@@ -451,9 +451,10 @@ public class SmartFoxServer implements IEventListener {
 		 for(int i=0;i<numBarriles;i++){
 			 upgrades[i]= (params.getSFSArray("arrayBarriles").getInt(i));
 		 }
-		 manager.startGame(upgrades);
+		 int numPlayers = params.getInt("numPlayers");
+		 manager.startGame(upgrades,numPlayers);
 	}
-	
+	/*
 	private void NamesGame(ISFSObject response) {
 			int numPlayers = response.getInt("n");
 			String[] usersName = new String[numPlayers];
@@ -462,8 +463,8 @@ public class SmartFoxServer implements IEventListener {
 				int id=response.getInt("id"+i);
 				usersName[id-1] = name;
 			}
-			Application.MatchManager.setUserName(usersName);	
-	}
+			manager.setUserName(usersName);
+	}*/
 	
 	public void dispatch(BaseEvent event) throws SFSException{
 		

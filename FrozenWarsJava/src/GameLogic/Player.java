@@ -2,6 +2,7 @@ package GameLogic;
 
 import Application.MatchManager.Direction;
 import GameLogic.Map.TypeSquare;
+import GameLogic.Match.TypeGame;
 
 import com.badlogic.gdx.math.Vector3;
 
@@ -16,6 +17,7 @@ public class Player {
 	private Vector3 initialPosition;
 	private Direction specialMoveDir;
 	private Direction lookAt;
+	private int playerId;
 	private int lives;
 	private boolean invincible;
 	private boolean canPlay;
@@ -34,47 +36,90 @@ public class Player {
 	 * 1 range, 1 harpoon and no throwSkill). Depending of the player(@param i)
 	 * it will be placed in one position of the map.
 	 * @param i - The number id of the player (max 3)
+	 * 
 	 */
 	
-	public Player(int i) {
-		initialitePlayer();
-		if (i == 0){
-			initialPosition = new Vector3(0,0,0);
-			position = new Vector3(0,0,0);
-			this.lookAt = Direction.right;	
-		}
-		else if (i == 1){
-			initialPosition = new Vector3(10,0,0);
-			position = new Vector3(10,0,0);
-			this.lookAt = Direction.left;	
-		}
-		else if (i == 2){
-			initialPosition = new Vector3(0,10,0);
-			position = new Vector3(0,10,0);
-			this.lookAt = Direction.right;	
-		}
-		else if (i == 3){
-			initialPosition = new Vector3(10,10,0);
-			position = new Vector3(10,10,0);
-			this.lookAt = Direction.left;	
-		}
+	public Player(int playerId, int numPlayers, TypeGame type) {
+		this.playerId = playerId;
+		initialitePlayer(playerId,type);
+		initializePosition(playerId,numPlayers,type);
 	}
 	
+	private void initializePosition(int playerId, int numPlayers, TypeGame type) {
+		if (type.equals(TypeGame.Normal)) initializePositionNormal(playerId,numPlayers);
+	}
+
+	private void initializePositionNormal(int playerId, int numPlayers) {
+		if (numPlayers==4){
+			if (playerId == 0){
+				initialPosition = new Vector3(0,0,0);
+				position = new Vector3(0,0,0);
+				this.lookAt = Direction.right;	
+			}
+			else if (playerId == 1){
+				initialPosition = new Vector3(10,0,0);
+				position = new Vector3(10,0,0);
+				this.lookAt = Direction.left;	
+			}
+			else if (playerId == 2){
+				initialPosition = new Vector3(0,10,0);
+				position = new Vector3(0,10,0);
+				this.lookAt = Direction.right;	
+			}
+			else if (playerId == 3){
+				initialPosition = new Vector3(10,10,0);
+				position = new Vector3(10,10,0);
+				this.lookAt = Direction.left;	
+			}
+		}
+		else if (numPlayers == 3){
+			if (playerId == 0){
+				initialPosition = new Vector3(0,0,0);
+				position = new Vector3(0,0,0);
+				this.lookAt = Direction.right;	
+			}
+			else if (playerId == 1){
+				initialPosition = new Vector3(10,0,0);
+				position = new Vector3(10,0,0);
+				this.lookAt = Direction.left;	
+			}
+			else if (playerId == 2){
+				initialPosition = new Vector3(5,10,0);
+				position = new Vector3(5,10,0);
+				this.lookAt = Direction.right;	
+			}
+		}
+		else if (numPlayers == 2){
+			if (playerId == 0){
+				initialPosition = new Vector3(0,0,0);
+				position = new Vector3(0,0,0);
+				this.lookAt = Direction.right;	
+			}
+			else if (playerId == 1){
+				initialPosition = new Vector3(10,10,0);
+				position = new Vector3(10,10,0);
+				this.lookAt = Direction.left;	
+			}
+		}
+	}
+
 	/**
 	 *  This method initializes the player with default status such as 3 lives,
 	 *  1 speed upgrade, 1 range upgrade, 1 harpoon and no throw skill. Also attributes
 	 *  to calculate specialMove or if the penguin is invincible are set to false.
 	 */
 	
-	public void initialitePlayer(){
-		this.lives = 3;
-		this.speed = 1;
-		this.range = 1;
-		this.maxHarpoonsAllow = 1;
-		this.canPlay=true;
-		this.throwSkill=false;
-		this.specialMove=false;
-		this.invincible=false;
+	public void initialitePlayer(int playerId,TypeGame type){
+		if (type.equals(TypeGame.Normal)){
+			this.lives = 3;
+			this.speed = 1;
+			this.range = 1;
+			this.maxHarpoonsAllow = 1;
+			this.canPlay=true;
+			this.throwSkill=false;
+			this.specialMove=false;
+			this.invincible=false;
+		}
 	}
 	
 	/**
@@ -239,5 +284,13 @@ public class Player {
 
 	public boolean canPlay() {
 		return canPlay;
+	}
+
+	public int getPlayerId() {
+		return playerId;
+	}
+
+	public void setPlayerId(int playerId) {
+		this.playerId = playerId;
 	}
 }

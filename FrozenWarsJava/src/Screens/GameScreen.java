@@ -42,6 +42,7 @@ public class GameScreen implements Screen{
 	private BitmapFont font;
 	private BitmapFont font2;
 	private int numPlayer;
+	private int numPlayers;
 
 	
 	public GameScreen(MatchManager manager){
@@ -158,7 +159,6 @@ public class GameScreen implements Screen{
 					else if (typeBasicMatrix.equals(TypeSquare.bootUpgrade)) texture  = Assets.getBootUpgrade();
 					else if (typeBasicMatrix.equals(TypeSquare.rangeUpgrade)) texture  = Assets.getRangeUpgrade();
 					else if (typeBasicMatrix.equals(TypeSquare.numHarpoonUpgrade)) texture  = Assets.getNumHarpoonUpgrade();
-					else if (typeBasicMatrix.equals(TypeSquare.throwUpgrade)) texture  = Assets.getThrowUpgrade();
 					if (typeBasicMatrix.equals(TypeSquare.unbreakable)||(typeBasicMatrix.equals(TypeSquare.harpoon))||(typeBasicMatrix.equals(TypeSquare.breakable))){
 						batcher.draw(texture,i+8,j+1,1,1);
 					}else	batcher.draw(texture,i+8.20f,j+1.20f,0.65f,0.65f);
@@ -175,7 +175,7 @@ public class GameScreen implements Screen{
 		batcher.draw(Assets.getDirectionPanel(),0.25f,0,7,7);
 		batcher.draw(Assets.getButtonHarpoon(),19,0,2,4);
 		
-		for (int i=0;i<manager.getNumPlayers();i++){
+		for (int i=0;i<numPlayers;i++){
 			if(manager.canPlay(i)){
 				Vector3 position = manager.getPlayerPosition(i);
 				batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
@@ -187,7 +187,7 @@ public class GameScreen implements Screen{
 		paintLifes();
 		paintLinesPanelLives();
 		paintPlayerStatus();
-		paintPlayerName();
+		//paintPlayerName();
 		
 		batcher.end();
 		guiCam.update();
@@ -278,9 +278,9 @@ public class GameScreen implements Screen{
 		font.setColor(aux);
 		font.setScale(1);
 	}
-
+/*
 	private void paintPlayerName(){
-		
+	
 		//Paint player status You are dead/you are RED/BLUE/YELLOW/GREEN
  		if(!manager.isThePlayerDead(numPlayer)){
  			String userMessage = "You are ";
@@ -291,11 +291,11 @@ public class GameScreen implements Screen{
  			}else if(numPlayer == 1){
  				font.setColor(Color.GREEN);
  				userMessage = userMessage.concat("GREEN player: ");
- 			}else if(numPlayer == 2){
+ 			}else if(numPlayer == 2 && numPlayers<=3){
  				
  				font.setColor(Color.YELLOW);
  				userMessage = userMessage.concat("YELLOW player: ");
- 			}else if(numPlayer == 3){
+ 			}else if(numPlayer == 3 && numPlayers==4){
  				font.setColor(Color.BLUE);
  				userMessage = userMessage.concat("BLUE player: ");
  			}
@@ -307,9 +307,9 @@ public class GameScreen implements Screen{
  				font.setColor(Color.RED);
  			}else if(numPlayer == 1){
  				font.setColor(Color.GREEN);
- 			}else if(numPlayer == 2){
+ 			}else if(numPlayer == 2 && numPlayers<=3){
  				font.setColor(Color.YELLOW);
- 			}else if(numPlayer == 3){
+ 			}else if(numPlayer == 3 && numPlayers<=4){
  				font.setColor(Color.BLUE);
  			}
  			font.draw(batcher,userMessage, 1.5f*49 ,12.35f*49);
@@ -325,11 +325,11 @@ public class GameScreen implements Screen{
 			font.setColor(Color.GREEN);
 			font.draw(batcher,cutName(manager.getUserName(1)), 0.9f*49 ,9.4f*49);
 		}	
-		if (MatchManager.getUsersNames().length>2){//method temporaly getNumPlayer always return 4
+		if (manager.getUsersNames().length>2){//method temporaly getNumPlayer always return 4
 			if(manager.getNumPlayers()>2){
 				font.setColor(Color.YELLOW);
 				font.draw(batcher,cutName(manager.getUserName(2)), 0.9f*49 ,8.4f*49);
-			if (MatchManager.getUsersNames().length>3){
+			if (manager.getUsersNames().length>3){
 				if(manager.getNumPlayers()>3){
 					font.setColor(Color.BLUE);
 					font.draw(batcher,cutName(manager.getUserName(3)), 0.9f*49 ,7.5f*49);
@@ -351,7 +351,7 @@ public class GameScreen implements Screen{
 		return playerName;
 		
 	}
-	
+	*/
 	private void paintPlayerStatus(){
 
 		if(!manager.isThePlayerDead(numPlayer)){
@@ -359,9 +359,9 @@ public class GameScreen implements Screen{
 				batcher.draw(Assets.getRedPlayer(),5.75f,11.75f,1,1);
 			}else if(numPlayer==1){
 				batcher.draw(Assets.getGreenPlayer(),5.75f,11.75f,1,1);
-			}else if(numPlayer==2){
+			}else if(numPlayer==2 && numPlayers<=3){
 				batcher.draw(Assets.getYellowPlayer(),5.75f,11.75f,1,1);
-			}else if(numPlayer==3){
+			}else if(numPlayer==3 && numPlayers<=4){
 				batcher.draw(Assets.getBluePlayer(),5.75f,11.75f,1,1);
 			}
 		}else{
@@ -369,9 +369,9 @@ public class GameScreen implements Screen{
 				batcher.draw(Assets.getDeadIconRed(),5.5f,11.75f,1,1);
 			}else if(numPlayer==1){
 				batcher.draw(Assets.getDeadIconGreen(),5.5f,11.75f,1,1);
-			}else if(numPlayer==2){
+			}else if(numPlayer==2 && numPlayers<=3){
 				batcher.draw(Assets.getDeadIconYellow(),5.5f,11.75f,1,1);
-			}else if(numPlayer==3){
+			}else if(numPlayer==3 && numPlayers<=4){
 				batcher.draw(Assets.getDeadIconBlue(),5.5f,11.75f,1,1);
 			}
 			batcher.draw(Assets.getGameOver(),6,4,14,8);
@@ -390,12 +390,14 @@ public class GameScreen implements Screen{
 		
 		for (int i=0;i<manager.getPlayerLifes(1);i++)	
 			batcher.draw(Assets.getLifeIconGreen(),3.625f+0.975f*i,8.720f,0.75f,0.75f);
-			
+		if (numPlayers<=3){
 		for (int i=0;i<manager.getPlayerLifes(2);i++)
 			batcher.draw(Assets.getLifeIconYellow(),3.625f+0.975f*i,7.75f,0.75f,0.75f);
-		
+		}
+		if (numPlayers<=3){
 		for (int i=0;i<manager.getPlayerLifes(3);i++)
 			batcher.draw(Assets.getLifeIconBlue(),3.625f+0.975f*i,6.80f,0.75f,0.75f);
+		}
 	}
 	
 	private void paintLinesPanelLives(){
@@ -403,9 +405,9 @@ public class GameScreen implements Screen{
 			batcher.draw(Assets.getLineLifesPanel(),3.425f,10.05f,3.225f,0.125f);
 		if(manager.isThePlayerDead(1))
 			batcher.draw(Assets.getLineLifesPanel(),3.425f,9.05f,3.225f,0.125f);
-		if(manager.isThePlayerDead(2))
+		if(manager.isThePlayerDead(2) && numPlayers<=3)
 			batcher.draw(Assets.getLineLifesPanel(),3.425f,8.05f,3.225f,0.125f);
-		if(manager.isThePlayerDead(3))
+		if(manager.isThePlayerDead(3) && numPlayers<=4)
 			batcher.draw(Assets.getLineLifesPanel(),3.425f,7.1f,3.225f,0.125f);
 	}
 	
@@ -419,11 +421,12 @@ public class GameScreen implements Screen{
 	
 	public void enable() {
 		this.enable = true;
+		numPlayers = manager.getNumPlayers();
 		reloadAnimations();
 	}
 
 	private void reloadAnimations() {
-		for (int i=0;i<4;i++){
+		for (int i=0;i<numPlayers;i++){
 			penguinAnimations[i].setCurrentFrame(manager.getLookAt(i)); 
 		}
 	}
