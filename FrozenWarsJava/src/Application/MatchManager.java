@@ -7,6 +7,7 @@ import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
 import GameLogic.Match;
 import GameLogic.Match.TypeGame;
+import GameLogic.TimeEventsManager;
 import GameLogic.XMLMapReader;
 import Screens.GameScreen;
 import Server.SmartFoxServer;
@@ -93,6 +94,7 @@ public class MatchManager {
 		TypeGame type = getTypeGame(mode);
 		this.numPlayers = numPlayers;
 		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,type);
+		match.getTimeEventsManager().endGameEvent();
 		gameScreen.enable();
 		LaunchFrozenWars.getGame().setScreen(gameScreen);
 	}
@@ -227,4 +229,7 @@ public class MatchManager {
 		return match.isInvisible(numPlayer);
 	}
 
+	public boolean isGameTimeOff(){
+		return match.isGameTimeOff();
+	}
 }

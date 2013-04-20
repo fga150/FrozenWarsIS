@@ -29,6 +29,7 @@ public class Match {
 	private long matchTime;
 	private int myPlayerId;
 	private int numPlayers;
+	private boolean gameTimeOff;
 	
 	public Match(int[] upgrades,XMLMapReader xmlMapReader,int playerId, int numPlayers,TypeGame type){
 		this.myPlayerId = playerId;
@@ -38,6 +39,7 @@ public class Match {
 		this.teams = initializeTeams(numPlayers,type);
 		this.harpoonManager = new HarpoonManager(numPlayers);
 		this.timeEventsManager = new TimeEventsManager(this);
+		this.gameTimeOff = false;
 		coord=new Vector3();
 	}
 	
@@ -302,7 +304,6 @@ public class Match {
 		map.putSunkenHarpoonAt((int)position.x,(int)position.y);
 		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
 		map.addAllFissures(harpoonManager.getActiveHarpoonList());
-		
 	}
 	
 	private void harpoonRangeDamage(Harpoon harpoon) {
@@ -482,6 +483,9 @@ public class Match {
 		return (map.isEmptySquare((int)coord.x,(int)coord.y) && playerAllowed(playerId));
 	}	
 
+	public void gameTimeOff(){
+		gameTimeOff=true;
+	}
 	private boolean playerAllowed(int playerId){
 		Player player = getPlayer(playerId);
 		return (player.getMaxHarpoonsAllow()-harpoonManager.getCurrentPlayerHarpoons())>0;
@@ -490,7 +494,7 @@ public class Match {
 	public boolean imTheWinner(int playerId){
 		Player player = getPlayer(playerId);
 		boolean win = !player.isThePlayerDead();
-		for(int i = 0; i< numPlayers; i++){
+		for(int i = 0; i<numPlayers; i++){
 			if(i != playerId){
 				win = win && player.isThePlayerDead();
 			}
@@ -653,7 +657,7 @@ public class Match {
 
 	public boolean canPlay(int playerId) {
 		Player player = getPlayer(playerId);
-		return player.canPlay();
+		return (player.canPlay() && !gameTimeOff);
 	}
 
 	public int getMyPlayerId() {
@@ -697,4 +701,10 @@ public class Match {
 	public boolean isInvisible(int playerId){
 		return getPlayer(playerId).isInvisible();
 	}
+
+	public boolean isGameTimeOff() {
+		return gameTimeOff;
+	}
+	
+	
 }

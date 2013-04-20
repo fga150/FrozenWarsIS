@@ -10,7 +10,7 @@ public class Team {
 	private ArrayList<Player> players;
 	private boolean share;
 	
-	// Getters and Setters
+
 	/**
 	 * 
 	 * @param numPlayers - The number of players in the game
@@ -27,6 +27,8 @@ public class Team {
 		}
 	}
 	
+	
+// Getters and Setters
 	public int getNumTeam() {
 		return numTeam;
 	}

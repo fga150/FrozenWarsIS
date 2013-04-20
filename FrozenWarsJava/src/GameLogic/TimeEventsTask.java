@@ -4,8 +4,7 @@ import com.badlogic.gdx.utils.Timer;
 
 public class TimeEventsTask extends Timer.Task {
 	
-	public enum TypeEvent{sinkHarpoon,freezeWater,timeMatch,sinkPenguin,invisible};
-	
+	public enum TypeEvent{sinkHarpoon,freezeWater,timeMatch,sinkPenguin,invisible, endGame};
 	private TimeEventsManager timeEventsManager;
 	private TypeEvent type;
 	private Object taskObject;

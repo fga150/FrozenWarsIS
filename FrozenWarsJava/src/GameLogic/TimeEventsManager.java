@@ -18,6 +18,7 @@ public class TimeEventsManager{
 	private final float sunkenTime = 0.5f;
 	private final float invisibleTime = 10;
 	private final float sinkPenguinTime = 1;
+	private final float endGameTime = 180;
 	
 	private Match match;
 	private HashMap<Player,Timer> invisiblePlayers;
@@ -83,6 +84,13 @@ public class TimeEventsManager{
 		timer.start();
 	}
 	
+	public void endGameEvent(){
+		TimeEventsTask timerTask = new TimeEventsTask(this,null,TypeEvent.endGame);
+		Timer timer = new Timer();
+		timer.scheduleTask(timerTask,endGameTime);
+		timer.start();
+	}
+	
 	public void actionPerformed(TypeEvent type, Object taskObject) {
 		if (type.equals(TypeEvent.sinkHarpoon)){
 			Harpoon harpoon = (Harpoon)taskObject;
@@ -101,6 +109,10 @@ public class TimeEventsManager{
 		else if (type.equals(TypeEvent.invisible)){
 			Player player = (Player)taskObject;
 			match.endInvisible(player);
+		}
+		else if(type.equals(TypeEvent.endGame)){
+			System.out.println("Evento fin de partida");
+			match.gameTimeOff();
 		}
 	}
 

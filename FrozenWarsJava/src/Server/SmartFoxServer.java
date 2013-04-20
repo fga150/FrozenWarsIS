@@ -52,7 +52,7 @@ public class SmartFoxServer implements IEventListener {
 		myPlayerId = -999;
 		String ip = getServerIP();
 		sfsClient = new SmartFox(false);
-		sfsClient.connect(ip,9933);
+		sfsClient.connect("127.0.0.1",9933);
 		addEventListeners();
 	}
 	
@@ -452,8 +452,8 @@ public class SmartFoxServer implements IEventListener {
 		 for(int i=0;i<numBarriles;i++){
 			 upgrades[i]= (params.getSFSArray("arrayBarriles").getInt(i));
 		 }
-		 //int numPlayers = params.getInt("numPlayers");
-		 manager.startGame(upgrades,4);
+		 int numPlayers = params.getInt("numPlayers");
+		 manager.startGame(upgrades,numPlayers);
 	}
 	
 	private void NamesGame(ISFSObject response) {

@@ -175,6 +175,7 @@ public class GameScreen implements Screen{
 		
 		batcher.draw(Assets.getDirectionPanel(),0.25f,0,7,7);
 		batcher.draw(Assets.getButtonHarpoon(),19,0,2,4);
+		batcher.draw(Assets.getLifesPanel(),0.5f,6.75f,6,5);
 		
 		for (int i=0;i<numPlayers;i++){
 			if(manager.canPlay(i)){
@@ -184,14 +185,22 @@ public class GameScreen implements Screen{
 				batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
 				batcher.setColor(new Color(255,255,255,1));
 			}
-		}
+		}		
 		
-		batcher.draw(Assets.getLifesPanel(),0.5f,6.75f,6,5);
 		paintUpgrades();
-		paintLifes();
-		paintLinesPanelLives();
 		paintPlayerStatus();
-		paintPlayerName();
+		
+		paintLinesInLivesPanel();
+		paintLivesinLivesPanel();
+	
+		paintGameStatus();
+		
+		paintPlayerColorAndStatus();
+		paintPlayerNamesInLivesPanel();
+		
+		paintMyMission();
+		
+		
 		
 		batcher.end();
 		guiCam.update();
@@ -234,6 +243,16 @@ public class GameScreen implements Screen{
 		}
 	}
 	}
+	
+	private void paintMyMission(){
+		/*TODO Diferent messages in game modes*/
+		String mission = "BEAT THEM UP!";
+		font.setColor(Color.BLACK);
+		font2.draw(batcher,mission, 11.25f*49 ,12.85f*49);
+		
+	}
+	
+	
 	
 	private void paintUpgrades() {
 		int speedUpgrade = manager.getSpeed(numPlayer);
@@ -291,7 +310,25 @@ public class GameScreen implements Screen{
 		font.setScale(1);
 	}
 
-	private void paintPlayerName(){
+	
+	private void paintGameStatus(){
+		if (manager.isGameTimeOff()){
+			batcher.draw(Assets.getGameOver(),6,4,14,8);
+			batcher.setProjectionMatrix(textCam.combined);
+			/*TODO Create bigger font or new image with time out current font is too small */
+			font2.setColor(Color.WHITE);
+			font2.draw(batcher, "TIME OUT!",12*49,4*49);
+		}
+		else if(manager.isThePlayerDead(numPlayer))
+			batcher.draw(Assets.getGameOver(),6,4,14,8);
+		else if (manager.imTheWinner(numPlayer))
+			batcher.draw(Assets.getYouWin(),6,4,14,8);	
+	}
+
+	
+// Drawing player status
+	
+	private void paintPlayerColorAndStatus(){
 	
 		//Paint player status You are dead/you are RED/BLUE/YELLOW/GREEN
  		if(!manager.isThePlayerDead(numPlayer)){
@@ -303,11 +340,10 @@ public class GameScreen implements Screen{
  			}else if(numPlayer == 1){
  				font.setColor(Color.GREEN);
  				userMessage = userMessage.concat("GREEN player: ");
- 			}else if(numPlayer == 2 && numPlayers<=3){
- 				
+ 			}else if(numPlayer == 2){
  				font.setColor(Color.YELLOW);
  				userMessage = userMessage.concat("YELLOW player: ");
- 			}else if(numPlayer == 3 && numPlayers==4){
+ 			}else if(numPlayer == 3){
  				font.setColor(Color.BLUE);
  				userMessage = userMessage.concat("BLUE player: ");
  			}
@@ -319,40 +355,18 @@ public class GameScreen implements Screen{
  				font.setColor(Color.RED);
  			}else if(numPlayer == 1){
  				font.setColor(Color.GREEN);
- 			}else if(numPlayer == 2 && numPlayers<=3){
+ 			}else if(numPlayer == 2){
  				font.setColor(Color.YELLOW);
- 			}else if(numPlayer == 3 && numPlayers<=4){
+ 			}else if(numPlayer == 3){
  				font.setColor(Color.BLUE);
  			}
  			font.draw(batcher,userMessage, 1.5f*49 ,12.35f*49);
  			font.setColor(Color.BLACK);
  		}
- 		
- 		//Write players name in lives panel
-		if(manager.getNumPlayers()>1){
-			batcher.setProjectionMatrix(textCam.combined);
-			font.setColor(Color.RED);
-			font.draw(batcher,cutName(manager.getUserName(0)), 0.9f*49 ,10.4f*49);
-		
-			font.setColor(Color.GREEN);
-			font.draw(batcher,cutName(manager.getUserName(1)), 0.9f*49 ,9.4f*49);
-		}	
-		if (manager.getUsersNames().length>2){//method temporaly getNumPlayer always return 4
-			if(manager.getNumPlayers()>2){
-				font.setColor(Color.YELLOW);
-				font.draw(batcher,cutName(manager.getUserName(2)), 0.9f*49 ,8.4f*49);
-			if (manager.getUsersNames().length>3){
-				if(manager.getNumPlayers()>3){
-					font.setColor(Color.BLUE);
-					font.draw(batcher,cutName(manager.getUserName(3)), 0.9f*49 ,7.5f*49);
-				}
-			}
-			}
-		}
-		
-							
-		
 	}
+ 	
+
+
 	
 	public String cutName(String name){
 		String playerName = name;
@@ -363,6 +377,7 @@ public class GameScreen implements Screen{
 		return playerName;
 		
 	}
+
 	
 	private void paintPlayerStatus(){
 
@@ -386,33 +401,34 @@ public class GameScreen implements Screen{
 			}else if(numPlayer==3 && numPlayers<=4){
 				batcher.draw(Assets.getDeadIconBlue(),5.5f,11.75f,1,1);
 			}
-			batcher.draw(Assets.getGameOver(),6,4,14,8);
-		}
-		if (manager.imTheWinner(numPlayer)){
-			batcher.draw(Assets.getYouWin(),6,4,14,8);
-		}
-		
-		batcher.setProjectionMatrix(textCam.combined);
-		font2.draw(batcher, "Lives", 0.5f*49, 11.25f*49);
-}
 			
-	private void paintLifes() {
-		for (int i=0;i<manager.getPlayerLifes(0);i++)
-			batcher.draw(Assets.getLifeIconRed(),3.625f+0.975f*i,9.750f,0.75f,0.75f);
+		}		
 		
-		for (int i=0;i<manager.getPlayerLifes(1);i++)	
-			batcher.draw(Assets.getLifeIconGreen(),3.625f+0.975f*i,8.720f,0.75f,0.75f);
-		if (numPlayers<=3){
+}
+//End Paint player status methods
+	
+//Drawing Lives Panel
+	
+	private void paintLivesinLivesPanel() {
+		if(numPlayers>1){
+			for (int i=0;i<manager.getPlayerLifes(0);i++)
+				batcher.draw(Assets.getLifeIconRed(),3.625f+0.975f*i,9.750f,0.75f,0.75f);
+			
+			for (int i=0;i<manager.getPlayerLifes(1);i++)	
+				batcher.draw(Assets.getLifeIconGreen(),3.625f+0.975f*i,8.720f,0.75f,0.75f);
+		}
+		if (numPlayers>2){
 		for (int i=0;i<manager.getPlayerLifes(2);i++)
 			batcher.draw(Assets.getLifeIconYellow(),3.625f+0.975f*i,7.75f,0.75f,0.75f);
 		}
-		if (numPlayers<=3){
+		if (numPlayers>3){
 		for (int i=0;i<manager.getPlayerLifes(3);i++)
 			batcher.draw(Assets.getLifeIconBlue(),3.625f+0.975f*i,6.80f,0.75f,0.75f);
 		}
+
 	}
 	
-	private void paintLinesPanelLives(){
+	private void paintLinesInLivesPanel(){
 		if(manager.isThePlayerDead(0))
 			batcher.draw(Assets.getLineLifesPanel(),3.425f,10.05f,3.225f,0.125f);
 		if(manager.isThePlayerDead(1))
@@ -422,6 +438,31 @@ public class GameScreen implements Screen{
 		if(manager.isThePlayerDead(3) && numPlayers<=4)
 			batcher.draw(Assets.getLineLifesPanel(),3.425f,7.1f,3.225f,0.125f);
 	}
+	
+	private void paintPlayerNamesInLivesPanel(){
+		//Write players name in lives panel
+		if(numPlayers>1){
+			batcher.setProjectionMatrix(textCam.combined);
+			font.setColor(Color.RED);
+			font.draw(batcher,cutName(manager.getUserName(0)), 0.9f*49 ,10.4f*49);
+		
+			font.setColor(Color.GREEN);
+			font.draw(batcher,cutName(manager.getUserName(1)), 0.9f*49 ,9.4f*49);
+		}	
+		if (numPlayers>2){
+				font.setColor(Color.YELLOW);
+				font.draw(batcher,cutName(manager.getUserName(2)), 0.9f*49 ,8.4f*49);
+			if (numPlayers>3){
+					font.setColor(Color.BLUE);
+					font.draw(batcher,cutName(manager.getUserName(3)), 0.9f*49 ,7.5f*49);
+			}
+		}
+		batcher.setProjectionMatrix(textCam.combined);
+		font2.draw(batcher, "Lives", 0.5f*49, 11.25f*49);
+	}
+	
+//End Of Lives Panel methods
+	
 	
 	public void movePlayer(Direction dir, int playerId, Vector3 position) {                                     
         if (dir.equals(Direction.right)) currentFrame = penguinAnimations[playerId].getwalkAnimationR().getKeyFrame(stateTime, true); 
