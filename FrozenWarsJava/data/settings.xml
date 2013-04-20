@@ -1,6 +1,6 @@
 <Settings>
 	<Sound>off</Sound>
-	<Vibration>off</Vibration>
+	<Vibration>on</Vibration>
 	<Userdata>
 		<Username></Username>
 		<Userpassword></Userpassword>
