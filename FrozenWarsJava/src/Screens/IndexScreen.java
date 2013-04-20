@@ -15,7 +15,12 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class IndexScreen implements Screen{
 
-
+	private static IndexScreen instance; 
+	public static IndexScreen getInstance() {
+		if (instance == null) instance = new IndexScreen();
+		return instance;
+	}
+	
 	    /** The gui cam. */
 	private OrthographicCamera guiCam;
 	
@@ -36,6 +41,7 @@ public class IndexScreen implements Screen{
     int window;
 
     public IndexScreen() {
+    	instance=this;
 		this.game = LaunchFrozenWars.getGame();
 		this.initialScreen = InitialScreen.getInstance();
 

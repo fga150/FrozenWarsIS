@@ -1,6 +1,9 @@
 	package Application;
 
+import Screens.HelpScreen;
+import Screens.IndexScreen;
 import Screens.InitialScreen;
+import Screens.InviteScreen;
 import Screens.LoadScreen;
 import Screens.MultiplayerScreen;
 import Server.SmartFoxServer;
@@ -46,17 +49,18 @@ public class LaunchFrozenWars extends Game implements InputProcessor {
 	public boolean keyDown(int keycode) {
 	       if(keycode == Keys.BACK){
 	             // Do back button handling (show pause menu?)
-	    	 /*  if(InitialScreen.getInstance().isMultiplayerOn() && this.getScreen()==InviteScreen.getInstance()){
+	    	   if(this.getScreen()==InviteScreen.getInstance()){
 	   			loadScreen = MultiplayerScreen.getInstance();
 	   			setScreen(loadScreen);
 	    	   }
-	   			else if(this.getScreen()==HelpScreen.getInstance()){
-		   			loadScreen = IndexScreen.getInstance();
-		   			setScreen(loadScreen);
-	   			}
-	   			else {*/
+	    	   else if(this.getScreen()==HelpScreen.getInstance()){
+	    		   		   			loadScreen = IndexScreen.getInstance();
+	    		   		   			setScreen(loadScreen);
+	   	   	   }
+
+	   		   else {
 		   			setScreen(InitialScreen.getInstance());
-	   			//}
+	   		}
 	       }
 		return false;
 	}
