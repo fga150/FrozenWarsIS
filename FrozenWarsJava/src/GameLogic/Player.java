@@ -120,6 +120,16 @@ public class Player {
 			this.specialMove=false;
 			this.invincible=false;
 		}
+		if (type.equals(TypeGame.BattleRoyale)){
+			this.lives = 1;
+			this.speed = 1;
+			this.range = 1;
+			this.maxHarpoonsAllow = 1;
+			this.canPlay=true;
+			this.invisible=false;
+			this.specialMove=false;
+			this.invincible=false;
+		}
 	}
 	
 	/**

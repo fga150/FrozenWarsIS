@@ -46,6 +46,8 @@ public class Match {
 	private ArrayList<Team> initializeTeams(int numPlayers, TypeGame type) {
 		ArrayList<Team> teams = null;
 		if (type.equals(TypeGame.Normal)) teams = normalGame(numPlayers,type); 
+		if (type.equals(TypeGame.BattleRoyale)) teams = battleRoyalGame(numPlayers,type);
+		if (type.equals(TypeGame.Teams)) teams = teamsGame(numPlayers,type);
 		return teams;
 	}
 
@@ -58,6 +60,28 @@ public class Match {
 		}
 		return teams;
 	}
+	
+	/**
+	 * Create 4 teams with 1 player each one
+	 * @param numPlayers: number of player in each team
+	 * @param type : game mode
+	 * @return
+	 */
+	private  ArrayList<Team> battleRoyalGame(int numPlayers,TypeGame type){
+		//Is like normal game, the same team
+		return normalGame(numPlayers,type);
+	} 
+	
+	private  ArrayList<Team> teamsGame(int numPlayers,TypeGame type){
+		ArrayList<Team> teams = new ArrayList<Team>();
+		int playerId = 0;
+		for (int i=0;i<(numPlayers/2);i++){
+			teams.add(new Team(numPlayers,i,2,playerId,type));
+			playerId += 1;
+		}
+		return teams;
+		
+	} 
 	
 	private Player getPlayer(int playerId){
 		Player player = null;
@@ -496,6 +520,7 @@ public class Match {
 		boolean win = !player.isThePlayerDead();
 		for(int i = 0; i<numPlayers; i++){
 			if(i != playerId){
+				player = getPlayer(i);
 				win = win && player.isThePlayerDead();
 			}
 		}
@@ -657,7 +682,7 @@ public class Match {
 
 	public boolean canPlay(int playerId) {
 		Player player = getPlayer(playerId);
-		return (player.canPlay() && !gameTimeOff);
+		return (player.canPlay() && !gameTimeOff && !imTheWinner(playerId));
 	}
 
 	public int getMyPlayerId() {

@@ -94,7 +94,7 @@ public class MatchManager {
 		TypeGame type = getTypeGame(mode);
 		this.numPlayers = numPlayers;
 		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,type);
-		match.getTimeEventsManager().endGameEvent();
+		if (type.equals(TypeGame.BattleRoyale)) match.getTimeEventsManager().endGameEvent();
 		gameScreen.enable();
 		LaunchFrozenWars.getGame().setScreen(gameScreen);
 	}
@@ -199,7 +199,7 @@ public class MatchManager {
 	}
 
 	public static void setUserName(String[] names) {
-		usersNames = new String[2];
+		usersNames = new String[names.length];
 		for(int i = 0; i<names.length; i++){
 			usersNames[i] = names[i];
 		}

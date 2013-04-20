@@ -12,7 +12,6 @@ public class Team {
 	
 
 	/**
-	 * 
 	 * @param numPlayers - The number of players in the game
 	 * @param numTeam - The number of the team
 	 * @param numPlayersTeam - The number of in the player inside the team
@@ -23,7 +22,7 @@ public class Team {
 		this.numTeam = numTeam;
 		this.players = new ArrayList<Player>();
 		for (int i=0;i<numPlayersTeam;i++){
-			players.add(new Player(playerId+i,numPlayers,type));
+			players.add(new Player(playerId+2*i,numPlayers,type));
 		}
 	}
 	
