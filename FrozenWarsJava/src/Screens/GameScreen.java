@@ -247,10 +247,30 @@ public class GameScreen implements Screen{
 	}
 	
 	private void paintMyMission(){
-		/*TODO Diferent messages in game modes*/
-		String mission = "BEAT THEM UP!";
-		font.setColor(Color.BLACK);
-		font2.draw(batcher,mission, 11.25f*49 ,12.85f*49);
+		String mission ="";
+		if(manager.getGameType().toString().equals("Normal") 
+			|| (manager.getGameType().toString().equals("BattleRoyale"))){
+				mission	 = mission.concat("BEAT THEM UP!");
+				font.setColor(Color.BLACK);
+				font2.draw(batcher,mission, 11.25f*49 ,12.85f*49);
+		}
+		else if(manager.getGameType().toString().equals("Teams")){
+			mission	 = mission.concat("BEAT THE OTHER TEAM!");
+			font.setColor(Color.BLACK);
+			font2.draw(batcher,mission, 10.25f*49 ,12.85f*49);
+		}
+		else if (manager.getGameType().toString().equals("Survival")){
+			if(manager.getMyTeam(numPlayer).getNumTeam()==0){
+				mission	 = mission.concat("BEAT THEM UP!");
+				font.setColor(Color.BLACK);
+				font2.draw(batcher,mission, 11.25f*49 ,12.85f*49);
+			}else{
+				mission	 = mission.concat("RUN!");
+				font.setColor(Color.BLACK);
+				font2.draw(batcher,mission, 12.5f*49 ,12.85f*49);
+			}
+		}
+		
 	}
 	
 	
@@ -314,16 +334,24 @@ public class GameScreen implements Screen{
 	
 	private void paintGameStatus(){
 		if(manager.isThePlayerDead(numPlayer))
-			batcher.draw(Assets.getGameOver(),6,4,14,8);
+			batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
 		else if (manager.imTheWinner(numPlayer))
-			batcher.draw(Assets.getYouWin(),6,4,14,8);	
+			if(manager.getMyTeam(numPlayer).getPlayers().size()==1)
+				batcher.draw(Assets.getYouWin(),6.5f,3,14,8);				
+			else batcher.draw(Assets.getYourTeamWins(),7,3,13,7);
 		else if (manager.isGameTimeOff()){
-			batcher.draw(Assets.getGameOver(),6,4,14,8);
+			batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
 			batcher.setProjectionMatrix(textCam.combined);
 			/*TODO Create bigger font or new image with time out current font is too small */
-			font2.setColor(Color.WHITE);
-			font2.draw(batcher, "TIME OUT!",12*49,4*49);
+			font2.setScale(1.75f);
+			font2.draw(batcher, "TIME OUT!",10.5f*49,3.5f*49);
+			font2.setScale(1);
+			
 		}
+		else if (manager.areAllPlayersDead()){
+			batcher.draw(Assets.getDraw(),6.5f,4,14,8);
+		}
+		
 	}
 
 	
@@ -444,17 +472,17 @@ public class GameScreen implements Screen{
 	private void paintLinesInLivesPanel(){
 		if(numPlayers>1){
 			if(manager.isThePlayerDead(0))
-				batcher.draw(Assets.getLineLifesPanel(),3.425f,10.05f,3.225f,0.125f);
+				batcher.draw(Assets.getLineLifesPanel(),3.425f,10.05f,3.22f,0.125f);
 			if(manager.isThePlayerDead(1))
-				batcher.draw(Assets.getLineLifesPanel(),3.425f,9.05f,3.225f,0.125f);
+				batcher.draw(Assets.getLineLifesPanel(),3.425f,9.05f,3.22f,0.125f);
 		}
 		if(numPlayers>2){
 			if(manager.isThePlayerDead(2) && numPlayers<=3)
-				batcher.draw(Assets.getLineLifesPanel(),3.425f,8.05f,3.225f,0.125f);
+				batcher.draw(Assets.getLineLifesPanel(),3.425f,8.05f,3.22f,0.125f);
 		}
 		if(numPlayers>3){
 			if(manager.isThePlayerDead(3) && numPlayers<=4)
-				batcher.draw(Assets.getLineLifesPanel(),3.425f,7.1f,3.225f,0.125f);
+				batcher.draw(Assets.getLineLifesPanel(),3.425f,7.1f,3.22f,0.125f);
 			
 		}
 	}

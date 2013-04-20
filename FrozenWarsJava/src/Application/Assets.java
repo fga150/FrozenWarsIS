@@ -3,6 +3,7 @@ package Application;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
@@ -48,6 +49,8 @@ public class Assets {
 	    public static AtlasRegion volver;
 	    
 	    public static AtlasRegion youWin;
+	    public static AtlasRegion yourTeamWins;
+	    public static AtlasRegion draw;
 	    public static AtlasRegion gameOver;
 	    
 	    
@@ -236,6 +239,8 @@ public class Assets {
 		    volver = atlas.findRegion("Back");
 		    
 		    youWin = atlas.findRegion("YouWin");
+		    yourTeamWins = atlas.findRegion("yourTeamWins");
+		    draw = atlas.findRegion("draw");
 		    gameOver = atlas.findRegion("gameOver");
 		    
 		    harpooon = atlas.findRegion("ArponParaBomba");
@@ -671,6 +676,14 @@ public class Assets {
 
 		public static AtlasRegion getGreenPlayer() {
 			return greenPlayer;
+		}
+
+		public static AtlasRegion getYourTeamWins() {
+			return yourTeamWins;
+		}
+
+		public static AtlasRegion getDraw() {
+			return draw;
 		}
 
 	

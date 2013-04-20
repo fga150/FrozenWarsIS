@@ -7,6 +7,7 @@ import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
 import GameLogic.Match;
 import GameLogic.Match.TypeGame;
+import GameLogic.Team;
 import GameLogic.TimeEventsManager;
 import GameLogic.XMLMapReader;
 import Screens.GameScreen;
@@ -90,11 +91,16 @@ public class MatchManager {
 
 	}
 	
+	public boolean areAllPlayersDead() {
+		return match.areAllPlayersDead();
+	}
+	
 	public void startGame(int[] upgrades, int numPlayers) {
 		TypeGame type = getTypeGame(mode);
 		this.numPlayers = numPlayers;
 		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,type);
-		if (type.equals(TypeGame.BattleRoyale)) match.getTimeEventsManager().endGameEvent();
+		if (type.equals(TypeGame.BattleRoyale))
+			match.getTimeEventsManager().endGameEvent();
 		gameScreen.enable();
 		LaunchFrozenWars.getGame().setScreen(gameScreen);
 	}
@@ -232,4 +238,14 @@ public class MatchManager {
 	public boolean isGameTimeOff(){
 		return match.isGameTimeOff();
 	}
+	
+	public Team getMyTeam(int id){
+		return match.getMyTeam(id);
+	}
+	
+	public TypeGame getGameType(){
+		return match.getType();
+	}
+
+	
 }

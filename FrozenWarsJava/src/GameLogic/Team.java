@@ -18,12 +18,13 @@ public class Team {
 	 * @param playerId - The playerId of the first member of the team
 	 * @param type - Type of the game
 	 */
-	public Team(int numPlayers,int numTeam, int numPlayersTeam,int playerId,TypeGame type){
+	public Team(int numPlayers,int numTeam, int numPlayersTeam,int playerId,TypeGame type, boolean share){
 		this.numTeam = numTeam;
 		this.players = new ArrayList<Player>();
 		for (int i=0;i<numPlayersTeam;i++){
 			players.add(new Player(playerId+2*i,numPlayers,type));
 		}
+		this.share = share;
 	}
 	
 	
@@ -47,4 +48,28 @@ public class Team {
 		this.share = share;
 	}
 
+
+	public boolean giveMeOneOfYourLives(int idPlayer) {
+		Player secondOption = null;
+		Player firstOption = null;
+		for (int i=0;i<players.size();i++){
+			if(players.get(i).getLifes()==1){
+				secondOption = players.get(i);
+			}
+			else if(players.get(i).getLifes()>1){
+				firstOption = players.get(i);
+			}
+		}
+		if (firstOption != null){
+			firstOption.removeLive();
+			players.get(idPlayer).setLifes(1);
+			return true;
+		}
+		else if (secondOption != null){
+			secondOption.removeLive();
+			players.get(idPlayer).setLifes(1);
+			return true;
+		}
+		return false;
+	}
 }

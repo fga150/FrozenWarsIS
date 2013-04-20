@@ -28,9 +28,21 @@ public class HarpoonManager{
 		return harpoonAux;
 	}
 	
+	public Harpoon getsinkHarpoon(int x, int y){
+		Iterator<Harpoon> iterator = sunkenHarpoonList.iterator();
+		boolean found = false;
+		Harpoon harpoonAux = null;
+		while (iterator.hasNext() && !found){
+			harpoonAux = iterator.next();
+			found = checkHarpoon(x,y,harpoonAux);
+		}
+		return harpoonAux;
+	}
+	
 	private boolean checkHarpoon(int x, int y, Harpoon harpoon){
 		return (((int)harpoon.getPosition().x == x) && (y == (int)harpoon.getPosition().y));
 	}
+	
 	
 	public void sinkHarpoon(Harpoon harpoon) {
 		activeHarpoonList.remove(harpoon);

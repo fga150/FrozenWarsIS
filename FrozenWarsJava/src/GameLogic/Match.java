@@ -55,7 +55,7 @@ public class Match {
 		ArrayList<Team> teams = new ArrayList<Team>();
 		int playerId = 0;
 		for (int i=0;i<numPlayers;i++){
-			teams.add(new Team(numPlayers,i,1,playerId,type));
+			teams.add(new Team(numPlayers,i,1,playerId,type, false));
 			playerId += 1;
 		}
 		return teams;
@@ -76,7 +76,7 @@ public class Match {
 		ArrayList<Team> teams = new ArrayList<Team>();
 		int playerId = 0;
 		for (int i=0;i<(numPlayers/2);i++){
-			teams.add(new Team(numPlayers,i,2,playerId,type));
+			teams.add(new Team(numPlayers,i,2,playerId,type, true));
 			playerId += 1;
 		}
 		return teams;
@@ -278,7 +278,11 @@ public class Match {
 	private void loseLife(int playerId) {
 		Player player = getPlayer(playerId);
 		timeEventsManager.sinkPenguinEvent(player);
-		player.removeLive();
+		if (player.getLifes()>0)
+			player.removeLive();
+		else if(getMyTeam(playerId).isShare()){
+			if(!getMyTeam(playerId).giveMeOneOfYourLives(playerId)) player.removeLive();
+		}
 	}
 	
 	public void movePlayer(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition) {
@@ -295,17 +299,19 @@ public class Match {
 		}
 		checkUpgrade(dir,playerId);
 	}
-	
+	 
 	public boolean isSunkenPenguin(int playerId){
 		Player player = getPlayer(playerId);
 		Vector3[] positions = player.getPositions();
 		boolean isSunken = false;
 		if(map.getWaterMatrixSquare((int)positions[0].x,(int)positions[0].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[0].x,(int)positions[0].y);
+			Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[0].x,(int)positions[0].y);
 			isSunken = true;
 		}
 		else if(map.getWaterMatrixSquare((int)positions[1].x,(int)positions[1].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[1].x,(int)positions[1].y);
+			Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[1].x,(int)positions[1].y);
 			isSunken = true;
 		}
 		return isSunken;
@@ -518,13 +524,25 @@ public class Match {
 	public boolean imTheWinner(int playerId){
 		Player player = getPlayer(playerId);
 		boolean win = !player.isThePlayerDead();
+		Team myTeam = getMyTeam(playerId);
 		for(int i = 0; i<numPlayers; i++){
-			if(i != playerId){
+			if(i != playerId && getMyTeam(i)!=myTeam){
 				player = getPlayer(i);
 				win = win && player.isThePlayerDead();
 			}
 		}
 		return win;
+	}
+	
+	public boolean areAllPlayersDead() {
+		Player player = null;
+		boolean allDead = true;
+		for (int i =0; i<numPlayers; i++){
+			player = getPlayer(i);
+			allDead = allDead &&  player.isThePlayerDead();
+		}
+		return allDead;
+			
 	}
 		
 	public int getIntegerCoordX(int playerId) {
@@ -537,6 +555,18 @@ public class Match {
 		Player player = getPlayer(playerId);
 		Vector3 position = player.getPosition();
 		return (int)position.y;
+	}
+	
+	public Team getMyTeam(int playerId){
+		Player player = getPlayer(playerId);
+		Iterator<Team> it = teams.iterator();
+		Team myTeam = null;
+		while(it.hasNext()){
+			myTeam = it.next();
+			if (myTeam.getPlayers().contains(player)) return myTeam;
+			
+		}
+		return null;
 	}
 	
 	public void sinkPenguinFinish(Player player) {
@@ -730,6 +760,8 @@ public class Match {
 	public boolean isGameTimeOff() {
 		return gameTimeOff;
 	}
+
+	
 	
 	
 }
