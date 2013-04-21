@@ -11,6 +11,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -69,7 +70,12 @@ public class FriendsListScreen implements Screen{
     
     private Vector<ConnectedInfo> drawConnected;
     
-	private String user;	
+    private BoundingBox[] unfriendCon;
+    private BoundingBox unfriendConAll;
+    private BoundingBox[] unfriendDisc;
+    private BoundingBox unfriendDiscAll;
+    
+    private String user;	
 	private String userShown;	
 	private long time;
 	private boolean infoPressed;
@@ -111,6 +117,24 @@ public class FriendsListScreen implements Screen{
 	    scrollUpConnectedClick = new BoundingBox(new Vector3(426,416,0), new Vector3(475,454,0));
 	    scrollDownDisconnectedClick = new BoundingBox(new Vector3(926,185,0), new Vector3(974,224,0));
 	    scrollUpDisconnectedClick = new BoundingBox(new Vector3(925,417,0), new Vector3(977,456,0));
+	    
+	    unfriendCon = new BoundingBox[6];
+	    unfriendCon[0] = new BoundingBox(new Vector3(72,415,0), new Vector3(119,454,0));
+	    unfriendCon[1] = new BoundingBox(new Vector3(72,370,0), new Vector3(116,408,0));
+	    unfriendCon[2] = new BoundingBox(new Vector3(72,326,0), new Vector3(121,363,0));
+	    unfriendCon[3] = new BoundingBox(new Vector3(73,278,0), new Vector3(119,317,0));
+	    unfriendCon[4] = new BoundingBox(new Vector3(73,234,0), new Vector3(119,272,0));
+	    unfriendCon[5] = new BoundingBox(new Vector3(72,189,0), new Vector3(114,226,0));
+	    unfriendConAll =  new BoundingBox(new Vector3(69,186,0), new Vector3(117,454,0));
+	    
+	    unfriendDisc = new BoundingBox[6];
+	    unfriendDisc[0] = new BoundingBox(new Vector3(572,415,0), new Vector3(615,454,0));
+	    unfriendDisc[1] = new BoundingBox(new Vector3(572,370,0), new Vector3(615,408,0));
+	    unfriendDisc[2] = new BoundingBox(new Vector3(572,326,0), new Vector3(615,363,0));
+	    unfriendDisc[3] = new BoundingBox(new Vector3(572,278,0), new Vector3(615,317,0));
+	    unfriendDisc[4] = new BoundingBox(new Vector3(572,234,0), new Vector3(615,272,0));
+	    unfriendDisc[5] = new BoundingBox(new Vector3(572,189,0), new Vector3(615,226,0));
+	    unfriendDiscAll =  new BoundingBox(new Vector3(572,186,0), new Vector3(615,454,0));
 	}
 
 	
@@ -135,7 +159,7 @@ public class FriendsListScreen implements Screen{
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-      		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
+      		System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			
       		if (backButtonClick.contains(touchPoint)){
@@ -155,6 +179,10 @@ public class FriendsListScreen implements Screen{
         		if (disconnectedScroll < (disconnectedFriends.size()) - 6) disconnectedScroll++;
         	 } else if (scrollUpDisconnectedClick.contains(touchPoint)){
         		if (disconnectedScroll != 0) disconnectedScroll--;     	
+        	 } else if (unfriendConAll.contains(touchPoint)){
+  				unfriendConnected(); 
+  			 } else if (unfriendDiscAll.contains(touchPoint)){
+  				unfriendDisconnected();	
   			 } else {
       			this.infoPressed = false;
       		 }
@@ -252,11 +280,14 @@ public class FriendsListScreen implements Screen{
 		for (int i = 0; i < Math.min(drawConnected.size(), 6); i++){
 			String name = drawConnected.elementAt(i+connectedScroll).getUserName();
 			
-			font.draw(batcher, name, 125,(447-45*i));
+			batcher.draw(Assets.statusCancel, 75, (415-45*i));
+			Color oldColor = font.getColor();
 			if (!drawConnected.elementAt(i+connectedScroll).isPlaying()) 
-				batcher.draw(Assets.statusTick, 75, (415-45*i));
+				font.setColor(Color.GREEN);
 			else if (drawConnected.elementAt(i+connectedScroll).isPlaying()) 
-				batcher.draw(Assets.statusInterrogation, 75, (415-45*i));
+				font.setColor(Color.YELLOW);
+			font.draw(batcher, name, 125,(447-45*i));
+			font.setColor(oldColor);
 		}
 	}
 	
@@ -265,12 +296,32 @@ public class FriendsListScreen implements Screen{
 		
 		for (int i = 0; i < Math.min(disconnectedFriends.size(), 6); i++){
 			String name = disconnectedFriends.elementAt(i+disconnectedScroll);
-			
+			Color oldColor = font.getColor();
+			font.setColor(Color.RED);
 			font.draw(batcher, name, 615,(447-45*i));
+			font.setColor(oldColor);
 			batcher.draw(Assets.statusCancel, 575, (415-45*i));
 		}
 	}
 	
+	private void unfriendConnected() {
+		for (int i = 0; i < Math.min(drawConnected.size(), 6); i++){
+			if (unfriendCon[i].contains(touchPoint)){
+				String player = drawConnected.elementAt(i+connectedScroll).getUserName();
+				ConfirmScreen.getInstance().setNewConfirmScreen("Unfriend", player);
+			}
+		}
+	}
+	
+	
+	private void unfriendDisconnected() {
+		for (int i = 0; i < Math.min(disconnectedFriends.size(), 6); i++){
+			if (unfriendDisc[i].contains(touchPoint)){
+				String player = disconnectedFriends.elementAt(i+disconnectedScroll);
+				ConfirmScreen.getInstance().setNewConfirmScreen("Unfriend", player);
+			}
+		}
+	}
 	
 	@Override
 	public void resize(int arg0, int arg1) {

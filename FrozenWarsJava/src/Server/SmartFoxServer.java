@@ -202,7 +202,6 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void connectRes(ISFSObject response) {
 		if (response.getUtfString("Response").equals("Success")){
-			//FIXME probablemente no funcione (alguna imagen se pinte mal, pinguinos desaparezcan...). Deberia estar arreglado (probando) 
 			MultiplayerScreen.getInstance().setMyName(sfsClient.getMySelf().getName());
 			loggedIn = true;
   			GameSettings.getInstance().setUserName(lastUserName);
@@ -627,14 +626,14 @@ public class SmartFoxServer implements IEventListener {
 		ExtensionRequest request2 = new ExtensionRequest("ExitGame",null);
 		sfsClient.send(request2);
 	}
+	
 	/**response of the server when you want to exit from the game*/
 	private void exitGameRes(ISFSObject response) {
 		if (response.getUtfString("res")=="Success"){
 			//TODO fede when you have exit from the game are you are now in the lobby show a message? and go to the multiplayer screen?
 		}else if (response.getUtfString("res")=="Error"){
 			//TODO show a error message (Like the ones of adding friends)
-		}
-		
+		}	
 	}
 	
 	public void dispatch(BaseEvent event) throws SFSException {

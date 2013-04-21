@@ -105,7 +105,6 @@ public class ConfirmScreen implements Screen{
 
       		//compruebo si he tocado yes 
       		if (yesClick.contains(touchPoint)){
-      			System.out.println("yes");
       			if (screenMode.equals("Exit")) this.dispose();
       			else if (screenMode.equals("InviteGame")) {
       				SmartFoxServer.getInstance().acceptRequest(user);
@@ -117,11 +116,14 @@ public class ConfirmScreen implements Screen{
       				SmartFoxServer.getInstance().sendBeFriends("yes", user);
       				FriendsListScreen.getInstance().updateFriends();
       				game.setScreen(ancestor);
+      			} else if (screenMode.equals("Unfriend")) {
+      				SmartFoxServer.getInstance().sendBeFriends("no", user);
+      				FriendsListScreen.getInstance().updateFriends();
+      				game.setScreen(ancestor);
       			}
       			
       		} else if(noClick.contains(touchPoint)){ //compruebo si he tocado no
-      			System.out.println("no");
-      			if (screenMode.equals("Exit") || screenMode.equals("InvitedDisconnected")) game.setScreen(ancestor);
+      			if (screenMode.equals("Exit") || screenMode.equals("InvitedDisconnected") || screenMode.equals("Unfriend")) game.setScreen(ancestor);
       			else if (screenMode.equals("InviteGame")) {
       				SmartFoxServer.getInstance().refuseRequest(user);
       				game.setScreen(ancestor);
@@ -163,6 +165,9 @@ public class ConfirmScreen implements Screen{
             	String message = user.concat(" wants to be your friend.");
             	font.drawWrapped(batcher, message, posW+15, posH+225, 330);
             	font.draw(batcher, "Do you want to be friends?", posW+15, posH+145);
+            } else if (screenMode.equals("Unfriend")){
+            	String message = user.concat("Do you want to remove "+user+" from your friend list?");
+            	font.drawWrapped(batcher, message, posW+15, posH+225, 330);
             }
             batcher.end();	
 	}
