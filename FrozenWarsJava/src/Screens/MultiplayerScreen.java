@@ -331,7 +331,7 @@ public class MultiplayerScreen implements Screen{
       		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
       			externalPlayers = !externalPlayers;
       			sfsClient.modExternalPlayersRequest(externalPlayers);
-      		/*
+      		
       		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin()){
       			if (gameMode == 0) gameMode = 4;
       			else gameMode--;
@@ -339,7 +339,7 @@ public class MultiplayerScreen implements Screen{
       		} else if (modeRightArrowClick.contains(touchPoint) && amIAdmin()){
       			gameMode = (gameMode + 1) % 5;
       			sfsClient.modeChangeRequest(gameMode);
-      		*/} else if (scrollDownPlayersClick.contains(touchPoint)){
+      		} else if (scrollDownPlayersClick.contains(touchPoint)){
       			if (invitedScroll < (acceptedPlayers.size() + refusedPlayers.size() + waitingPlayers.size()) - 5) invitedScroll++;
       		} else if (scrollUpPlayersClick.contains(touchPoint)){
       			if (invitedScroll != 0) invitedScroll--;     	

@@ -52,7 +52,7 @@ public class SmartFoxServer implements IEventListener {
 		myPlayerId = -999;
 		String ip = getServerIP();
 		sfsClient = new SmartFox(false);
-		sfsClient.connect("127.0.0.1",9933);
+		sfsClient.connect(ip,9933);
 		addEventListeners();
 	}
 	
@@ -145,6 +145,7 @@ public class SmartFoxServer implements IEventListener {
 		try {
 			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
 			ip = address.getHostAddress();
+			//ip = "192.168.1.38";
 		} catch (Exception e){
 			
 		}

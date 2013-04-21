@@ -296,11 +296,12 @@ public class Match {
 			else if (dir.equals(Direction.down)) player.setPositionY(yPlayerPosition-minimalMove);
 		}
 		if (!player.isInvincible() && isSunkenPenguin(playerId)){
-			loseLife(playerId);
+				loseLife(playerId);
 		}
-		checkUpgrade(dir,playerId);
+		checkUpgrade(dir,playerId); 
 	}
 	 
+
 	public boolean isSunkenPenguin(int playerId){
 		Player player = getPlayer(playerId);
 		Vector3[] positions = player.getPositions();
@@ -358,6 +359,7 @@ public class Match {
 					Vector3[] positions = player.getPositions();
 					if (isCought(harpoon,i,positions,isBlocked)){
 						isCought[j] = true;
+						stealImprovements(j, harpoon);
 					}
 				}
 			}
@@ -367,6 +369,41 @@ public class Match {
 		if (harpoon.getPlayerId() == myPlayerId) harpoonManager.decreaseHarpoonCount();
 		map.putSunkenHarpoonAt((int)harpoon.getPosition().x,(int)harpoon.getPosition().y);
 		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
+	}
+
+	private void stealImprovements(int playerId, Harpoon harpoon) {
+		
+		if (playerId != harpoon.getPlayerId()){
+		Player hitted = getPlayer(playerId);
+		Player hitter = getPlayer(harpoon.getPlayerId());
+		
+		int maxHarpoonsAllow = (hitted.getMaxHarpoonsAllow()-1) + hitter.getMaxHarpoonsAllow();
+		int range = (hitted.getRange()-1) + hitter.getRange();
+		int speed = (hitted.getSpeed()-1) + hitter.getSpeed();
+		boolean invisible = hitted.isInvisible();
+		
+		if (invisible){
+		timeEventsManager.removeInvisibleTimer(hitted);
+		if(hitter.isInvisible()) timeEventsManager.removeInvisibleTimer(hitter);
+		timeEventsManager.invisibleEvent(hitter);
+		hitter.setInvisible(true);
+		}
+		
+		if (maxHarpoonsAllow<=5)
+			hitter.setMaxHarpoonsAllow(maxHarpoonsAllow);
+		else
+			hitter.setMaxHarpoonsAllow(5);
+		
+		if (range<=5)
+			hitter.setRange(range);
+		else
+			hitter.setRange(5);
+		
+		if (speed<=5)
+			hitter.setSpeed(speed);
+		else
+			hitter.setSpeed(5);
+		}
 	}
 
 	private void checkHarpoonsInRange(Harpoon harpoon, int range, boolean[] isCought, boolean[] isBlocked) {

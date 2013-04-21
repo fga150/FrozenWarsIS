@@ -48,6 +48,7 @@ public class Player {
 	
 	private void initializePosition(int playerId, int numPlayers, TypeGame type) {
 		if (type.equals(TypeGame.Normal)) initializePositionNormal(playerId,numPlayers);
+		if (type.equals(TypeGame.BattleRoyale)) initializePositionNormal(playerId,numPlayers);
 	}
 
 	private void initializePositionNormal(int playerId, int numPlayers) {
