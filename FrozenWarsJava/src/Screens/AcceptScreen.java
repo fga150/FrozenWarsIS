@@ -34,6 +34,10 @@ public class AcceptScreen implements Screen{
 	private Screen ancestor; 
 	private String screenMode;
 	private String user;
+	private int width;
+	private int height;
+	private int posW;
+	private int posH;
 	
 	public static AcceptScreen getInstance() {
 		if (instance == null) instance = new AcceptScreen();
@@ -43,17 +47,21 @@ public class AcceptScreen implements Screen{
 	public AcceptScreen() {
 		instance = this;
 		this.game = LaunchFrozenWars.getGame();
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+		posW = (width-Assets.window.getRegionWidth())/2;
+		posH = (height-Assets.window.getRegionHeight())/2;
 		screenModeV = new Vector<String>();
 		userV = new Vector<String>();
-		guiCam = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-		guiCam.position.set(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,0);
+		guiCam = new OrthographicCamera(width, height);
+		guiCam.position.set(width/2, height/2,0);
 		
 		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);;
 
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 
-	    acceptClick = new BoundingBox(new Vector3(460,360,0), new Vector3(565,420,0));
+	    acceptClick = new BoundingBox(new Vector3(posW+105,posH+30,0), new Vector3(posW+230,posH+85,0));
 	}
 	
 	public void setNewAcceptScreen(String mode, String usr){
@@ -96,6 +104,7 @@ public class AcceptScreen implements Screen{
     	guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
       	System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
     	if (acceptClick.contains(touchPoint)){  	
+    		System.out.println("ok");
       		if (screenMode.equals("FullTeam") || screenMode.equals("QueueExit") || screenMode.equals("GameNotFound") || screenMode.equals("LeaderLeft") || screenMode.equals("UserOutOfQueue")){
   				MultiplayerScreen.getInstance().setDefault();
   				game.setScreen(MultiplayerScreen.getInstance());
@@ -136,7 +145,7 @@ public class AcceptScreen implements Screen{
           //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();    
-            batcher.draw(Assets.okWindow, 330, 330);
+            batcher.draw(Assets.okWindow, posW, posH);
             String message = "";
             if (screenMode.equals("FullTeam")){
             	message = "You can't join this game because the team is full.";
@@ -182,7 +191,7 @@ public class AcceptScreen implements Screen{
             	FriendsListScreen.getInstance().updateFriends();
             }
             
-            font.drawWrapped(batcher, message, 350, 538, 330);
+            font.drawWrapped(batcher, message, posW+15, posH+205, 330);
             batcher.end();	
 	}
 

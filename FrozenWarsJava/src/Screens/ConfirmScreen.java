@@ -34,6 +34,10 @@ public class ConfirmScreen implements Screen{
 	private Screen ancestor; 
 	private String screenMode;
 	private String user;
+	private int width;
+	private int height;
+	private int posW;
+	private int posH;
 	
 	public static ConfirmScreen getInstance() {
 		if (instance == null) instance = new ConfirmScreen();
@@ -41,20 +45,23 @@ public class ConfirmScreen implements Screen{
 	}
 
 	public ConfirmScreen() {
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+		posW = (width-Assets.window.getRegionWidth())/2;
+		posH = (height-Assets.window.getRegionHeight())/2;
 		instance = this;
 		this.game = LaunchFrozenWars.getGame();
 		screenModeV = new Vector<String>();
 		userV = new Vector<String>();
-		guiCam = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-		guiCam.position.set(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,0);
+		guiCam = new OrthographicCamera(width, height);
+		guiCam.position.set(width/2, height/2,0);
 		
 		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);;
 
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
-
-	    yesClick = new BoundingBox(new Vector3(350,340,0), new Vector3(500,400,0));
-	    noClick = new BoundingBox(new Vector3(510,340,0), new Vector3(660,660,0));        
+	    yesClick = new BoundingBox(new Vector3(posW+20,posH+45,0), new Vector3(posW+155,posH+100,0));
+	    noClick = new BoundingBox(new Vector3(posW+190,posH+45,0), new Vector3(posW+320,posH+100,0));        
 	}
 	
 	public void setNewConfirmScreen(String mode, String usr){
@@ -98,6 +105,7 @@ public class ConfirmScreen implements Screen{
 
       		//compruebo si he tocado yes 
       		if (yesClick.contains(touchPoint)){
+      			System.out.println("yes");
       			if (screenMode.equals("Exit")) this.dispose();
       			else if (screenMode.equals("InviteGame")) {
       				SmartFoxServer.getInstance().acceptRequest(user);
@@ -112,6 +120,7 @@ public class ConfirmScreen implements Screen{
       			}
       			
       		} else if(noClick.contains(touchPoint)){ //compruebo si he tocado no
+      			System.out.println("no");
       			if (screenMode.equals("Exit") || screenMode.equals("InvitedDisconnected")) game.setScreen(ancestor);
       			else if (screenMode.equals("InviteGame")) {
       				SmartFoxServer.getInstance().refuseRequest(user);
@@ -140,19 +149,20 @@ public class ConfirmScreen implements Screen{
           //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();    
-            batcher.draw(Assets.window, 330, 300);
-            if (screenMode.equals("Exit")) batcher.draw(Assets.exitText, 330, 300);
+            
+            batcher.draw(Assets.window, posW, posH);
+            if (screenMode.equals("Exit")) batcher.draw(Assets.exitText, posW, posH);
             else if (screenMode.equals("InviteGame")) {
             	String message = user.concat(" has invited you to join his game.");
-            	font.drawWrapped(batcher, message, 350, 525, 330);
-            	font.draw(batcher, "Do you want to join him?", 350, 450);
+            	font.drawWrapped(batcher, message, posW+15, posH+225, 330);
+            	font.draw(batcher, "Do you want to join him?", posW+15, posH+155);
             } else if (screenMode.equals("InvitedDisconnected")){
             	String message = user.concat(" has disconnected. Do you want to invite anyone else?");
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	font.drawWrapped(batcher, message, posW+15, posH+225, 330);
             } else if (screenMode.equals("BeFriends?")){
             	String message = user.concat(" wants to be your friend.");
-            	font.drawWrapped(batcher, message, 350, 525, 330);
-            	font.draw(batcher, "Do you want to be friends?", 350, 450);
+            	font.drawWrapped(batcher, message, posW+15, posH+225, 330);
+            	font.draw(batcher, "Do you want to be friends?", posW+15, posH+145);
             }
             batcher.end();	
 	}
