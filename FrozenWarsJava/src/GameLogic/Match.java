@@ -308,12 +308,18 @@ public class Match {
 		boolean isSunken = false;
 		if(map.getWaterMatrixSquare((int)positions[0].x,(int)positions[0].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[0].x,(int)positions[0].y);
-			Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[0].x,(int)positions[0].y);
+			if(type.equals(TypeGame.BattleRoyale )){
+				Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[0].x,(int)positions[0].y);
+				stealImprovements(player.getPlayerId(),myHarpoon);
+			}
 			isSunken = true;
 		}
 		else if(map.getWaterMatrixSquare((int)positions[1].x,(int)positions[1].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[1].x,(int)positions[1].y);
-			Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[1].x,(int)positions[1].y);
+			if(type.equals(TypeGame.BattleRoyale )){
+				Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[1].x,(int)positions[1].y);
+				stealImprovements(player.getPlayerId(),myHarpoon);
+			}
 			isSunken = true;
 		}
 		return isSunken;

@@ -414,7 +414,7 @@ public class Map {
 	return true;
 	}
 
-	private String ConnectingSidesPosition(int xHarpoonPosition, int yHarpoonPosition, int fissureRange) {
+	public String ConnectingSidesPosition(int xHarpoonPosition, int yHarpoonPosition, int fissureRange) {
 		String positions = "";
 		//NORTH
 		if(yHarpoonPosition+1<length && canIputWater(xHarpoonPosition, yHarpoonPosition, xHarpoonPosition, yHarpoonPosition+1)) 

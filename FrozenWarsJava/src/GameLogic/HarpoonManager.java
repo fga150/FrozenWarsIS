@@ -34,13 +34,20 @@ public class HarpoonManager{
 		Harpoon harpoonAux = null;
 		while (iterator.hasNext() && !found){
 			harpoonAux = iterator.next();
-			found = checkHarpoon(x,y,harpoonAux);
+			if(checkHarpoon(x,y,harpoonAux)||checkRangeHarpoon(x,y,harpoonAux)){
+				return harpoonAux;
+			}
 		}
 		return harpoonAux;
 	}
 	
 	private boolean checkHarpoon(int x, int y, Harpoon harpoon){
 		return (((int)harpoon.getPosition().x == x) && (y == (int)harpoon.getPosition().y));
+	}
+	
+	private boolean checkRangeHarpoon(int x, int y, Harpoon harpoon){
+		return (x <= harpoon.getRange()+(int)harpoon.getPosition().x && x >= harpoon.getRange()-(int)harpoon.getPosition().x
+			&& y <= harpoon.getRange()+(int)harpoon.getPosition().y && y >= harpoon.getRange()-(int)harpoon.getPosition().y);
 	}
 	
 	
