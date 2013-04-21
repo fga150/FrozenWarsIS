@@ -45,8 +45,8 @@ public class AcceptScreen implements Screen{
 		this.game = LaunchFrozenWars.getGame();
 		screenModeV = new Vector<String>();
 		userV = new Vector<String>();
-		guiCam = new OrthographicCamera(1024,629);
-		guiCam.position.set(512,315,0);
+		guiCam = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		guiCam.position.set(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,0);
 		
 		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);;
 

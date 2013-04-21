@@ -47,21 +47,18 @@ public class LaunchFrozenWars extends Game implements InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-	       if(keycode == Keys.BACK){
-	             // Do back button handling (show pause menu?)
-	    	   if(this.getScreen()==InviteScreen.getInstance()){
-	   			loadScreen = MultiplayerScreen.getInstance();
+	    if(keycode == Keys.BACK){
+	    	// Do back button handling (show pause menu?)
+	    	if(this.getScreen()==InviteScreen.getInstance()){
+	    		loadScreen = MultiplayerScreen.getInstance();
 	   			setScreen(loadScreen);
-	    	   }
-	    	   else if(this.getScreen()==HelpScreen.getInstance()){
-	    		   		   			loadScreen = IndexScreen.getInstance();
-	    		   		   			setScreen(loadScreen);
-	   	   	   }
-
-	   		   else {
-		   			setScreen(InitialScreen.getInstance());
+	    	} else if(this.getScreen()==HelpScreen.getInstance()){
+	    		loadScreen = IndexScreen.getInstance();
+	    		setScreen(loadScreen);
+	   	   	} else {
+		   		setScreen(InitialScreen.getInstance());
 	   		}
-	       }
+	    }
 		return false;
 	}
 
