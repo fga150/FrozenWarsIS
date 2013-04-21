@@ -359,6 +359,7 @@ public class Match {
 					Vector3[] positions = player.getPositions();
 					if (isCought(harpoon,i,positions,isBlocked)){
 						isCought[j] = true;
+						if (type.equals(TypeGame.BattleRoyale))
 						stealImprovements(j, harpoon);
 					}
 				}
