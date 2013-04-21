@@ -67,6 +67,7 @@ public class Match {
 	 * @param type : game mode
 	 * @return
 	 */
+	
 	private  ArrayList<Team> battleRoyalGame(int numPlayers,TypeGame type){
 		//Is like normal game, the same team
 		return normalGame(numPlayers,type);

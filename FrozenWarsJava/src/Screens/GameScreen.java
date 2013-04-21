@@ -24,7 +24,6 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 public class GameScreen implements Screen{
 	
 	private OrthographicCamera guiCam;
-	private boolean enable;
 	private OrthographicCamera textCam;
 	private SpriteBatch batcher;
 	private Vector3 touchPoint;
@@ -43,11 +42,13 @@ public class GameScreen implements Screen{
 	private BitmapFont font2;
 	private int numPlayer;
 	private int numPlayers;
+	private int timeInvisible;
 
 	
 	public GameScreen(MatchManager manager){
-		enable = false;
 		this.manager = manager;
+		this.timeInvisible = 1100;
+		numPlayers = manager.getNumPlayers();
 		name = manager.getMyNamePlayer();
 		numPlayer = manager.getMyIdPlayer();
 		font =new BitmapFont(Gdx.files.internal("data/simpleFont.fnt"), Gdx.files.internal("data/simpleFont.png"), false);
@@ -71,11 +72,11 @@ public class GameScreen implements Screen{
 	}
 	
 	public void loadAnimations(){
-		penguinAnimations = new PenguinAnimation[4];
-		penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/pClarosRojo.png"));
-		penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"));
-		penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pClarosAmarillo.png"));
-		penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pClarosAzul.png"));
+		penguinAnimations = new PenguinAnimation[numPlayers];
+		penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/pClarosRojo.png"),manager.getLookAt(0));
+		penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"),manager.getLookAt(1));
+		if (numPlayers>2) penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pClarosAmarillo.png"),manager.getLookAt(2));
+		if (numPlayers>3) penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pClarosAzul.png"),manager.getLookAt(3));
 	}
 	
 	@Override
@@ -95,7 +96,6 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
-	if(enable){
 		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		stateTime += Gdx.graphics.getDeltaTime();
@@ -188,7 +188,7 @@ public class GameScreen implements Screen{
 		}		
 		
 		
-		paintUpgrades();
+		paintUpgrades(delta);
 		paintPlayerStatus();
 		
 		paintLivesPanel();
@@ -244,7 +244,6 @@ public class GameScreen implements Screen{
 			}
 		}
 	}
-	}
 	
 	private void paintMyMission(){
 		String mission ="";
@@ -275,7 +274,7 @@ public class GameScreen implements Screen{
 	
 	
 	
-	private void paintUpgrades() {
+	private void paintUpgrades(float delta) {
 		int speedUpgrade = manager.getSpeed(numPlayer);
 		int harpoonUpgrade = manager.getHarpoonsAllow(numPlayer);
 		int rangeUpgrade = manager.getRange(numPlayer);
@@ -311,12 +310,19 @@ public class GameScreen implements Screen{
 			else printText(Integer.toString(rangeUpgrade-1),1,Color.BLACK,20.6f,7.75f);
 		}
 		if (invisibleUpgrade){
-			batcher.draw(Assets.getInvisibleUpgradeMaxSize(),20,5.5f,1,1);
-		}
+			   batcher.draw(Assets.getInvisibleUpgradeMaxSize(),20,5.5f,1,1);
+			  /* if (timeInvisible>0){
+			    timeInvisible-=delta*60;
+			   
+			   }*/
+			  // if (timeInvisible<400)printText(Integer.toString(timeInvisible/100),0.75f,Color.RED,20.15f,5.85f);
+			   //else printText(Integer.toString(timeInvisible/100),0.75f,Color.BLACK,20.15f,5.85f);
+			  }
 		else{
-			batcher.setColor(new Color(50,50,50,0.25f));
-			batcher.draw(Assets.getInvisibleUpgradeMaxSize(),20,5.5f,1,1);
-			batcher.setColor(Color.WHITE);
+			  // timeInvisible=1100;
+			   batcher.setColor(new Color(50,50,50,0.25f));
+			   batcher.draw(Assets.getInvisibleUpgradeMaxSize(),20,5.5f,1,1);
+			   batcher.setColor(Color.WHITE);
 		}
 	}
 	
@@ -518,20 +524,7 @@ public class GameScreen implements Screen{
         else if (dir.equals(Direction.up)) currentFrame = penguinAnimations[playerId].getwalkAnimationU().getKeyFrame(stateTime, true);
         else if (dir.equals(Direction.down)) currentFrame = penguinAnimations[playerId].getwalkAnimationD().getKeyFrame(stateTime, true);
         penguinAnimations[playerId].setCurrentFrame(currentFrame);     
-	}
-	
-	public void enable() {
-		this.enable = true;
-		numPlayers = manager.getNumPlayers();
-		reloadAnimations();
-	}
-
-	private void reloadAnimations() {
-		for (int i=0;i<numPlayers;i++){
-			penguinAnimations[i].setCurrentFrame(manager.getLookAt(i)); 
-		}
-	}
-	
+	}	
 
 	public MatchManager getManager() {
 		return manager;

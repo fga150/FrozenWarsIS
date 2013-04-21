@@ -1,6 +1,5 @@
 package Application;
 import com.badlogic.gdx.math.Vector3;
-
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Map.WaterTypes;
@@ -8,9 +7,9 @@ import GameLogic.Map.SunkenTypes;
 import GameLogic.Match;
 import GameLogic.Match.TypeGame;
 import GameLogic.Team;
-import GameLogic.TimeEventsManager;
 import GameLogic.XMLMapReader;
 import Screens.GameScreen;
+import Screens.LoadingScreen;
 import Server.SmartFoxServer;
 
 public class MatchManager {
@@ -19,21 +18,26 @@ public class MatchManager {
 	
 	private SmartFoxServer sfsClient;
 	private Match match;
+	private LoadingScreen loadingScreen;
 	private GameScreen gameScreen;
 	private int myPlayerId;
 	private int numPlayers;
 	private long lastMessage;
 	private int mode;
+	private boolean created;
 	private static String[] usersNames;
 	private XMLMapReader xmlMapReader;
 
 	
-	public MatchManager(SmartFoxServer sfs, XMLMapReader xmlMapReader,int mode) {
+	public MatchManager(SmartFoxServer sfs, XMLMapReader xmlMapReader,int mode){
+		this.created = false;
 		this.sfsClient=sfs;
+		loadingScreen = new LoadingScreen(this);
+		sfsClient.addManager(this);
 		this.myPlayerId = sfsClient.getMyPlayerId()-1;
 		this.xmlMapReader = xmlMapReader;
-		this.gameScreen = new GameScreen(this);
 		this.mode = mode;
+		this.created = true;
 	}
 	
 	public void movePlayer(Direction dir){
@@ -101,8 +105,7 @@ public class MatchManager {
 		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,type);
 		if (type.equals(TypeGame.BattleRoyale))
 			match.getTimeEventsManager().endGameEvent();
-		gameScreen.enable();
-		LaunchFrozenWars.getGame().setScreen(gameScreen);
+		this.loadingScreen.setLoaded(true);
 	}
 	
 	private TypeGame getTypeGame(int mode) {
@@ -115,10 +118,15 @@ public class MatchManager {
 		return type;
 	}
 
-	public void sendAsign() {
+	public void sendAsign(){
 		int numBreakable = xmlMapReader.getNumBreakable();
 		int[] upgrades = xmlMapReader.getUpgrades();
 		sfsClient.sendAsign(numBreakable,upgrades[0],upgrades[1],upgrades[2],upgrades[3]);
+	}
+	
+	public void changeGameScreen() {
+		this.gameScreen = new GameScreen(this);	
+		LaunchFrozenWars.getGame().setScreen(gameScreen);
 	}
 	
 	// Getters and Setters
@@ -247,5 +255,12 @@ public class MatchManager {
 		return match.getType();
 	}
 
+	public LoadingScreen getLoadingScreen() {
+		return loadingScreen;
+	}
+
+	public void setLoadingScreen(LoadingScreen loadingScreen) {
+		this.loadingScreen = loadingScreen;
+	}
 	
 }

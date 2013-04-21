@@ -445,8 +445,8 @@ public class SmartFoxServer implements IEventListener {
 		 sfsClient.send(request);
 	}
 	
-	public void asignaMejoras(ISFSObject params) {
-		 while (manager==null);
+	public void asignaMejoras(ISFSObject params){
+		 while ((manager==null) || (manager.getLoadingScreen()==null));
 		 int numBarriles=params.getInt("nBarriles");
 		 int upgrades[] = new int[numBarriles];
 		 for(int i=0;i<numBarriles;i++){
@@ -457,14 +457,14 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	private void NamesGame(ISFSObject response) {
-			int numPlayers = response.getInt("n");
-			String[] usersName = new String[numPlayers];
-			for(int i=1;i<=numPlayers;i++){
-				String name=response.getUtfString("name"+i);
-				int id=response.getInt("id"+i);
-				usersName[id-1] = name;
-			}
-			Application.MatchManager.setUserName(usersName);
+		int numPlayers = response.getInt("n");
+		String[] usersName = new String[numPlayers];
+		for(int i=1;i<=numPlayers;i++){
+			String name=response.getUtfString("name"+i);
+			int id=response.getInt("id"+i);
+			usersName[id-1] = name;
+		}
+		Application.MatchManager.setUserName(usersName);
 	}
 	
 	public void dispatch(BaseEvent event) throws SFSException{
