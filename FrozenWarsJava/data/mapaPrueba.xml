@@ -1,10 +1,10 @@
 <Map>
 	<Name>mapaGuay</Name>
 	<Upgrades>
-		<Boots>5</Boots>
-		<MaxRange>4</MaxRange>
-		<NumLances>6</NumLances>
-		<Throw>4</Throw>
+		<Boots>10</Boots>
+		<MaxRange>10</MaxRange>
+		<NumLances>10</NumLances>
+		<Invisible>10</Invisible>
 	</Upgrades>
 	<Boxes>
 		<Breakable>2-0</Breakable>

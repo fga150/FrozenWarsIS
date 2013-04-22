@@ -16,6 +16,7 @@ public class Assets {
 	    public static AtlasRegion initialBack;
 	    public static AtlasRegion secondBack;
 	    public static AtlasRegion backConf;
+	    public static AtlasRegion fwlogo;
 
 	    //Componentes de la pantalla de inicio
 	    public static AtlasRegion play;
@@ -48,16 +49,27 @@ public class Assets {
 	    public static AtlasRegion volver;
 	    
 	    public static AtlasRegion youWin;
+	    public static AtlasRegion yourTeamWins;
+	    public static AtlasRegion draw;
 	    public static AtlasRegion gameOver;
 	    
 	    
 	    private static AtlasRegion harpooon;
-	    private static AtlasRegion mapBackground;
+	    private static AtlasRegion lifesPanel;
+	    private static AtlasRegion deadLine;
+		
+	    private static AtlasRegion gameScreenBackground;
 	    private static AtlasRegion lifeIconYellow;
 	    private static AtlasRegion lifeIconRed;
 	    private static AtlasRegion lifeIconGreen;
 	    private static AtlasRegion lifeIconBlue;
 	    private static AtlasRegion directionPanel;
+		
+		private static AtlasRegion yellowPlayer;
+	    private static AtlasRegion redPlayer;
+	    private static AtlasRegion bluePlayer;
+	    private static AtlasRegion greenPlayer;
+		
 	    private static AtlasRegion barrel;
 		private static AtlasRegion buttonHarpoon;
 	    private static AtlasRegion box;
@@ -67,6 +79,18 @@ public class Assets {
 	    private static AtlasRegion HorizontalBarUP;
 	    private static AtlasRegion HorizontalBarDown;
 	    
+		private static AtlasRegion bootUpgrade;
+	    private static AtlasRegion rangeUpgrade;
+	    private static AtlasRegion numHarpoonUpgrade;
+	    private static AtlasRegion invisibleUpgrade;
+	    
+	    private static AtlasRegion bootUpgradeMaxSize;
+		private static AtlasRegion rangeUpgradeMaxSize;
+	    private static AtlasRegion numHarpoonUpgradeMaxSize;
+	    private static AtlasRegion invisibleUpgradeMaxSize;
+	    
+	    private static AtlasRegion throwUpgrade;
+		
 	    //Componentes de la pantalla de creacion de partida multiplayer
 	    public static AtlasRegion backGrey;
 	    
@@ -86,7 +110,8 @@ public class Assets {
 	    public static AtlasRegion leaveGroupButton;
 	    
 	    public static AtlasRegion map;
-	    public static AtlasRegion multiplayerGameTitle;
+	    public static AtlasRegion multiplayerButtonPressed;
+	    public static AtlasRegion inviteFriendsButtonUnpressed;
 	    public static AtlasRegion inviteGameTitle;
 	    public static AtlasRegion pingu;
 	    
@@ -107,7 +132,16 @@ public class Assets {
 	    public static AtlasRegion add;
 	    public static AtlasRegion minus;
 	    
-private static AtlasRegion barrelWithFissure;
+	    
+	    //Componentes de la pantalla de creacion de partida friendsList
+	    public static AtlasRegion multiplayerButtonUnpressed;
+	    public static AtlasRegion inviteFriendsButtonPressed;
+	    
+	    public static AtlasRegion listOfPeopleOn;
+	    public static AtlasRegion listOfPeopleOff;
+	    public static AtlasRegion addFriend;
+	    
+		private static AtlasRegion barrelWithFissure;
 	    
 	    
 	    private static AtlasRegion fissureCenter;
@@ -166,20 +200,31 @@ private static AtlasRegion barrelWithFissure;
 	    public static AtlasRegion createGameHelpText;
 	    public static AtlasRegion gameModesHelpText;
 	    
-
-
+	    //Log in, sign in windows
+	    public static AtlasRegion logSignWindow;
+	    public static AtlasRegion logInWindow;
+	    public static AtlasRegion signInWindow;
+	    
+	    public static AtlasRegion okWindow;
+	    
+	    public static AtlasRegion J1;
+	    public static AtlasRegion J2;
+	    public static AtlasRegion J3;
+	    public static AtlasRegion J4;
+	    
 
 	    /**
 	     * Load.
 	     */
 	    public static void load(){
 	    	//Se crea un Texture atlas con la imagen que contiene todos los pngs metidos en la carpeta data
-	        atlas = new TextureAtlas(Gdx.files.internal("data/pack"));
-	       
+	        atlas = new TextureAtlas(Gdx.files.internal("data/pack.atlas"));
+	        
 	        //Fondos de pantalla
 	        initialBack = atlas.findRegion("initialBack");
 	        secondBack = atlas.findRegion("secondBack");
-	        backConf = atlas.findRegion("backConf");
+	        backConf = atlas.findRegion("gameScreenBackground");
+	        fwlogo = atlas.findRegion("frozenWars");
 
 	        //Componentes de la pantalla de inicio
 	        play = atlas.findRegion("Play");
@@ -214,9 +259,12 @@ private static AtlasRegion barrelWithFissure;
 		    volver = atlas.findRegion("Back");
 		    
 		    youWin = atlas.findRegion("YouWin");
+		    yourTeamWins = atlas.findRegion("yourTeamWins");
+		    draw = atlas.findRegion("draw");
 		    gameOver = atlas.findRegion("gameOver");
 		    
 		    harpooon = atlas.findRegion("ArponParaBomba");
+			lifesPanel =  atlas.findRegion("playerLifes");
 		  //Fissures
 		    barrelWithFissure =  atlas.findRegion("barrelWithFissure");
 		    fissureCenter =  atlas.findRegion("fissureCenter");
@@ -246,17 +294,36 @@ private static AtlasRegion barrelWithFissure;
 		    //water 4 open sides
 		    water4SideOpen =  atlas.findRegion("Water4SideOpen");
 		    setIgloo(atlas.findRegion("iglus"));
-			mapBackground = atlas.findRegion("fondoJuego");
+			gameScreenBackground = atlas.findRegion("gameScreenBackground");
+		    deadLine = atlas.findRegion("deadLine");
 			
 			lifeIconYellow = atlas.findRegion("vidasJugadorAmarillo");
 			lifeIconRed = atlas.findRegion("vidasJugadorRojo");
 			lifeIconBlue = atlas.findRegion("vidasJugadorAzul");
 			lifeIconGreen = atlas.findRegion("vidasJugadorVerde");
 			
+			yellowPlayer = atlas.findRegion("iconoJugadorAmarillo");
+			redPlayer = atlas.findRegion("iconoJugadorRojo");
+			bluePlayer = atlas.findRegion("iconoJugadorAzul");
+			greenPlayer = atlas.findRegion("iconoJugadorVerde");
+			
 			deadIconYellow = atlas.findRegion("deadIconYellow");
 			deadIconRed = atlas.findRegion("deadIconRed");
 			deadIconBlue = atlas.findRegion("deadIconBlue");
 			deadIconGreen = atlas.findRegion("deadIconGreen");
+			
+			//Improves
+			
+			bootUpgrade= atlas.findRegion("MejoraAndaRapido");
+		    rangeUpgrade= atlas.findRegion("MejoraMasArea");
+		    numHarpoonUpgrade= atlas.findRegion("MejoraMasArpon");
+		    invisibleUpgrade= atlas.findRegion("MejoraInvisibilidad");
+		    
+		    bootUpgradeMaxSize= atlas.findRegion("MejoraAndaRapidoMaxSize");
+		    rangeUpgradeMaxSize= atlas.findRegion("MejoraMasAreaMaxSize");
+		    numHarpoonUpgradeMaxSize= atlas.findRegion("MejoraMasArponMaxSize");
+		    invisibleUpgradeMaxSize= atlas.findRegion("MejoraInvisibilidadMaxSize");
+			
 			
 			directionPanel=(atlas.findRegion("MandoDirecciones"));
 			buttonHarpoon = atlas.findRegion("BotonLanza"); 
@@ -266,7 +333,7 @@ private static AtlasRegion barrelWithFissure;
 			VerticalBarRigth=((atlas.findRegion("barraverticalDer")));
 			HorizontalBarUP=((atlas.findRegion("barrahorizontalArriba")));
 			HorizontalBarDown=((atlas.findRegion("barrahorizontalAbajo")));
-			background=atlas.findRegion("fondo");
+			background=atlas.findRegion("gameScreenBackground");
 			
 		    //Componentes de la pantalla de creacion de partida multiplayer
 			backGrey = atlas.findRegion("BackGrey");
@@ -287,7 +354,11 @@ private static AtlasRegion barrelWithFissure;
 		    leaveGroupButton = atlas.findRegion("LeaveGroupButton");
 		    
 		    map = atlas.findRegion("Map");
-		    multiplayerGameTitle = atlas.findRegion("MultiplayerGameTitle");
+		    multiplayerButtonPressed = atlas.findRegion("MultiplayerButtonPressed");
+		    multiplayerButtonUnpressed = atlas.findRegion("MultiplayerButtonUnpressed");
+		    inviteFriendsButtonPressed = atlas.findRegion("InviteFriendsButtonPressed");
+		    inviteFriendsButtonUnpressed = atlas.findRegion("InviteFriendsButtonUnpressed");
+
 		    inviteGameTitle = atlas.findRegion("InviteGameTitle");
 		    
 		    pingu = atlas.findRegion("Pingu");
@@ -309,6 +380,12 @@ private static AtlasRegion barrelWithFissure;
 		    add = atlas.findRegion("Add");
 		    minus = atlas.findRegion("Minus");
 		    
+		    //Componentes de la pantalla de friendsList		    
+		    listOfPeopleOn= atlas.findRegion("ListOfPeopleOn");
+		    listOfPeopleOff = atlas.findRegion("ListOfPeopleOff");
+		    
+		    addFriend = atlas.findRegion("AddFriend");
+		    
 		    //Componentes de la pantalla de ayuda
 		    
 		    gameModesButtonHelp = atlas.findRegion("GameModesButtonHelp");
@@ -326,9 +403,61 @@ private static AtlasRegion barrelWithFissure;
 		    createGameHelpText = atlas.findRegion("CreateGameHelpText");
 		    gameModesHelpText = atlas.findRegion("GameModesHelpText");
 		    
+		    
+		    logSignWindow = atlas.findRegion("LogSignWindow");
+		    logInWindow = atlas.findRegion("LogInWindow");
+		    signInWindow = atlas.findRegion("SignInWindow");
+		 
+		    okWindow = atlas.findRegion("OkWindow");
+		    
+		    J1 = atlas.findRegion("J1");
+		    J2 = atlas.findRegion("J2");
+		    J3 = atlas.findRegion("J3");
+		    J4 = atlas.findRegion("J4");
+		    
 	    }
 	    
-	    public static AtlasRegion getYouWin() {
+public static AtlasRegion getBootUpgrade() {
+			return bootUpgrade;
+		}
+
+		public static AtlasRegion getRangeUpgrade() {
+			return rangeUpgrade;
+		}
+
+		public static AtlasRegion getNumHarpoonUpgrade() {
+			return numHarpoonUpgrade;
+		}
+
+		public static AtlasRegion getInvisibleUpgrade() {
+			return invisibleUpgrade;
+		}
+
+		public static AtlasRegion getBootUpgradeMaxSize() {
+			return bootUpgradeMaxSize;
+		}
+
+		public static AtlasRegion getRangeUpgradeMaxSize() {
+			return rangeUpgradeMaxSize;
+		}
+
+		public static AtlasRegion getNumHarpoonUpgradeMaxSize() {
+			return numHarpoonUpgradeMaxSize;
+		}
+
+		public static AtlasRegion getInvisibleUpgradeMaxSize() {
+			return invisibleUpgradeMaxSize;
+		}
+
+		public static AtlasRegion getThrowUpgrade() {
+			return throwUpgrade;
+		}
+
+		public static AtlasRegion getLineLifesPanel() {
+			return deadLine;
+		}
+
+		public static AtlasRegion getYouWin() {
 			return youWin;
 		}
 
@@ -338,6 +467,10 @@ private static AtlasRegion barrelWithFissure;
 
 		public static AtlasRegion getBarrelWithFissure() {
 			return barrelWithFissure;
+		}
+
+		public static AtlasRegion getLifesPanel() {
+			return lifesPanel;
 		}
 
 		public static AtlasRegion getBackground() {
@@ -468,12 +601,12 @@ private static AtlasRegion barrelWithFissure;
 
 
 		public static AtlasRegion getMapBackground() {
-			return mapBackground;
+			return gameScreenBackground;
 		}
 
 
 		public static void setMapBackground(AtlasRegion mapBackground) {
-			Assets.mapBackground = mapBackground;
+			Assets.gameScreenBackground = mapBackground;
 		}
 
 
@@ -569,6 +702,32 @@ private static AtlasRegion barrelWithFissure;
 		public static AtlasRegion getDeadIconGreen() {
 			return deadIconGreen;
 		}
+		
+	    
+	    public static AtlasRegion getYellowPlayer() {
+			return yellowPlayer;
+		}
+
+		public static AtlasRegion getRedPlayer() {
+			return redPlayer;
+		}
+
+		public static AtlasRegion getBluePlayer() {
+			return bluePlayer;
+		}
+
+		public static AtlasRegion getGreenPlayer() {
+			return greenPlayer;
+		}
+
+		public static AtlasRegion getYourTeamWins() {
+			return yourTeamWins;
+		}
+
+		public static AtlasRegion getDraw() {
+			return draw;
+		}
+
 
 	
 }

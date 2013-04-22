@@ -1,5 +1,8 @@
 package GameLogic;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.badlogic.gdx.math.Vector3;
 
 import Application.MatchManager.Direction;
@@ -10,48 +13,113 @@ import GameLogic.Map.WaterTypes;
 
 public class Match {
 	
-	enum TypeGame {Normal}
+	public enum TypeGame {Normal,Teams,OneVsAll,Survival,BattleRoyale}
 	
-	private final int numPlayers = 4;
-	private final float playerWidth = 1;
-	private final float playerLength = 1;
-	private final float minimalMove = 0.25f;
+	private final static float playerWidth = 1;
+	private final static float playerLength = 1;
+	private final static float minimalMove = 0.25f;
+	private final static int maxSize = 11;
 	
 	private Map map;
 	private TimeEventsManager timeEventsManager;
 	private HarpoonManager harpoonManager;
 	private TypeGame type;
-	private Player[] players;
-	private int numUpgrades;
-	private long matchTime;
+	private ArrayList<Team> teams;
 	private Vector3 coord;
-
-	/*** ***/
+	private long matchTime;
+	private int myPlayerId;
+	private int numPlayers;
+	private boolean gameTimeOff;
 	
-	public Match(){
-		this.map = new Map(11,11,"mapaPrueba.xml");
+	public Match(int[] upgrades,XMLMapReader xmlMapReader,int playerId, int numPlayers,TypeGame type){
+		this.myPlayerId = playerId;
+		this.numPlayers = numPlayers;
+		this.type = type;
+		this.map = new Map(maxSize,maxSize,upgrades,xmlMapReader);
+		this.teams = initializeTeams(numPlayers,type);
 		this.harpoonManager = new HarpoonManager(numPlayers);
-		this.players = new Player[numPlayers];
 		this.timeEventsManager = new TimeEventsManager(this);
-		for (int i=0;i<numPlayers;i++){
-			players[i] = new Player(i);
-		}
+		this.gameTimeOff = false;
 		coord=new Vector3();
-		this.numUpgrades = 0;
 	}
 	
-	/*** ***/
-	// CHANGEST
+	private ArrayList<Team> initializeTeams(int numPlayers, TypeGame type) {
+		ArrayList<Team> teams = null;
+		if (type.equals(TypeGame.Normal)) teams = normalGame(numPlayers,type); 
+		else if (type.equals(TypeGame.Teams)) teams = teamsGame(numPlayers,type);
+		else if (type.equals(TypeGame.Survival)) teams = survivalGame(numPlayers,type);
+		else if (type.equals(TypeGame.BattleRoyale)) teams = battleRoyalGame(numPlayers,type);
+		return teams;
+	}
+
+	private ArrayList<Team> survivalGame(int numPlayers, TypeGame type) {
+		ArrayList<Team> teams = new ArrayList<Team>();
+		int playerId = 0;
+		teams.add(new Team(numPlayers,0,1,playerId,type));
+		teams.add(new Team(numPlayers,1,numPlayers-1,playerId+1,type));
+		return teams;
+	}
+	
+	private ArrayList<Team> normalGame(int numPlayers,TypeGame type) {
+		ArrayList<Team> teams = new ArrayList<Team>();
+		int playerId = 0;
+		for (int i=0;i<numPlayers;i++){
+			teams.add(new Team(numPlayers,i,1,playerId,type));
+			playerId += 1;
+		}
+		return teams;
+	}
+	
+	/**
+	 * Create 4 teams with 1 player each one
+	 * @param numPlayers: number of player in each team
+	 * @param type : game mode
+	 * @return
+	 */
+	
+	private  ArrayList<Team> battleRoyalGame(int numPlayers,TypeGame type){
+		//Is like normal game, the same team
+		return normalGame(numPlayers,type);
+	} 
+	
+	private  ArrayList<Team> teamsGame(int numPlayers,TypeGame type){
+		ArrayList<Team> teams = new ArrayList<Team>();
+		int playerId = 0;
+		for (int i=0;i<(numPlayers/2);i++){
+			teams.add(new Team(numPlayers,i,2,playerId,type, true));
+			playerId += 2;
+		}
+		return teams;
+		
+	} 
+	
+	private Player getPlayer(int playerId){
+		Player player = null;
+		boolean found = false;
+		Team team;
+		Iterator<Player> playerIterator;
+		Iterator<Team> teamIterator = teams.iterator();
+		while (teamIterator.hasNext() && !found){
+			team = teamIterator.next();
+			playerIterator = team.getPlayers().iterator();
+			while (playerIterator.hasNext() && !found){
+				player = playerIterator.next();
+				found = (playerId == player.getPlayerId());
+			}
+		}
+		return player;
+	}
+
 	private boolean newSquare(int x, int y){
 		TypeSquare square = map.getBasicMatrixSquare(x,y);
 		return !(square.equals(TypeSquare.unbreakable)|| square.equals(TypeSquare.breakable) 
-				  ||square.equals(TypeSquare.Harpoon));
+				  ||square.equals(TypeSquare.harpoon));
 	}
-	//END
+
 	public boolean insideBoardMove(Direction dir, int playerId) {
+		Player player = getPlayer(playerId);
 		boolean valid = false;
-		
-		Vector3 position = players[playerId].getPosition();
+		Vector3 position = player.getPosition();
 		float limitX = map.getLength();
 		float limitY = map.getWidth();
 		float newPositionX = position.x;
@@ -64,22 +132,22 @@ public class Match {
 		
 		valid = ((newPositionX>=0.0) && (newPositionX<=(limitX-playerLength)) && 
 				(newPositionY>=0.0) && (newPositionY<=(limitY-playerWidth))) || 
-				(!dir.equals(players[playerId].getLookAt()));
+				(!dir.equals(player.getLookAt()));
 		
 		return valid;
 	}
 	
 	public Direction getSpecialMoveDir(int myPlayerId) {
-		return players[myPlayerId].getSpecialMoveDir();
+		Player player = getPlayer(myPlayerId);
+		return player.getSpecialMoveDir();
 	}
-	
-
-	
-	public boolean isSpecialMove(Direction dir, int myPlayerId) {
+		
+	public boolean isSpecialMove(Direction dir, int playerId) {
+		Player player = getPlayer(playerId);
 		boolean valid=false;
-		Vector3 position=players[myPlayerId].getPosition();
-		if (players[myPlayerId].getSpecialMove()){
-			Direction dirPlayer=players[myPlayerId].getLookAt();
+		Vector3 position=player.getPosition();
+		if (player.getSpecialMove()){
+			Direction dirPlayer=player.getLookAt();
 			if(dirPlayer.equals(Direction.left)){
 				if(dir.equals(Direction.up)){
 					valid=newSquare((int)position.x,(int) position.y+1);
@@ -87,7 +155,7 @@ public class Match {
 					valid=newSquare((int)position.x,(int) position.y-1);
 				}
 				if (valid){
-					players[myPlayerId].setSpecialMove(!((int)(position.x-0.25f)==(position.x-0.25f)));
+					player.setSpecialMove(!((int)(position.x-0.25f)==(position.x-0.25f)));
 				}
 			}else if(dirPlayer.equals(Direction.right)){
 				if(dir.equals(Direction.up)){
@@ -96,7 +164,7 @@ public class Match {
 					valid=newSquare((int)position.x+1,(int) position.y-1);
 				}
 				if (valid){
-					players[myPlayerId].setSpecialMove(!((int)(position.x+0.25f)==(position.x+0.25f)));
+					player.setSpecialMove(!((int)(position.x+0.25f)==(position.x+0.25f)));
 				}
 			}else if(dirPlayer.equals(Direction.up)){
 				if(dir.equals(Direction.right)){
@@ -105,7 +173,7 @@ public class Match {
 					valid=newSquare((int)position.x-1,(int) position.y+1);
 				}
 				if (valid){
-					players[myPlayerId].setSpecialMove(!((int)(position.y+0.25f)==(position.y+0.25f)));
+					player.setSpecialMove(!((int)(position.y+0.25f)==(position.y+0.25f)));
 				}
 			}else if(dirPlayer.equals(Direction.down)){
 				if(dir.equals(Direction.right)){
@@ -114,69 +182,69 @@ public class Match {
 					valid=newSquare((int)position.x-1,(int) position.y);
 				}
 				if (valid){
-					players[myPlayerId].setSpecialMove(!((int)(position.y-0.25f)==(position.y-0.25f)));
+					player.setSpecialMove(!((int)(position.y-0.25f)==(position.y-0.25f)));
 				}
 			}
 		}else{
-			if(dir.equals(players[myPlayerId].getLookAt())){
+			if(dir.equals(player.getLookAt())){
 				if(dir.equals(Direction.left)){
 					if(((position.y-(int)position.y)==0.5f)||((position.y-(int)position.y)==0.25f)){
 							if((newSquare((int)position.x-1,(int)position.y))&&!(newSquare((int)position.x-1,(int)position.y+1))){
 								valid=true;
-								players[myPlayerId].setSpecialMove(true);
-								players[myPlayerId].setSpecialMoveDir(Direction.down);
+								player.setSpecialMove(true);
+								player.setSpecialMoveDir(Direction.down);
 							}					
 						}
 					if (((position.y-(int)position.y)==0.75f)||((position.y-(int)position.y)==0.5f)){
 						if((newSquare((int)position.x-1,(int)position.y+1))&&!(newSquare((int)position.x-1,(int)position.y))){
 							valid=true;
-							players[myPlayerId].setSpecialMove(true);
-							players[myPlayerId].setSpecialMoveDir(Direction.up);
+							player.setSpecialMove(true);
+							player.setSpecialMoveDir(Direction.up);
 							}	
 						}
 					} else if(dir.equals(Direction.right)){
 					if(((position.y-(int)position.y)==0.5f)||((position.y-(int)position.y)==0.25f)){
 							if((newSquare((int)position.x+1,(int)position.y))&&!(newSquare((int)position.x+1,(int)position.y+1))){
 								valid=true;
-								players[myPlayerId].setSpecialMove(true);
-								players[myPlayerId].setSpecialMoveDir(Direction.down);
+								player.setSpecialMove(true);
+								player.setSpecialMoveDir(Direction.down);
 							}					
 						}
 					if (((position.y-(int)position.y)==0.75f)||((position.y-(int)position.y)==0.5f)){
 						if((newSquare((int)position.x+1,(int)position.y+1))&&!(newSquare((int)position.x+1,(int)position.y))){
 							valid=true;
-							players[myPlayerId].setSpecialMove(true);
-							players[myPlayerId].setSpecialMoveDir(Direction.up);
+							player.setSpecialMove(true);
+							player.setSpecialMoveDir(Direction.up);
 							}	
 						}
 					} else if(dir.equals(Direction.up)){
 					if(((position.x-(int)position.x)==0.5f)||((position.x-(int)position.x)==0.25f)){
 							if((newSquare((int)position.x,(int)position.y+1))&&!(newSquare((int)position.x+1,(int)position.y+1))){
 								valid=true;
-								players[myPlayerId].setSpecialMove(true);
-								players[myPlayerId].setSpecialMoveDir(Direction.left);
+								player.setSpecialMove(true);
+								player.setSpecialMoveDir(Direction.left);
 							}					
 						}
 					if (((position.x-(int)position.x)==0.75f)||((position.x-(int)position.x)==0.5f)){
 						if((newSquare((int)position.x+1,(int)position.y+1))&&!(newSquare((int)position.x,(int)position.y+1))){
 							valid=true;
-							players[myPlayerId].setSpecialMove(true);
-							players[myPlayerId].setSpecialMoveDir(Direction.right);
+							player.setSpecialMove(true);
+							player.setSpecialMoveDir(Direction.right);
 							}	
 						}
 					}else if(dir.equals(Direction.down)){
 					if(((position.x-(int)position.x)==0.5f)||((position.x-(int)position.x)==0.25f)){
 							if((newSquare((int)position.x,(int)position.y-1))&&!(newSquare((int)position.x+1,(int)position.y-1))){
 								valid=true;
-								players[myPlayerId].setSpecialMove(true);
-								players[myPlayerId].setSpecialMoveDir(Direction.left);
+								player.setSpecialMove(true);
+								player.setSpecialMoveDir(Direction.left);
 							}					
 						}
 					if (((position.x-(int)position.x)==0.75f)||((position.x-(int)position.x)==0.5f)){
 						if((newSquare((int)position.x+1,(int)position.y-1))&&!(newSquare((int)position.x,(int)position.y-1))){
 							valid=true;
-							players[myPlayerId].setSpecialMove(true);
-							players[myPlayerId].setSpecialMoveDir(Direction.right);
+							player.setSpecialMove(true);
+							player.setSpecialMoveDir(Direction.right);
 							}	
 						}
 					}
@@ -185,10 +253,11 @@ public class Match {
 		return valid;
 		}
 
-	public boolean isNormalMove(Direction dir, int myPlayerId) {
+	public boolean isNormalMove(Direction dir, int playerId) {
+		Player player = getPlayer(playerId);
 		boolean valid = false;
-		if(dir.equals(players[myPlayerId].getLookAt())){
-			Vector3 position=players[myPlayerId].getPosition();
+		if(dir.equals(player.getLookAt())){
+			Vector3 position=player.getPosition();
 			if ((dir.equals(Direction.left)||dir.equals(Direction.right))&&((int)position.y==position.y)){
 				if ((int)position.x==position.x){
 					if(dir.equals(Direction.left)){
@@ -212,50 +281,97 @@ public class Match {
 				}
 			}
 		}else valid=true;
-		if (valid) players[myPlayerId].setSpecialMove(false);
+		if (valid) player.setSpecialMove(false);
 		return valid;
 	}
+	
 	private void loseLife(int playerId) {
-		timeEventsManager.sinkPenguinEvent(players[playerId]);
-		players[playerId].removeLive();
+		Player player = getPlayer(playerId);
+		timeEventsManager.sinkPenguinEvent(player);
+		if (type.equals(TypeGame.Normal)||type.equals(TypeGame.BattleRoyale)) checkPlayer(player);
+		else if (type.equals(TypeGame.Teams)) sharePlayer(player);
+		else if (type.equals(TypeGame.Survival)) checkSurvival(player);
+
 	}
 
-	/**
-	 * @param yPlayerPosition 
-	 * @param xPlayerPosition 
-	 **/
-	
-	public void movePlayer(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition) {
-		Player myPlayer = players[playerId];
-		if (!dir.equals(players[playerId].getLookAt())) players[playerId].setLookAt(dir);
-		else {
-			if (dir.equals(Direction.left)) myPlayer.setPositionX(xPlayerPosition-minimalMove);
-			else if (dir.equals(Direction.right)) myPlayer.setPositionX(xPlayerPosition+minimalMove);
-			else if (dir.equals(Direction.up)) myPlayer.setPositionY(yPlayerPosition+minimalMove);
-			else if (dir.equals(Direction.down)) myPlayer.setPositionY(yPlayerPosition-minimalMove);
-		}
-		if (!players[playerId].isInvincible() && isSunkenPenguin(playerId)){
-			loseLife(playerId);
+	private void checkSurvival(Player player) {
+		Team team = teams.get(1);
+		team.getPlayers().remove(player);
+		team = teams.get(0);
+		team.getPlayers().add(player);
+		modifyPlayer(player);
+	}
+
+	private void modifyPlayer(Player player) {
+		player.resetPositon();
+		player.setCanPlay(false);
+		player.setLives(1);
+		player.makeInvincible();
+		player.setMaxHarpoonsAllow(1);
+		player.setRange(2);
+	}
+
+	private void sharePlayer(Player player) {
+		if (player.getLives()>1)
+			player.removeLife();
+		else if(getMyTeam(player.getPlayerId()).isShare()){
+			Player p = getMyTeam(player.getPlayerId()).giveMeOneOfYourLives(player.getPlayerId());
+			if(p==null) player.removeLife();
+			else {
+				timeEventsManager.respawnTimeEvent(p);
+				p.removeLife();
+			}
+			
 		}
 	}
-	
-	public boolean isSunkenPenguin(int myPlayerId){
-		Vector3[] positions = players[myPlayerId].getPositions();
+
+	private void checkPlayer(Player player) {
+		player.removeLife();
+	}
+
+	public void movePlayer(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition) {
+		Player player = getPlayer(playerId);
+		if (!dir.equals(player.getLookAt())) player.setLookAt(dir);
+		else {
+			if (dir.equals(Direction.left)) player.setPositionX(xPlayerPosition-minimalMove);
+			else if (dir.equals(Direction.right)) player.setPositionX(xPlayerPosition+minimalMove);
+			else if (dir.equals(Direction.up)) player.setPositionY(yPlayerPosition+minimalMove);
+			else if (dir.equals(Direction.down)) player.setPositionY(yPlayerPosition-minimalMove);
+		}
+		if (!player.isInvincible() && isSunkenPenguin(playerId)){
+				loseLife(playerId);
+		}
+		checkUpgrade(dir,playerId); 
+	}
+	 
+
+	public boolean isSunkenPenguin(int playerId){
+		Player player = getPlayer(playerId);
+		Vector3[] positions = player.getPositions();
 		boolean isSunken = false;
 		if(map.getWaterMatrixSquare((int)positions[0].x,(int)positions[0].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[0].x,(int)positions[0].y);
+			if(type.equals(TypeGame.BattleRoyale)){
+				Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[0].x,(int)positions[0].y);
+				stealImprovements(player.getPlayerId(),myHarpoon);
+			}
 			isSunken = true;
 		}
 		else if(map.getWaterMatrixSquare((int)positions[1].x,(int)positions[1].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[1].x,(int)positions[1].y);
+			if(type.equals(TypeGame.BattleRoyale )){
+				Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[1].x,(int)positions[1].y);
+				stealImprovements(player.getPlayerId(),myHarpoon);
+			}
 			isSunken = true;
 		}
 		return isSunken;
 	}
 	
-	public void putHarpoonAt(int x, int y, int range, long time){
-		Harpoon harpoon = new Harpoon(x,y,range);
+	public void putHarpoonAt(int x, int y, int range,int playerId, long time){
+		Harpoon harpoon = new Harpoon(x,y,range,playerId);
 		harpoonManager.addHarpoon(harpoon);
+		if (myPlayerId == playerId) harpoonManager.increaseHarpoonCount();
 		timeEventsManager.sinkHarpoonEvent(harpoon,time);
 		map.putHarpoonAt(x,y);
 		map.addAllFissures(harpoonManager.getActiveHarpoonList());
@@ -272,25 +388,109 @@ public class Match {
 	}
 	
 	private void harpoonRangeDamage(Harpoon harpoon) {
-		int range = harpoon.getRange();
 		boolean[] isCought = new boolean[numPlayers];
-		boolean[] isBlocked = new boolean [4];
 		for (int i=0;i<numPlayers;i++) isCought[i] = false;
-		for (int i=0;i<4;i++) isBlocked[i] = false;
-		for (int i=0;i<=range;i++){
-			for (int j=0;j<numPlayers;j++){
-				if (!players[j].isInvincible()){
-					Vector3[] positions = players[j].getPositions();
-					if (isCought(harpoon,i,positions,isBlocked)){
-						isCought[j] = true;
-					}
-				}
-			}
-			updateBlocked(harpoon,i+1,isBlocked);
-		}
+		harpoonRangeDamageChain(harpoon,isCought);
 		for (int i=0;i<numPlayers;i++){
 			if (isCought[i]) loseLife(i);
 		}
+	}
+
+	private void harpoonRangeDamageChain(Harpoon harpoon, boolean[] isCought) {
+		
+		boolean[] isBlocked = new boolean [4];
+		for (int i=0;i<4;i++) isBlocked[i] = false;
+		int range = harpoon.getRange();
+		for (int i=0;i<=range;i++){
+			for (int j=0;j<numPlayers;j++){
+				Player player = getPlayer(j);
+				if (!player.isInvincible()){
+					Vector3[] positions = player.getPositions();
+					if (isCought(harpoon,i,positions,isBlocked)){
+						isCought[j] = true;
+						if (type.equals(TypeGame.BattleRoyale))
+						stealImprovements(j, harpoon);
+					}
+				}
+			}
+			if (i!=0) checkHarpoonsInRange(harpoon,i,isCought,isBlocked);
+			updateBlocked(harpoon,i+1,isBlocked);
+		}
+		if (harpoon.getPlayerId() == myPlayerId) harpoonManager.decreaseHarpoonCount();
+		map.putSunkenHarpoonAt((int)harpoon.getPosition().x,(int)harpoon.getPosition().y);
+		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
+	}
+
+	private void stealImprovements(int playerId, Harpoon harpoon) {
+		
+		if (playerId != harpoon.getPlayerId()){
+		Player hitted = getPlayer(playerId);
+		Player hitter = getPlayer(harpoon.getPlayerId());
+		
+		int maxHarpoonsAllow = (hitted.getMaxHarpoonsAllow()-1) + hitter.getMaxHarpoonsAllow();
+		int range = (hitted.getRange()-1) + hitter.getRange();
+		int speed = (hitted.getSpeed()-1) + hitter.getSpeed();
+		boolean invisible = hitted.isInvisible();
+		
+		if (invisible){
+		timeEventsManager.removeInvisibleTimer(hitted);
+		if(hitter.isInvisible()) timeEventsManager.removeInvisibleTimer(hitter);
+		timeEventsManager.invisibleEvent(hitter);
+		hitter.setInvisible(true);
+		}
+		
+		if (maxHarpoonsAllow<=5)
+			hitter.setMaxHarpoonsAllow(maxHarpoonsAllow);
+		else
+			hitter.setMaxHarpoonsAllow(5);
+		
+		if (range<=5)
+			hitter.setRange(range);
+		else
+			hitter.setRange(5);
+		
+		if (speed<=5)
+			hitter.setSpeed(speed);
+		else
+			hitter.setSpeed(5);
+		}
+	}
+
+	private void checkHarpoonsInRange(Harpoon harpoon, int range, boolean[] isCought, boolean[] isBlocked) {
+		int x = (int)harpoon.getPosition().x;
+		int y = (int)harpoon.getPosition().y;
+		if (!isBlocked[0] && (map.getBasicMatrixSquare(x, y+range).equals(TypeSquare.harpoon))){		
+			Harpoon newHarpoon = harpoonManager.getHarpoon(x,y+range);
+			harpoonManager.sinkHarpoon(newHarpoon);
+			timeEventsManager.stopHarpoonTimer(newHarpoon);
+			map.putSunkenHarpoonAt(x,y);
+			harpoonRangeDamageChain(newHarpoon,isCought);
+			timeEventsManager.freezeWaterEvent(newHarpoon);
+		}
+		else if (!isBlocked[1] && (map.getBasicMatrixSquare(x, y-range).equals(TypeSquare.harpoon))){
+			Harpoon newHarpoon = harpoonManager.getHarpoon(x,y-range);
+			harpoonManager.sinkHarpoon(newHarpoon);
+			timeEventsManager.stopHarpoonTimer(newHarpoon);
+			map.putSunkenHarpoonAt(x,y);
+			harpoonRangeDamageChain(newHarpoon,isCought);
+			timeEventsManager.freezeWaterEvent(newHarpoon);
+		}
+		else if (!isBlocked[2] && (map.getBasicMatrixSquare(x-range,y).equals(TypeSquare.harpoon))){
+			Harpoon newHarpoon = harpoonManager.getHarpoon(x-range,y);
+			harpoonManager.sinkHarpoon(newHarpoon);
+			timeEventsManager.stopHarpoonTimer(newHarpoon);
+			map.putSunkenHarpoonAt(x,y);
+			harpoonRangeDamageChain(newHarpoon,isCought);
+			timeEventsManager.freezeWaterEvent(newHarpoon);
+		}
+		else if (!isBlocked[3] && (map.getBasicMatrixSquare(x+range,y).equals(TypeSquare.harpoon))){
+			Harpoon newHarpoon = harpoonManager.getHarpoon(x+range,y);
+			harpoonManager.sinkHarpoon(newHarpoon);
+			timeEventsManager.stopHarpoonTimer(newHarpoon);
+			map.putSunkenHarpoonAt(x,y);
+			harpoonRangeDamageChain(newHarpoon,isCought);
+			timeEventsManager.freezeWaterEvent(newHarpoon);
+		}	
 	}
 
 	private void updateBlocked(Harpoon harpoon, int range, boolean[] isBlocked) {
@@ -340,9 +540,10 @@ public class Match {
 	}
 	
 	private boolean isLegalMove(Direction dir, int playerId){
+		Player player = getPlayer(playerId);
 		boolean valid = false;
-		if(dir.equals(players[playerId].getLookAt())){
-			Vector3 position=players[playerId].getPosition();
+		if(dir.equals(player.getLookAt())){
+			Vector3 position=player.getPosition();
 			if ((dir.equals(Direction.left)||dir.equals(Direction.right))&&((int)position.y==position.y)){
 				if ((int)position.x==position.x){
 					if(dir.equals(Direction.left)){
@@ -369,9 +570,10 @@ public class Match {
 		return valid;
 	}
 	
-	public boolean canPutHarpoon(int myPlayerId){
-		Vector3 position=players[myPlayerId].getPosition();
-		if(players[myPlayerId].getLookAt().equals(Direction.right)){
+	public boolean canPutHarpoon(int playerId){
+		Player player = getPlayer(playerId);
+		Vector3 position=player.getPosition();
+		if(player.getLookAt().equals(Direction.right)){
 			if ((position.x-(int)position.x)==0){
 				coord.x=position.x;
 				coord.y=position.y;
@@ -379,11 +581,11 @@ public class Match {
 				coord.x=position.x+1;
 				coord.y=position.y;
 			}
-		}else if(players[myPlayerId].getLookAt().equals(Direction.left)){
+		}else if(player.getLookAt().equals(Direction.left)){
 				coord.x=position.x;
 				coord.y=position.y;
 			
-		}else if(players[myPlayerId].getLookAt().equals(Direction.up)){
+		}else if(player.getLookAt().equals(Direction.up)){
 			if ((position.y-(int)position.y)==0){
 				coord.x=position.x;
 				coord.y=position.y;
@@ -391,35 +593,68 @@ public class Match {
 				coord.x=position.x;
 				coord.y=position.y+1;
 			}
-		}else if(players[myPlayerId].getLookAt().equals(Direction.down)){
+		}else if(player.getLookAt().equals(Direction.down)){
 				coord.x=position.x;
 				coord.y=position.y;
 			
 		}
-		return (map.isEmptySquare((int)coord.x,(int)coord.y));
+		return (map.isEmptySquare((int)coord.x,(int)coord.y) && playerAllowed(playerId));
 	}	
 
-	public boolean imTheWinner(int numPlayer){
-		boolean win = !players[numPlayer].isThePlayerDead();
-		for(int i = 0; i< numPlayers; i++){
-			if(i != numPlayer){
-				win = win && players[i].isThePlayerDead();
+	public void gameTimeOff(){
+		gameTimeOff=true;
+	}
+	private boolean playerAllowed(int playerId){
+		Player player = getPlayer(playerId);
+		return (player.getMaxHarpoonsAllow()-harpoonManager.getCurrentPlayerHarpoons())>0;
+	}
+
+	public boolean imTheWinner(int playerId){
+		Player player = getPlayer(playerId);
+		boolean win = !player.isThePlayerDead();
+		Team myTeam = getMyTeam(playerId);
+		for(int i = 0; i<numPlayers; i++){
+			if(i != playerId && getMyTeam(i)!=myTeam){
+				player = getPlayer(i);
+				win = win && player.isThePlayerDead();
 			}
 		}
 		return win;
 	}
 	
-	
-	public int getIntegerCoordX(int myPlayerId) {
-		Player myPlayer = players[myPlayerId];
-		Vector3 position = myPlayer.getPosition();
+	public boolean areAllPlayersDead() {
+		Player player = null;
+		boolean allDead = true;
+		for (int i =0; i<numPlayers; i++){
+			player = getPlayer(i);
+			allDead = allDead &&  player.isThePlayerDead();
+		}
+		return allDead;
+			
+	}
+		
+	public int getIntegerCoordX(int playerId) {
+		Player player = getPlayer(playerId);
+		Vector3 position = player.getPosition();
 		return (int)position.x;
 	}
 	
-	public int getIntegerCoordY(int myPlayerId) {
-		Player myPlayer = players[myPlayerId];
-		Vector3 position = myPlayer.getPosition();
+	public int getIntegerCoordY(int playerId) {
+		Player player = getPlayer(playerId);
+		Vector3 position = player.getPosition();
 		return (int)position.y;
+	}
+	
+	public Team getMyTeam(int playerId){
+		Player player = getPlayer(playerId);
+		Iterator<Team> it = teams.iterator();
+		Team myTeam = null;
+		while(it.hasNext()){
+			myTeam = it.next();
+			if (myTeam.getPlayers().contains(player)) return myTeam;
+			
+		}
+		return null;
 	}
 	
 	public void sinkPenguinFinish(Player player) {
@@ -427,12 +662,52 @@ public class Match {
 		player.removeInvincible();
 	}
 
-	public int getMyPlayerRange(int myPlayerId) {
-		return players[myPlayerId].getRange();
+	public int getMyPlayerRange(int playerId) {
+		Player player = getPlayer(playerId);
+		return player.getRange();
 	}
 	
 	public boolean checkCorrectMove(Direction dir, int playerId){
 		return (insideBoardMove(dir, playerId)&& isLegalMove(dir,playerId));
+	}
+	
+	public boolean checkHarpoon(int x, int y) {
+		return map.isEmptySquare(x,y);
+	}
+	
+	public void checkUpgrade(Direction dir, int playerId) {
+		Player player = getPlayer(playerId);
+		Vector3[] positions = player.getPositions();
+		if (positions[0].equals(positions[1]) && map.existUpgrade(positions[0])) {
+			TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y);
+			if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
+			else player.upgradePlayer(typeSquare);
+			map.setEmpty((int)positions[0].x,(int)positions[0].y);
+		}
+		else {
+			if (map.existUpgrade(positions[0])){
+				TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y);
+				if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
+				else player.upgradePlayer(typeSquare);
+				map.setEmpty((int)positions[0].x,(int)positions[0].y);
+			}
+			else if (map.existUpgrade(positions[1])){
+				TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y);
+				if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
+				else player.upgradePlayer(typeSquare);
+				map.setEmpty((int)positions[1].x,(int)positions[1].y);
+			}
+		}
+	}
+	
+	private void makeInvisible(Player player){
+		if (player.isInvisible()) timeEventsManager.removeInvisibleTimer(player);
+		player.setInvisible(true);
+		timeEventsManager.invisibleEvent(player);
+	}
+	
+	public void endInvisible(Player player) {
+		player.setInvisible(false);
 	}
 	
 	//Getters and Setters
@@ -449,26 +724,7 @@ public class Match {
 	public void setType(TypeGame type) {
 		this.type = type;
 	}
-	public Player[] getPlayers() {
-		return players;
-	}
-	
-	public Player getPlayers(int i) {
-		return players[i];
-	}
-	
-	public void setPlayers(Player[] players) {
-		this.players = players;
-	}
-	public int getNumPlayers() {
-		return numPlayers;
-	}
-	public int getNumUpgrades() {
-		return numUpgrades;
-	}
-	public void setNumUpgrades(int numUpgrades) {
-		this.numUpgrades = numUpgrades;
-	}
+
 	public long getTime() {
 		return matchTime;
 	}
@@ -477,8 +733,8 @@ public class Match {
 	}
 
 	public Vector3 getMyPlayerPosition(int playerId) {
-		Player myPlayer = players[playerId];
-		Vector3 currentPosition = new Vector3(myPlayer.getPosition().x,myPlayer.getPosition().y,0);
+		Player player = getPlayer(playerId);
+		Vector3 currentPosition = new Vector3(player.getPosition().x,player.getPosition().y,0);
 		return currentPosition;
 	}
 
@@ -500,8 +756,9 @@ public class Match {
 	}
 	
 
-	public Direction getPlayerDirection(int i) {
-		return players[i].getLookAt();
+	public Direction getPlayerDirection(int playerId) {
+		Player player = getPlayer(playerId);
+		return player.getLookAt();
 	}
 	public Vector3 getCoord() {
 		return coord;
@@ -510,8 +767,9 @@ public class Match {
 	public void setCoord(Vector3 coord) {
 		this.coord = coord;
 	}
-	public int getPlayerLifes(int i) {
-		return players[i].getLifes();
+	public int getPlayerLifes(int playerId) {
+		Player player = getPlayer(playerId);
+		return player.getLives();
 	}
 
 	public HarpoonManager getHarpoonManager() {
@@ -530,16 +788,81 @@ public class Match {
 		this.timeEventsManager = timeEventsManager;
 	}
 
-	public boolean isThePlayerDead(int numPlayer) {
-		return players[numPlayer].isThePlayerDead();
+	public boolean isThePlayerDead(int playerId) {
+		Player player = getPlayer(playerId);
+		return player.isThePlayerDead();
 	}
 
-	public Direction getLookAt(int i) {
-		return players[i].getLookAt();
+	public Direction getLookAt(int playerId) {
+		Player player = getPlayer(playerId);
+		return player.getLookAt();
 	}
 
-	public boolean canPlay(int i) {
-		return players[i].canPlay();
+	public boolean canPlay(int playerId) {
+		Player player = getPlayer(playerId);
+		return (player.canPlay() && !gameTimeOff && !imTheWinner(playerId));
 	}
 
+	public int getMyPlayerId() {
+		return myPlayerId;
+	}
+
+	public void setMyPlayerId(int myPlayerId) {
+		this.myPlayerId = myPlayerId;
+	}
+
+	public int getPlayerSpeed(int playerId){
+		Player player = getPlayer(playerId);
+		return player.getSpeed();
+	}
+
+	public int getPlayerHarpoonAllow(int playerId) {
+		Player player = getPlayer(playerId);
+		return player.getMaxHarpoonsAllow();
+	}
+
+	public int getPlayerRange(int playerId){
+		Player player = getPlayer(playerId);
+		return player.getRange();
+	}
+
+	public ArrayList<Team> getTeams() {
+		return teams;
+	}
+
+	public void setTeams(ArrayList<Team> teams) {
+		this.teams = teams;
+	}
+
+	public int getNumPlayers() {
+		return this.numPlayers;
+	}
+
+	public void setNumPlayers(int numPlayers) {
+		this.numPlayers = numPlayers;
+	}
+	public boolean isInvisible(int playerId){
+		return getPlayer(playerId).isInvisible();
+	}
+
+	public boolean isGameTimeOff() {
+		return gameTimeOff;
+	}
+
+	public int getMyTeamId(int playerId) {
+		Player player = getPlayer(playerId);
+		int teamId = 0;
+		Iterator<Team> it = teams.iterator();
+		Team myTeam = null;
+		while(it.hasNext()){
+			myTeam = it.next();
+			if (myTeam.getPlayers().contains(player)) return myTeam.getNumTeam();
+			
+		}
+		return teamId;
+	}
+
+	
+	
+	
 }

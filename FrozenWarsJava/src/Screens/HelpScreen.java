@@ -15,7 +15,11 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class HelpScreen implements Screen{
 
-
+	private static HelpScreen instance; 
+	public static HelpScreen getInstance() {
+		if (instance == null) instance = new HelpScreen(IndexScreen.getInstance(),IndexScreen.getInstance().window);
+		return instance;
+	}
 	    /** The gui cam. */
 	private OrthographicCamera guiCam;
 	
@@ -35,6 +39,7 @@ public class HelpScreen implements Screen{
     
 
     public HelpScreen(IndexScreen indexScreen, int window) {
+    	instance=this;
 		this.game = LaunchFrozenWars.getGame();
 		this.indexScreen = indexScreen;
 		this.window = window;
@@ -135,6 +140,7 @@ public class HelpScreen implements Screen{
             batcher.end();
 
             ConfirmScreen.getInstance().createConfirmIfNeeded();
+            AcceptScreen.getInstance().createAcceptIfNeeded();
 
 	}
 

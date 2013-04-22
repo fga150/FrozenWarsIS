@@ -1,8 +1,5 @@
 package Application;
 
-import java.io.IOException;
-
-import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
@@ -23,6 +20,7 @@ public class GameSettings {
 	String xmlPath;	
 	
 	public GameSettings(String xmlPath){
+		instance = this;
 		this.xmlPath = xmlPath;
 		this.loadSettings();
 	}
@@ -75,7 +73,7 @@ public class GameSettings {
 	private void loadXML() {
 		xml = "";
 		try {
-			FileHandle handle = Gdx.files.getFileHandle("data/".concat(xmlPath), FileType.External);
+			FileHandle handle = Gdx.files.internal("data/".concat(xmlPath));
 			xml = handle.readString();
 		} catch (Exception e) {
 		}
@@ -109,7 +107,7 @@ public class GameSettings {
 		
 		xml = xml.concat("</Settings>");
 		
-		FileHandle handle = Gdx.files.getFileHandle("data/".concat(xmlPath), FileType.External);
+		FileHandle handle = Gdx.files.local("data/".concat(xmlPath));//Investigando, tiene que ser así para que funcione en el móvil también.
 		handle.writeString(xml, false);
 
 	}
@@ -185,7 +183,7 @@ public class GameSettings {
 		}
 	}	
 	
-	public void saveSettings() throws IOException{
+	public void saveSettings(){
 		this.saveXML();
 	}
 }

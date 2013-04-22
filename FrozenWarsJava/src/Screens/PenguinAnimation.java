@@ -22,13 +22,13 @@ public class PenguinAnimation {
 	public PenguinAnimation(FileHandle dir,Direction lookAt) {
 		penguin= new Texture(dir);
 		TextureRegion[][] tmp = TextureRegion.split(penguin, penguin.getWidth() / 4, penguin.getHeight() / 4);
-		walkFramesD = new TextureRegion[3];
-        walkFramesL = new TextureRegion[3];
-        walkFramesR = new TextureRegion[3];
-        walkFramesU = new TextureRegion[3];
+		walkFramesD = new TextureRegion[4];
+        walkFramesL = new TextureRegion[4];
+        walkFramesR = new TextureRegion[4];
+        walkFramesU = new TextureRegion[4];
         int index = 0;
         int i=0;
-        for (int j = 0; j < 3; j++) {
+        for (int j = 0; j < 4; j++) {
         	walkFramesD[index] = tmp[i][j];
             walkFramesL[index]= tmp[i+1][j];
             walkFramesR[index]= tmp[i+2][j];
@@ -39,9 +39,8 @@ public class PenguinAnimation {
        walkAnimationL = new Animation(0.25f, walkFramesL);
        walkAnimationR = new Animation(0.25f, walkFramesR);
        walkAnimationU = new Animation(0.25f, walkFramesU);
-       this.currentFrame = getwalkAnimation(lookAt).getKeyFrame(0,true);
+       currentFrame = getwalkAnimation(lookAt).getKeyFrame(0,true);
 	}
-
 
 	private Animation getwalkAnimation(Direction lookAt) {
 		Animation animation = null;
@@ -80,5 +79,9 @@ public class PenguinAnimation {
 
 	public void setCurrentFrame(TextureRegion currentFrame) {
 		this.currentFrame = currentFrame;
-	}  
+	}
+
+	public void setCurrentFrame(Direction lookAt) {
+		this.currentFrame = getwalkAnimation(lookAt).getKeyFrame(0,true);
+	}
 }

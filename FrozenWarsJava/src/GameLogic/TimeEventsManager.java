@@ -1,10 +1,11 @@
 package GameLogic;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import javax.swing.Timer;
+import GameLogic.TimeEventsTask.TypeEvent;
+
+import com.badlogic.gdx.utils.Timer;
+
 
 /**
  * The main objective of this class is helping class match by controlling
@@ -12,80 +13,127 @@ import javax.swing.Timer;
  * of the sunken time, or other time events.
  */
 
-public class TimeEventsManager implements ActionListener {
+public class TimeEventsManager{
 	
-	private final int sunkenTime = 1000;
-	private final int sinkPenguinTime = 1000;
-	private enum TypeEvent{sinkHarpoon,freezeWater,timeMatch,sinkPenguin};
+	private final float sunkenTime = 0.5f;
+	private final float invisibleTime = 10;
+	private final float sinkPenguinTime = 1;
+	private final float endGameTime = 180;
+	private final float respawnTime = 0.5f;
+	
 	
 	private Match match;
-	private HashMap<Timer,Object> timeEventObject;
-	private HashMap<Timer,TypeEvent> typeEvent;
+	private HashMap<Player,Timer> invisiblePlayers;
+	private HashMap<Harpoon,Timer> activeHarpoonTimer;
 	
 	public TimeEventsManager(Match match){
 		this.match = match;
-		this.timeEventObject = new HashMap<Timer,Object>();
-		this.typeEvent = new HashMap<Timer,TypeEvent>();
+		this.invisiblePlayers = new HashMap<Player,Timer>();
+		this.activeHarpoonTimer = new HashMap<Harpoon,Timer>();
+	}
+	
+	
+	/**
+	 * <p>
+	 * This method <b>stops</b> the harpoon timers. He gets the harpoons
+	 * from the activeHarpoonTimer list, stop the timer and remove
+	 * it from the list. 
+	 * 
+	 * @param harpoon - The harpoon which wants to stop.
+	 */
+	
+	public void stopHarpoonTimer(Harpoon harpoon) {
+		Timer timer = activeHarpoonTimer.get(harpoon);
+		timer.stop();
+		activeHarpoonTimer.remove(harpoon);
 	}
 	
 	public void freezeWaterEvent(Harpoon sunkenHarpoon) {
-		Timer timer = new Timer(sunkenTime,this);
-		timeEventObject.put(timer,sunkenHarpoon);
-		typeEvent.put(timer,TypeEvent.freezeWater);
-		timer.setRepeats(false);
+		TimeEventsTask timerTask = new TimeEventsTask(this,sunkenHarpoon,TypeEvent.freezeWater);
+		Timer timer = new Timer();
+		timer.scheduleTask(timerTask,sunkenTime);
 		timer.start();
 	}
+	
 	public void sinkPenguinEvent(Player player) {
-		Timer timer = new Timer(sinkPenguinTime,this);
-		timeEventObject.put(timer,player);
-		typeEvent.put(timer,TypeEvent.sinkPenguin);
-		timer.setRepeats(false);
+		TimeEventsTask timerTask = new TimeEventsTask(this,player,TypeEvent.sinkPenguin);
+		Timer timer = new Timer();
+		timer.scheduleTask(timerTask,sinkPenguinTime);
 		timer.start();
+	}
+	
+	public void invisibleEvent(Player player){
+		TimeEventsTask timerTask = new TimeEventsTask(this,player,TypeEvent.invisible);
+		Timer timer = new Timer();
+		invisiblePlayers.put(player,timer);
+		timer.scheduleTask(timerTask,invisibleTime);
+		timer.start();
+	}
+	
+	public void removeInvisibleTimer(Player player) {
+		Timer timer = invisiblePlayers.get(player);
+		timer.stop();
+		invisiblePlayers.remove(player);
 	}
 	
 	public void sinkHarpoonEvent(Harpoon harpoon,long time){
+		TimeEventsTask timerTask = new TimeEventsTask(this,harpoon,TypeEvent.sinkHarpoon);
 		long currentTime = System.currentTimeMillis();
-		long waitTime = (time - currentTime);
-		Timer timer = new Timer((int)waitTime,this);
-		timeEventObject.put(timer,harpoon);
-		typeEvent.put(timer,TypeEvent.sinkHarpoon);
-		timer.setRepeats(false);
+		float waitTime = (time - currentTime)/1000;
+		Timer timer = new Timer();
+		activeHarpoonTimer.put(harpoon,timer);
+		timer.scheduleTask(timerTask,waitTime);
 		timer.start();
 	}
 	
-	/**
-	 * 
-	 */
+	public void respawnTimeEvent(Player p){
+		TimeEventsTask timerTask = new TimeEventsTask(this,p,TypeEvent.respawn);
+		Timer timer = new Timer();
+		timer.scheduleTask(timerTask,respawnTime);
+		timer.start();
+	}
 	
-	public void actionPerformed(ActionEvent e){
-		Timer timer = (Timer)e.getSource();
-		TypeEvent type = typeEvent.get(timer);
+	public void endGameEvent(){
+		TimeEventsTask timerTask = new TimeEventsTask(this,null,TypeEvent.endGame);
+		Timer timer = new Timer();
+		timer.scheduleTask(timerTask,endGameTime);
+		timer.start();
+	}
+	
+	public void actionPerformed(TypeEvent type, Object taskObject) {
 		if (type.equals(TypeEvent.sinkHarpoon)){
-			Harpoon harpoon = (Harpoon)timeEventObject.get(timer);
-			timeEventObject.remove(timer);
-			typeEvent.remove(timer);
+			Harpoon harpoon = (Harpoon)taskObject;
+			Timer timer = activeHarpoonTimer.get(harpoon);
+			activeHarpoonTimer.remove(timer);
 			match.sinkHarpoon(harpoon);
 		}
 		else if (type.equals(TypeEvent.freezeWater)){
-			Harpoon harpoon = (Harpoon)timeEventObject.get(timer);
-			timeEventObject.remove(timer);
-			typeEvent.remove(timer);
+			Harpoon harpoon = (Harpoon)taskObject;
 			match.freezeWater(harpoon);
 		}
 		else if (type.equals(TypeEvent.sinkPenguin)){
-			Player player = (Player)timeEventObject.get(timer);
-			timeEventObject.remove(timer);
-			typeEvent.remove(timer);
+			Player player = (Player)taskObject;
+			match.sinkPenguinFinish(player);
+		}
+		else if (type.equals(TypeEvent.invisible)){
+			Player player = (Player)taskObject;
+			match.endInvisible(player);
+		}
+		else if(type.equals(TypeEvent.endGame)){
+			match.gameTimeOff();
+		}
+		else if(type.equals(TypeEvent.respawn)){
+			Player player = (Player)taskObject;
 			match.sinkPenguinFinish(player);
 		}
 	}
 
-	public long getSunkenTime() {
+	public float getSunkenTime() {
 		return sunkenTime;
 	}
 
-	public int getSinkPenguinTime() {
+	public float getSinkPenguinTime() {
 		return sinkPenguinTime;
 	}
-	
+
 }

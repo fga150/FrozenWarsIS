@@ -1,6 +1,9 @@
 package GameLogic;
 
 import Application.MatchManager.Direction;
+import GameLogic.Map.TypeSquare;
+import GameLogic.Match.TypeGame;
+
 import com.badlogic.gdx.math.Vector3;
 
 /** 
@@ -14,14 +17,18 @@ public class Player {
 	private Vector3 initialPosition;
 	private Direction specialMoveDir;
 	private Direction lookAt;
+	private int playerId;
 	private int lives;
+	private boolean invincible;
+	private boolean canPlay;
+	private boolean specialMove;
+	
+	//Upgrades
+	
 	private int speed;
 	private int range;
 	private int maxHarpoonsAllow;
-	private boolean invincible;
-	private boolean canPlay;
-	private boolean throwSkill;
-	private boolean specialMove;
+	private boolean invisible;
 	
 	
 	/**
@@ -29,47 +36,148 @@ public class Player {
 	 * 1 range, 1 harpoon and no throwSkill). Depending of the player(@param i)
 	 * it will be placed in one position of the map.
 	 * @param i - The number id of the player (max 3)
+	 * 
 	 */
 	
-	public Player(int i) {
-		initialitePlayer();
-		if (i == 0){
+	public Player(int playerId, int numPlayers, TypeGame type) {
+		this.playerId = playerId;
+		initialitePlayer(playerId,type);
+		initializePosition(playerId,numPlayers,type);
+	}
+	
+	private void initializePosition(int playerId, int numPlayers, TypeGame type) {
+		if (type.equals(TypeGame.Normal)) initializePositionNormal(playerId,numPlayers);
+		else if (type.equals(TypeGame.Teams)) initializePositionNormal(playerId,numPlayers);
+		else if (type.equals(TypeGame.Survival)) initializePositionSurvival(playerId,numPlayers);
+		else if (type.equals(TypeGame.BattleRoyale)) initializePositionNormal(playerId,numPlayers);
+	}
+	
+	private void initializePositionSurvival(int playerId, int numPlayers) {
+		if (playerId == 0){
+			initialPosition = new Vector3(5,10,0);
+			position = new Vector3(5,10,0);
+			this.lookAt = Direction.right;	
+		}
+		else if (playerId == 1){
 			initialPosition = new Vector3(0,0,0);
 			position = new Vector3(0,0,0);
 			this.lookAt = Direction.right;	
 		}
-		else if (i == 1){
+		else if (playerId == 2){
 			initialPosition = new Vector3(10,0,0);
 			position = new Vector3(10,0,0);
-			this.lookAt = Direction.left;	
-		}
-		else if (i == 2){
-			initialPosition = new Vector3(0,10,0);
-			position = new Vector3(0,10,0);
 			this.lookAt = Direction.right;	
 		}
-		else if (i == 3){
-			initialPosition = new Vector3(10,10,0);
-			position = new Vector3(10,10,0);
-			this.lookAt = Direction.left;	
+		else if (playerId == 3){
+			initialPosition = new Vector3(5,0,0);
+			position = new Vector3(5,0,0);
+			this.lookAt = Direction.right;	
 		}
 	}
-	
+
+	private void initializePositionNormal(int playerId, int numPlayers) {
+		if (numPlayers==4){
+			if (playerId == 0){
+				initialPosition = new Vector3(0,0,0);
+				position = new Vector3(0,0,0);
+				this.lookAt = Direction.right;	
+			}
+			else if (playerId == 1){
+				initialPosition = new Vector3(10,10,0);
+				position = new Vector3(10,10,0);
+				this.lookAt = Direction.left;	
+			}
+			else if (playerId == 2){
+				initialPosition = new Vector3(0,10,0);
+				position = new Vector3(0,10,0);
+				this.lookAt = Direction.right;	
+			}
+			else if (playerId == 3){
+				initialPosition = new Vector3(10,0,0);
+				position = new Vector3(10,0,0);
+				this.lookAt = Direction.left;	
+			}
+		}
+		else if (numPlayers == 3){
+			if (playerId == 0){
+				initialPosition = new Vector3(0,0,0);
+				position = new Vector3(0,0,0);
+				this.lookAt = Direction.right;	
+			}
+			else if (playerId == 1){
+				initialPosition = new Vector3(10,0,0);
+				position = new Vector3(10,0,0);
+				this.lookAt = Direction.left;	
+			}
+			else if (playerId == 2){
+				initialPosition = new Vector3(5,10,0);
+				position = new Vector3(5,10,0);
+				this.lookAt = Direction.right;	
+			}
+		}
+		else if (numPlayers == 2){
+			if (playerId == 0){
+				initialPosition = new Vector3(0,0,0);
+				position = new Vector3(0,0,0);
+				this.lookAt = Direction.right;	
+			}
+			else if (playerId == 1){
+				initialPosition = new Vector3(10,10,0);
+				position = new Vector3(10,10,0);
+				this.lookAt = Direction.left;	
+			}
+		}
+	}
+
 	/**
 	 *  This method initializes the player with default status such as 3 lives,
 	 *  1 speed upgrade, 1 range upgrade, 1 harpoon and no throw skill. Also attributes
 	 *  to calculate specialMove or if the penguin is invincible are set to false.
 	 */
 	
-	public void initialitePlayer(){
-		this.lives = 3;
-		this.speed = 1;
-		this.range = 2;
-		this.maxHarpoonsAllow = 1;
-		this.canPlay=true;
-		this.throwSkill=false;
-		this.specialMove=false;
-		this.invincible=false;
+	public void initialitePlayer(int playerId,TypeGame type){
+		if (type.equals(TypeGame.Normal) || type.equals(TypeGame.Teams)){
+			this.lives = 3;
+			this.speed = 1;
+			this.range = 1;
+			this.maxHarpoonsAllow = 1;
+			this.canPlay=true;
+			this.invisible=false;
+			this.specialMove=false;
+			this.invincible=false;
+		}
+		else if (type.equals(TypeGame.BattleRoyale)){
+			this.lives = 1;
+			this.speed = 1;
+			this.range = 1;
+			this.maxHarpoonsAllow = 1;
+			this.canPlay=true;
+			this.invisible=false;
+			this.specialMove=false;
+			this.invincible=false;
+		}
+		else if (type.equals(TypeGame.Survival)){
+			if (playerId == 0){
+				this.lives = 3;
+				this.speed = 3;
+				this.range = 2;
+				this.maxHarpoonsAllow = 2;
+				this.canPlay=true;
+				this.invisible=false;
+				this.specialMove=false;
+				this.invincible=true;
+			}
+			else{
+				this.lives = 1;
+				this.speed = 1;
+				this.range = 0;
+				this.maxHarpoonsAllow = 0;
+				this.canPlay=true;
+				this.invisible=false;
+				this.specialMove=false;
+				this.invincible=false;
+			}
+		}
 	}
 	
 	/**
@@ -117,13 +225,27 @@ public class Player {
 	 * he cannot play (he can do actions in game) 
 	 */
 	
-	public void removeLive() {
+	public void removeLife() {
 		if (lives>0 && !invincible) {
 			lives--;
 			setPosition(initialPosition);
 			invincible = true;
 			canPlay = false;
 		}
+		if (lives==0) position = new Vector3(-1,-1,0);
+	}
+	public void secondOportunity() {
+			lives=1;
+			setPosition(initialPosition);
+			invincible = true;
+			canPlay = false;
+	}
+		
+	
+	public void upgradePlayer(TypeSquare basicMatrixSquare) {
+		if (basicMatrixSquare.equals(TypeSquare.bootUpgrade) && (speed<5)) speed++;
+		else if (basicMatrixSquare.equals(TypeSquare.rangeUpgrade) && (range<5)) range++;
+		else if (basicMatrixSquare.equals(TypeSquare.numHarpoonUpgrade) && (maxHarpoonsAllow<5)) maxHarpoonsAllow++;
 	}
 	
 	//Getters and Setters
@@ -146,12 +268,12 @@ public class Player {
 		this.position.z = position.z;
 	}
 	
-	public int getLifes() {
+	public int getLives() {
 		return lives;
 	}
 	
-	public void setLifes(int lifes) {
-		this.lives = lifes;
+	public void setLives(int lives) {
+		this.lives = lives;
 	}
 	
 	public int getSpeed() {
@@ -178,12 +300,12 @@ public class Player {
 		this.maxHarpoonsAllow = maxHarpoonsAllow;
 	}
 	
-	public boolean isThrowSkill() {
-		return throwSkill;
+	public boolean isInvisible() {
+		return invisible;
 	}
 	
-	public void setThrowSkill(boolean throwSkill) {
-		this.throwSkill = throwSkill;
+	public void setInvisible(boolean invisible) {
+		this.invisible = invisible;
 	}
 
 	public Direction getLookAt() {
@@ -228,5 +350,25 @@ public class Player {
 
 	public boolean canPlay() {
 		return canPlay;
+	}
+
+	public int getPlayerId() {
+		return playerId;
+	}
+
+	public void setPlayerId(int playerId) {
+		this.playerId = playerId;
+	}
+	
+	public void makeInvincible() {
+		this.invincible=true;		
+	}
+
+	public void resetPositon() {
+		this.position = new Vector3(this.initialPosition.x,this.initialPosition.y,0);
+	}
+
+	public void setCanPlay(boolean b) {
+		this.canPlay = b;		
 	}
 }

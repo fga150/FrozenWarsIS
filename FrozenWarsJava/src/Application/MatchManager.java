@@ -1,35 +1,48 @@
 package Application;
 import com.badlogic.gdx.math.Vector3;
-
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
 import GameLogic.Match;
+import GameLogic.Match.TypeGame;
+import GameLogic.Team;
+import GameLogic.XMLMapReader;
 import Screens.GameScreen;
+import Screens.LoadingScreen;
 import Server.SmartFoxServer;
 
 public class MatchManager {
 	
-	//FIXME: Do a class for sharing with all classes of the project
 	public enum Direction{left,right,up,down} 
 	
 	private SmartFoxServer sfsClient;
 	private Match match;
+	private LoadingScreen loadingScreen;
 	private GameScreen gameScreen;
 	private int myPlayerId;
+	@SuppressWarnings("unused")
+	private int numPlayers;
 	private long lastMessage;
+	private TypeGame mode;
+	private static String[] usersNames;
+	private XMLMapReader xmlMapReader;
+
 	
-	public MatchManager(SmartFoxServer sfs) {
+	public MatchManager(SmartFoxServer sfs,int mode){
 		this.sfsClient=sfs;
-		this.match = new Match();
+		String map = "mapaPrueba.xml";
+		this.mode = getTypeGame(mode);
+		if (this.mode.equals(TypeGame.Survival)) map = "SurvivalMap.xml";
+		this.xmlMapReader = new XMLMapReader(map);
+		this.loadingScreen = new LoadingScreen(this);
+		this.sfsClient.addManager(this);
 		this.myPlayerId = sfsClient.getMyPlayerId()-1;
-		this.lastMessage = System.currentTimeMillis();
 	}
 	
 	public void movePlayer(Direction dir){
 		long currentTime = System.currentTimeMillis();
-		if ((currentTime-lastMessage)>=100){
+		if ((currentTime-lastMessage)*speedFactor()>=100){
 			if(match.insideBoardMove(dir,myPlayerId)){
 				if (match.isSpecialMove(dir,myPlayerId)){
 					sfsClient.sendMove(match.getSpecialMoveDir(myPlayerId),myPlayerId,match.getMyPlayerPosition(myPlayerId));
@@ -42,10 +55,20 @@ public class MatchManager {
 		}
 	}
 	
+	private float speedFactor() {
+		int speed = match.getPlayerSpeed(myPlayerId);
+		if (speed == 1) return 1;
+		else if (speed == 2) return 1.3f;
+		else if (speed == 3) return 1.5f;
+		else if (speed == 4) return 1.7f;
+		else if (speed == 5) return 2f;
+		return 0;
+	}
+
 	public void putHarpoon(){
 		if (match.canPutHarpoon(myPlayerId)){
 			Vector3 coord=match.getCoord();
-			sfsClient.putHarpoon((int)coord.x,(int)coord.y,match.getMyPlayerRange(myPlayerId));
+			sfsClient.putHarpoon((int)coord.x,(int)coord.y,match.getMyPlayerRange(myPlayerId),myPlayerId);
 			this.lastMessage = System.currentTimeMillis();
 		}
 	}
@@ -57,8 +80,10 @@ public class MatchManager {
 		}
 	}                
 	
-	public void putHarpoonEvent(int x, int y, int range, long time) {
-		match.putHarpoonAt(x,y,range,time);
+	public void putHarpoonEvent(int x, int y, int range, int playerId, long time) {
+		if (match.checkHarpoon(x,y)){
+			match.putHarpoonAt(x,y,range,playerId,time);
+		}
 	}
 	
 	public boolean isThePlayerDead(int numPlayer) {
@@ -70,6 +95,38 @@ public class MatchManager {
 
 	}
 	
+	public boolean areAllPlayersDead() {
+		return match.areAllPlayersDead();
+	}
+	
+	public void startGame(int[] upgrades, int numPlayers) {
+		this.numPlayers = numPlayers;
+		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode);
+		if (mode.equals(TypeGame.BattleRoyale))
+			match.getTimeEventsManager().endGameEvent();
+		this.loadingScreen.setLoaded(true);
+	}
+	
+	private TypeGame getTypeGame(int mode) {
+		TypeGame type = TypeGame.Normal;
+		if (mode == 0) type = TypeGame.Normal;
+		else if (mode == 1) type = TypeGame.Teams;
+		else if (mode == 2) type = TypeGame.OneVsAll;
+		else if (mode == 3) type = TypeGame.Survival;
+		else if (mode == 4) type = TypeGame.BattleRoyale;
+		return type;
+	}
+
+	public void sendAsign(){
+		int numBreakable = xmlMapReader.getNumBreakable();
+		int[] upgrades = xmlMapReader.getUpgrades();
+		sfsClient.sendAsign(numBreakable,upgrades[0],upgrades[1],upgrades[2],upgrades[3]);
+	}
+	
+	public void changeGameScreen() {
+		this.gameScreen = new GameScreen(this);	
+		LaunchFrozenWars.getGame().setScreen(gameScreen);
+	}
 	
 	// Getters and Setters
 	
@@ -134,8 +191,12 @@ public class MatchManager {
 			return match.getPlayerLifes(i);
 	}
 		
+	public String[] getUsersNames() {
+		return usersNames;
+	}
+
 	public String getMyNamePlayer() {
-			return sfsClient.getMyName();		
+		return sfsClient.getMyName();		
 	}
 
 	public int getNumPlayers() {
@@ -148,5 +209,65 @@ public class MatchManager {
 
 	public boolean canPlay(int i) {
 		return match.canPlay(i);
+	}
+
+	public static void setUserName(String[] names) {
+		usersNames = new String[names.length];
+		for(int i = 0; i<names.length; i++){
+			usersNames[i] = names[i];
+		}
 	}	
+	
+	public String getUserName(int id){
+		return usersNames[id];
+	}
+
+	public int getSpeed(int numPlayer){
+		return match.getPlayerSpeed(numPlayer);
+	}
+
+	public int getHarpoonsAllow(int numPlayer){
+		return match.getPlayerHarpoonAllow(numPlayer);
+	}
+	
+	public void setNumPlayers(int numPlayers) {
+		match.setNumPlayers(numPlayers);
+	}
+
+	public int getRange(int numPlayer) {
+		return match.getPlayerRange(numPlayer);
+	}
+
+	public boolean isInvisible(int numPlayer) {
+		return match.isInvisible(numPlayer);
+	}
+
+	public boolean isGameTimeOff(){
+		return match.isGameTimeOff();
+	}
+	
+	public Team getMyTeam(int id){
+		return match.getMyTeam(id);
+	}
+	
+	public TypeGame getGameType(){
+		return match.getType();
+	}
+
+	public LoadingScreen getLoadingScreen() {
+		return loadingScreen;
+	}
+
+	public void setLoadingScreen(LoadingScreen loadingScreen) {
+		this.loadingScreen = loadingScreen;
+	}
+
+	public int getTeam(int playerId) {
+		return match.getMyTeamId(playerId);
+	}
+
+	public TypeGame getMode() {
+		return this.mode;
+	}
+	
 }
