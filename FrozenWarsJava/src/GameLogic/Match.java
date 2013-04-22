@@ -46,16 +46,25 @@ public class Match {
 	private ArrayList<Team> initializeTeams(int numPlayers, TypeGame type) {
 		ArrayList<Team> teams = null;
 		if (type.equals(TypeGame.Normal)) teams = normalGame(numPlayers,type); 
-		if (type.equals(TypeGame.BattleRoyale)) teams = battleRoyalGame(numPlayers,type);
-		if (type.equals(TypeGame.Teams)) teams = teamsGame(numPlayers,type);
+		else if (type.equals(TypeGame.Teams)) teams = teamsGame(numPlayers,type);
+		else if (type.equals(TypeGame.Survival)) teams = survivalGame(numPlayers,type);
+		else if (type.equals(TypeGame.BattleRoyale)) teams = battleRoyalGame(numPlayers,type);
 		return teams;
 	}
 
+	private ArrayList<Team> survivalGame(int numPlayers, TypeGame type) {
+		ArrayList<Team> teams = new ArrayList<Team>();
+		int playerId = 0;
+		teams.add(new Team(numPlayers,0,1,playerId,type));
+		teams.add(new Team(numPlayers,1,numPlayers-1,playerId+1,type));
+		return teams;
+	}
+	
 	private ArrayList<Team> normalGame(int numPlayers,TypeGame type) {
 		ArrayList<Team> teams = new ArrayList<Team>();
 		int playerId = 0;
 		for (int i=0;i<numPlayers;i++){
-			teams.add(new Team(numPlayers,i,1,playerId,type, false));
+			teams.add(new Team(numPlayers,i,1,playerId,type));
 			playerId += 1;
 		}
 		return teams;
@@ -279,14 +288,42 @@ public class Match {
 	private void loseLife(int playerId) {
 		Player player = getPlayer(playerId);
 		timeEventsManager.sinkPenguinEvent(player);
-		if (player.getLifes()>1)
-			player.removeLive();
-		else if(getMyTeam(playerId).isShare()){
-			if(!getMyTeam(playerId).giveMeOneOfYourLives(playerId)) player.removeLive();
+		if (type.equals(TypeGame.Normal)||type.equals(TypeGame.BattleRoyale)) checkPlayer(player);
+		else if (type.equals(TypeGame.Teams)) sharePlayer(player);
+		else if (type.equals(TypeGame.Survival)) checkSurvival(player);
+
+	}
+
+	private void checkSurvival(Player player) {
+		Team team = teams.get(1);
+		team.getPlayers().remove(player);
+		team = teams.get(0);
+		team.getPlayers().add(player);
+		modifyPlayer(player);
+	}
+
+	private void modifyPlayer(Player player) {
+		player.resetPositon();
+		player.setCanPlay(false);
+		player.setLives(1);
+		player.makeInvincible();
+		player.setMaxHarpoonsAllow(1);
+		player.setRange(2);
+	}
+
+	private void sharePlayer(Player player) {
+		if (player.getLives()>1)
+			player.removeLife();
+		else if(getMyTeam(player.getPlayerId()).isShare()){
+			if(!getMyTeam(player.getPlayerId()).giveMeOneOfYourLives(player.getPlayerId())) player.removeLife();
 			
 		}
 	}
-	
+
+	private void checkPlayer(Player player) {
+		player.removeLife();
+	}
+
 	public void movePlayer(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition) {
 		Player player = getPlayer(playerId);
 		if (!dir.equals(player.getLookAt())) player.setLookAt(dir);
@@ -309,7 +346,7 @@ public class Match {
 		boolean isSunken = false;
 		if(map.getWaterMatrixSquare((int)positions[0].x,(int)positions[0].y)!=WaterTypes.empty){
 			map.sunkenObject((int)positions[0].x,(int)positions[0].y);
-			if(type.equals(TypeGame.BattleRoyale )){
+			if(type.equals(TypeGame.BattleRoyale)){
 				Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[0].x,(int)positions[0].y);
 				stealImprovements(player.getPlayerId(),myHarpoon);
 			}
@@ -727,7 +764,7 @@ public class Match {
 	}
 	public int getPlayerLifes(int playerId) {
 		Player player = getPlayer(playerId);
-		return player.getLifes();
+		return player.getLives();
 	}
 
 	public HarpoonManager getHarpoonManager() {
@@ -805,6 +842,19 @@ public class Match {
 
 	public boolean isGameTimeOff() {
 		return gameTimeOff;
+	}
+
+	public int getMyTeamId(int playerId) {
+		Player player = getPlayer(playerId);
+		int teamId = 0;
+		Iterator<Team> it = teams.iterator();
+		Team myTeam = null;
+		while(it.hasNext()){
+			myTeam = it.next();
+			if (myTeam.getPlayers().contains(player)) return myTeam.getNumTeam();
+			
+		}
+		return teamId;
 	}
 
 	

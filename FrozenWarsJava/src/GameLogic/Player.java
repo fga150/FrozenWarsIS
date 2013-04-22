@@ -47,8 +47,32 @@ public class Player {
 	
 	private void initializePosition(int playerId, int numPlayers, TypeGame type) {
 		if (type.equals(TypeGame.Normal)) initializePositionNormal(playerId,numPlayers);
-		if (type.equals(TypeGame.Teams)) initializePositionNormal(playerId,numPlayers);
-		if (type.equals(TypeGame.BattleRoyale)) initializePositionNormal(playerId,numPlayers);
+		else if (type.equals(TypeGame.Teams)) initializePositionNormal(playerId,numPlayers);
+		else if (type.equals(TypeGame.Survival)) initializePositionSurvival(playerId,numPlayers);
+		else if (type.equals(TypeGame.BattleRoyale)) initializePositionNormal(playerId,numPlayers);
+	}
+	
+	private void initializePositionSurvival(int playerId, int numPlayers) {
+		if (playerId == 0){
+			initialPosition = new Vector3(5,10,0);
+			position = new Vector3(5,10,0);
+			this.lookAt = Direction.right;	
+		}
+		else if (playerId == 1){
+			initialPosition = new Vector3(0,0,0);
+			position = new Vector3(0,0,0);
+			this.lookAt = Direction.right;	
+		}
+		else if (playerId == 2){
+			initialPosition = new Vector3(10,0,0);
+			position = new Vector3(10,0,0);
+			this.lookAt = Direction.right;	
+		}
+		else if (playerId == 3){
+			initialPosition = new Vector3(5,0,0);
+			position = new Vector3(5,0,0);
+			this.lookAt = Direction.right;	
+		}
 	}
 
 	private void initializePositionNormal(int playerId, int numPlayers) {
@@ -122,7 +146,7 @@ public class Player {
 			this.specialMove=false;
 			this.invincible=false;
 		}
-		if (type.equals(TypeGame.BattleRoyale)){
+		else if (type.equals(TypeGame.BattleRoyale)){
 			this.lives = 1;
 			this.speed = 1;
 			this.range = 1;
@@ -131,6 +155,28 @@ public class Player {
 			this.invisible=false;
 			this.specialMove=false;
 			this.invincible=false;
+		}
+		else if (type.equals(TypeGame.Survival)){
+			if (playerId == 0){
+				this.lives = 3;
+				this.speed = 3;
+				this.range = 2;
+				this.maxHarpoonsAllow = 2;
+				this.canPlay=true;
+				this.invisible=false;
+				this.specialMove=false;
+				this.invincible=true;
+			}
+			else{
+				this.lives = 1;
+				this.speed = 1;
+				this.range = 0;
+				this.maxHarpoonsAllow = 0;
+				this.canPlay=true;
+				this.invisible=false;
+				this.specialMove=false;
+				this.invincible=false;
+			}
 		}
 	}
 	
@@ -179,13 +225,14 @@ public class Player {
 	 * he cannot play (he can do actions in game) 
 	 */
 	
-	public void removeLive() {
+	public void removeLife() {
 		if (lives>0 && !invincible) {
 			lives--;
 			setPosition(initialPosition);
 			invincible = true;
 			canPlay = false;
 		}
+		if (lives==0) position = new Vector3(-1,-1,0);
 	}
 	
 	public void upgradePlayer(TypeSquare basicMatrixSquare) {
@@ -214,12 +261,12 @@ public class Player {
 		this.position.z = position.z;
 	}
 	
-	public int getLifes() {
+	public int getLives() {
 		return lives;
 	}
 	
-	public void setLifes(int lifes) {
-		this.lives = lifes;
+	public void setLives(int lives) {
+		this.lives = lives;
 	}
 	
 	public int getSpeed() {
@@ -304,5 +351,17 @@ public class Player {
 
 	public void setPlayerId(int playerId) {
 		this.playerId = playerId;
+	}
+	
+	public void makeInvincible() {
+		this.invincible=true;		
+	}
+
+	public void resetPositon() {
+		this.position = new Vector3(this.initialPosition.x,this.initialPosition.y,0);
+	}
+
+	public void setCanPlay(boolean b) {
+		this.canPlay = b;		
 	}
 }

@@ -7,6 +7,7 @@ import GameLogic.Map.TypeSquare;
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
+import GameLogic.Match.TypeGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -33,7 +34,8 @@ public class GameScreen implements Screen{
 	private BoundingBox farBounds;
 	private BoundingBox fabBounds;
 	private BoundingBox harpoonBounds;
-	private PenguinAnimation[] penguinAnimations;
+	private PenguinAnimation[] penguinAnimationsTeam0;
+	private PenguinAnimation[] penguinAnimationsTeam1;
     private float stateTime;
 	private TextureRegion currentFrame;
 	private MatchManager manager;
@@ -66,27 +68,33 @@ public class GameScreen implements Screen{
 		farBounds= new BoundingBox(new Vector3(2.75f,4.6f,0), new Vector3(4.75f,7,0));
 		fabBounds= new BoundingBox(new Vector3(2.75f,0,0), new Vector3(4.75f,2.4f,0));
 		harpoonBounds= new BoundingBox(new Vector3(19,0,0), new Vector3(21,4,0));
-		//--------------------------------------------------------------------
         stateTime = 0f;     
         loadAnimations();
 	}
 	
 	public void loadAnimations(){
-		penguinAnimations = new PenguinAnimation[numPlayers];
-		penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/pClarosRojo.png"),manager.getLookAt(0));
-		penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"),manager.getLookAt(1));
-		if (numPlayers>2) penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pClarosAmarillo.png"),manager.getLookAt(2));
-		if (numPlayers>3) penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pClarosAzul.png"),manager.getLookAt(3));
-		
-		if(manager.getGameType().toString().equals("Teams")){
-			penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/PingClarosRojosGrupoAzul.png"),manager.getLookAt(0));
-			penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/PingClarosVerdesGrupoAzul.png"),manager.getLookAt(1));
-			if (numPlayers>2) 
-				penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/PingClarosAmarillosGrupoNegro.png"),manager.getLookAt(2));
-			if (numPlayers>3) 
-				penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/PingClarosAzulesGrupoNegro.png"),manager.getLookAt(3));
+		penguinAnimationsTeam0 = new PenguinAnimation[numPlayers];
+		TypeGame mode = manager.getMode();
+		if (mode.equals(TypeGame.Normal) || mode.equals(TypeGame.BattleRoyale)){
+			penguinAnimationsTeam0 = new PenguinAnimation[numPlayers];
+			penguinAnimationsTeam0[0] = new PenguinAnimation(Gdx.files.internal("data/pClarosRojo.png"),manager.getLookAt(0));
+			penguinAnimationsTeam0[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"),manager.getLookAt(1));
+			if (numPlayers>2) penguinAnimationsTeam0[2] = new PenguinAnimation(Gdx.files.internal("data/pClarosAmarillo.png"),manager.getLookAt(2));
+			if (numPlayers>3) penguinAnimationsTeam0[3] = new PenguinAnimation(Gdx.files.internal("data/pClarosAzul.png"),manager.getLookAt(3));
 		}
+		else{
+			penguinAnimationsTeam0 = new PenguinAnimation[numPlayers];
+			penguinAnimationsTeam0[0] = new PenguinAnimation(Gdx.files.internal("data/PingClarosRojosGrupoNegro.png"),manager.getLookAt(0));
+			penguinAnimationsTeam0[1] = new PenguinAnimation(Gdx.files.internal("data/PingClarosVerdesGrupoNegro.png"),manager.getLookAt(1));
+			if (numPlayers>2) penguinAnimationsTeam0[2] = new PenguinAnimation(Gdx.files.internal("data/PingClarosAmarillosGrupoNegro.png"),manager.getLookAt(2));
+			if (numPlayers>3) penguinAnimationsTeam0[3] = new PenguinAnimation(Gdx.files.internal("data/PingClarosAzulesGrupoNegro.png"),manager.getLookAt(3));
+			penguinAnimationsTeam1 = new PenguinAnimation[numPlayers];
+			penguinAnimationsTeam1[0] = new PenguinAnimation(Gdx.files.internal("data/PingClarosRojosGrupoAzul.png"),manager.getLookAt(0));
+			penguinAnimationsTeam1[1] = new PenguinAnimation(Gdx.files.internal("data/PingClarosVerdesGrupoAzul.png"),manager.getLookAt(1));
+			if (numPlayers>2) penguinAnimationsTeam1[2] = new PenguinAnimation(Gdx.files.internal("data/PingClarosAmarillosGrupoAzul.png"),manager.getLookAt(2));
+			if (numPlayers>3) penguinAnimationsTeam1[3] = new PenguinAnimation(Gdx.files.internal("data/PingClarosAzulGrupoAzul.png"),manager.getLookAt(3));
 		
+		}
 	}
 	
 	@Override
@@ -191,8 +199,8 @@ public class GameScreen implements Screen{
 			if(manager.canPlay(i)){
 				Vector3 position = manager.getPlayerPosition(i);
 				if (manager.isInvisible(i) && (i == numPlayer)) batcher.setColor(new Color(255,255,255,0.45f));
-				else if(manager.isInvisible(i) && (i != numPlayer)) batcher.setColor(new Color(255,255,255,0.15f));
-				batcher.draw(penguinAnimations[i].getCurrentFrame(),(position.x)+8f,(position.y+1),1,1);
+				else if(manager.isInvisible(i) && (i != numPlayer)) batcher.setColor(new Color(255,255,255,0.05f));
+				drawPenguin(i,position.x+8f,position.y+1,1,1);
 				batcher.setColor(new Color(255,255,255,1));
 			}
 		}		
@@ -255,6 +263,20 @@ public class GameScreen implements Screen{
 		}
 	}
 	
+	private void drawPenguin(int playerId,float x, float y, int tamx, int tamy) {
+		TypeGame mode = manager.getGameType();
+		if (mode.equals(TypeGame.Normal) || mode.equals(TypeGame.BattleRoyale))
+			batcher.draw(penguinAnimationsTeam0[playerId].getCurrentFrame(),x,y,tamx,tamy);
+		else{
+			if (manager.getTeam(playerId)==0){
+				batcher.draw(penguinAnimationsTeam0[playerId].getCurrentFrame(),x,y,tamx,tamy);
+			}
+			else{
+				batcher.draw(penguinAnimationsTeam1[playerId].getCurrentFrame(),x,y,tamx,tamy);
+			}
+		}
+	}
+
 	private void paintMyMission(){
 		String mission ="";
 		if(manager.getGameType().toString().equals("Normal") 
@@ -289,7 +311,7 @@ public class GameScreen implements Screen{
 		int harpoonUpgrade = manager.getHarpoonsAllow(numPlayer);
 		int rangeUpgrade = manager.getRange(numPlayer);
 		boolean invisibleUpgrade = manager.isInvisible(numPlayer);
-		if (speedUpgrade == 1) {
+		if (speedUpgrade<=1) {
 			batcher.setColor(new Color(50,50,50,0.25f));
 			batcher.draw(Assets.getBootUpgradeMaxSize(),20,11.5f,1,1);
 			batcher.setColor(Color.WHITE);
@@ -299,7 +321,7 @@ public class GameScreen implements Screen{
 			if (speedUpgrade==5)printText("MAX",0.75f,Color.RED,20.15f,11.75f);
 			else printText(Integer.toString(speedUpgrade-1),1,Color.BLACK,20.6f,11.75f);
 		}
-		if (harpoonUpgrade == 1){
+		if (harpoonUpgrade<=1){
 			batcher.setColor(new Color(50,50,50,0.25f));
 			batcher.draw(Assets.getNumHarpoonUpgradeMaxSize(),20,9.5f,1,1);
 			batcher.setColor(Color.WHITE);
@@ -309,7 +331,7 @@ public class GameScreen implements Screen{
 			if (harpoonUpgrade==5)printText("MAX",0.75f,Color.RED,20.15f,9.75f);
 			else printText(Integer.toString(harpoonUpgrade-1),1,Color.BLACK,20.6f,9.75f);
 		}
-		if (rangeUpgrade == 1) {
+		if (rangeUpgrade<=1) {
 			batcher.setColor(new Color(50,50,50,0.25f));
 			batcher.draw(Assets.getRangeUpgradeMaxSize(),20,7.5f,1,1);
 			batcher.setColor(Color.WHITE);
@@ -537,11 +559,30 @@ public class GameScreen implements Screen{
 	
 	
 	public void movePlayer(Direction dir, int playerId, Vector3 position) {                                     
-        if (dir.equals(Direction.right)) currentFrame = penguinAnimations[playerId].getwalkAnimationR().getKeyFrame(stateTime, true); 
-        else if (dir.equals(Direction.left)) currentFrame = penguinAnimations[playerId].getwalkAnimationL().getKeyFrame(stateTime, true);
-        else if (dir.equals(Direction.up)) currentFrame = penguinAnimations[playerId].getwalkAnimationU().getKeyFrame(stateTime, true);
-        else if (dir.equals(Direction.down)) currentFrame = penguinAnimations[playerId].getwalkAnimationD().getKeyFrame(stateTime, true);
-        penguinAnimations[playerId].setCurrentFrame(currentFrame);     
+		TypeGame mode = manager.getGameType();
+		if (mode.equals(TypeGame.Normal) || mode.equals(TypeGame.BattleRoyale)){
+			  if (dir.equals(Direction.right)) currentFrame = penguinAnimationsTeam0[playerId].getwalkAnimationR().getKeyFrame(stateTime, true); 
+		      else if (dir.equals(Direction.left)) currentFrame = penguinAnimationsTeam0[playerId].getwalkAnimationL().getKeyFrame(stateTime, true);
+		      else if (dir.equals(Direction.up)) currentFrame = penguinAnimationsTeam0[playerId].getwalkAnimationU().getKeyFrame(stateTime, true);
+		      else if (dir.equals(Direction.down)) currentFrame = penguinAnimationsTeam0[playerId].getwalkAnimationD().getKeyFrame(stateTime, true);
+			  penguinAnimationsTeam0[playerId].setCurrentFrame(currentFrame);   
+		}
+		else{
+			if (manager.getTeam(playerId)==0){
+				  if (dir.equals(Direction.right)) currentFrame = penguinAnimationsTeam0[playerId].getwalkAnimationR().getKeyFrame(stateTime, true); 
+			      else if (dir.equals(Direction.left)) currentFrame = penguinAnimationsTeam0[playerId].getwalkAnimationL().getKeyFrame(stateTime, true);
+			      else if (dir.equals(Direction.up)) currentFrame = penguinAnimationsTeam0[playerId].getwalkAnimationU().getKeyFrame(stateTime, true);
+			      else if (dir.equals(Direction.down)) currentFrame = penguinAnimationsTeam0[playerId].getwalkAnimationD().getKeyFrame(stateTime, true);
+				  penguinAnimationsTeam0[playerId].setCurrentFrame(currentFrame);     
+			}
+			else{
+				  if (dir.equals(Direction.right)) currentFrame = penguinAnimationsTeam1[playerId].getwalkAnimationR().getKeyFrame(stateTime, true); 
+			      else if (dir.equals(Direction.left)) currentFrame = penguinAnimationsTeam1[playerId].getwalkAnimationL().getKeyFrame(stateTime, true);
+			      else if (dir.equals(Direction.up)) currentFrame = penguinAnimationsTeam1[playerId].getwalkAnimationU().getKeyFrame(stateTime, true);
+			      else if (dir.equals(Direction.down)) currentFrame = penguinAnimationsTeam1[playerId].getwalkAnimationD().getKeyFrame(stateTime, true);
+				  penguinAnimationsTeam1[playerId].setCurrentFrame(currentFrame);     
+			}
+		}
 	}	
 
 	public MatchManager getManager() {
@@ -567,12 +608,6 @@ public class GameScreen implements Screen{
 		
 	}
 	
-	public PenguinAnimation[] getPreguinAnimations() {
-		return penguinAnimations;
-	}
-	public void setPreguinAnimations(PenguinAnimation[] preguinAnimations) {
-		this.penguinAnimations = preguinAnimations;
-	}
 	public String getName() {
 		return name;
 	}

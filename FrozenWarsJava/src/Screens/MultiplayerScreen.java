@@ -309,8 +309,7 @@ public class MultiplayerScreen implements Screen{
 	}
 
 	public void creaPartida(){
-		XMLMapReader xmlMapReader = new XMLMapReader("mapaPrueba.xml");
-		MatchManager manager = new MatchManager(sfsClient,xmlMapReader,gameMode);
+		MatchManager manager = new MatchManager(sfsClient,gameMode);
 		LaunchFrozenWars.getGame().setScreen(manager.getLoadingScreen());
 		if (manager.getMyIdPlayer()==0) manager.sendAsign();
 	}

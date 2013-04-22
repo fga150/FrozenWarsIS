@@ -18,6 +18,16 @@ public class Team {
 	 * @param playerId - The playerId of the first member of the team
 	 * @param type - Type of the game
 	 */
+	
+	public Team(int numPlayers,int numTeam, int numPlayersTeam,int playerId,TypeGame type){
+		this.numTeam = numTeam;
+		this.players = new ArrayList<Player>();
+		for (int i=0;i<numPlayersTeam;i++){
+			players.add(new Player(playerId+i,numPlayers,type));
+		}
+		this.share = false;
+	}
+	
 	public Team(int numPlayers,int numTeam, int numPlayersTeam,int playerId,TypeGame type, boolean share){
 		this.numTeam = numTeam;
 		this.players = new ArrayList<Player>();
@@ -57,14 +67,14 @@ public class Team {
 //				if(players.get(i).getLifes()==1){
 //					secondOption = players.get(i);
 //				}
-				if(players.get(i).getLifes()>1){
+				if(players.get(i).getLives()>1){
 					firstOption = players.get(i);
 				}
 			}
 		}
 		if (firstOption != null){
-			firstOption.setLifes(firstOption.getLifes()-1);
-			players.get(idPlayer-players.size()*numTeam).setLifes(1);
+			firstOption.setLives(firstOption.getLives()-1);
+			players.get(idPlayer-players.size()*numTeam).setLives(1);
 			return true;
 		}
 //		else if (secondOption != null){

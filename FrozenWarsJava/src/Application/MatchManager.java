@@ -23,21 +23,20 @@ public class MatchManager {
 	private int myPlayerId;
 	private int numPlayers;
 	private long lastMessage;
-	private int mode;
-	private boolean created;
+	private TypeGame mode;
 	private static String[] usersNames;
 	private XMLMapReader xmlMapReader;
 
 	
-	public MatchManager(SmartFoxServer sfs, XMLMapReader xmlMapReader,int mode){
-		this.created = false;
+	public MatchManager(SmartFoxServer sfs,int mode){
 		this.sfsClient=sfs;
-		loadingScreen = new LoadingScreen(this);
-		sfsClient.addManager(this);
+		String map = "mapaPrueba.xml";
+		this.mode = getTypeGame(mode);
+		if (this.mode.equals(TypeGame.Survival)) map = "SurvivalMap.xml";
+		this.xmlMapReader = new XMLMapReader(map);
+		this.loadingScreen = new LoadingScreen(this);
+		this.sfsClient.addManager(this);
 		this.myPlayerId = sfsClient.getMyPlayerId()-1;
-		this.xmlMapReader = xmlMapReader;
-		this.mode = mode;
-		this.created = true;
 	}
 	
 	public void movePlayer(Direction dir){
@@ -100,10 +99,9 @@ public class MatchManager {
 	}
 	
 	public void startGame(int[] upgrades, int numPlayers) {
-		TypeGame type = getTypeGame(mode);
 		this.numPlayers = numPlayers;
-		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,type);
-		if (type.equals(TypeGame.BattleRoyale))
+		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode);
+		if (mode.equals(TypeGame.BattleRoyale))
 			match.getTimeEventsManager().endGameEvent();
 		this.loadingScreen.setLoaded(true);
 	}
@@ -261,6 +259,14 @@ public class MatchManager {
 
 	public void setLoadingScreen(LoadingScreen loadingScreen) {
 		this.loadingScreen = loadingScreen;
+	}
+
+	public int getTeam(int playerId) {
+		return match.getMyTeamId(playerId);
+	}
+
+	public TypeGame getMode() {
+		return this.mode;
 	}
 	
 }
