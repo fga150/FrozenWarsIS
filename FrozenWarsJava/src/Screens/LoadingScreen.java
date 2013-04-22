@@ -23,7 +23,7 @@ public class LoadingScreen implements Screen{
 	public LoadingScreen(MatchManager manager){
 		this.loaded = false;
 		this.manager = manager;
-		font2 =new BitmapFont(Gdx.files.internal("data/simpleFont.fnt"), Gdx.files.internal("data/simpleFont.png"), false);
+		font2 =new BitmapFont(Gdx.files.internal("data/second.fnt"), Gdx.files.internal("data/second.png"), false);
 		textCam = new OrthographicCamera(21*49,13*49);
 		textCam.position.set((21*49)/2,(13*49)/2,0);
 		batcher = new SpriteBatch();
@@ -56,8 +56,8 @@ public class LoadingScreen implements Screen{
 		Color c = batcher.getColor();
         batcher.setColor(c.r, c.g, c.b, 0.40f); //set alpha to 1
         batcher.draw(Assets.getBackground(),0,0,21*49,13*49);
-        batcher.setColor(c.r, c.g, c.b, 1f);
-		printText("Loading...",3,Color.BLUE,3f,5f);
+        //batcher.setColor(c.r, c.g, c.b, 1f);
+        font2.draw(batcher, "LOADING...",3*49, 5*49);
 		batcher.end();
 		textCam.update();
 		

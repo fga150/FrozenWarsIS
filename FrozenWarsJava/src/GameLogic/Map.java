@@ -100,9 +100,10 @@ public class Map {
         boolean blocked = false;
         //NORTH
         while (!blocked && (yHarpoonPosition+i<length) && i<=fissureRange && canIputFissure(xHarpoonPosition,yHarpoonPosition+i)){
-            if(fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.fissureSX)
+            if(fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.fissureSX){
                 if (i == 1) fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.crossingFissures;
-                else fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.crossInvisibleFissure;
+               // else fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.crossInvisibleFissure;
+            }
             else if (boardGame[xHarpoonPosition][yHarpoonPosition+i] == TypeSquare.breakable){
                 if (i == 1) fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.barrelWithFissure;
                 else fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.invisibleFissureSY;
@@ -118,9 +119,10 @@ public class Map {
        
         //SOUTH
         while (!blocked && yHarpoonPosition-i>=0 && i<=fissureRange && canIputFissure(xHarpoonPosition,yHarpoonPosition-i)){
-            if(fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.fissureSX)
+            if(fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.fissureSX){
                 if (i == 1) fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.crossingFissures;
-                else fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.crossInvisibleFissure;
+               // else fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.crossInvisibleFissure;
+            }
             else if (boardGame[xHarpoonPosition][yHarpoonPosition-i] == TypeSquare.breakable){
                 if (i == 1) fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.barrelWithFissure;
                 else fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.invisibleFissureSY;
@@ -134,9 +136,10 @@ public class Map {
         i = 1; blocked = false;
         //EAST
         while (!blocked && (xHarpoonPosition+i<width) && i<=fissureRange && canIputFissure(xHarpoonPosition+i,yHarpoonPosition)){
-            if(fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.fissureSY)
+            if(fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.fissureSY){
                 if (i == 1) fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.crossingFissures;
-                else fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.crossInvisibleFissure;
+               // else fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.crossInvisibleFissure;
+            }
             else if (boardGame[xHarpoonPosition+i][yHarpoonPosition] == TypeSquare.breakable){
                 if (i == 1) fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.barrelWithFissure;
                 else fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.invisibleFissureSX;
@@ -151,9 +154,10 @@ public class Map {
         i = 1; blocked = false;
         //WEST
         while (!blocked && (xHarpoonPosition-i>=0) && i<=fissureRange && canIputFissure(xHarpoonPosition-i,yHarpoonPosition)){
-            if(fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.fissureSY)
+            if(fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.fissureSY){
                 if (i == 1) fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.crossingFissures;
-                else fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.crossInvisibleFissure;
+               // else fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.crossInvisibleFissure;
+            }
             else if (boardGame[xHarpoonPosition-i][yHarpoonPosition] == TypeSquare.breakable){
                 if (i == 1) fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.barrelWithFissure;
                 else fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.invisibleFissureSX;

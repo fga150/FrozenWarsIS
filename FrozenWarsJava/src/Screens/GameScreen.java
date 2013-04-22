@@ -42,6 +42,7 @@ public class GameScreen implements Screen{
 	private String name;
 	private BitmapFont font;
 	private BitmapFont font2;
+	private BitmapFont font3;
 	private int numPlayer;
 	private int numPlayers;
 	private int timeInvisible;
@@ -55,6 +56,7 @@ public class GameScreen implements Screen{
 		numPlayer = manager.getMyIdPlayer();
 		font =new BitmapFont(Gdx.files.internal("data/simpleFont.fnt"), Gdx.files.internal("data/simpleFont.png"), false);
 		font2 =new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);
+		font3 =new BitmapFont(Gdx.files.internal("data/second.fnt"), Gdx.files.internal("data/second.png"), false);
 		font.setColor(Color.BLACK);
 		guiCam = new OrthographicCamera(21,13);
 		textCam = new OrthographicCamera(21*49,13*49);
@@ -389,9 +391,9 @@ public class GameScreen implements Screen{
 		else if (manager.isGameTimeOff()){
 			batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
 			batcher.setProjectionMatrix(textCam.combined);
-			font2.setScale(1.75f);
-			font2.draw(batcher, "TIME OUT!",10.5f*49,3.5f*49);
-			font2.setScale(1);
+			//font3.setScale(1.75f);
+			font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
+			//font32.setScale(1);
 			
 		}
 		else if (manager.areAllPlayersDead()){
