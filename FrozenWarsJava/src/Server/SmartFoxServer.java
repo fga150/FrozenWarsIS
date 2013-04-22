@@ -192,6 +192,7 @@ public class SmartFoxServer implements IEventListener {
 	public void inviteRequest(String name){
 		 ISFSObject params = new SFSObject();
 		 params.putUtfString("Invited", name);
+		 params.putInt("mode",MultiplayerScreen.getInstance().getGameMode());
 		 ExtensionRequest request = new ExtensionRequest("Invite",params);
 		 sfsClient.send(request);
 	}
