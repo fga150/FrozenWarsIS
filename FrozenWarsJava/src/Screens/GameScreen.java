@@ -376,30 +376,46 @@ public class GameScreen implements Screen{
 	
 	private void paintGameStatus(){
 		boolean myTeamWin=false;
-		if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()==1)
-			batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
+		if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()==1){
+			batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
+			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+			
+		}
 		else if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()>1){
 			for(int i = 0; i<manager.getMyTeam(numPlayer).getPlayers().size();i++){
 				if (manager.imTheWinner(manager.getMyTeam(numPlayer).getPlayers().get(i).getPlayerId()))
 					myTeamWin=true;
 			}
-			if(myTeamWin) batcher.draw(Assets.getYourTeamWins(),7,3,13,7);
-			else batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
+			if(myTeamWin) {
+				batcher.draw(Assets.getYourTeamWins(),6.5f,6,14,6);
+				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+			}
+			else {
+				batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
+				batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+			}
 		}
 		else if (manager.imTheWinner(numPlayer))
-			if(manager.getMyTeam(numPlayer).getPlayers().size()==1)
-				batcher.draw(Assets.getYouWin(),6.5f,3,14,8);				
-			else batcher.draw(Assets.getYourTeamWins(),7,3,13,7);
+			if(manager.getMyTeam(numPlayer).getPlayers().size()==1){
+				batcher.draw(Assets.getYouWin(),6.5f,6,14,6);	
+				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+			}
+			else{
+				batcher.draw(Assets.getYourTeamWins(),6.5f,6,14,6);
+				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+			}
 		else if (manager.isGameTimeOff()){
-			batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
+			batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
 			batcher.setProjectionMatrix(textCam.combined);
 			//font3.setScale(1.75f);
 			font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
+			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
 			//font32.setScale(1);
 			
 		}
 		else if (manager.areAllPlayersDead()){
-			batcher.draw(Assets.getDraw(),6.5f,4,14,8);
+			batcher.draw(Assets.getDraw(),6.5f,6,14,6);
+			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
 		}
 		
 	}

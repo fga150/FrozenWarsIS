@@ -212,6 +212,9 @@ public class Assets {
 	    public static AtlasRegion J3;
 	    public static AtlasRegion J4;
 	    
+	    private static AtlasRegion YouLostWindow;
+	    private static AtlasRegion YouWonWindow;
+	    
 
 	    /**
 	     * Load.
@@ -415,6 +418,9 @@ public class Assets {
 		    J3 = atlas.findRegion("J3");
 		    J4 = atlas.findRegion("J4");
 		    
+		    
+		    YouLostWindow = atlas.findRegion("YouLostWindow");
+		    YouWonWindow = atlas.findRegion("YouWonWindow");
 	    }
 	    
 public static AtlasRegion getBootUpgrade() {
@@ -726,6 +732,14 @@ public static AtlasRegion getBootUpgrade() {
 
 		public static AtlasRegion getDraw() {
 			return draw;
+		}
+
+		public static AtlasRegion getYouLostWindow() {
+			return YouLostWindow;
+		}
+
+		public static AtlasRegion getYouWonWindow() {
+			return YouWonWindow;
 		}
 
 
