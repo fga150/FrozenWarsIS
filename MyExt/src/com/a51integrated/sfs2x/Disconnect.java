@@ -88,12 +88,13 @@ public class Disconnect extends BaseServerEventHandler {
 				}
 			}
 			
+		//// Mode 0 /////	
 		try{
-			Queue<User> queue1 = parentEx.getQueue1();
+			Queue<User> queue1 = parentEx.getQueue01();
 			queue1.remove(player);
 		}catch(Exception e){};
 		try{
-			Queue<User[]> queue2 = parentEx.getQueue2();
+			Queue<User[]> queue2 = parentEx.getQueue02();
 			Iterator<User[]> it=queue2.iterator();
 			boolean enc=false;
 			User[] arrayUsers=null;
@@ -115,7 +116,211 @@ public class Disconnect extends BaseServerEventHandler {
 			}
 		}catch(Exception e){};
 		try{
-			Queue<User[]> queue3 = parentEx.getQueue3();
+			Queue<User[]> queue3 = parentEx.getQueue03();
+			Iterator<User[]> it=queue3.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length && enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+				queue3.remove(arrayUsers);
+			}
+		}catch(Exception e){};
+		
+		//// Mode 1 /////	
+		try{
+			Queue<User> queue1 = parentEx.getQueue11();
+			queue1.remove(player);
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue2 = parentEx.getQueue12();
+			Iterator<User[]> it=queue2.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length&&enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				queue2.remove(arrayUsers);		
+			}
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue3 = parentEx.getQueue13();
+			Iterator<User[]> it=queue3.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length && enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+				queue3.remove(arrayUsers);
+			}
+		}catch(Exception e){};
+		
+		//// Mode 2 /////	
+		try{
+			Queue<User> queue1 = parentEx.getQueue21();
+			queue1.remove(player);
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue2 = parentEx.getQueue22();
+			Iterator<User[]> it=queue2.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length&&enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				queue2.remove(arrayUsers);		
+			}
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue3 = parentEx.getQueue23();
+			Iterator<User[]> it=queue3.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length && enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+				queue3.remove(arrayUsers);
+			}
+		}catch(Exception e){};
+		
+		//// Mode 3 /////	
+		try{
+			Queue<User> queue1 = parentEx.getQueue31();
+			queue1.remove(player);
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue2 = parentEx.getQueue32();
+			Iterator<User[]> it=queue2.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length&&enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				queue2.remove(arrayUsers);		
+			}
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue3 = parentEx.getQueue33();
+			Iterator<User[]> it=queue3.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length && enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+				queue3.remove(arrayUsers);
+			}
+		}catch(Exception e){};
+		
+		//// Mode 4 /////	
+		try{
+			Queue<User> queue1 = parentEx.getQueue41();
+			queue1.remove(player);
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue2 = parentEx.getQueue42();
+			Iterator<User[]> it=queue2.iterator();
+			boolean enc=false;
+			User[] arrayUsers=null;
+			int i;
+			while(it.hasNext()&&enc==false){
+				arrayUsers=it.next();
+					i=0;
+					while(i<arrayUsers.length&&enc==false){
+						enc= arrayUsers[i]==player;
+						i++;
+					}
+			}
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				queue2.remove(arrayUsers);		
+			}
+		}catch(Exception e){};
+		try{
+			Queue<User[]> queue3 = parentEx.getQueue43();
 			Iterator<User[]> it=queue3.iterator();
 			boolean enc=false;
 			User[] arrayUsers=null;

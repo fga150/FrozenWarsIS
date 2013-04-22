@@ -14,12 +14,12 @@ public class InvitationRoom {
 	private boolean enableExternalPlayers;
 	private int numPlayers;
 	
-	InvitationRoom(String leaderName){
+	InvitationRoom(String leaderName, int mode){
 		this.leaderName = leaderName;
 		acceptedPlayers = new SFSArray();
 		refusedPlayers = new SFSArray();
 		waitingPlayers = new SFSArray();
-		gameMode = 0;
+		gameMode = mode;
 		enableExternalPlayers = true;
 		acceptedPlayers.addUtfString(leaderName);
 		

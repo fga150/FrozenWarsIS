@@ -18,9 +18,10 @@ public class Invite extends BaseClientRequestHandler {
 		HashMap<String,User> users = parentEx.getUsers();
 		HashMap<String,InvitationRoom> gamesInCreation = parentEx.getGamesInCreation();
 		String player2 = params.getUtfString("Invited"); //Gets the name of the player who's going to be invited.
+		int mode = params.getInt("mode");
 		
 		if(!gamesInCreation.containsKey(player.getName())){ //If this is the first invitation from that player, an invitation room is needed.
-			InvitationRoom room = new InvitationRoom(player.getName());
+			InvitationRoom room = new InvitationRoom(player.getName(),mode);
 			gamesInCreation.put(player.getName(), room);
 		}
 		

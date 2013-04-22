@@ -65,6 +65,14 @@ public class Accept extends BaseClientRequestHandler {
         	parentEx.send("AcceptedWaiting", rtn, users.get(accplayer.getUtfString(j)));
         }
 		
+		int mode = gamesInCreation.get(player2).getGameMode();
+        boolean externalP = gamesInCreation.get(player2).isEnableExternalPlayers();
+        ISFSObject rtn2 = new SFSObject();
+        ISFSObject rtn3 = new SFSObject();
+        rtn2.putInt("mode", mode);
+        rtn3.putBool("externalPlayers",externalP);
+        parentEx.send("ModeChange", rtn2, player);
+        parentEx.send("ModExternalPlayers", rtn3, player);
         
 		}
 		}

@@ -36,10 +36,12 @@ public class AsignImprovementsHandler extends BaseClientRequestHandler {
 			barriles.addInt(arrayBarriles[i]);
 		}
 		
+		
 		ISFSObject rtn = new SFSObject();
 		rtn.putInt("nBarriles", nBarriles);
 		rtn.putSFSArray("arrayBarriles", barriles);
-		this.send("asignaMejoras", rtn, player.getLastJoinedRoom().getUserList());
+		rtn.putInt("numPlayers", player.getLastJoinedRoom().getPlayersList().size());
+		this.send("asignaMejoras",rtn,player.getLastJoinedRoom().getUserList());
 	}
 	
 	public int[] obtieneNumAleatorios(int n){

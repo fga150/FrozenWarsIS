@@ -17,17 +17,41 @@ import com.smartfoxserver.v2.extensions.SFSExtension;
 public class MyExt extends SFSExtension {
 	
 	private int nRooms;			// To set a different name for the room
-	private Queue<User> queue1; // queues for the start of games
-	private Queue<User[]> queue2;
-	private Queue<User[]> queue3;
+	private Queue<User> queue01; // queues for the start of games
+	private Queue<User[]> queue02;
+	private Queue<User[]> queue03;
+	private Queue<User> queue11; 
+	private Queue<User[]> queue12;
+	private Queue<User[]> queue13;
+	private Queue<User> queue21; 
+	private Queue<User[]> queue22;
+	private Queue<User[]> queue23;
+	private Queue<User> queue31; 
+	private Queue<User[]> queue32;
+	private Queue<User[]> queue33;
+	private Queue<User> queue41; 
+	private Queue<User[]> queue42;
+	private Queue<User[]> queue43;
 	private HashMap<String,User> users; // users connected
 	private HashMap<String,InvitationRoom> gamesInCreation; // String: leader name, games in creation.
 
 	@Override
 	public void init() {				// here we initialize the queues,the hash of the users connected, and set handslers
-		queue1 = new LinkedList<User>();
-		queue2 = new LinkedList<User[]>();
-		queue3 = new LinkedList<User[]>();
+		queue01 = new LinkedList<User>();
+		queue02 = new LinkedList<User[]>();
+		queue03 = new LinkedList<User[]>();
+		queue11 = new LinkedList<User>();
+		queue12 = new LinkedList<User[]>();
+		queue13 = new LinkedList<User[]>();
+		queue21 = new LinkedList<User>();
+		queue22 = new LinkedList<User[]>();
+		queue23 = new LinkedList<User[]>();
+		queue31 = new LinkedList<User>();
+		queue32 = new LinkedList<User[]>();
+		queue33 = new LinkedList<User[]>();
+		queue41 = new LinkedList<User>();
+		queue42 = new LinkedList<User[]>();
+		queue43 = new LinkedList<User[]>();
 		users=new HashMap<String,User>();
 		gamesInCreation=new HashMap<String,InvitationRoom>();	
 		this.addEventHandler(SFSEventType.USER_JOIN_ZONE, ZoneJoinEventHandler.class); // handler fired when checked the pword
@@ -68,29 +92,7 @@ public class MyExt extends SFSExtension {
 		this.gamesInCreation = gamesInCreation;
 	}
 
-	public Queue<User> getQueue1() {
-		return queue1;
-	}
-
-	public void setQueue1(Queue<User> queue1) {
-		this.queue1 = queue1;
-	}
-
-	public Queue<User[]> getQueue2() {
-		return queue2;
-	}
-
-	public void setQueue2(Queue<User[]> queue2) {
-		this.queue2 = queue2;
-	}
 	
-	public Queue<User[]> getQueue3() {
-		return queue3;
-	}
-
-	public void setQueue3(Queue<User[]> queue3) {
-		this.queue3 = queue3;
-	}
 	
 	public HashMap<String,User> getUsers(){
 		return this.users;
@@ -160,5 +162,133 @@ public class MyExt extends SFSExtension {
 			return null;
 		}	
 
+	}
+	
+	public int getnRooms() {
+		return nRooms;
+	}
+
+	public void setnRooms(int nRooms) {
+		this.nRooms = nRooms;
+	}
+
+	public Queue<User> getQueue01() {
+		return queue01;
+	}
+
+	public void setQueue01(Queue<User> queue01) {
+		this.queue01 = queue01;
+	}
+
+	public Queue<User[]> getQueue02() {
+		return queue02;
+	}
+
+	public void setQueue02(Queue<User[]> queue02) {
+		this.queue02 = queue02;
+	}
+
+	public Queue<User[]> getQueue03() {
+		return queue03;
+	}
+
+	public void setQueue03(Queue<User[]> queue03) {
+		this.queue03 = queue03;
+	}
+
+	public Queue<User> getQueue11() {
+		return queue11;
+	}
+
+	public void setQueue11(Queue<User> queue11) {
+		this.queue11 = queue11;
+	}
+
+	public Queue<User[]> getQueue12() {
+		return queue12;
+	}
+
+	public void setQueue12(Queue<User[]> queue12) {
+		this.queue12 = queue12;
+	}
+
+	public Queue<User[]> getQueue13() {
+		return queue13;
+	}
+
+	public void setQueue13(Queue<User[]> queue13) {
+		this.queue13 = queue13;
+	}
+
+	public Queue<User> getQueue21() {
+		return queue21;
+	}
+
+	public void setQueue21(Queue<User> queue21) {
+		this.queue21 = queue21;
+	}
+
+	public Queue<User[]> getQueue22() {
+		return queue22;
+	}
+
+	public void setQueue22(Queue<User[]> queue22) {
+		this.queue22 = queue22;
+	}
+
+	public Queue<User[]> getQueue23() {
+		return queue23;
+	}
+
+	public void setQueue23(Queue<User[]> queue23) {
+		this.queue23 = queue23;
+	}
+
+	public Queue<User> getQueue31() {
+		return queue31;
+	}
+
+	public void setQueue31(Queue<User> queue31) {
+		this.queue31 = queue31;
+	}
+
+	public Queue<User[]> getQueue32() {
+		return queue32;
+	}
+
+	public void setQueue32(Queue<User[]> queue32) {
+		this.queue32 = queue32;
+	}
+
+	public Queue<User[]> getQueue33() {
+		return queue33;
+	}
+
+	public void setQueue33(Queue<User[]> queue33) {
+		this.queue33 = queue33;
+	}
+
+	public Queue<User> getQueue41() {
+		return queue41;
+	}
+
+	public void setQueue41(Queue<User> queue41) {
+		this.queue41 = queue41;
+	}
+
+	public Queue<User[]> getQueue42() {
+		return queue42;
+	}
+
+	public void setQueue42(Queue<User[]> queue42) {
+		this.queue42 = queue42;
+	}
+
+	public Queue<User[]> getQueue43() {
+		return queue43;
+	}
+
+	public void setQueue43(Queue<User[]> queue43) {
+		this.queue43 = queue43;
 	}
 }
