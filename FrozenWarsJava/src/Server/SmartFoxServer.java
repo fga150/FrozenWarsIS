@@ -184,7 +184,7 @@ public class SmartFoxServer implements IEventListener {
 		try {
 			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
 			ip = address.getHostAddress();
-			//ip="127.0.0.1";
+			//ip="192.168.1.38";
 		} catch (Exception e){
 			
 		}
@@ -250,6 +250,7 @@ public class SmartFoxServer implements IEventListener {
 	public void inviteRequest(String name){
 		 ISFSObject params = new SFSObject();
 		 params.putUtfString("Invited", name);
+		 params.putInt("mode",MultiplayerScreen.getInstance().getGameMode());
 		 ExtensionRequest request = new ExtensionRequest("Invite",params);
 		 sfsClient.send(request);
 	}
@@ -326,7 +327,9 @@ public class SmartFoxServer implements IEventListener {
 
 	public void insertInQueuesRequest(Vector<String> names, boolean externalPlayers){
 		if(names.size()==1){		  //El que lanza la partida debe estar en la posicion 0 del vector.
-			  ExtensionRequest request2 = new ExtensionRequest("meter1",new SFSObject());
+			  SFSObject params = new SFSObject();
+			  params.putInt("mode",MultiplayerScreen.getInstance().getGameMode());  
+			  ExtensionRequest request2 = new ExtensionRequest("meter1",params);
 			  sfsClient.send(request2);
 		}
 		else if(names.size()==2 && externalPlayers==true){
@@ -412,9 +415,10 @@ public class SmartFoxServer implements IEventListener {
 		MultiplayerScreen.getInstance().setInQueue(true);
 	} 
 	
-	public void removeOfQueue(int playersNumber){//Funcion invocada por el usuario que quiere salirse de cola.
+	public void removeOfQueue(int playersNumber, int mode){//Funcion invocada por el usuario que quiere salirse de cola.
 		SFSObject params = new SFSObject();
 		params.putInt("numJugadores", playersNumber);//playersNumber es el numero de amigos con los que metiste cola(incluido el que lanza).
+		params.putInt("mode", mode);
 		ExtensionRequest request2 = new ExtensionRequest("sacardecola",params);
 		sfsClient.send(request2);
 	}
