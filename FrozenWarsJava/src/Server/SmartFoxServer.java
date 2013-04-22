@@ -172,7 +172,10 @@ public class SmartFoxServer implements IEventListener {
 					getMyFriendsRequestRes(response);
 				else if(cmd.equals("ExitGameRes"))
 					exitGameRes(response);
+				else if (cmd.equals("OutOfQueue"))
+					userOutOfQueue(response);
 			}
+
 		});
 	}
 
@@ -634,6 +637,11 @@ public class SmartFoxServer implements IEventListener {
 		}else if (response.getUtfString("res")=="Error"){
 			//TODO show a error message (Like the ones of adding friends)
 		}	
+	}
+	
+	private void userOutOfQueue(ISFSObject response) {
+		AcceptScreen.getInstance().setNewAcceptScreen("UserOutOfQueue", response.getUtfString("playerName"));
+		
 	}
 	
 	public void dispatch(BaseEvent event) throws SFSException {

@@ -166,7 +166,7 @@ public class ConfirmScreen implements Screen{
             	font.drawWrapped(batcher, message, posW+15, posH+225, 330);
             	font.draw(batcher, "Do you want to be friends?", posW+15, posH+145);
             } else if (screenMode.equals("Unfriend")){
-            	String message = user.concat("Do you want to remove "+user+" from your friend list?");
+            	String message = "Do you want to remove "+user+" from your friend list?";
             	font.drawWrapped(batcher, message, posW+15, posH+225, 330);
             }
             batcher.end();	

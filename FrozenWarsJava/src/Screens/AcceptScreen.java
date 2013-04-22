@@ -156,7 +156,7 @@ public class AcceptScreen implements Screen{
             } else if (screenMode.equals("LeaderLeft")){
             	message = "Game's leader left.";
             } else if (screenMode.equals("UserOutOfQueue")){
-            	message = "A teammate has disconnected so you all have left the queue.";
+            	message = user.concat(" has disconnected so you all have left the queue.");
             } else if (screenMode.equals("DiffPasswords")){
             	message = "Passwords must be the same.";
             } else if (screenMode.equals("PasswordChars")){

@@ -59,9 +59,9 @@ public class MultiplayerScreen implements Screen{
     private  BoundingBox leaveGroupButtonClick;
     
     /*private  BoundingBox mapLeftArrowClick;
-    private  BoundingBox mapRightArrowClick;
+    private  BoundingBox mapRightArrowClick;*/
     private  BoundingBox modeLeftArrowClick;
-    private  BoundingBox modeRightArrowClick;*/
+    private  BoundingBox modeRightArrowClick;
 	
     private BoundingBox scrollDownPlayersClick;
     private BoundingBox scrollUpPlayersClick;
@@ -190,6 +190,7 @@ public class MultiplayerScreen implements Screen{
 
 	public void setGameMode(int gameMode) {
 		this.gameMode = gameMode;
+		if (gameMode==1) externalPlayers = true;
 	}
 	
 	public boolean amIAdmin(){
@@ -273,9 +274,9 @@ public class MultiplayerScreen implements Screen{
 	    leaveGroupButtonClick = new BoundingBox(new Vector3(650,20,0), new Vector3(890,64,0));
 	    
 	    /*mapLeftArrowClick = new BoundingBox(new Vector3(50,200,0), new Vector3(100,290,0));
-	    mapRightArrowClick = new BoundingBox(new Vector3(450,200,0), new Vector3(510,280,0));
+	    mapRightArrowClick = new BoundingBox(new Vector3(450,200,0), new Vector3(510,280,0));*/
 	    modeLeftArrowClick = new BoundingBox(new Vector3(80,450,0), new Vector3(120,500,0));
-	    modeRightArrowClick = new BoundingBox(new Vector3(425,450,0), new Vector3(460,500,0));*/
+	    modeRightArrowClick = new BoundingBox(new Vector3(425,450,0), new Vector3(460,500,0));
 	    
 	    scrollDownPlayersClick = new BoundingBox(new Vector3(900,190,0), new Vector3(950,225,0));
 	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,400,0));
@@ -329,17 +330,19 @@ public class MultiplayerScreen implements Screen{
       		} else if (inviteButtonClick.contains(touchPoint) && amIAdmin() && !inQueue) {
       			InviteScreen inviteScreen = new InviteScreen();
       			game.setScreen(inviteScreen);
-      		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
+      		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue && gameMode!=1){
       			externalPlayers = !externalPlayers;
       			sfsClient.modExternalPlayersRequest(externalPlayers);
-      		/*} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin()){
+      		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin() && !inQueue){
       			if (gameMode == 0) gameMode = 4;
+      			else if (gameMode == 3) gameMode = 1;
       			else gameMode--;
       			sfsClient.modeChangeRequest(gameMode);
-      		} else if (modeRightArrowClick.contains(touchPoint) && amIAdmin()){
-      			gameMode = (gameMode + 1) % 5;
+      		} else if (modeRightArrowClick.contains(touchPoint) && amIAdmin() && !inQueue){
+      			if (gameMode == 1) gameMode = 3;
+      			else gameMode = (gameMode + 1) % 5;
       			sfsClient.modeChangeRequest(gameMode);
-      		*/} else if (scrollDownPlayersClick.contains(touchPoint)){
+      		} else if (scrollDownPlayersClick.contains(touchPoint)){
       			if (invitedScroll < (acceptedPlayers.size() + refusedPlayers.size() + waitingPlayers.size()) - 5) invitedScroll++;
       		} else if (scrollUpPlayersClick.contains(touchPoint)){
       			if (invitedScroll != 0) invitedScroll--;     	
