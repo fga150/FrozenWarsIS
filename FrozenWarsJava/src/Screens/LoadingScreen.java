@@ -23,7 +23,7 @@ public class LoadingScreen implements Screen{
 	public LoadingScreen(MatchManager manager){
 		this.loaded = false;
 		this.manager = manager;
-		font2 =new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);
+		font2 =new BitmapFont(Gdx.files.internal("data/simpleFont.fnt"), Gdx.files.internal("data/simpleFont.png"), false);
 		textCam = new OrthographicCamera(21*49,13*49);
 		textCam.position.set((21*49)/2,(13*49)/2,0);
 		batcher = new SpriteBatch();

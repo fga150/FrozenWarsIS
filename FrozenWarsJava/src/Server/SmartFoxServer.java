@@ -267,9 +267,12 @@ public class SmartFoxServer implements IEventListener {
 	} 
 
 	public void insertInQueuesRequest(Vector<String> names, boolean externalPlayers){
+		
 		if(names.size()==1){		  //El que lanza la partida debe estar en la posicion 0 del vector.
-			  ExtensionRequest request2 = new ExtensionRequest("meter1",new SFSObject());
-			  sfsClient.send(request2);
+			SFSObject params = new SFSObject();
+			params.putInt("mode",MultiplayerScreen.getInstance().getGameMode());  
+			ExtensionRequest request2 = new ExtensionRequest("meter1",params);
+			sfsClient.send(request2);
 		}
 		else if(names.size()==2 && externalPlayers==true){
 			  String friend=names.get(1);
@@ -313,8 +316,9 @@ public class SmartFoxServer implements IEventListener {
 		MultiplayerScreen.getInstance().setInQueue(true);
 	} 
 	
-	public void removeOfQueue(int playersNumber){//Funcion invocada por el usuario que quiere salirse de cola.
+	public void removeOfQueue(int playersNumber, int mode){//Funcion invocada por el usuario que quiere salirse de cola.
 		SFSObject params = new SFSObject();
+		params.putInt("mode", mode);
 		params.putInt("numJugadores", playersNumber);//playersNumber es el numero de amigos con los que metiste cola(incluido el que lanza).
 		ExtensionRequest request2 = new ExtensionRequest("sacardecola",params);
 		sfsClient.send(request2);

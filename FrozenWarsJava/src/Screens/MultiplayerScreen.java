@@ -288,7 +288,7 @@ public class MultiplayerScreen implements Screen{
 	    
 	    inQueue = false;
 	    empiezaPartida = false;
-	    externalPlayers = false;
+	    externalPlayers = true;
 	    gameMode = 0;
 	}
 
@@ -458,6 +458,10 @@ public class MultiplayerScreen implements Screen{
 
 	
 	
+	public int getGameMode() {
+		return gameMode;
+	}
+
 	@Override
 	public void resize(int arg0, int arg1) {
 		

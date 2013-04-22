@@ -3,7 +3,6 @@ package GameLogic;
 import Application.MatchManager.Direction;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Match.TypeGame;
-import GameLogic.Team;
 
 import com.badlogic.gdx.math.Vector3;
 
@@ -48,6 +47,7 @@ public class Player {
 	
 	private void initializePosition(int playerId, int numPlayers, TypeGame type) {
 		if (type.equals(TypeGame.Normal)) initializePositionNormal(playerId,numPlayers);
+		if (type.equals(TypeGame.Teams)) initializePositionNormal(playerId,numPlayers);
 		if (type.equals(TypeGame.BattleRoyale)) initializePositionNormal(playerId,numPlayers);
 	}
 
@@ -59,8 +59,8 @@ public class Player {
 				this.lookAt = Direction.right;	
 			}
 			else if (playerId == 1){
-				initialPosition = new Vector3(10,0,0);
-				position = new Vector3(10,0,0);
+				initialPosition = new Vector3(10,10,0);
+				position = new Vector3(10,10,0);
 				this.lookAt = Direction.left;	
 			}
 			else if (playerId == 2){
@@ -69,8 +69,8 @@ public class Player {
 				this.lookAt = Direction.right;	
 			}
 			else if (playerId == 3){
-				initialPosition = new Vector3(10,10,0);
-				position = new Vector3(10,10,0);
+				initialPosition = new Vector3(10,0,0);
+				position = new Vector3(10,0,0);
 				this.lookAt = Direction.left;	
 			}
 		}
@@ -112,7 +112,7 @@ public class Player {
 	 */
 	
 	public void initialitePlayer(int playerId,TypeGame type){
-		if (type.equals(TypeGame.Normal)){
+		if (type.equals(TypeGame.Normal) || type.equals(TypeGame.Teams)){
 			this.lives = 3;
 			this.speed = 1;
 			this.range = 1;

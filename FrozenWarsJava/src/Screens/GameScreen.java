@@ -77,6 +77,16 @@ public class GameScreen implements Screen{
 		penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/pClarosVerde.png"),manager.getLookAt(1));
 		if (numPlayers>2) penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/pClarosAmarillo.png"),manager.getLookAt(2));
 		if (numPlayers>3) penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/pClarosAzul.png"),manager.getLookAt(3));
+		
+		if(manager.getGameType().toString().equals("Teams")){
+			penguinAnimations[0] = new PenguinAnimation(Gdx.files.internal("data/PingClarosRojosGrupoAzul.png"),manager.getLookAt(0));
+			penguinAnimations[1] = new PenguinAnimation(Gdx.files.internal("data/PingClarosVerdesGrupoAzul.png"),manager.getLookAt(1));
+			if (numPlayers>2) 
+				penguinAnimations[2] = new PenguinAnimation(Gdx.files.internal("data/PingClarosAmarillosGrupoNegro.png"),manager.getLookAt(2));
+			if (numPlayers>3) 
+				penguinAnimations[3] = new PenguinAnimation(Gdx.files.internal("data/PingClarosAzulesGrupoNegro.png"),manager.getLookAt(3));
+		}
+		
 	}
 	
 	@Override
@@ -339,8 +349,17 @@ public class GameScreen implements Screen{
 
 	
 	private void paintGameStatus(){
-		if(manager.isThePlayerDead(numPlayer))
+		boolean myTeamWin=false;
+		if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()==1)
 			batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
+		else if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()>1){
+			for(int i = 0; i<manager.getMyTeam(numPlayer).getPlayers().size();i++){
+				if (manager.imTheWinner(manager.getMyTeam(numPlayer).getPlayers().get(i).getPlayerId()))
+					myTeamWin=true;
+			}
+			if(myTeamWin) batcher.draw(Assets.getYourTeamWins(),7,3,13,7);
+			else batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
+		}
 		else if (manager.imTheWinner(numPlayer))
 			if(manager.getMyTeam(numPlayer).getPlayers().size()==1)
 				batcher.draw(Assets.getYouWin(),6.5f,3,14,8);				
@@ -348,7 +367,6 @@ public class GameScreen implements Screen{
 		else if (manager.isGameTimeOff()){
 			batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
 			batcher.setProjectionMatrix(textCam.combined);
-			/*TODO Create bigger font or new image with time out current font is too small */
 			font2.setScale(1.75f);
 			font2.draw(batcher, "TIME OUT!",10.5f*49,3.5f*49);
 			font2.setScale(1);

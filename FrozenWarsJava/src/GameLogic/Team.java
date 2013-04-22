@@ -22,7 +22,7 @@ public class Team {
 		this.numTeam = numTeam;
 		this.players = new ArrayList<Player>();
 		for (int i=0;i<numPlayersTeam;i++){
-			players.add(new Player(playerId+2*i,numPlayers,type));
+			players.add(new Player(playerId+i,numPlayers,type));
 		}
 		this.share = share;
 	}
@@ -50,26 +50,28 @@ public class Team {
 
 
 	public boolean giveMeOneOfYourLives(int idPlayer) {
-		Player secondOption = null;
+//		Player secondOption = null;
 		Player firstOption = null;
 		for (int i=0;i<players.size();i++){
-			if(players.get(i).getLifes()==1){
-				secondOption = players.get(i);
-			}
-			else if(players.get(i).getLifes()>1){
-				firstOption = players.get(i);
+			if (i != idPlayer-players.size()*numTeam){
+//				if(players.get(i).getLifes()==1){
+//					secondOption = players.get(i);
+//				}
+				if(players.get(i).getLifes()>1){
+					firstOption = players.get(i);
+				}
 			}
 		}
 		if (firstOption != null){
-			firstOption.removeLive();
-			players.get(idPlayer).setLifes(1);
+			firstOption.setLifes(firstOption.getLifes()-1);
+			players.get(idPlayer-players.size()*numTeam).setLifes(1);
 			return true;
 		}
-		else if (secondOption != null){
-			secondOption.removeLive();
-			players.get(idPlayer).setLifes(1);
-			return true;
-		}
+//		else if (secondOption != null){
+//			secondOption.setLifes(secondOption.getLifes()-1);
+//			players.get(idPlayer-players.size()*numTeam).setLifes(1);
+//			return true;
+		
 		return false;
 	}
 }

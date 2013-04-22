@@ -78,7 +78,7 @@ public class Match {
 		int playerId = 0;
 		for (int i=0;i<(numPlayers/2);i++){
 			teams.add(new Team(numPlayers,i,2,playerId,type, true));
-			playerId += 1;
+			playerId += 2;
 		}
 		return teams;
 		
@@ -279,10 +279,11 @@ public class Match {
 	private void loseLife(int playerId) {
 		Player player = getPlayer(playerId);
 		timeEventsManager.sinkPenguinEvent(player);
-		if (player.getLifes()>0)
+		if (player.getLifes()>1)
 			player.removeLive();
 		else if(getMyTeam(playerId).isShare()){
 			if(!getMyTeam(playerId).giveMeOneOfYourLives(playerId)) player.removeLive();
+			
 		}
 	}
 	
