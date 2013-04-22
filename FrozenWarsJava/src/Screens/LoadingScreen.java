@@ -1,6 +1,7 @@
 package Screens;
 
 import Application.Assets;
+import Application.Desktop;
 import Application.MatchManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -99,7 +100,8 @@ public class LoadingScreen implements Screen{
 	
 	@Override
 	public void resize(int width, int height) {
-		
+		if (width!=1024 || height!=630) Desktop.j.getGraphics().setDisplayMode(1024, 630, false);
+
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package Screens;
 import java.util.Vector;
 
 import Application.Assets;
+import Application.Desktop;
 import Application.GameSettings;
 import Application.LaunchFrozenWars;
 
@@ -197,6 +198,7 @@ public class AcceptScreen implements Screen{
 
 	@Override
 	public void resize(int arg0, int arg1) {
+		if (arg0!=1024 || arg1!=630) Desktop.j.getGraphics().setDisplayMode(1024, 630, false);
 	}
 
 	@Override

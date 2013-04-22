@@ -4,16 +4,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.tools.imagepacker.TexturePacker2;
 import com.badlogic.gdx.tools.imagepacker.TexturePacker2.Settings;
 
 @SuppressWarnings("unused")
 public class Desktop {
-
+	
 	/**
 	 * @param args
 	 */
+	 public static LwjglApplication j;
 	
 	static private Thread.UncaughtExceptionHandler exHandler = new Thread.UncaughtExceptionHandler() {
 		@Override
@@ -45,8 +47,7 @@ public class Desktop {
 		*/
 		
 		Thread.setDefaultUncaughtExceptionHandler(exHandler);
-        new LwjglApplication(new LaunchFrozenWars(), "FrozenWars", 1024, 630, false);
-        
+        j = new LwjglApplication(new LaunchFrozenWars(), "FrozenWars", 1024, 630, false);
         
     }
 }
