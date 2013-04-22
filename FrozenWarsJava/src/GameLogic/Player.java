@@ -234,6 +234,13 @@ public class Player {
 		}
 		if (lives==0) position = new Vector3(-1,-1,0);
 	}
+	public void secondOportunity() {
+			lives=1;
+			setPosition(initialPosition);
+			invincible = true;
+			canPlay = false;
+	}
+		
 	
 	public void upgradePlayer(TypeSquare basicMatrixSquare) {
 		if (basicMatrixSquare.equals(TypeSquare.bootUpgrade) && (speed<5)) speed++;

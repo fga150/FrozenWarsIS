@@ -19,6 +19,8 @@ public class TimeEventsManager{
 	private final float invisibleTime = 10;
 	private final float sinkPenguinTime = 1;
 	private final float endGameTime = 180;
+	private final float respawnTime = 0.5f;
+	
 	
 	private Match match;
 	private HashMap<Player,Timer> invisiblePlayers;
@@ -84,6 +86,13 @@ public class TimeEventsManager{
 		timer.start();
 	}
 	
+	public void respawnTimeEvent(Player p){
+		TimeEventsTask timerTask = new TimeEventsTask(this,p,TypeEvent.respawn);
+		Timer timer = new Timer();
+		timer.scheduleTask(timerTask,respawnTime);
+		timer.start();
+	}
+	
 	public void endGameEvent(){
 		TimeEventsTask timerTask = new TimeEventsTask(this,null,TypeEvent.endGame);
 		Timer timer = new Timer();
@@ -111,8 +120,11 @@ public class TimeEventsManager{
 			match.endInvisible(player);
 		}
 		else if(type.equals(TypeEvent.endGame)){
-			System.out.println("Evento fin de partida");
 			match.gameTimeOff();
+		}
+		else if(type.equals(TypeEvent.respawn)){
+			Player player = (Player)taskObject;
+			match.sinkPenguinFinish(player);
 		}
 	}
 

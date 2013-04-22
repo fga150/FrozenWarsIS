@@ -315,7 +315,12 @@ public class Match {
 		if (player.getLives()>1)
 			player.removeLife();
 		else if(getMyTeam(player.getPlayerId()).isShare()){
-			if(!getMyTeam(player.getPlayerId()).giveMeOneOfYourLives(player.getPlayerId())) player.removeLife();
+			Player p = getMyTeam(player.getPlayerId()).giveMeOneOfYourLives(player.getPlayerId());
+			if(p==null) player.removeLife();
+			else {
+				timeEventsManager.respawnTimeEvent(p);
+				p.removeLife();
+			}
 			
 		}
 	}

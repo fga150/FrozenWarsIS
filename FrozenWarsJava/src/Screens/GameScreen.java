@@ -518,17 +518,17 @@ public class GameScreen implements Screen{
 	private void paintLinesInLivesPanel(){
 		if(numPlayers>1){
 			if(manager.isThePlayerDead(0))
-				batcher.draw(Assets.getLineLifesPanel(),3.425f,10.05f,3.22f,0.125f);
+				batcher.draw(Assets.getLineLifesPanel(),3.425f,10.05f,3.2f,0.125f);
 			if(manager.isThePlayerDead(1))
-				batcher.draw(Assets.getLineLifesPanel(),3.425f,9.05f,3.22f,0.125f);
+				batcher.draw(Assets.getLineLifesPanel(),3.425f,9.05f,3.2f,0.125f);
 		}
 		if(numPlayers>2){
-			if(manager.isThePlayerDead(2) && numPlayers<=3)
-				batcher.draw(Assets.getLineLifesPanel(),3.425f,8.05f,3.22f,0.125f);
+			if(manager.isThePlayerDead(2))
+				batcher.draw(Assets.getLineLifesPanel(),3.425f,8.05f,3.2f,0.125f);
 		}
 		if(numPlayers>3){
-			if(manager.isThePlayerDead(3) && numPlayers<=4)
-				batcher.draw(Assets.getLineLifesPanel(),3.425f,7.1f,3.22f,0.125f);
+			if(manager.isThePlayerDead(3))
+				batcher.draw(Assets.getLineLifesPanel(),3.425f,7.1f,3.2f,0.125f);
 			
 		}
 	}

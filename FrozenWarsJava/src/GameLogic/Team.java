@@ -59,7 +59,7 @@ public class Team {
 	}
 
 
-	public boolean giveMeOneOfYourLives(int idPlayer) {
+	public Player giveMeOneOfYourLives(int idPlayer) {
 //		Player secondOption = null;
 		Player firstOption = null;
 		for (int i=0;i<players.size();i++){
@@ -73,15 +73,15 @@ public class Team {
 			}
 		}
 		if (firstOption != null){
-			firstOption.setLives(firstOption.getLives()-1);
-			players.get(idPlayer-players.size()*numTeam).setLives(1);
-			return true;
+//			firstOption.removeLife();
+			players.get(idPlayer-players.size()*numTeam).secondOportunity();
+			return firstOption;
 		}
 //		else if (secondOption != null){
 //			secondOption.setLifes(secondOption.getLifes()-1);
 //			players.get(idPlayer-players.size()*numTeam).setLifes(1);
 //			return true;
 		
-		return false;
+		return null;
 	}
 }
