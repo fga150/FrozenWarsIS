@@ -220,7 +220,8 @@ public class FriendsListScreen implements Screen{
             batcher.draw(Assets.inviteFriendsButtonPressed, 521, 540);
             
             drawConnected();
-            drawDisconnected();
+            drawDisconnected(); 
+            drawInfo();
             
             batcher.draw(Assets.addFriend, 290, 90); 
             
@@ -277,7 +278,7 @@ public class FriendsListScreen implements Screen{
 			if (!drawConnected.elementAt(i+connectedScroll).isPlaying()) 
 				font.setColor(Color.GREEN);
 			else if (drawConnected.elementAt(i+connectedScroll).isPlaying()) 
-				font.setColor(Color.YELLOW);
+				font.setColor(Color.valueOf("9400D3"));
 			font.draw(batcher, name, 125,(447-45*i));
 			font.setColor(oldColor);
 		}
@@ -294,6 +295,17 @@ public class FriendsListScreen implements Screen{
 			font.setColor(oldColor);
 			batcher.draw(Assets.statusCancel, 575, (415-45*i));
 		}
+	}
+	
+	private void drawInfo() {
+		Color oldColor = font.getColor();
+		font.setColor(Color.GREEN);
+		font.draw(batcher, "Available", 155 , 160);
+		font.setColor(Color.valueOf("9400D3"));
+		font.draw(batcher, "In game", 170 , 120);
+		font.setColor(Color.RED);
+		font.draw(batcher, "Disconnected", 690 , 160);		
+		font.setColor(oldColor);
 	}
 	
 	private void unfriendConnected() {
