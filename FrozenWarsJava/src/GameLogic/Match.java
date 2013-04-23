@@ -40,6 +40,7 @@ public class Match {
 		this.harpoonManager = new HarpoonManager(numPlayers);
 		this.timeEventsManager = new TimeEventsManager(this);
 		this.gameTimeOff = false;
+		if (type.equals(TypeGame.BattleRoyale)||type.equals(TypeGame.Survival)) timeEventsManager.endGameEvent(type);
 		coord=new Vector3();
 	}
 	

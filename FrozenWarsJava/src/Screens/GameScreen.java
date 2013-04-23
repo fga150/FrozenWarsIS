@@ -426,14 +426,29 @@ public class GameScreen implements Screen{
 			}
 			gameOver = true;
 		} else if (manager.isGameTimeOff()){
-			batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
-			batcher.setProjectionMatrix(textCam.combined);
-			//font3.setScale(1.75f);
-			font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
-			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
-			//font32.setScale(1);
-			gameOver = true;
-			
+			if (manager.getGameType().equals(TypeGame.Survival)){
+				if (manager.getTeam(numPlayer)==0){
+					batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
+					batcher.setProjectionMatrix(textCam.combined);
+					font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
+					batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+					gameOver = true;
+				}
+				else {
+					batcher.draw(Assets.getYouWin(),6.5f,6,14,6);
+					batcher.setProjectionMatrix(textCam.combined);
+					font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
+					batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+					gameOver = true;
+				}
+			}
+			else {
+				batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
+				batcher.setProjectionMatrix(textCam.combined);
+				font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
+				batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+				gameOver = true;
+			}
 		}
 		else if (manager.areAllPlayersDead()){
 			batcher.draw(Assets.getDraw(),6.5f,6,14,6);

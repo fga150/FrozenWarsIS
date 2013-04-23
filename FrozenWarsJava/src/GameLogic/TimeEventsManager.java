@@ -2,6 +2,7 @@ package GameLogic;
 
 import java.util.HashMap;
 
+import GameLogic.Match.TypeGame;
 import GameLogic.TimeEventsTask.TypeEvent;
 
 import com.badlogic.gdx.utils.Timer;
@@ -18,7 +19,8 @@ public class TimeEventsManager{
 	private final float sunkenTime = 0.5f;
 	private final float invisibleTime = 10;
 	private final float sinkPenguinTime = 1;
-	private final float endGameTime = 180;
+	private final float endGameBattleRoyalTime = 180;
+	private final float endGameSurvivalTime = 90;
 	private final float respawnTime = 0.5f;
 	
 	
@@ -93,10 +95,11 @@ public class TimeEventsManager{
 		timer.start();
 	}
 	
-	public void endGameEvent(){
+	public void endGameEvent(TypeGame type){
 		TimeEventsTask timerTask = new TimeEventsTask(this,null,TypeEvent.endGame);
 		Timer timer = new Timer();
-		timer.scheduleTask(timerTask,endGameTime);
+		if (type.equals(TypeGame.BattleRoyale)) timer.scheduleTask(timerTask,endGameBattleRoyalTime);
+		else if (type.equals(TypeGame.Survival)) timer.scheduleTask(timerTask,endGameSurvivalTime);
 		timer.start();
 	}
 	

@@ -102,8 +102,6 @@ public class MatchManager {
 	public void startGame(int[] upgrades, int numPlayers) {
 		this.numPlayers = numPlayers;
 		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode);
-		if (mode.equals(TypeGame.BattleRoyale))
-			match.getTimeEventsManager().endGameEvent();
 		this.loadingScreen.setLoaded(true);
 	}
 	
