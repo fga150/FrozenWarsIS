@@ -385,9 +385,9 @@ public class MultiplayerScreen implements Screen{
             if (externalPlayers) batcher.draw(Assets.externalPlayerTick, 130, 380);   
             batcher.draw(Assets.externalPlayerText, 200, 380);   
             
-            batcher.draw(Assets.map, 130, 150);   
-            if (amIAdmin()) batcher.draw(Assets.mapLeftArrow, 45, 200);   
-            if (amIAdmin()) batcher.draw(Assets.mapRightArrow, 450, 200);   
+           //batcher.draw(Assets.map, 130, 150);   
+          //  if (amIAdmin()) batcher.draw(Assets.mapLeftArrow, 45, 200);   
+         //   if (amIAdmin()) batcher.draw(Assets.mapRightArrow, 450, 200);   
            
             drawInvited();
              
@@ -428,11 +428,28 @@ public class MultiplayerScreen implements Screen{
 	}
 
 	private void drawMode() {
-		if (gameMode == 0) batcher.draw(Assets.normalRoyalMode, 100, 450);
-		else if (gameMode == 1) batcher.draw(Assets.teamPlayMode, 100, 450);
-		else if (gameMode == 2) batcher.draw(Assets._1vsAllMode, 100, 450);
-		else if (gameMode == 3) batcher.draw(Assets.survivalMode, 100, 450);
-		else if (gameMode == 4) batcher.draw(Assets.battleRoyalMode, 100, 450);
+		batcher.draw(Assets.textSquare, -20,140);
+		
+		if (gameMode == 0) {
+			batcher.draw(Assets.normalRoyalMode, 100, 450);
+			batcher.draw(Assets.normalRoyalModeHelp, 70, 170);
+		}
+		else if (gameMode == 1) {
+			batcher.draw(Assets.teamPlayMode, 100, 450);
+			batcher.draw(Assets.teamPlayModeHelp, 80, 170);
+		}
+		else if (gameMode == 2) {
+			batcher.draw(Assets._1vsAllMode, 100, 450);
+			batcher.draw(Assets._1vsAllModeHelp, 80, 170);
+		}
+		else if (gameMode == 3) {
+			batcher.draw(Assets.survivalMode, 100, 450);
+			batcher.draw(Assets.survivalModeHelp, 80, 170);
+		}
+		else if (gameMode == 4) {
+			batcher.draw(Assets.battleRoyalMode, 100, 450);
+			batcher.draw(Assets.battleRoyalModeHelp, 80, 170);
+		}
 	}
 	
 	public void setDefault() {

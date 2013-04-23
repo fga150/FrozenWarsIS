@@ -100,6 +100,14 @@ public class Assets {
 	    public static AtlasRegion survivalMode;
 	    public static AtlasRegion teamPlayMode;
 	    
+	    public static AtlasRegion _1vsAllModeHelp;
+	    public static AtlasRegion battleRoyalModeHelp;
+	    public static AtlasRegion normalRoyalModeHelp;
+	    public static AtlasRegion survivalModeHelp;
+	    public static AtlasRegion teamPlayModeHelp;    
+	    
+	    public static AtlasRegion textSquare;   
+	    
 	    public static AtlasRegion externalPlayerButton;
 	    public static AtlasRegion externalPlayerText;
 	    public static AtlasRegion externalPlayerTick;
@@ -346,7 +354,15 @@ public class Assets {
 		    normalRoyalMode = atlas.findRegion("NormalModeButton");
 		    survivalMode = atlas.findRegion("SurvivalModeButton");
 		    teamPlayMode = atlas.findRegion("TeamPlayButton");
+		 
+		    _1vsAllModeHelp = atlas.findRegion("1vsallHelp");
+		    battleRoyalModeHelp = atlas.findRegion("battleRoyaleHelp");
+		    normalRoyalModeHelp = atlas.findRegion("NormalHelp");
+		    survivalModeHelp = atlas.findRegion("SurvivalHelp");
+		    teamPlayModeHelp = atlas.findRegion("TeamsHelp");
 		    
+		    textSquare = atlas.findRegion("textSquare");
+		        
 		    externalPlayerButton = atlas.findRegion("ExternalPlayersButton");
 		    externalPlayerText = atlas.findRegion("ExternalPlayersText");
 		    externalPlayerTick = atlas.findRegion("TickExternalPlayers");
