@@ -410,8 +410,15 @@ public class GameScreen implements Screen{
 				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
 			}
 			else {
+				boolean myTeamLost = true;
+				for(int i = 0; i<manager.getMyTeam(numPlayer).getPlayers().size();i++)
+				if(!manager.isThePlayerDead(manager.getMyTeam(numPlayer).getPlayers().get(i).getPlayerId())){
+					myTeamLost = false;
+				}
+				if(myTeamLost){
 				batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
 				batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+				}
 			}
 			gameOver = true;
 		}
