@@ -207,7 +207,7 @@ public class GameScreen implements Screen{
 			if(manager.canPlay(i)){
 				Vector3 position = manager.getPlayerPosition(i);
 				if (manager.isInvisible(i) && (i == numPlayer)) batcher.setColor(new Color(255,255,255,0.45f));
-				else if(manager.isInvisible(i) && (i != numPlayer)) batcher.setColor(new Color(255,255,255,0.05f));
+				else if(manager.isInvisible(i) && (i != numPlayer)) batcher.setColor(new Color(255,255,255,0));
 				drawPenguin(i,position.x+8f,position.y+1,1,1);
 				batcher.setColor(new Color(255,255,255,1));
 			}
@@ -414,12 +414,10 @@ public class GameScreen implements Screen{
 			}
 			gameOver = true;
 		} else if (manager.isGameTimeOff()){
-			batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
-			batcher.setProjectionMatrix(textCam.combined);
-			//font3.setScale(1.75f);
-			font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
-			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
-			//font32.setScale(1);
+			batcher.draw(Assets.getGameOver(),6.5f,6.5f,14,6);
+			batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
+			batcher.setProjectionMatrix(textCam.combined);	
+			font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
 			gameOver = true;
 			
 		}
