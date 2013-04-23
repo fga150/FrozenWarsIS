@@ -128,7 +128,7 @@ public class SettingsScreen implements Screen{
 
 	@Override
 	public void resize(int arg0, int arg1) {
-		if (arg0!=1024 || arg1!=630) Desktop.j.getGraphics().setDisplayMode(1024, 630, false);
+		if (arg0!=1024 || arg1!=630) Desktop.resetScreenSize();
 		
 	}
 

@@ -183,6 +183,8 @@ public class SmartFoxServer implements IEventListener {
 		String ip = "";
 		try {
 			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			//InetAddress address = InetAddress.getByName(new URL("http://frozenwarsthegame.no-ip.org").getHost());
+			
 			ip = address.getHostAddress();
 			//ip="192.168.1.38";
 		} catch (Exception e){

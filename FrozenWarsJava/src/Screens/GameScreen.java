@@ -35,6 +35,7 @@ public class GameScreen implements Screen{
 	private BoundingBox farBounds;
 	private BoundingBox fabBounds;
 	private BoundingBox harpoonBounds;
+	private BoundingBox gameOverOk;
 	private PenguinAnimation[] penguinAnimationsTeam0;
 	private PenguinAnimation[] penguinAnimationsTeam1;
     private float stateTime;
@@ -48,6 +49,7 @@ public class GameScreen implements Screen{
 	private int numPlayers;
 	@SuppressWarnings("unused")
 	private int timeInvisible;
+	private boolean gameOver;
 
 	
 	public GameScreen(MatchManager manager){
@@ -72,8 +74,10 @@ public class GameScreen implements Screen{
 		farBounds= new BoundingBox(new Vector3(2.75f,4.6f,0), new Vector3(4.75f,7,0));
 		fabBounds= new BoundingBox(new Vector3(2.75f,0,0), new Vector3(4.75f,2.4f,0));
 		harpoonBounds= new BoundingBox(new Vector3(19,0,0), new Vector3(21,4,0));
+		gameOverOk = new BoundingBox(new Vector3(19,0,0), new Vector3(21,4,0));
         stateTime = 0f;     
         loadAnimations();
+        gameOver = false;
 	}
 	
 	public void loadAnimations(){
@@ -243,6 +247,7 @@ public class GameScreen implements Screen{
 			//TouchPad
 			
 			if (Gdx.input.isTouched()){
+				System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 				if (Gdx.input.isTouched(0))guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
 				else touchPoint.set(-1,-1,-1);
 				if (Gdx.input.isTouched(1))guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
@@ -258,6 +263,8 @@ public class GameScreen implements Screen{
 				}
 				else if (fabBounds.contains(touchPoint)||fabBounds.contains(touchPoint2)){
 					manager.movePlayer(Direction.down);
+				} else if ((gameOverOk.contains(touchPoint) || gameOverOk.contains(touchPoint2)) && gameOver){
+					System.out.println("CAMBIA PANTALLA");
 				}
 				if (harpoonBounds.contains(touchPoint)||harpoonBounds.contains(touchPoint2)){
 					manager.putHarpoon();
@@ -379,7 +386,7 @@ public class GameScreen implements Screen{
 		if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()==1){
 			batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
 			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
-			
+			gameOver = true;
 		}
 		else if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()>1){
 			for(int i = 0; i<manager.getMyTeam(numPlayer).getPlayers().size();i++){
@@ -394,8 +401,9 @@ public class GameScreen implements Screen{
 				batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
 				batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
 			}
+			gameOver = true;
 		}
-		else if (manager.imTheWinner(numPlayer))
+		else if (manager.imTheWinner(numPlayer)) {
 			if(manager.getMyTeam(numPlayer).getPlayers().size()==1){
 				batcher.draw(Assets.getYouWin(),6.5f,6,14,6);	
 				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
@@ -404,18 +412,21 @@ public class GameScreen implements Screen{
 				batcher.draw(Assets.getYourTeamWins(),6.5f,6,14,6);
 				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
 			}
-		else if (manager.isGameTimeOff()){
+			gameOver = true;
+		} else if (manager.isGameTimeOff()){
 			batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
 			batcher.setProjectionMatrix(textCam.combined);
 			//font3.setScale(1.75f);
 			font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
 			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
 			//font32.setScale(1);
+			gameOver = true;
 			
 		}
 		else if (manager.areAllPlayersDead()){
 			batcher.draw(Assets.getDraw(),6.5f,6,14,6);
 			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+			gameOver = true;
 		}
 		
 	}
@@ -615,7 +626,7 @@ public class GameScreen implements Screen{
 	
 	@Override
 	public void resize(int width, int height) {
-		if (width!=1024 || height!=630) Desktop.j.getGraphics().setDisplayMode(1024, 630, false);
+		if (width!=1024 || height!=630) Desktop.resetScreenSize();
 
 	}
 

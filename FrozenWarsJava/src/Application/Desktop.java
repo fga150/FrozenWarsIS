@@ -15,7 +15,8 @@ public class Desktop {
 	/**
 	 * @param args
 	 */
-	 public static LwjglApplication j;
+	public static LwjglApplication j;
+	private static boolean runningInPc = true;
 	
 	static private Thread.UncaughtExceptionHandler exHandler = new Thread.UncaughtExceptionHandler() {
 		@Override
@@ -37,6 +38,11 @@ public class Desktop {
 		}
 	};
 	
+
+	public static void resetScreenSize() {
+		if (runningInPc) j.getGraphics().setDisplayMode(1024, 630, false);
+	}
+	
 	public static void main(String[] args) {
 
 		
@@ -50,4 +56,5 @@ public class Desktop {
         j = new LwjglApplication(new LaunchFrozenWars(), "FrozenWars", 1024, 630, false);
         
     }
+
 }

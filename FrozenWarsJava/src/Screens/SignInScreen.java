@@ -179,8 +179,8 @@ public class SignInScreen implements Screen {
             
             font.drawWrapped(batcher, userShown, 450, 500, 240);
             font.drawWrapped(batcher, emailShown, 450, 440, 240);
-            font.drawWrapped(batcher, pass1Shown, 450, 375, 240);
-            font.drawWrapped(batcher, pass2Shown, 450, 310, 240);
+            font.drawWrapped(batcher, pass1Shown, 450, 383, 240);
+            font.drawWrapped(batcher, pass2Shown, 450, 318, 240);
             batcher.end();	
             
             MultiplayerScreen.getInstance().changeToThisIfNeeded();
@@ -190,7 +190,7 @@ public class SignInScreen implements Screen {
 
 	@Override
 	public void resize(int arg0, int arg1) {
-		if (arg0!=1024 || arg1!=630) Desktop.j.getGraphics().setDisplayMode(1024, 630, false);
+		if (arg0!=1024 || arg1!=630) Desktop.resetScreenSize();
 
 	}
 
@@ -209,10 +209,10 @@ public class SignInScreen implements Screen {
         	email += c;
         } else if (proc.getInfoPressed() == 13){
         	pass1 += c;
-        	pass1S +='$';
+        	pass1S +='.';
         } else if (proc.getInfoPressed() == 14){
         	pass2 += c;
-        	pass2S +='$';
+        	pass2S +='.';
         }
 	}
 	

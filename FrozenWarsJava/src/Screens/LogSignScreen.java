@@ -71,18 +71,15 @@ public class LogSignScreen implements Screen{
 	      //detectamos si se ha tocado la pantalla
 	      if (Gdx.input.justTouched()){
 	      		guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-	      		System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
+	      		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 
 	      		//compruebo si he tocado yes 
 	      		if (logInClick.contains(touchPoint)){
-	      			System.out.println("log");
 	      			game.setScreen(LogInScreen.getInstance());
 	      		} else if(signInClick.contains(touchPoint)){ //compruebo si he tocado no
 	      			game.setScreen(SignInScreen.getInstance());
-	      			System.out.println("sign");
 	      		} else if(backClick.contains(touchPoint)){ //compruebo si he tocado no
 	      			game.setScreen(InitialScreen.getInstance());
-	      			System.out.println("back");
 	      		}
 	      }
 	      //crear solamente un batcher por pantalla y eliminarlo cuando no se use
@@ -113,7 +110,7 @@ public class LogSignScreen implements Screen{
 
 		@Override
 		public void resize(int arg0, int arg1) {
-			if (arg0!=1024 || arg1!=630) Desktop.j.getGraphics().setDisplayMode(1024, 630, false);
+			if (arg0!=1024 || arg1!=630) Desktop.resetScreenSize();
 
 		}
 

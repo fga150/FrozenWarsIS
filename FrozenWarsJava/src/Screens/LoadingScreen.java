@@ -100,7 +100,7 @@ public class LoadingScreen implements Screen{
 	
 	@Override
 	public void resize(int width, int height) {
-		if (width!=1024 || height!=630) Desktop.j.getGraphics().setDisplayMode(1024, 630, false);
+		if (width!=1024 || height!=630) Desktop.resetScreenSize();
 
 	}
 

@@ -158,7 +158,7 @@ public class FriendsListScreen implements Screen{
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-      		System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
+      		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			
       		if (backButtonClick.contains(touchPoint)){
@@ -318,7 +318,7 @@ public class FriendsListScreen implements Screen{
 	
 	@Override
 	public void resize(int arg0, int arg1) {
-		if (arg0!=1024 || arg1!=630) Desktop.j.getGraphics().setDisplayMode(1024, 630, false);
+		if (arg0!=1024 || arg1!=630) Desktop.resetScreenSize();
 
 	}
 
@@ -331,7 +331,4 @@ public class FriendsListScreen implements Screen{
 	public void show() {
 		
 	}
-
-
-
 }

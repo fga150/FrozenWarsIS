@@ -143,7 +143,7 @@ public class LogInScreen implements Screen {
 			}
             
             font.drawWrapped(batcher, userShown, 450, 435, 240);
-            font.drawWrapped(batcher, passShown, 450, 365, 240);
+            font.drawWrapped(batcher, passShown, 450, 375, 240);
             batcher.end();	
             
             MultiplayerScreen.getInstance().changeToThisIfNeeded();
@@ -154,7 +154,7 @@ public class LogInScreen implements Screen {
 
 	@Override
 	public void resize(int arg0, int arg1) {
-		if (arg0!=1024 || arg1!=630) Desktop.j.getGraphics().setDisplayMode(1024, 630, false);
+		if (arg0!=1024 || arg1!=630) Desktop.resetScreenSize();
 
 	}
 
@@ -172,7 +172,7 @@ public class LogInScreen implements Screen {
         	user += c;    //We add the char pressed
         } else if (proc.getInfoPressed() == 2){  //If we are writing pass
         	pass += c; //We add the char pressed
-        	passS +='$'; 
+        	passS +='.'; 
         } 
 	}
 	
