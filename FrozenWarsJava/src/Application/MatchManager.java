@@ -101,7 +101,7 @@ public class MatchManager {
 	
 	public void startGame(int[] upgrades, int numPlayers) {
 		this.numPlayers = numPlayers;
-		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode);
+		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode,usersNames[myPlayerId]);
 		this.loadingScreen.setLoaded(true);
 	}
 	

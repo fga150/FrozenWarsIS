@@ -21,6 +21,7 @@ public class Match {
 	private final static int maxSize = 11;
 	
 	private Map map;
+	private LogFile logFile;
 	private TimeEventsManager timeEventsManager;
 	private HarpoonManager harpoonManager;
 	private TypeGame type;
@@ -31,7 +32,8 @@ public class Match {
 	private int numPlayers;
 	private boolean gameTimeOff;
 	
-	public Match(int[] upgrades,XMLMapReader xmlMapReader,int playerId, int numPlayers,TypeGame type){
+	public Match(int[] upgrades,XMLMapReader xmlMapReader,int playerId, int numPlayers,TypeGame type,
+			String namePlayer){
 		this.myPlayerId = playerId;
 		this.numPlayers = numPlayers;
 		this.type = type;
@@ -42,8 +44,19 @@ public class Match {
 		this.gameTimeOff = false;
 		if (type.equals(TypeGame.BattleRoyale)||type.equals(TypeGame.Survival)) timeEventsManager.endGameEvent(type);
 		coord=new Vector3();
+		this.logFile = new LogFile(namePlayer);
+		printGameStatus();
 	}
 	
+	private void printGameStatus() {
+		logFile.write("---------------------------------");
+		logFile.write("The type of the game is: "+type.toString());
+		logFile.write("The number of players is: "+numPlayers);
+		logFile.write("The players id is: "+ myPlayerId);
+		for (int i=0;i<numPlayers;i++) logFile.write("The player " +i+" is in the team" + getMyTeamId(i));
+		logFile.write("---------------------------------");
+	}
+
 	private ArrayList<Team> initializeTeams(int numPlayers, TypeGame type) {
 		ArrayList<Team> teams = null;
 		if (type.equals(TypeGame.Normal)) teams = normalGame(numPlayers,type); 
@@ -292,7 +305,7 @@ public class Match {
 		if (type.equals(TypeGame.Normal)||type.equals(TypeGame.BattleRoyale)) checkPlayer(player);
 		else if (type.equals(TypeGame.Teams)) sharePlayer(player);
 		else if (type.equals(TypeGame.Survival)) checkSurvival(player);
-
+		logFile.writeEvent("The player " + playerId + " has lost a life");
 	}
 
 	private void checkSurvival(Player player) {
@@ -322,7 +335,6 @@ public class Match {
 				timeEventsManager.respawnTimeEvent(p);
 				p.removeLife();
 			}
-			
 		}
 	}
 
@@ -330,19 +342,20 @@ public class Match {
 		player.removeLife();
 	}
 
-	public void movePlayer(Direction dir, int playerId, float xPlayerPosition, float yPlayerPosition) {
+	public void movePlayer(Direction dir, int playerId, float x, float y) {
 		Player player = getPlayer(playerId);
 		if (!dir.equals(player.getLookAt())) player.setLookAt(dir);
 		else {
-			if (dir.equals(Direction.left)) player.setPositionX(xPlayerPosition-minimalMove);
-			else if (dir.equals(Direction.right)) player.setPositionX(xPlayerPosition+minimalMove);
-			else if (dir.equals(Direction.up)) player.setPositionY(yPlayerPosition+minimalMove);
-			else if (dir.equals(Direction.down)) player.setPositionY(yPlayerPosition-minimalMove);
+			if (dir.equals(Direction.left)) player.setPositionX(x-minimalMove);
+			else if (dir.equals(Direction.right)) player.setPositionX(x+minimalMove);
+			else if (dir.equals(Direction.up)) player.setPositionY(y+minimalMove);
+			else if (dir.equals(Direction.down)) player.setPositionY(y-minimalMove);
 		}
 		if (!player.isInvincible() && isSunkenPenguin(playerId)){
 				loseLife(playerId);
 		}
-		checkUpgrade(dir,playerId); 
+		checkUpgrade(dir,playerId);
+		logFile.writeEvent("The player " + playerId + " has moved to "+ x + " " + y + " with dir "+dir.toString());
 	}
 	 
 
@@ -376,13 +389,14 @@ public class Match {
 		timeEventsManager.sinkHarpoonEvent(harpoon,time);
 		map.putHarpoonAt(x,y);
 		map.addAllFissures(harpoonManager.getActiveHarpoonList());
+		logFile.writeEvent("The player " + playerId + " has put an harpoon on "+ x + " " + y + " with time "+ time);
 	}
 	
 	public void sinkHarpoon(Harpoon harpoon) {
 		Vector3 position = harpoon.getPosition();
 		harpoonManager.sinkHarpoon(harpoon);
 		timeEventsManager.freezeWaterEvent(harpoon);
-		harpoonRangeDamage(harpoon);
+		logFile.writeEvent("The harpoon in " + harpoon.getPosition().x + " " + harpoon.getPosition().y + " has sunken");		harpoonRangeDamage(harpoon);
 		map.putSunkenHarpoonAt((int)position.x,(int)position.y);
 		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
 		map.addAllFissures(harpoonManager.getActiveHarpoonList());
@@ -465,6 +479,7 @@ public class Match {
 			harpoonManager.sinkHarpoon(newHarpoon);
 			timeEventsManager.stopHarpoonTimer(newHarpoon);
 			map.putSunkenHarpoonAt(x,y);
+			logFile.writeEvent("The harpoon in " + newHarpoon.getPosition().x + " " + newHarpoon.getPosition().y + " has sunken");
 			harpoonRangeDamageChain(newHarpoon,isCought);
 			timeEventsManager.freezeWaterEvent(newHarpoon);
 		}
@@ -473,6 +488,7 @@ public class Match {
 			harpoonManager.sinkHarpoon(newHarpoon);
 			timeEventsManager.stopHarpoonTimer(newHarpoon);
 			map.putSunkenHarpoonAt(x,y);
+			logFile.writeEvent("The harpoon in " + newHarpoon.getPosition().x + " " + newHarpoon.getPosition().y + " has sunken");
 			harpoonRangeDamageChain(newHarpoon,isCought);
 			timeEventsManager.freezeWaterEvent(newHarpoon);
 		}
@@ -481,6 +497,7 @@ public class Match {
 			harpoonManager.sinkHarpoon(newHarpoon);
 			timeEventsManager.stopHarpoonTimer(newHarpoon);
 			map.putSunkenHarpoonAt(x,y);
+			logFile.writeEvent("The harpoon in " + newHarpoon.getPosition().x + " " + newHarpoon.getPosition().y + " has sunken");
 			harpoonRangeDamageChain(newHarpoon,isCought);
 			timeEventsManager.freezeWaterEvent(newHarpoon);
 		}
@@ -489,6 +506,7 @@ public class Match {
 			harpoonManager.sinkHarpoon(newHarpoon);
 			timeEventsManager.stopHarpoonTimer(newHarpoon);
 			map.putSunkenHarpoonAt(x,y);
+			logFile.writeEvent("The harpoon in " + newHarpoon.getPosition().x + " " + newHarpoon.getPosition().y + " has sunken");
 			harpoonRangeDamageChain(newHarpoon,isCought);
 			timeEventsManager.freezeWaterEvent(newHarpoon);
 		}	
@@ -538,6 +556,7 @@ public class Match {
 		map.emptyHarpoonPosInSunkenMatrix(harpoon);
 		harpoonManager.removeHarpoon(harpoon);
 		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
+		logFile.writeEvent("The water in " + harpoon.getPosition().x + " " + harpoon.getPosition().y + " has freezed");
 	}
 	
 	private boolean isLegalMove(Direction dir, int playerId){
@@ -684,6 +703,7 @@ public class Match {
 			if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
 			else player.upgradePlayer(typeSquare);
 			map.setEmpty((int)positions[0].x,(int)positions[0].y);
+			logFile.writeEvent("The player "+ playerId+ " has taken an upgrade " + typeSquare.toString() + " at "+ positions[0].x + " " + positions[0].y);
 		}
 		else {
 			if (map.existUpgrade(positions[0])){
@@ -691,12 +711,14 @@ public class Match {
 				if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
 				else player.upgradePlayer(typeSquare);
 				map.setEmpty((int)positions[0].x,(int)positions[0].y);
+				logFile.writeEvent("The player "+ playerId+ " has taken an upgrade " + typeSquare.toString() + " at "+ positions[0].x + " " + positions[0].y);
 			}
 			else if (map.existUpgrade(positions[1])){
 				TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y);
 				if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
 				else player.upgradePlayer(typeSquare);
 				map.setEmpty((int)positions[1].x,(int)positions[1].y);
+				logFile.writeEvent("The player "+ playerId+ " has taken an upgrade " + typeSquare.toString() + " at "+ positions[1].x + " " + positions[1].y);
 			}
 		}
 	}
@@ -709,6 +731,7 @@ public class Match {
 	
 	public void endInvisible(Player player) {
 		player.setInvisible(false);
+		logFile.writeEvent("The player "+ player.getPlayerId()+ " is not invisible anymore");
 	}
 	
 	//Getters and Setters
