@@ -284,11 +284,13 @@ public class GameScreen implements Screen{
 	}
 	
 	private void paintTimeMatch() {
-		long timeMatch = (manager.getTimeMatch() - System.currentTimeMillis())/1000;
-		String text = toMinSec(timeMatch);
-		batcher.setProjectionMatrix(textCam.combined);
-		font3.draw(batcher,text,12.5f*49 ,1f*49);
-		batcher.setProjectionMatrix(guiCam.combined);
+		if (manager.getMode().equals(TypeGame.Survival)||manager.getMode().equals(TypeGame.BattleRoyale)){
+			long timeMatch = (manager.getTimeMatch() - System.currentTimeMillis())/1000;
+			String text = toMinSec(timeMatch);
+			batcher.setProjectionMatrix(textCam.combined);
+			font3.draw(batcher,text,12.5f*49 ,1f*49);
+			batcher.setProjectionMatrix(guiCam.combined);
+		}
 	}
 
 	private String toMinSec(long timeMatch) {

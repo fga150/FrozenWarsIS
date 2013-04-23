@@ -2,8 +2,8 @@
 	<Sound>off</Sound>
 	<Vibration>off</Vibration>
 	<Userdata>
-		<Username>UT1</Username>
-		<Userpassword>UT11</Userpassword>
+		<Username></Username>
+		<Userpassword></Userpassword>
 	</Userdata>
 	<ConfirmedExit>on</ConfirmedExit>
 </Settings>
