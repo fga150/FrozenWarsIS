@@ -271,5 +271,9 @@ public class MatchManager {
 	public long getTimeInvisible(int numPlayer) {
 		return match.getTimeInvisible(numPlayer);
 	}
+
+	public long getTimeMatch() {
+		return match.getTimeManager();
+	}
 	
 }

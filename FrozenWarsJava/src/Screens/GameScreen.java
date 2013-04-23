@@ -211,9 +211,9 @@ public class GameScreen implements Screen{
 				batcher.setColor(new Color(255,255,255,1));
 			}
 		}		
+		paintTimeMatch();
 		
-		
-		paintUpgrades(delta);
+		paintUpgrades();
 		paintPlayerStatus();
 		
 		paintLivesPanel();
@@ -283,6 +283,23 @@ public class GameScreen implements Screen{
 		}
 	}
 	
+	private void paintTimeMatch() {
+		long timeMatch = manager.getTimeMatch() - System.currentTimeMillis();
+		String text = toMinSec(timeMatch/1000);
+		batcher.setProjectionMatrix(textCam.combined);
+		font3.draw(batcher,text,12.5f*49 ,1f*49);
+		batcher.setProjectionMatrix(guiCam.combined);
+	}
+
+	private String toMinSec(long timeMatch) {
+		long min = timeMatch / 60;
+		long sec = timeMatch % 60;
+		String text = "";
+		if (sec>=10)	text = min + ":" + sec;
+		else text = min + ":0" + sec;
+		return text;
+	}
+
 	private void drawPenguin(int playerId,float x, float y, int tamx, int tamy) {
 		TypeGame mode = manager.getGameType();
 		if (mode.equals(TypeGame.Normal) || mode.equals(TypeGame.BattleRoyale))
@@ -326,7 +343,7 @@ public class GameScreen implements Screen{
 	
 	
 	
-	private void paintUpgrades(float delta) {
+	private void paintUpgrades() {
 		int speedUpgrade = manager.getSpeed(numPlayer);
 		int harpoonUpgrade = manager.getHarpoonsAllow(numPlayer);
 		int rangeUpgrade = manager.getRange(numPlayer);

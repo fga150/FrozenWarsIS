@@ -105,7 +105,7 @@ public class TimeEventsManager{
 		Timer timer = new Timer();
 		if (type.equals(TypeGame.BattleRoyale)) time = endGameBattleRoyalTime;
 		else if (type.equals(TypeGame.Survival)) time = endGameSurvivalTime;
-		TimeEventsTask timerTask = new TimeEventsTask(this,null,TypeEvent.endGame);
+		TimeEventsTask timerTask = new TimeEventsTask(this,null,TypeEvent.endGame,time);
 		timer.scheduleTask(timerTask,time);
 		timer.start();
 		timeMatch = timerTask;

@@ -44,7 +44,7 @@ public class Desktop {
 	}
 	
 	public static void main(String[] args) {
-		/*
+/*
 		Settings settings = new Settings();
         settings.maxHeight=2048;
         settings.maxWidth=2048;        

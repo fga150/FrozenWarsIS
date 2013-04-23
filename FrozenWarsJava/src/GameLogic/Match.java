@@ -891,6 +891,10 @@ public class Match {
 		return timeEventsManager.getTimeInvisible(player);
 	}
 
+	public long getTimeManager() {
+		return timeEventsManager.getTimeMatch();
+	}
+
 	
 	
 	
