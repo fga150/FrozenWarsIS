@@ -122,12 +122,12 @@ public class LaunchFrozenWars extends Game implements InputProcessor{
 	
 	
 	public void dispose(){
+		GameSettings.getInstance().saveSettings();
 		if (SmartFoxServer.isInstanced()) {
 			SmartFoxServer.getInstance().dispose();
 			MultiplayerScreen.getInstance().dispose();
 		}
 		InitialScreen.getInstance().dispose();
-		GameSettings.getInstance().saveSettings();
 		instance = null;
 		System.exit(0);
 	}

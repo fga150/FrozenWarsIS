@@ -457,6 +457,7 @@ public class MultiplayerScreen implements Screen{
 		drawPlayers.add(new InvitedInfo(name, "Accepted"));
 	
 		gameAdmin = myName;
+		empiezaPartida = false;
 	}
 	
 	public int getGameMode() {

@@ -2,6 +2,7 @@ package Screens;
 
 import Application.Assets;
 import Application.Desktop;
+import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
 import GameLogic.Map.TypeSquare;
@@ -9,6 +10,7 @@ import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
 import GameLogic.Match.TypeGame;
+import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -74,7 +76,7 @@ public class GameScreen implements Screen{
 		farBounds= new BoundingBox(new Vector3(2.75f,4.6f,0), new Vector3(4.75f,7,0));
 		fabBounds= new BoundingBox(new Vector3(2.75f,0,0), new Vector3(4.75f,2.4f,0));
 		harpoonBounds= new BoundingBox(new Vector3(19,0,0), new Vector3(21,4,0));
-		gameOverOk = new BoundingBox(new Vector3(19,0,0), new Vector3(21,4,0));
+		gameOverOk = new BoundingBox(new Vector3(12.75f,2,0), new Vector3(14.75f,3,0));
         stateTime = 0f;     
         loadAnimations();
         gameOver = false;
@@ -207,7 +209,7 @@ public class GameScreen implements Screen{
 			if(manager.canPlay(i)){
 				Vector3 position = manager.getPlayerPosition(i);
 				if (manager.isInvisible(i) && (i == numPlayer)) batcher.setColor(new Color(255,255,255,0.45f));
-				else if(manager.isInvisible(i) && (i != numPlayer)) batcher.setColor(new Color(255,255,255,0));
+				else if(manager.isInvisible(i) && (i != numPlayer)) batcher.setColor(new Color(255,255,255,0.05f));
 				drawPenguin(i,position.x+8f,position.y+1,1,1);
 				batcher.setColor(new Color(255,255,255,1));
 			}
@@ -247,11 +249,11 @@ public class GameScreen implements Screen{
 			//TouchPad
 			
 			if (Gdx.input.isTouched()){
-				System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 				if (Gdx.input.isTouched(0))guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
 				else touchPoint.set(-1,-1,-1);
 				if (Gdx.input.isTouched(1))guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
 				else touchPoint2.set(-1,-1,-1);
+		
 				if (fdBounds.contains(touchPoint)||fdBounds.contains(touchPoint2)){
 					manager.movePlayer(Direction.right);      
 				}
@@ -263,12 +265,22 @@ public class GameScreen implements Screen{
 				}
 				else if (fabBounds.contains(touchPoint)||fabBounds.contains(touchPoint2)){
 					manager.movePlayer(Direction.down);
-				} else if ((gameOverOk.contains(touchPoint) || gameOverOk.contains(touchPoint2)) && gameOver){
-					System.out.println("CAMBIA PANTALLA");
 				}
 				if (harpoonBounds.contains(touchPoint)||harpoonBounds.contains(touchPoint2)){
 					manager.putHarpoon();
 					Gdx.input.vibrate(200);
+				}
+			}
+		} else {
+			if (Gdx.input.isTouched()){
+				if (Gdx.input.isTouched(0))guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
+				else touchPoint.set(-1,-1,-1);
+				if ((gameOverOk.contains(touchPoint) || gameOverOk.contains(touchPoint2)) && gameOver){
+					SmartFoxServer.getInstance().exitGame();
+					gameOver = false;
+					MultiplayerScreen ms = MultiplayerScreen.getInstance();
+					ms.setDefault();
+					LaunchFrozenWars.getGame().setScreen(ms);
 				}
 			}
 		}
@@ -414,10 +426,12 @@ public class GameScreen implements Screen{
 			}
 			gameOver = true;
 		} else if (manager.isGameTimeOff()){
-			batcher.draw(Assets.getGameOver(),6.5f,6.5f,14,6);
-			batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
-			batcher.setProjectionMatrix(textCam.combined);	
-			font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+			batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
+			batcher.setProjectionMatrix(textCam.combined);
+			//font3.setScale(1.75f);
+			font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
+			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+			//font32.setScale(1);
 			gameOver = true;
 			
 		}
