@@ -73,7 +73,7 @@ public class GameScreen implements Screen{
 		farBounds= new BoundingBox(new Vector3(2.75f,4.6f,0), new Vector3(4.75f,7,0));
 		fabBounds= new BoundingBox(new Vector3(2.75f,0,0), new Vector3(4.75f,2.4f,0));
 		harpoonBounds= new BoundingBox(new Vector3(19,0,0), new Vector3(21,4,0));
-		gameOverOk = new BoundingBox(new Vector3(12.75f,2,0), new Vector3(14.75f,3,0));
+		gameOverOk = new BoundingBox(new Vector3(12.75f,1,0), new Vector3(14.75f,3,0));
         stateTime = 0f;     
         loadAnimations();
         gameOver = false;
@@ -442,37 +442,31 @@ public class GameScreen implements Screen{
 				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
 			}
 			gameOver = true;
-		} else if (manager.isGameTimeOff()){
-			if (manager.getGameType().equals(TypeGame.Survival)){
-				if (manager.getTeam(numPlayer)==0){
-					batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
-					batcher.setProjectionMatrix(textCam.combined);
-					font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
-					batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
-					gameOver = true;
-				}
-				else {
-					batcher.draw(Assets.getYouWin(),6.5f,6,14,6);
-					batcher.setProjectionMatrix(textCam.combined);
-					font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
-					batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
-					gameOver = true;
-				}
-			}
-			else {
-				batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
-				batcher.setProjectionMatrix(textCam.combined);
-				font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
-				batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
-				gameOver = true;
-			}
+		}else if (manager.isGameTimeOff()){
+ 			if (manager.getGameType().equals(TypeGame.Survival)){
+ 				if (manager.getTeam(numPlayer)==0){
+					batcher.draw(Assets.getGameOver(),6.5f,6.5f,14,6);
+					batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
+					batcher.setProjectionMatrix(textCam.combined);	
+					font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+ 					gameOver = true;
+ 				}
+ 				else {
+					batcher.draw(Assets.getYouWin(),6.5f,6.5f,14,6);
+					batcher.draw(Assets.getYouWonWindow(),10.25f,1f,6.36f,4.39f);
+					batcher.setProjectionMatrix(textCam.combined);	
+					font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+ 					gameOver = true;
+ 				}
+ 			}
+ 			else {
+				batcher.draw(Assets.getGameOver(),6.5f,6.5f,14,6);
+				batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
+				batcher.setProjectionMatrix(textCam.combined);	
+				font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+ 				gameOver = true;
+ 			}
 		}
-		else if (manager.areAllPlayersDead()){
-			batcher.draw(Assets.getDraw(),6.5f,6,14,6);
-			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
-			gameOver = true;
-		}
-		
 	}
 
 	
