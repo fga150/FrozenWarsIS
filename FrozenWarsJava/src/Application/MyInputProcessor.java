@@ -23,10 +23,10 @@ public class MyInputProcessor implements InputProcessor {
 	    if(keycode == Keys.BACK){
 	    	// Do back button handling (show pause menu?)
 	    	if(g.getScreen()==InviteScreen.getInstance()){
-	    		Screen loadScreen = MultiplayerScreen.getInstance();
+	    		MultiplayerScreen loadScreen = MultiplayerScreen.getInstance();
 	   			g.setScreen(loadScreen);
 	    	} else if(g.getScreen()==HelpScreen.getInstance()){
-	    		Screen loadScreen = IndexScreen.getInstance();
+	    		IndexScreen loadScreen = IndexScreen.getInstance();
 	    		g.setScreen(loadScreen);
 	   	   	} else {
 		   		g.setScreen(InitialScreen.getInstance());
