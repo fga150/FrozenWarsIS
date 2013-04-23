@@ -6,11 +6,11 @@ import java.util.Vector;
 import Application.Assets;
 import Application.Desktop;
 import Application.LaunchFrozenWars;
+import Application.MyInputProcessor;
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -78,9 +78,7 @@ public class FriendsListScreen implements Screen{
     
     private String user;	
 	private String userShown;	
-	private long time;
-	private boolean infoPressed;
-    
+	private MyInputProcessor proc;
 	
 
     public FriendsListScreen() {
@@ -102,9 +100,7 @@ public class FriendsListScreen implements Screen{
 	    
 	    updateFriends();
 	    
-	    infoPressed = false;
 	    user = userShown = "";
-	    this.time = System.nanoTime();
 	    
 	    connectedScroll = 0;
 	    disconnectedScroll = 0;
@@ -136,6 +132,8 @@ public class FriendsListScreen implements Screen{
 	    unfriendDisc[4] = new BoundingBox(new Vector3(572,234,0), new Vector3(615,272,0));
 	    unfriendDisc[5] = new BoundingBox(new Vector3(572,189,0), new Vector3(615,226,0));
 	    unfriendDiscAll =  new BoundingBox(new Vector3(572,186,0), new Vector3(615,454,0));
+	    
+	    proc = (MyInputProcessor) Gdx.input.getInputProcessor();
 	}
 
 	
@@ -164,28 +162,37 @@ public class FriendsListScreen implements Screen{
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			
       		if (backButtonClick.contains(touchPoint)){
+      			proc.setInfoPressed(0);
       			game.setScreen(InitialScreen.getInstance());
       		 } else if (MultiplayerClick.contains(touchPoint)){
+      			proc.setInfoPressed(0);
       			this.game.setScreen(MultiplayerScreen.getInstance());
       		 } else if (userClick.contains(touchPoint)){
       			Gdx.input.setOnscreenKeyboardVisible(true);
-      			this.infoPressed = true;
+      			proc.setInfoPressed(21);
       		 } else if (addFriendClick.contains(touchPoint)){
-       			SmartFoxServer.getInstance().sendFriendRequest(user);
+      			proc.setInfoPressed(0);
+      			SmartFoxServer.getInstance().sendFriendRequest(user);
        		 } else if (scrollDownConnectedClick.contains(touchPoint)){
+       			proc.setInfoPressed(0);
        			if (connectedScroll < (drawConnected.size()) - 6) connectedScroll++;
        		 } else if (scrollUpConnectedClick.contains(touchPoint)){
+       			proc.setInfoPressed(0);
        			if (connectedScroll != 0) connectedScroll--;     	
  			 } else if (scrollDownDisconnectedClick.contains(touchPoint)){
-        		if (disconnectedScroll < (disconnectedFriends.size()) - 6) disconnectedScroll++;
+ 				proc.setInfoPressed(0);
+ 				if (disconnectedScroll < (disconnectedFriends.size()) - 6) disconnectedScroll++;
         	 } else if (scrollUpDisconnectedClick.contains(touchPoint)){
+        		 proc.setInfoPressed(0);
         		if (disconnectedScroll != 0) disconnectedScroll--;     	
         	 } else if (unfriendConAll.contains(touchPoint)){
-  				unfriendConnected(); 
+        		 proc.setInfoPressed(0);
+        		 unfriendConnected(); 
   			 } else if (unfriendDiscAll.contains(touchPoint)){
-  				unfriendDisconnected();	
+  				proc.setInfoPressed(0);
+  				 unfriendDisconnected();	
   			 } else {
-      			this.infoPressed = false;
+      			proc.setInfoPressed(0);
       		 }
 		}
 		
@@ -230,33 +237,18 @@ public class FriendsListScreen implements Screen{
  
             batcher.end();
             
-            if ( this.infoPressed){
-            	this.completeMessagePc();
-            }
-            
             ConfirmScreen.getInstance().createConfirmIfNeeded();
             AcceptScreen.getInstance().createAcceptIfNeeded();
 	}
 
 	
-	private void completeMessagePc(){
-		char aux = 0;
-		
-		boolean canDelete = false;		
-		
-		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)  && ((System.nanoTime() - this.time) > 175000000)){ //We check if some key has been pressed
-			this.time = System.nanoTime();
-			  aux = ScreensKeyboard.keyPc();
-			  canDelete = true;
-		}
-
-        if (aux != 0){
-	        user += aux;	        
-        }  
-        
-        if (ScreensKeyboard.delete() && user.length()>0 && canDelete){
+	public void setMessage(char c){
+		if (proc.getInfoPressed() == 21) user += c;
+	}
+	
+	public void del(){
+		if (proc.getInfoPressed() == 21 && user.length()>0){
 	        user = (String)user.subSequence(0, user.length()-1);    
-        	canDelete =false;
         }
 	}
 	

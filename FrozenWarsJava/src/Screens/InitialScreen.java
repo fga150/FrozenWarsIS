@@ -4,7 +4,6 @@ import Application.Assets;
 import Application.Desktop;
 import Application.GameSettings;
 import Application.LaunchFrozenWars;
-
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
@@ -71,7 +70,6 @@ public class InitialScreen implements Screen{
 	    J4Click = new BoundingBox(new Vector3(219,145,0), new Vector3(246,168,0));
 	    
 	    developer = true;
-	              
 	}
 
 	

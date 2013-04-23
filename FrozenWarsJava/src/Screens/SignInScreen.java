@@ -3,12 +3,12 @@ package Screens;
 import Application.Assets;
 import Application.Desktop;
 import Application.LaunchFrozenWars;
+import Application.MyInputProcessor;
 
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -38,7 +38,6 @@ public class SignInScreen implements Screen {
 	private BoundingBox backClick;
 	private Game game;
 	private BitmapFont font;
-	private int infoPressed;
 	private String user;
 	private String email;
 	private String pass1;
@@ -51,15 +50,13 @@ public class SignInScreen implements Screen {
 	private String pass1Shown;
 	private String pass2Shown;
 	
-	private long time;
+	private MyInputProcessor proc;
 
 
 
 	public SignInScreen() {
 		instance = this;
 		this.game = LaunchFrozenWars.getGame();
-		this.infoPressed = 0;
-		this.time = System.nanoTime();
 		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);;
 		
 		this.user = this.email = this.pass1 = this.pass2 = this.pass1Shown = this.pass2Shown = this.userShown = this.emailShown = this.pass1S = this.pass2S =  "";
@@ -81,6 +78,7 @@ public class SignInScreen implements Screen {
 	    
 	    sfsClient = SmartFoxServer.getInstance();
 	    
+	    proc = (MyInputProcessor) Gdx.input.getInputProcessor();
 	}
 
 	
@@ -104,33 +102,29 @@ public class SignInScreen implements Screen {
       //detectamos si se ha tocado la pantalla
       if (Gdx.input.justTouched()){
       		guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-      		System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
+      		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 
       		//compruebo si he tocado yes 
       		if (userClick.contains(touchPoint)){
       			Gdx.input.setOnscreenKeyboardVisible(true);
-      			System.out.println("user");
-      			this.infoPressed = 1;
+      			proc.setInfoPressed(11);
       		} else if(pass1Click.contains(touchPoint)){ //compruebo si he tocado no
       			Gdx.input.setOnscreenKeyboardVisible(true);
-      			System.out.println("pass1");
-      			this.infoPressed = 3;
+      			proc.setInfoPressed(13);
       		} else if(pass2Click.contains(touchPoint)){ //compruebo si he tocado no
       			Gdx.input.setOnscreenKeyboardVisible(true);
-      			System.out.println("pass2");
-      			this.infoPressed = 4;
+      			proc.setInfoPressed(14);
       		} else if(emailClick.contains(touchPoint)){ //compruebo si he tocado no
       			Gdx.input.setOnscreenKeyboardVisible(true);
-      			System.out.println("email");
-      			this.infoPressed = 2;
+      			proc.setInfoPressed(12);
       		} else if(okClick.contains(touchPoint)){ //compruebo si he tocado no
-      			System.out.println("ok");
+      			proc.setInfoPressed(0);
       			sfsClient.register(user, email, pass1, pass2);
       		} else if(backClick.contains(touchPoint)){ //compruebo si he tocado no
+      			proc.setInfoPressed(0);
       			game.setScreen(LogSignScreen.getInstance());
-      			System.out.println("back");
       		} else{
-      			this.infoPressed = 0;
+      			proc.setInfoPressed(0);
       		}
       }
       //crear solamente un batcher por pantalla y eliminarlo cuando no se use
@@ -189,10 +183,6 @@ public class SignInScreen implements Screen {
             font.drawWrapped(batcher, pass2Shown, 450, 310, 240);
             batcher.end();	
             
-            if ( this.infoPressed !=0){
-            	this.completeMessagePc();
-            }
-            
             MultiplayerScreen.getInstance().changeToThisIfNeeded();
             ConfirmScreen.getInstance().createConfirmIfNeeded();
             AcceptScreen.getInstance().createAcceptIfNeeded();
@@ -212,48 +202,31 @@ public class SignInScreen implements Screen {
 	public void show() {	
 	}
 
-	
-	private void completeMessagePc(){ //TODO process also the characters @ and .
-		char aux = 0;
-		boolean canDelete = false;		
-		
-		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)  && ((System.nanoTime() - this.time) > 175000000)){ //We check if some key has been pressed
-			this.time = System.nanoTime();
-			  aux = ScreensKeyboard.keyPc();
-			  canDelete = true;
-		}
-
-        if (aux != 0){
-	        if (this.infoPressed == 1){
-	        	user += aux;
-	        	System.out.println("user: " + user);
-	        } else if (this.infoPressed == 2){
-	        	email += aux;
-	        	System.out.println("email: " + email);
-	        } else if (this.infoPressed == 3){
-	        	pass1 += aux;
-	        	pass1S +='$';
-	        	System.out.println("pass1: " + pass1);
-	        } else if (this.infoPressed == 4){
-	        	pass2 += aux;
-	        	pass2S +='$';
-	        	System.out.println("pass2: " + pass2);
-	        }
+	public void setMessage(char c){
+		if (proc.getInfoPressed() == 11){
+        	user += c;
+        } else if (proc.getInfoPressed() == 12){
+        	email += c;
+        } else if (proc.getInfoPressed() == 13){
+        	pass1 += c;
+        	pass1S +='$';
+        } else if (proc.getInfoPressed() == 14){
+        	pass2 += c;
+        	pass2S +='$';
         }
-
-        if (ScreensKeyboard.delete() && canDelete){
-        	if (this.infoPressed == 1 && user.length()>0){
-	        	user = (String)user.subSequence(0, user.length()-1);
-	        } else if (this.infoPressed == 2 && email.length()>0){
-	        	email = (String)email.subSequence(0, email.length()-1);
-	        } else if (this.infoPressed == 3 && pass1.length()>0){
-	        	pass1 = (String)pass1.subSequence(0, pass1.length()-1);
-	        	pass1S = (String)pass1Shown.subSequence(0, pass1Shown.length()-1);
-	        } else if (this.infoPressed == 4 && pass2.length()>0){
-	        	pass2 = (String)pass2.subSequence(0, pass2.length()-1);
-	        	pass2S = (String)pass2S.subSequence(0, pass2S.length()-1);
-	        }
-        	canDelete =false;
+	}
+	
+	public void del(){
+		if (proc.getInfoPressed() == 11 && user.length()>0){
+        	user = (String)user.subSequence(0, user.length()-1);
+        } else if (proc.getInfoPressed() == 12 && email.length()>0){
+        	email = (String)email.subSequence(0, email.length()-1);
+        } else if (proc.getInfoPressed() == 13 && pass1.length()>0){
+        	pass1 = (String)pass1.subSequence(0, pass1.length()-1);
+        	pass1S = (String)pass1Shown.subSequence(0, pass1Shown.length()-1);
+        } else if (proc.getInfoPressed() == 14 && pass2.length()>0){
+        	pass2 = (String)pass2.subSequence(0, pass2.length()-1);
+        	pass2S = (String)pass2S.subSequence(0, pass2S.length()-1);
         }
 	}
 }

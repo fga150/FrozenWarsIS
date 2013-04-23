@@ -1,21 +1,16 @@
 	package Application;
 
-import Screens.HelpScreen;
-import Screens.IndexScreen;
 import Screens.InitialScreen;
-import Screens.InviteScreen;
 import Screens.LoadScreen;
 import Screens.MultiplayerScreen;
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 
 
-public class LaunchFrozenWars extends Game implements InputProcessor {
+public class LaunchFrozenWars extends Game{
 	private static Game instance;
 	
 	public static Game getGame(){
@@ -25,10 +20,11 @@ public class LaunchFrozenWars extends Game implements InputProcessor {
 	private Screen loadScreen;
 	@Override
 	public void create() {
-		Gdx.input.setInputProcessor(this);
-		Gdx.input.setCatchBackKey(true);
-	    Gdx.input.setCatchMenuKey(true);
 		Assets.load();
+		MyInputProcessor inputProcessor = new MyInputProcessor();
+	    Gdx.input.setInputProcessor(inputProcessor);
+	    Gdx.input.setCatchBackKey(true);
+	    Gdx.input.setCatchMenuKey(true);
 	    instance = this;
 		loadScreen = new LoadScreen();
 		setScreen(loadScreen);
@@ -45,63 +41,6 @@ public class LaunchFrozenWars extends Game implements InputProcessor {
 		System.exit(0);
 	}
 
-	@Override
-	public boolean keyDown(int keycode) {
-	    if(keycode == Keys.BACK){
-	    	// Do back button handling (show pause menu?)
-	    	if(this.getScreen()==InviteScreen.getInstance()){
-	    		loadScreen = MultiplayerScreen.getInstance();
-	   			setScreen(loadScreen);
-	    	} else if(this.getScreen()==HelpScreen.getInstance()){
-	    		loadScreen = IndexScreen.getInstance();
-	    		setScreen(loadScreen);
-	   	   	} else {
-		   		setScreen(InitialScreen.getInstance());
-	   		}
-	    }
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 }

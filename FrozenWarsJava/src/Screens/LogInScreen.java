@@ -3,13 +3,13 @@ package Screens;
 import Application.Assets;
 import Application.Desktop;
 import Application.LaunchFrozenWars;
+import Application.MyInputProcessor;
 
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -36,20 +36,17 @@ public class LogInScreen implements Screen {
 	private BoundingBox backClick;
 	private Game game;
 	private BitmapFont font;
-	private int infoPressed;
 	private String user;
 	private String userShown;
 	private String pass;
 	private String passShown;	
 	private String passS;
-	private long time;
+	private MyInputProcessor proc;
 
 	
 	public LogInScreen() {
 		instance = this;
 		this.game = LaunchFrozenWars.getGame();
-		this.infoPressed = 0;
-		this.time = System.nanoTime();
 		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);;
 		
 		this.user = this.pass = this.passShown = this.passS  = "";
@@ -70,6 +67,8 @@ public class LogInScreen implements Screen {
 	    backClick = new BoundingBox(new Vector3(540,245,0), new Vector3(700,300,0)); 
 	    
 	    sfsClient = SmartFoxServer.getInstance();
+	    
+	    proc = (MyInputProcessor) Gdx.input.getInputProcessor();
 	}
 
 	@Override
@@ -95,17 +94,18 @@ public class LogInScreen implements Screen {
   		
       		if (userClick.contains(touchPoint)){ //Check if we have clicked on user's square 
       			Gdx.input.setOnscreenKeyboardVisible(true);
-      			this.infoPressed = 1;
+      			proc.setInfoPressed(1);
       		} else if(passClick.contains(touchPoint)){ //Check if we have clicked on pass's square (primary pass)
       			Gdx.input.setOnscreenKeyboardVisible(true);
-      			this.infoPressed = 2;
+      			proc.setInfoPressed(2);
       		} else if(okClick.contains(touchPoint)){ //Check if we have clicked on "ok" button 
+      			proc.setInfoPressed(0);
       			sfsClient.conectaSala(user, pass);
       		} else if(backClick.contains(touchPoint)){ //Check if we have clicked on "back" button 
+      			proc.setInfoPressed(0);
       			game.setScreen(LogSignScreen.getInstance());
-      			System.out.println("back");
       		} else{ //We haven't clicked on any component
-      			this.infoPressed = 0;
+      			proc.setInfoPressed(0);
       		}
       }
       //One batcher in each screen. We should remove it when we don't need it anymore
@@ -145,11 +145,6 @@ public class LogInScreen implements Screen {
             font.drawWrapped(batcher, userShown, 450, 435, 240);
             font.drawWrapped(batcher, passShown, 450, 365, 240);
             batcher.end();	
- 
-            if ( this.infoPressed !=0){ //We check if some info's square has been pressed
-            	this.completeMessagePc();
-            	//this.time = System.nanoTime();
-            }
             
             MultiplayerScreen.getInstance().changeToThisIfNeeded();
             ConfirmScreen.getInstance().createConfirmIfNeeded();
@@ -172,32 +167,21 @@ public class LogInScreen implements Screen {
 	}
 	
 	
-	private void completeMessagePc(){
-		char aux = 0;
-		boolean canDelete = false;
-		if(Gdx.input.isKeyPressed(Keys.ANY_KEY)  && ((System.nanoTime() - this.time) > 175000000)){ //We check if some key has been pressed
-			this.time = System.nanoTime();
-			  aux = ScreensKeyboard.keyPc();
-			  canDelete = true;
-		}
-
-        if (aux != 0){ //aux would be !=0 if a key has been pressed
-	        if (this.infoPressed == 1){ //If we are writing user's name
-	        	user += aux;    //We add the char pressed
-	        } else if (this.infoPressed == 2){  //If we are writing pass
-	        	pass += aux; //We add the char pressed
-	        	passS +='$'; 
-	        } 
-        }  
-        
-        if (ScreensKeyboard.delete()  && canDelete){ //If we have pressed delete key, we have to check what info are we editing
-        	if (this.infoPressed == 1 && user.length()>0){ 
-	        	user = (String)user.subSequence(0, user.length()-1);
-	        } else if (this.infoPressed == 2 && pass.length()>0){
-	        	pass = (String)pass.subSequence(0, pass.length()-1);
-	        	passS = (String)passS.subSequence(0, passS.length()-1);
-	        }
-        	canDelete =false;
+	public void setMessage(char c){
+		if (proc.getInfoPressed() == 1){ //If we are writing user's name
+        	user += c;    //We add the char pressed
+        } else if (proc.getInfoPressed() == 2){  //If we are writing pass
+        	pass += c; //We add the char pressed
+        	passS +='$'; 
+        } 
+	}
+	
+	public void del(){
+		if (proc.getInfoPressed() == 1 && user.length()>0){ 
+        	user = (String)user.subSequence(0, user.length()-1);
+        } else if (proc.getInfoPressed() == 2 && pass.length()>0){
+        	pass = (String)pass.subSequence(0, pass.length()-1);
+        	passS = (String)passS.subSequence(0, passS.length()-1);
         }
 	}
 }
