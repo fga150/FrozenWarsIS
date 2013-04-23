@@ -3,7 +3,6 @@ package Screens;
 import Application.Assets;
 import Application.Desktop;
 import Application.LaunchFrozenWars;
-import Application.MyInputProcessor;
 
 import Server.SmartFoxServer;
 
@@ -50,7 +49,7 @@ public class SignInScreen implements Screen {
 	private String pass1Shown;
 	private String pass2Shown;
 	
-	private MyInputProcessor proc;
+	private LaunchFrozenWars proc;
 
 
 
@@ -78,7 +77,7 @@ public class SignInScreen implements Screen {
 	    
 	    sfsClient = SmartFoxServer.getInstance();
 	    
-	    proc = (MyInputProcessor) Gdx.input.getInputProcessor();
+	    proc = (LaunchFrozenWars) Gdx.input.getInputProcessor();
 	}
 
 	

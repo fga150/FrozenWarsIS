@@ -6,7 +6,6 @@ import java.util.Vector;
 import Application.Assets;
 import Application.Desktop;
 import Application.LaunchFrozenWars;
-import Application.MyInputProcessor;
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
@@ -78,7 +77,7 @@ public class FriendsListScreen implements Screen{
     
     private String user;	
 	private String userShown;	
-	private MyInputProcessor proc;
+	private LaunchFrozenWars proc;
 	
 
     public FriendsListScreen() {
@@ -133,7 +132,7 @@ public class FriendsListScreen implements Screen{
 	    unfriendDisc[5] = new BoundingBox(new Vector3(572,189,0), new Vector3(615,226,0));
 	    unfriendDiscAll =  new BoundingBox(new Vector3(572,186,0), new Vector3(615,454,0));
 	    
-	    proc = (MyInputProcessor) Gdx.input.getInputProcessor();
+	    proc = (LaunchFrozenWars) Gdx.input.getInputProcessor();
 	}
 
 	
