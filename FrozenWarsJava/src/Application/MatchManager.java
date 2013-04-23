@@ -267,5 +267,9 @@ public class MatchManager {
 	public TypeGame getMode() {
 		return this.mode;
 	}
+
+	public long getTimeInvisible(int numPlayer) {
+		return match.getTimeInvisible(numPlayer);
+	}
 	
 }

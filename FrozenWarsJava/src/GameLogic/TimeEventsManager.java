@@ -25,6 +25,8 @@ public class TimeEventsManager{
 	
 	
 	private Match match;
+	private TimeEventsTask timeMatch;
+	private HashMap<Player,TimeEventsTask> invisibleTimerPlayers;
 	private HashMap<Player,Timer> invisiblePlayers;
 	private HashMap<Harpoon,Timer> activeHarpoonTimer;
 	
@@ -32,6 +34,7 @@ public class TimeEventsManager{
 		this.match = match;
 		this.invisiblePlayers = new HashMap<Player,Timer>();
 		this.activeHarpoonTimer = new HashMap<Harpoon,Timer>();
+		this.invisibleTimerPlayers = new HashMap<Player,TimeEventsTask>();
 	}
 	
 	
@@ -65,9 +68,10 @@ public class TimeEventsManager{
 	}
 	
 	public void invisibleEvent(Player player){
-		TimeEventsTask timerTask = new TimeEventsTask(this,player,TypeEvent.invisible);
 		Timer timer = new Timer();
 		invisiblePlayers.put(player,timer);
+		TimeEventsTask timerTask = new TimeEventsTask(this,player,TypeEvent.invisible,invisibleTime);
+		invisibleTimerPlayers.put(player,timerTask);
 		timer.scheduleTask(timerTask,invisibleTime);
 		timer.start();
 	}
@@ -76,6 +80,7 @@ public class TimeEventsManager{
 		Timer timer = invisiblePlayers.get(player);
 		timer.stop();
 		invisiblePlayers.remove(player);
+		invisibleTimerPlayers.remove(player);
 	}
 	
 	public void sinkHarpoonEvent(Harpoon harpoon,long time){
@@ -96,14 +101,17 @@ public class TimeEventsManager{
 	}
 	
 	public void endGameEvent(TypeGame type){
-		TimeEventsTask timerTask = new TimeEventsTask(this,null,TypeEvent.endGame);
+		float time = 0; 
 		Timer timer = new Timer();
-		if (type.equals(TypeGame.BattleRoyale)) timer.scheduleTask(timerTask,endGameBattleRoyalTime);
-		else if (type.equals(TypeGame.Survival)) timer.scheduleTask(timerTask,endGameSurvivalTime);
+		if (type.equals(TypeGame.BattleRoyale)) time = endGameBattleRoyalTime;
+		else if (type.equals(TypeGame.Survival)) time = endGameSurvivalTime;
+		TimeEventsTask timerTask = new TimeEventsTask(this,null,TypeEvent.endGame);
+		timer.scheduleTask(timerTask,time);
 		timer.start();
+		timeMatch = timerTask;
 	}
 	
-	public void actionPerformed(TypeEvent type, Object taskObject) {
+	public void actionPerformed(TypeEvent type, Object taskObject, TimeEventsTask timeEventsTask) {
 		if (type.equals(TypeEvent.sinkHarpoon)){
 			Harpoon harpoon = (Harpoon)taskObject;
 			Timer timer = activeHarpoonTimer.get(harpoon);
@@ -137,6 +145,19 @@ public class TimeEventsManager{
 
 	public float getSinkPenguinTime() {
 		return sinkPenguinTime;
+	}
+
+	public long getTimeMatch(){
+		return timeMatch.getEndTime();
+	}
+
+	public long getTimeInvisible(Player player) {
+		TimeEventsTask timer = invisibleTimerPlayers.get(player);
+		long time = 0;
+		try{
+			time = timer.getEndTime();
+		}catch(Exception e){}
+		return time;
 	}
 
 }

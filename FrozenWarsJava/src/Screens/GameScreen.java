@@ -49,14 +49,11 @@ public class GameScreen implements Screen{
 	private BitmapFont font3;
 	private int numPlayer;
 	private int numPlayers;
-	@SuppressWarnings("unused")
-	private int timeInvisible;
 	private boolean gameOver;
 
 	
 	public GameScreen(MatchManager manager){
 		this.manager = manager;
-		this.timeInvisible = 1100;
 		numPlayers = manager.getNumPlayers();
 		name = manager.getMyNamePlayer();
 		numPlayer = manager.getMyIdPlayer();
@@ -366,15 +363,11 @@ public class GameScreen implements Screen{
 		}
 		if (invisibleUpgrade){
 			   batcher.draw(Assets.getInvisibleUpgradeMaxSize(),20,5.5f,1,1);
-			  /* if (timeInvisible>0){
-			    timeInvisible-=delta*60;
-			   
-			   }*/
-			  // if (timeInvisible<400)printText(Integer.toString(timeInvisible/100),0.75f,Color.RED,20.15f,5.85f);
-			   //else printText(Integer.toString(timeInvisible/100),0.75f,Color.BLACK,20.15f,5.85f);
+			   long timeInvisible = manager.getTimeInvisible(numPlayer) - System.currentTimeMillis();
+			   if (timeInvisible<4000)printText(Long.toString(timeInvisible/1000),0.75f,Color.RED,20.15f,5.85f);
+			   else printText(Long.toString(timeInvisible/1000),0.75f,Color.BLACK,20.15f,5.85f);
 			  }
 		else{
-			  // timeInvisible=1100;
 			   batcher.setColor(new Color(50,50,50,0.25f));
 			   batcher.draw(Assets.getInvisibleUpgradeMaxSize(),20,5.5f,1,1);
 			   batcher.setColor(Color.WHITE);

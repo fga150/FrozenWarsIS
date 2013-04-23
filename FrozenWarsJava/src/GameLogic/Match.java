@@ -448,10 +448,10 @@ public class Match {
 		boolean invisible = hitted.isInvisible();
 		
 		if (invisible){
-		timeEventsManager.removeInvisibleTimer(hitted);
-		if(hitter.isInvisible()) timeEventsManager.removeInvisibleTimer(hitter);
-		timeEventsManager.invisibleEvent(hitter);
-		hitter.setInvisible(true);
+			timeEventsManager.removeInvisibleTimer(hitted);
+			if(hitter.isInvisible()) timeEventsManager.removeInvisibleTimer(hitter);
+			timeEventsManager.invisibleEvent(hitter);
+			hitter.setInvisible(true);
 		}
 		
 		if (maxHarpoonsAllow<=5)
@@ -884,6 +884,11 @@ public class Match {
 			
 		}
 		return teamId;
+	}
+
+	public long getTimeInvisible(int numPlayer) {
+		Player player = getPlayer(numPlayer);
+		return timeEventsManager.getTimeInvisible(player);
 	}
 
 	
