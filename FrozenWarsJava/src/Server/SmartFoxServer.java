@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Application.GameSettings;
+import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
 import Screens.AcceptScreen;
@@ -16,6 +17,7 @@ import Screens.FriendsListScreen;
 import Screens.InviteScreen;
 import Screens.MultiplayerScreen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector3;
 import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
@@ -174,6 +176,8 @@ public class SmartFoxServer implements IEventListener {
 					userOutOfQueue(response);
 				else if(cmd.equals("NamesGame"))
 					NamesGame(response);
+				else if(cmd.equals("UpdateFriendList"))
+					getMyFriendsRequest();	
 			}
 
 		});
@@ -186,7 +190,7 @@ public class SmartFoxServer implements IEventListener {
 			//InetAddress address = InetAddress.getByName(new URL("http://frozenwarsthegame.no-ip.org").getHost());
 			
 			ip = address.getHostAddress();
-			//ip="192.168.1.38";
+			//ip="127.0.0.1";
 		} catch (Exception e){
 			
 		}
@@ -611,8 +615,11 @@ public class SmartFoxServer implements IEventListener {
 	}
 
 	public void getMyFriendsRequest() {
+		Game aux=LaunchFrozenWars.getGame();
+		if (aux.getScreen()==FriendsListScreen.getInstance()){
 		 ExtensionRequest request = new ExtensionRequest("GetFriends",null);
 		 sfsClient.send(request);
+		}
 	}
 	
 	private void getMyFriendsRequestRes(ISFSObject params) {
@@ -620,10 +627,9 @@ public class SmartFoxServer implements IEventListener {
 		Vector<String> disconnectedFriends = new Vector<String>();
 		Vector<String> playingFriends = new Vector<String>();
 		
-		//TODO GONZALO. PLAYING AND CONNECTED FRIENDS ARE SAVED SWITCHING THE NAMES OF THE ARRAYS.
 		//connected friends
 		for(int i= 0;i<params.getSFSArray("ConnectedFriends").size();i++){
-			playingFriends.add((String) params.getSFSArray("ConnectedFriends").getElementAt(i));
+			connectedFriends.add((String) params.getSFSArray("ConnectedFriends").getElementAt(i));
 		}
 		//disconnected friends
 		for(int i= 0;i<params.getSFSArray("DisconnectedFriends").size();i++){
@@ -631,7 +637,7 @@ public class SmartFoxServer implements IEventListener {
 		}
 		//friends gaming
 		for(int i= 0;i<params.getSFSArray("PlayingFriends").size();i++){
-			connectedFriends.add((String)params.getSFSArray("PlayingFriends").getElementAt(i));
+			playingFriends.add((String)params.getSFSArray("PlayingFriends").getElementAt(i));
 		}
 		FriendsListScreen.getInstance().updateFriends(playingFriends, connectedFriends, disconnectedFriends);
 	}
@@ -668,7 +674,6 @@ public class SmartFoxServer implements IEventListener {
 		disconnect();
 		instance = null;
 	}
-
 	
 	
 }

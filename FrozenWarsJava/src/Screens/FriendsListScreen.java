@@ -97,8 +97,6 @@ public class FriendsListScreen implements Screen{
 	    
 	    drawConnected = new Vector<ConnectedInfo>();
 	    
-	    updateFriends();
-	    
 	    user = userShown = "";
 	    
 	    connectedScroll = 0;

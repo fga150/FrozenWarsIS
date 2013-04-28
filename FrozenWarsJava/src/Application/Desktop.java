@@ -44,8 +44,8 @@ public class Desktop {
 	}
 	
 	public static void main(String[] args) {
-/*
-		Settings settings = new Settings();
+
+/*		Settings settings = new Settings();
         settings.maxHeight=2048;
         settings.maxWidth=2048;        
 		TexturePacker2.process(settings, "./image", "./data","pack");

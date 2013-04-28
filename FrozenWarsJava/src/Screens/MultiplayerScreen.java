@@ -349,6 +349,7 @@ public class MultiplayerScreen implements Screen{
       			sfsClient.groupExitRequest(gameAdmin);
       		} else if (friendsListClick.contains(touchPoint)){
       			this.game.setScreen(new FriendsListScreen());
+      			sfsClient.getMyFriendsRequest();
       		}
 		}
 		
