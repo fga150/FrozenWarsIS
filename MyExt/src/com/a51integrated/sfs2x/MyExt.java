@@ -1,5 +1,8 @@
 package com.a51integrated.sfs2x;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -152,7 +155,21 @@ public class MyExt extends SFSExtension {
 				rtnNames.putInt("n", n);
 				Iterator<User> it=room.getPlayersList().iterator();
 				while (it.hasNext()){ // send it to all users of the room
-					this.send("NamesGame",rtnNames, it.next());
+					User user=it.next();
+					this.send("NamesGame",rtnNames, user);
+					Connection connection=null;
+					try {
+						connection = this.getParentZone().getDBManager().getConnection();// catch the manager of the db
+						PreparedStatement stmt = connection.prepareStatement("SELECT friend FROM friends WHERE name=? AND status=?");
+					    stmt.setString(1, user.getName());
+					    stmt.setString(2, "c");
+						ResultSet res= stmt.executeQuery(); // send a query to know all friends with the mode said
+			        	while (res.next()) {
+			        		if (users.get(res.getString(1))!=null)
+			        			this.send("UpdateFriendList", rtn, users.get(res.getString(1)));
+			        	}
+			        	connection.close();
+					}catch(Exception e){}
 				}
 			return room;
 		} catch (SFSCreateRoomException e) {

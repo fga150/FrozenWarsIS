@@ -1,6 +1,9 @@
 package com.a51integrated.sfs2x;
 
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -343,15 +346,21 @@ public class Disconnect extends BaseServerEventHandler {
 			}
 		}catch(Exception e){};
 	}
-		/*Set<String> names= users.keySet(); //TODO tell friends he was disconected
-		Iterator<String> it=names.iterator();
-		if (it.hasNext()){				// here we tell to another user the disconection of this player (TO DO "tell" friends got disconnected)
-			 String otherplayer=it.next();
-			 User oplayer=users.get(otherplayer);
-			 ISFSObject rtn = new SFSObject();
-			 rtn.putUtfString("res", player.getName()+" got disconnected");
-			 parentEx.send("meter1", rtn, oplayer);
-		}*/
+		Connection connection=null;
+		try {
+			connection = getParentExtension().getParentZone().getDBManager().getConnection();// catch the manager of the db
+			PreparedStatement stmt = connection.prepareStatement("SELECT friend FROM friends WHERE name=? AND status=?");
+		    stmt.setString(1, player.getName());
+		    stmt.setString(2, "c");
+			ResultSet res= stmt.executeQuery(); // send a query to know all friends with the mode said
+			ISFSObject rtn = new SFSObject();
+        	while (res.next()) {
+        		if (users.get(res.getString(1))!=null)
+        			parentEx.send("UpdateFriendList", rtn, users.get(res.getString(1)));
+        	}
+        	connection.close();
+		}catch(Exception e){}
+
 		parentEx.setUsers(users);
 
 	}

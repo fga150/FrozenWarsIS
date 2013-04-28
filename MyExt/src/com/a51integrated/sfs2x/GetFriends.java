@@ -31,7 +31,7 @@ public class GetFriends  extends BaseClientRequestHandler {
 			ResultSet res= stmt.executeQuery(); // send a query to know all friends he has
 	    	while (res.next()) {
 	    		if (users.get(res.getString(1))!=null){//si esta conectado
-	    			if(users.get(res.getString(1)).getLastJoinedRoom().equals("The Lobby")){//connected but not playing
+	    			if(users.get(res.getString(1)).getJoinedRooms().iterator().next().getName().equals("The Lobby")){//connected but not playing
 	    				connectedFriends.addUtfString(res.getString(1));
 	    			}else{//connected and playing
 	    				playingFriends.addUtfString(res.getString(1));
