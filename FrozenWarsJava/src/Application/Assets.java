@@ -109,14 +109,15 @@ public class Assets {
 	    public static AtlasRegion textSquare;   
 	    
 	    public static AtlasRegion externalPlayerButton;
-	    public static AtlasRegion externalPlayerText;
+	    public static AtlasRegion privateGameText;
 	    public static AtlasRegion externalPlayerTick;
 	    
 	    public static AtlasRegion inviteButton;
 	    public static AtlasRegion playButton;
 	    public static AtlasRegion backButton;
-	    public static AtlasRegion leaveGroupButton;
-	    
+	    public static AtlasRegion leaveGroupButton;	    
+	    public static AtlasRegion exitQueueButton;
+  
 	    public static AtlasRegion map;
 	    public static AtlasRegion multiplayerButtonPressed;
 	    public static AtlasRegion inviteFriendsButtonUnpressed;
@@ -364,13 +365,14 @@ public class Assets {
 		    textSquare = atlas.findRegion("textSquare");
 		        
 		    externalPlayerButton = atlas.findRegion("ExternalPlayersButton");
-		    externalPlayerText = atlas.findRegion("ExternalPlayersText");
+		    privateGameText = atlas.findRegion("PrivateGameText");
 		    externalPlayerTick = atlas.findRegion("TickExternalPlayers");
 		    
 		    inviteButton = atlas.findRegion("InviteButton");
 		    playButton = atlas.findRegion("PlayButton");
 		    backButton = atlas.findRegion("BackButton");
 		    leaveGroupButton = atlas.findRegion("LeaveGroupButton");
+		    exitQueueButton = atlas.findRegion("ExitQueue");
 		    
 		    map = atlas.findRegion("Map");
 		    multiplayerButtonPressed = atlas.findRegion("MultiplayerButtonPressed");
