@@ -96,6 +96,7 @@ public class FriendsListScreen implements Screen{
 	    disconnectedFriends = new Vector<String>();
 	    
 	    drawConnected = new Vector<ConnectedInfo>();
+	    updateFriends();
 	    
 	    user = userShown = "";
 	    
@@ -217,6 +218,9 @@ public class FriendsListScreen implements Screen{
             batcher.draw(Assets.multiplayerButtonUnpressed, 27, 540);
             batcher.draw(Assets.inviteFriendsButtonPressed, 521, 540);
             
+            batcher.draw(Assets.statusCancel, 610, 20);
+            font.drawWrapped(batcher, "Click there to delete a friend", 650,50, 360);
+            
             drawConnected();
             drawDisconnected(); 
             drawInfo();
@@ -224,9 +228,13 @@ public class FriendsListScreen implements Screen{
             batcher.draw(Assets.addFriend, 290, 90); 
             
             userShown = user;
-            if (font.getBounds(userShown).width > 260){
+            if (user.equals("") && proc.getInfoPressed() != 21){
+            	font.drawWrapped(batcher, "Add friends here", 320,140, 260);
+            } else {
+            
+            if (font.getBounds(userShown).width > 250){
 				int j = 0;
-				while (font.getBounds(userShown.substring(j, userShown.length())).width > 260) j++;
+				while (font.getBounds(userShown.substring(j, userShown.length())).width > 250) j++;
 					userShown = userShown.substring(j, userShown.length());
 			}
 
@@ -235,6 +243,7 @@ public class FriendsListScreen implements Screen{
             else { //Draw with Cursor
             	if (System.currentTimeMillis()%1000 > 500) font.drawWrapped(batcher, userShown+"|", 320,140, 260);
             	else font.drawWrapped(batcher, userShown, 320,140, 260);
+            }
             }
  
             batcher.end();

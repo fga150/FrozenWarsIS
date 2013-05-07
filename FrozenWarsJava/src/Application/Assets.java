@@ -145,6 +145,7 @@ public class Assets {
 	    //Componentes de la pantalla de creacion de partida friendsList
 	    public static AtlasRegion multiplayerButtonUnpressed;
 	    public static AtlasRegion inviteFriendsButtonPressed;
+	    public static AtlasRegion noFriendsOnText;
 	    
 	    public static AtlasRegion listOfPeopleOn;
 	    public static AtlasRegion listOfPeopleOff;
@@ -404,6 +405,8 @@ public class Assets {
 		    //Componentes de la pantalla de friendsList		    
 		    listOfPeopleOn= atlas.findRegion("ListOfPeopleOn");
 		    listOfPeopleOff = atlas.findRegion("ListOfPeopleOff");
+		    noFriendsOnText = atlas.findRegion("noFriendsOnText");
+		    
 		    
 		    addFriend = atlas.findRegion("AddFriend");
 		    

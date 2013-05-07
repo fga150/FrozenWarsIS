@@ -39,6 +39,7 @@ public class InviteScreen implements Screen{
 	private MultiplayerScreen multiplayerScreen;
     
     private BoundingBox inviteButtonClick;
+    private BoundingBox invitePlayersButtonClick;
     private BoundingBox backButtonClick;
     
     private BoundingBox scrollDownNotInvitedClick;
@@ -55,6 +56,8 @@ public class InviteScreen implements Screen{
     private Vector<String> invited;
     private int notInvitedScroll;
 	private int invitedScroll;
+	
+	private boolean noFriendsOn;
     
 	public void setNotInvited(Vector<String> friends){
 		notInvited = friends;
@@ -80,9 +83,9 @@ public class InviteScreen implements Screen{
 	    
 	    notInvitedScroll = 0;
 	    invitedScroll = 0;
-	    
-	 
+
 	    inviteButtonClick = new BoundingBox(new Vector3(260,50,0), new Vector3(500,100,0));
+	    invitePlayersButtonClick = new BoundingBox(new Vector3(400, 160,0), new Vector3(640, 200,0));
 	    backButtonClick = new BoundingBox(new Vector3(540,45,0), new Vector3(790,110,0));
 	    
 	    scrollDownNotInvitedClick = new BoundingBox(new Vector3(430,185,0), new Vector3(485,220,0));
@@ -129,30 +132,48 @@ public class InviteScreen implements Screen{
 
 	@Override
 	public void render(float arg0) {
+		
+		if(this.invited.isEmpty() && this.notInvited.isEmpty())
+			this.noFriendsOn = true;
+		else 
+			this.noFriendsOn = false;
+		
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
-			if (scrollDownNotInvitedClick.contains(touchPoint)){
-      			if (notInvitedScroll < notInvited.size() - 5) notInvitedScroll++;
-      		} else if (scrollUpNotInvitedClick.contains(touchPoint)){
-      			if (notInvitedScroll != 0) notInvitedScroll--;     	
-			} if (scrollDownInvitedClick.contains(touchPoint)){
-      			if (invitedScroll < invited.size() - 5) invitedScroll++;
-      		} else if (scrollUpInvitedClick.contains(touchPoint)){
-      			if (invitedScroll != 0) invitedScroll--;     	
-			} else if (backButtonClick.contains(touchPoint)){
-      			game.setScreen(multiplayerScreen);
-      		} else if (inviteButtonClick.contains(touchPoint)){
-      			for (int i = 0; i < invited.size(); i++) {
-      				sfsClient.inviteRequest(invited.elementAt(i));
-      			}
-      			game.setScreen(multiplayerScreen);
-      		} else if (moveInvited.contains(touchPoint)){
-      			moveToUninvite();
-      		} else if (moveNotInvited.contains(touchPoint)){
-      			moveToInvite();
-      		} 
+						
+			if (this.noFriendsOn){
+				if (invitePlayersButtonClick.contains(touchPoint)){
+	      			game.setScreen(FriendsListScreen.getInstance());
+	      		} else if (backButtonClick.contains(touchPoint)){
+	      			game.setScreen(multiplayerScreen);
+	      		} 
+			} else {
+			
+				//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
+				if (scrollDownNotInvitedClick.contains(touchPoint)){
+	      			if (notInvitedScroll < notInvited.size() - 5) notInvitedScroll++;
+	      		} else if (scrollUpNotInvitedClick.contains(touchPoint)){
+	      			if (notInvitedScroll != 0) notInvitedScroll--;     	
+				} if (scrollDownInvitedClick.contains(touchPoint)){
+	      			if (invitedScroll < invited.size() - 5) invitedScroll++;
+	      		} else if (scrollUpInvitedClick.contains(touchPoint)){
+	      			if (invitedScroll != 0) invitedScroll--;     	
+				} else if (backButtonClick.contains(touchPoint)){
+	      			game.setScreen(multiplayerScreen);
+	      		} else if (inviteButtonClick.contains(touchPoint)){
+	      			for (int i = 0; i < invited.size(); i++) {
+	      				sfsClient.inviteRequest(invited.elementAt(i));
+	      			}
+	      			game.setScreen(multiplayerScreen);
+	      		} else if (moveInvited.contains(touchPoint)){
+	      			moveToUninvite();
+	      		} else if (moveNotInvited.contains(touchPoint)){
+	      			moveToInvite();
+	      		} 
+			}
+
+
 			return;
 		}
 		//crear solamente un batcher por pantalla y eliminarlo cuando no se use
@@ -174,13 +195,19 @@ public class InviteScreen implements Screen{
             //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();
-            batcher.draw(Assets.inviteGameTitle, 320, 540);          
             
-            batcher.draw(Assets.inviteButton, 250,60); 
+            if (this.noFriendsOn){
+            	 batcher.draw(Assets.noFriendsOnText, 0, 0);     	
+            } else{
+                batcher.draw(Assets.inviteGameTitle, 320, 540);             
+                batcher.draw(Assets.inviteButton, 250,60); 
+                              
+                drawInvited();
+                drawNotInvited();
+            }
+
             batcher.draw(Assets.backButton, 540,60); 
-           
-            drawInvited();
-            drawNotInvited();
+
             
             batcher.end();
             
