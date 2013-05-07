@@ -67,6 +67,11 @@ public class LaunchFrozenWars extends Game implements InputProcessor{
 			else if (infoPressed == 11 || infoPressed == 12 || infoPressed == 13 || infoPressed == 14)
 				SignInScreen.getInstance().del();
 			else if (infoPressed == 21) FriendsListScreen.getInstance().del();
+		} else if (Integer.valueOf(key)==13){ 
+			if (infoPressed == 1 || infoPressed == 2) LogInScreen.getInstance().enter();
+			else if (infoPressed == 11 || infoPressed == 12 || infoPressed == 13 || infoPressed == 14)
+				SignInScreen.getInstance().enter();
+			else if (infoPressed == 21) FriendsListScreen.getInstance().enter();
 		} else {
 			if (infoPressed == 1 || infoPressed == 2) LogInScreen.getInstance().setMessage(key);
 			else if (infoPressed == 11 || infoPressed == 12 || infoPressed == 13 || infoPressed == 14)

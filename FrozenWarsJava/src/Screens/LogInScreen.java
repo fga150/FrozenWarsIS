@@ -141,8 +141,22 @@ public class LogInScreen implements Screen {
 					passShown = passShown.substring(j, passShown.length());
 			}
             
-            font.drawWrapped(batcher, userShown, 450, 435, 240);
-            font.drawWrapped(batcher, passShown, 450, 375, 240);
+            
+            if (proc.getInfoPressed() != 1) font.drawWrapped(batcher, userShown, 450, 435, 240);
+            else { //Draw with Cursor
+            	if (System.currentTimeMillis()%1000 > 500) font.drawWrapped(batcher, userShown+"|", 450, 435, 240);
+            	else font.drawWrapped(batcher, userShown, 450, 435, 240);
+            }
+            
+            if (proc.getInfoPressed() != 2) font.drawWrapped(batcher, passShown, 450, 375, 240);
+            else { //Draw with Cursor
+            	if (System.currentTimeMillis()%1000 > 500) {
+            		font.drawWrapped(batcher, passShown, 450, 375, 240);
+            		font.draw(batcher, "|", 450+font.getBounds(passShown).width, 368);
+            	}
+            	else font.drawWrapped(batcher, passShown, 450, 375, 240);
+            }
+            
             batcher.end();	
             
             MultiplayerScreen.getInstance().changeToThisIfNeeded();
@@ -181,6 +195,13 @@ public class LogInScreen implements Screen {
         } else if (proc.getInfoPressed() == 2 && pass.length()>0){
         	pass = (String)pass.subSequence(0, pass.length()-1);
         	passS = (String)passS.subSequence(0, passS.length()-1);
+        }
+	}
+	
+	public void enter(){
+		if (proc.getInfoPressed() == 1 || proc.getInfoPressed() == 2){
+			proc.setInfoPressed(0);
+  			sfsClient.conectaSala(user, pass);
         }
 	}
 }

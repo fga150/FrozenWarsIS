@@ -176,10 +176,36 @@ public class SignInScreen implements Screen {
 			}
             
             
-            font.drawWrapped(batcher, userShown, 450, 500, 240);
-            font.drawWrapped(batcher, emailShown, 450, 440, 240);
-            font.drawWrapped(batcher, pass1Shown, 450, 383, 240);
-            font.drawWrapped(batcher, pass2Shown, 450, 318, 240);
+            if (proc.getInfoPressed() != 11) font.drawWrapped(batcher, userShown, 450, 500, 240);
+            else { //Draw with Cursor
+            	if (System.currentTimeMillis()%1000 > 500) font.drawWrapped(batcher, userShown+"|", 450, 500, 240);
+            	else font.drawWrapped(batcher, userShown, 450, 500, 240);
+            }
+            
+            if (proc.getInfoPressed() != 12) font.drawWrapped(batcher, emailShown, 450, 440, 240);
+            else { //Draw with Cursor
+            	if (System.currentTimeMillis()%1000 > 500) font.drawWrapped(batcher, emailShown+"|", 450, 440, 240);
+            	else font.drawWrapped(batcher, emailShown, 450, 440, 240);
+            }
+            
+            if (proc.getInfoPressed() != 13) font.drawWrapped(batcher, pass1Shown, 450, 383, 240);
+            else { //Draw with Cursor
+            	if (System.currentTimeMillis()%1000 > 500) {
+            		font.drawWrapped(batcher, pass1Shown, 450, 383, 240);
+            		font.draw(batcher, "|", 450+font.getBounds(pass1Shown).width, 376);
+            	}
+            	else font.drawWrapped(batcher, pass1Shown, 450, 383, 240);
+            }
+            
+            if (proc.getInfoPressed() != 14) font.drawWrapped(batcher, pass2Shown, 450, 318, 240);
+            else { //Draw with Cursor
+            	if (System.currentTimeMillis()%1000 > 500) {
+            		font.drawWrapped(batcher, pass2Shown, 450, 318, 240);
+            		font.draw(batcher, "|", 450+font.getBounds(pass2Shown).width, 311);
+            	}
+            	else font.drawWrapped(batcher, pass2Shown, 450, 318, 240);
+            }
+            
             batcher.end();	
             
             MultiplayerScreen.getInstance().changeToThisIfNeeded();
@@ -226,6 +252,13 @@ public class SignInScreen implements Screen {
         } else if (proc.getInfoPressed() == 14 && pass2.length()>0){
         	pass2 = (String)pass2.subSequence(0, pass2.length()-1);
         	pass2S = (String)pass2S.subSequence(0, pass2S.length()-1);
+        }
+	}
+	
+	public void enter(){
+		if (proc.getInfoPressed() == 11 || proc.getInfoPressed() == 12 || proc.getInfoPressed() == 13 || proc.getInfoPressed() == 14){
+			proc.setInfoPressed(0);
+  			sfsClient.register(user, email, pass1, pass2);
         }
 	}
 }

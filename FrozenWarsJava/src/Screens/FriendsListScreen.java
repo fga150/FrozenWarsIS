@@ -231,7 +231,11 @@ public class FriendsListScreen implements Screen{
 			}
 
             
-            font.drawWrapped(batcher, userShown, 320,140, 260);
+            if (proc.getInfoPressed() != 21) font.drawWrapped(batcher, userShown, 320,140, 260);
+            else { //Draw with Cursor
+            	if (System.currentTimeMillis()%1000 > 500) font.drawWrapped(batcher, userShown+"|", 320,140, 260);
+            	else font.drawWrapped(batcher, userShown, 320,140, 260);
+            }
  
             batcher.end();
             
@@ -248,6 +252,13 @@ public class FriendsListScreen implements Screen{
 		if (proc.getInfoPressed() == 21 && user.length()>0){
 	        user = (String)user.subSequence(0, user.length()-1);    
         }
+	}
+	
+	public void enter(){
+		if (proc.getInfoPressed() == 21) {
+			proc.setInfoPressed(0);
+  			SmartFoxServer.getInstance().sendFriendRequest(user);
+		}
 	}
 	
 	public void updateFriends(){

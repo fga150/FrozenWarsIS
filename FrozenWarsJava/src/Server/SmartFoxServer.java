@@ -331,21 +331,21 @@ public class SmartFoxServer implements IEventListener {
 		MultiplayerScreen.getInstance().setEmpiezaPartida(true);
 	} 
 
-	public void insertInQueuesRequest(Vector<String> names, boolean externalPlayers){
+	public void insertInQueuesRequest(Vector<String> names, boolean privateGame){
 		if(names.size()==1){		  //El que lanza la partida debe estar en la posicion 0 del vector.
 			  SFSObject params = new SFSObject();
 			  params.putInt("mode",MultiplayerScreen.getInstance().getGameMode());  
 			  ExtensionRequest request2 = new ExtensionRequest("meter1",params);
 			  sfsClient.send(request2);
 		}
-		else if(names.size()==2 && externalPlayers==true){
+		else if(names.size()==2 && !privateGame){
 			  String friend=names.get(1);
 			  SFSObject params = new SFSObject();
 			  params.putUtfString("pfriend1",friend);
 			  ExtensionRequest request2 = new ExtensionRequest("meter2",params);
 			  sfsClient.send(request2);
 		}
-		else if(names.size()==3 && externalPlayers==true){
+		else if(names.size()==3 && !privateGame){
 			  String friend1=names.get(1);
 			  String friend2=names.get(2);
 			  SFSObject params = new SFSObject();
@@ -354,7 +354,7 @@ public class SmartFoxServer implements IEventListener {
 			  ExtensionRequest request2 = new ExtensionRequest("meter3",params);
 			  sfsClient.send(request2);
 		}
-		else if(names.size()==4 || externalPlayers==false){
+		else if(names.size()==4 || privateGame){
 			String friend1;
 			String friend2;
 			String friend3;
@@ -457,7 +457,7 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void modExternalPlayersResponse(ISFSObject response){
 		Boolean external = response.getBool("externalPlayers");
-		MultiplayerScreen.getInstance().setExternalPlayers(external);
+		MultiplayerScreen.getInstance().setPrivateGame(external);
 	}
 	
 	public void gameFullResponse(ISFSObject response) {

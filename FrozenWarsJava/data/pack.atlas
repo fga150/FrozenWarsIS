@@ -199,6 +199,13 @@ Pingu
   orig: 100, 120
   offset: 0, 0
   index: -1
+PrivateGameText
+  rotate: false
+  xy: 489, 5
+  size: 190, 25
+  orig: 190, 25
+  offset: 0, 0
+  index: -1
 CajaMapas
   rotate: false
   xy: 1748, 1400
@@ -213,30 +220,30 @@ InviteListText
   orig: 200, 55
   offset: 0, 0
   index: -1
-BackButton
+ExitQueue
   rotate: false
-  xy: 1748, 1300
-  size: 240, 41
-  orig: 240, 41
+  xy: 1748, 1298
+  size: 239, 43
+  orig: 239, 43
   offset: 0, 0
   index: -1
-InviteButton
+BackButton
   rotate: false
-  xy: 1748, 1257
+  xy: 1748, 1255
   size: 240, 41
   orig: 240, 41
   offset: 0, 0
   index: -1
 MapLeftArrow
   rotate: false
-  xy: 1982, 1170
+  xy: 1982, 1168
   size: 65, 85
   orig: 65, 85
   offset: 0, 0
   index: -1
 MapRightArrow
   rotate: false
-  xy: 1982, 1083
+  xy: 1982, 1081
   size: 65, 85
   orig: 65, 85
   offset: 0, 0
@@ -264,7 +271,7 @@ deadIconBlue
   index: -1
 deadIconGreen
   rotate: false
-  xy: 1982, 1031
+  xy: 1982, 1029
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
@@ -285,7 +292,7 @@ deadIconYellow
   index: -1
 iconoJugadorAmarillo
   rotate: false
-  xy: 1982, 979
+  xy: 1982, 977
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
@@ -295,6 +302,13 @@ iconoJugadorAzul
   xy: 1961, 1719
   size: 50, 50
   orig: 50, 50
+  offset: 0, 0
+  index: -1
+ArponParaBomba
+  rotate: false
+  xy: 1982, 943
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 StatusTick
@@ -430,13 +444,6 @@ J2
   orig: 27, 25
   offset: 0, 0
   index: -1
-ArponParaBomba
-  rotate: false
-  xy: 1982, 945
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
 MejoraAndaRapido
   rotate: false
   xy: 1961, 1685
@@ -495,7 +502,7 @@ TickExternalPlayers
   index: -1
 J3
   rotate: false
-  xy: 489, 5
+  xy: 681, 5
   size: 27, 25
   orig: 27, 25
   offset: 0, 0
@@ -509,7 +516,7 @@ J4
   index: -1
 MejoraAndaRapidoMaxSize
   rotate: false
-  xy: 1990, 1341
+  xy: 1989, 1341
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
@@ -792,9 +799,16 @@ PlayersText
   orig: 150, 55
   offset: 0, 0
   index: -1
-PlayButton
+InviteButton
   rotate: false
   xy: 1786, 326
+  size: 240, 41
+  orig: 240, 41
+  offset: 0, 0
+  index: -1
+PlayButton
+  rotate: false
+  xy: 1786, 283
   size: 240, 41
   orig: 240, 41
   offset: 0, 0
@@ -822,7 +836,7 @@ Water1SideOpenSouth
   index: -1
 Water1SideOpenWest
   rotate: false
-  xy: 1786, 275
+  xy: 1786, 232
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
@@ -864,14 +878,14 @@ Water2SideOpenCornerSE
   index: -1
 Water2SideOpenCornerWS
   rotate: false
-  xy: 1786, 224
+  xy: 1786, 181
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
 Water3SideEastOpen
   rotate: false
-  xy: 1837, 275
+  xy: 1837, 232
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
@@ -913,21 +927,21 @@ barrelWithFissure
   index: -1
 barril
   rotate: false
-  xy: 1786, 173
+  xy: 1786, 130
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
 casilla
   rotate: false
-  xy: 1837, 224
+  xy: 1837, 181
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
 fissureCenter
   rotate: false
-  xy: 1888, 275
+  xy: 1888, 232
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
@@ -955,14 +969,14 @@ fissureSideY
   index: -1
 iglus
   rotate: false
-  xy: 1786, 122
+  xy: 1786, 79
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
 sunkenObject
   rotate: false
-  xy: 1837, 173
+  xy: 1837, 130
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
