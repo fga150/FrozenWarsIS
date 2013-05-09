@@ -21,6 +21,14 @@ import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 			while (it.hasNext()){ // send it to all users of the room
 				parentEx.send("putHarpoon",params, it.next());
 			}
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+			}
+			Iterator<User> it2=room.getPlayersList().iterator();
+			while (it2.hasNext()){ // send it to all users of the room
+				parentEx.send("exploteHarpoon",params, it2.next());
+			}
 		}
 	
 	
