@@ -145,6 +145,7 @@ public class InviteScreen implements Screen{
 			if (this.noFriendsOn){
 				if (invitePlayersButtonClick.contains(touchPoint)){
 	      			game.setScreen(FriendsListScreen.getInstance());
+	      			sfsClient.getMyFriendsRequest();
 	      		} else if (backButtonClick.contains(touchPoint)){
 	      			game.setScreen(multiplayerScreen);
 	      		} 

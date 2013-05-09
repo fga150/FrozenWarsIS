@@ -154,6 +154,8 @@ public class SmartFoxServer implements IEventListener {
 					DisconectedOnGame(response);
 				else if (cmd.equals("putHarpoon"))
 					getHarpoon(response);
+				else if (cmd.equals("exploteHarpoon"))
+					exploteHarpoon(response);
 				else if (cmd.equals("getTime"))
 					getTimeResponse(response);
 				else if (cmd.equals("dbRegister"))
@@ -541,6 +543,17 @@ public class SmartFoxServer implements IEventListener {
 		int range=response.getInt("range");
 		int playerId = response.getInt("playerId"); 
 		manager.putHarpoonEvent(x,y,range,playerId,time+delayTime);
+	}
+	
+	private void exploteHarpoon(ISFSObject response) {
+		
+		// TODO GameLogic explote harpoon
+		
+		int x=response.getInt("x");
+		int y=response.getInt("y");	//arguments to know what harpoon is
+		int range=response.getInt("range");
+		int playerId = response.getInt("playerId"); 
+		
 	}
 	
 	public void beFriends(ISFSObject params){

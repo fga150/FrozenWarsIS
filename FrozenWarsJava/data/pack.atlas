@@ -1115,6 +1115,13 @@ pack5.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+noFriendsOnText
+  rotate: false
+  xy: 1, 632
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
 secondBack
   rotate: false
   xy: 1, 1
