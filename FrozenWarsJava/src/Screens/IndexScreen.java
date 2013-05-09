@@ -2,6 +2,7 @@
 package Screens;
 
 import Application.Assets;
+import Application.Desktop;
 import Application.LaunchFrozenWars;
 
 import com.badlogic.gdx.Game;
@@ -15,7 +16,12 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class IndexScreen implements Screen{
 
-
+	private static IndexScreen instance; 
+	public static IndexScreen getInstance() {
+		if (instance == null) instance = new IndexScreen();
+		return instance;
+	}
+	
 	    /** The gui cam. */
 	private OrthographicCamera guiCam;
 	
@@ -36,6 +42,7 @@ public class IndexScreen implements Screen{
     int window;
 
     public IndexScreen() {
+    	instance=this;
 		this.game = LaunchFrozenWars.getGame();
 		this.initialScreen = InitialScreen.getInstance();
 
@@ -143,6 +150,7 @@ public class IndexScreen implements Screen{
             batcher.end();
 
             ConfirmScreen.getInstance().createConfirmIfNeeded();
+            AcceptScreen.getInstance().createAcceptIfNeeded();
 
 	}
 
@@ -150,7 +158,7 @@ public class IndexScreen implements Screen{
 
 	@Override
 	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub
+		if (arg0!=1024 || arg1!=630) Desktop.resetScreenSize();
 		
 	}
 

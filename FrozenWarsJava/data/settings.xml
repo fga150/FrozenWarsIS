@@ -2,8 +2,8 @@
 	<Sound>off</Sound>
 	<Vibration>off</Vibration>
 	<Userdata>
-		<Username></Username>
-		<Userpassword></Userpassword>
+		<Username>user1</Username>
+		<Userpassword>user1</Userpassword>
 	</Userdata>
 	<ConfirmedExit>on</ConfirmedExit>
 </Settings>

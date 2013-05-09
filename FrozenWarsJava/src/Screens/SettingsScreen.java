@@ -1,6 +1,7 @@
 package Screens;
 
 import Application.Assets;
+import Application.Desktop;
 import Application.GameSettings;
 import Application.LaunchFrozenWars;
 
@@ -36,17 +37,17 @@ public class SettingsScreen implements Screen{
 		this.game = LaunchFrozenWars.getGame();
 		this.gSettings = GameSettings.getInstance();
 		this.initialScreen = InitialScreen.getInstance();
-		guiCam = new OrthographicCamera(420,380);
-		guiCam.position.set(210,190,0);
+		guiCam = new OrthographicCamera(1024,630);
+		guiCam.position.set(512,315,0);
 		
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 	    //Esquina inferior izq y superior derecha
-	    soundClick = new BoundingBox(new Vector3(140,300,0), new Vector3(290,320,0));
-	    vibrationClick = new BoundingBox(new Vector3(140,250,0), new Vector3(290,270,0));
-	    loggedClick = new BoundingBox(new Vector3(140,200,0), new Vector3(290,220,0));
-	    confirmedExitClick = new BoundingBox(new Vector3(140,150,0), new Vector3(290,170,0));
-	    volverClick = new BoundingBox(new Vector3(140, 80, 0), new Vector3 (290, 100, 0));
+	    soundClick = new BoundingBox(new Vector3(250,515,0), new Vector3(725,585,0));
+	    vibrationClick = new BoundingBox(new Vector3(250,410,0), new Vector3(725,480,0));
+	    loggedClick = new BoundingBox(new Vector3(250,305,0), new Vector3(725,375,0));
+	    confirmedExitClick = new BoundingBox(new Vector3(250,200,0), new Vector3(725,270,0));
+	    volverClick = new BoundingBox(new Vector3(250, 45, 0), new Vector3 (725, 115, 0));
 	}
 
 	
@@ -80,7 +81,8 @@ public class SettingsScreen implements Screen{
       		else if(vibrationClick.contains(touchPoint))
       			gSettings.setVibrationOn(!gSettings.isVibrationOn());
       		else if (loggedClick.contains(touchPoint)){
-      			System.out.println("Pulsado loggin");
+      			gSettings.setUserName(null);
+      			gSettings.setUserPassword(null);
       		}else if (confirmedExitClick.contains(touchPoint))
       			gSettings.setConfirmedExitOn(!gSettings.isConfirmedExitOn());
       		else if (volverClick.contains(touchPoint))
@@ -100,32 +102,33 @@ public class SettingsScreen implements Screen{
         batcher.disableBlending();
         //se elimina graficamente la transparencia ya que es un fondo
         batcher.begin();
-        batcher.draw(Assets.secondBack,0,0,420,380);
+        batcher.draw(Assets.initialBack,0,0,1024,630);
         batcher.end();
-
         //Dibujando elementos en pantalla activamos el Blending
         batcher.enableBlending();
+        
         batcher.begin();
 	             
 	        
-	   if (gSettings.isSoundOn()) batcher.draw(Assets.soundOn, 120, 300);
-	   else batcher.draw(Assets.soundOff, 120, 300);
-	   if (gSettings.isVibrationOn()) batcher.draw(Assets.vibrationOn, 120, 250);
-	   else batcher.draw(Assets.vibrationOff, 120, 250);
-	   if (gSettings.isLoggedIn()) batcher.draw(Assets.loggedIn, 120, 200);
-	   else batcher.draw(Assets.loggedOut, 120, 200);
-	   if (gSettings.isConfirmedExitOn()) batcher.draw(Assets.confirmedExitOn, 120, 150);
-	   else batcher.draw(Assets.confirmedExitOff, 120, 150);
-	   batcher.draw(Assets.volver, 120, 80);
+	   if (gSettings.isSoundOn()) batcher.draw(Assets.soundOn, 250,515);
+	   else batcher.draw(Assets.soundOff, 250,515);
+	   if (gSettings.isVibrationOn()) batcher.draw(Assets.vibrationOn, 250,410);
+	   else batcher.draw(Assets.vibrationOff, 250,410);
+	   if (gSettings.isLoggedIn()) batcher.draw(Assets.loggedIn, 250,305);
+	   else batcher.draw(Assets.loggedOut, 250,305);
+	   if (gSettings.isConfirmedExitOn()) batcher.draw(Assets.confirmedExitOn, 250, 200);
+	   else batcher.draw(Assets.confirmedExitOff, 250, 200);
+	   batcher.draw(Assets.volver, 250, 45);
        batcher.end();
 
        ConfirmScreen.getInstance().createConfirmIfNeeded();
+       AcceptScreen.getInstance().createAcceptIfNeeded();
 
 	}
 
 	@Override
 	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub
+		if (arg0!=1024 || arg1!=630) Desktop.resetScreenSize();
 		
 	}
 

@@ -1,6 +1,8 @@
 package Screens;
 
 import Application.Assets;
+import Application.Desktop;
+import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
 import GameLogic.Map.TypeSquare;
@@ -8,6 +10,7 @@ import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
 import GameLogic.Match.TypeGame;
+import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -34,6 +37,7 @@ public class GameScreen implements Screen{
 	private BoundingBox farBounds;
 	private BoundingBox fabBounds;
 	private BoundingBox harpoonBounds;
+	private BoundingBox gameOverOk;
 	private PenguinAnimation[] penguinAnimationsTeam0;
 	private PenguinAnimation[] penguinAnimationsTeam1;
     private float stateTime;
@@ -45,12 +49,11 @@ public class GameScreen implements Screen{
 	private BitmapFont font3;
 	private int numPlayer;
 	private int numPlayers;
-	private int timeInvisible;
+	private boolean gameOver;
 
 	
 	public GameScreen(MatchManager manager){
 		this.manager = manager;
-		this.timeInvisible = 1100;
 		numPlayers = manager.getNumPlayers();
 		name = manager.getMyNamePlayer();
 		numPlayer = manager.getMyIdPlayer();
@@ -70,8 +73,10 @@ public class GameScreen implements Screen{
 		farBounds= new BoundingBox(new Vector3(2.75f,4.6f,0), new Vector3(4.75f,7,0));
 		fabBounds= new BoundingBox(new Vector3(2.75f,0,0), new Vector3(4.75f,2.4f,0));
 		harpoonBounds= new BoundingBox(new Vector3(19,0,0), new Vector3(21,4,0));
+		gameOverOk = new BoundingBox(new Vector3(12.75f,1,0), new Vector3(14.75f,3,0));
         stateTime = 0f;     
         loadAnimations();
+        gameOver = false;
 	}
 	
 	public void loadAnimations(){
@@ -206,9 +211,9 @@ public class GameScreen implements Screen{
 				batcher.setColor(new Color(255,255,255,1));
 			}
 		}		
+		paintTimeMatch();
 		
-		
-		paintUpgrades(delta);
+		paintUpgrades();
 		paintPlayerStatus();
 		
 		paintLivesPanel();
@@ -245,6 +250,7 @@ public class GameScreen implements Screen{
 				else touchPoint.set(-1,-1,-1);
 				if (Gdx.input.isTouched(1))guiCam.unproject(touchPoint2.set(Gdx.input.getX(1),Gdx.input.getY(1),0));
 				else touchPoint2.set(-1,-1,-1);
+		
 				if (fdBounds.contains(touchPoint)||fdBounds.contains(touchPoint2)){
 					manager.movePlayer(Direction.right);      
 				}
@@ -262,9 +268,41 @@ public class GameScreen implements Screen{
 					Gdx.input.vibrate(200);
 				}
 			}
+		} else {
+			if (Gdx.input.isTouched()){
+				if (Gdx.input.isTouched(0))guiCam.unproject(touchPoint.set(Gdx.input.getX(0),Gdx.input.getY(0),0));
+				else touchPoint.set(-1,-1,-1);
+				if ((gameOverOk.contains(touchPoint) || gameOverOk.contains(touchPoint2)) && gameOver){
+					SmartFoxServer.getInstance().exitGame();
+					gameOver = false;
+					MultiplayerScreen ms = MultiplayerScreen.getInstance();
+					ms.setDefault();
+					LaunchFrozenWars.getGame().setScreen(ms);
+				}
+			}
 		}
 	}
 	
+	private void paintTimeMatch() {
+		if (manager.getMode().equals(TypeGame.Survival)||manager.getMode().equals(TypeGame.BattleRoyale)){
+			long timeMatch = (manager.getTimeMatch() - System.currentTimeMillis())/1000;
+			String text = toMinSec(timeMatch);
+			batcher.setProjectionMatrix(textCam.combined);
+			font3.draw(batcher,text,12.5f*49 ,1f*49);
+			batcher.setProjectionMatrix(guiCam.combined);
+		}
+	}
+
+	private String toMinSec(long timeMatch) {
+		String text = "";
+		long min = timeMatch / 60;
+		long sec = timeMatch % 60;
+		if (sec>=10) text = min + ":" + sec;
+		else text = min + ":0" + sec;
+		if (timeMatch<0) text = "0:00";
+		return text;
+	}
+
 	private void drawPenguin(int playerId,float x, float y, int tamx, int tamy) {
 		TypeGame mode = manager.getGameType();
 		if (mode.equals(TypeGame.Normal) || mode.equals(TypeGame.BattleRoyale))
@@ -308,7 +346,7 @@ public class GameScreen implements Screen{
 	
 	
 	
-	private void paintUpgrades(float delta) {
+	private void paintUpgrades() {
 		int speedUpgrade = manager.getSpeed(numPlayer);
 		int harpoonUpgrade = manager.getHarpoonsAllow(numPlayer);
 		int rangeUpgrade = manager.getRange(numPlayer);
@@ -345,15 +383,11 @@ public class GameScreen implements Screen{
 		}
 		if (invisibleUpgrade){
 			   batcher.draw(Assets.getInvisibleUpgradeMaxSize(),20,5.5f,1,1);
-			  /* if (timeInvisible>0){
-			    timeInvisible-=delta*60;
-			   
-			   }*/
-			  // if (timeInvisible<400)printText(Integer.toString(timeInvisible/100),0.75f,Color.RED,20.15f,5.85f);
-			   //else printText(Integer.toString(timeInvisible/100),0.75f,Color.BLACK,20.15f,5.85f);
+			   long timeInvisible = manager.getTimeInvisible(numPlayer) - System.currentTimeMillis();
+			   if (timeInvisible<4000)printText(Long.toString(timeInvisible/1000),0.75f,Color.RED,20.15f,5.85f);
+			   else printText(Long.toString(timeInvisible/1000),0.75f,Color.BLACK,20.15f,5.85f);
 			  }
 		else{
-			  // timeInvisible=1100;
 			   batcher.setColor(new Color(50,50,50,0.25f));
 			   batcher.draw(Assets.getInvisibleUpgradeMaxSize(),20,5.5f,1,1);
 			   batcher.setColor(Color.WHITE);
@@ -374,32 +408,68 @@ public class GameScreen implements Screen{
 	
 	private void paintGameStatus(){
 		boolean myTeamWin=false;
-		if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()==1)
-			batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
+		if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()==1){
+			batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
+			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+			gameOver = true;
+		}
 		else if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()>1){
 			for(int i = 0; i<manager.getMyTeam(numPlayer).getPlayers().size();i++){
 				if (manager.imTheWinner(manager.getMyTeam(numPlayer).getPlayers().get(i).getPlayerId()))
 					myTeamWin=true;
 			}
-			if(myTeamWin) batcher.draw(Assets.getYourTeamWins(),7,3,13,7);
-			else batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
+			if(myTeamWin) {
+				batcher.draw(Assets.getYourTeamWins(),6.5f,6,14,6);
+				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+			}
+			else {
+				boolean myTeamLost = true;
+				for(int i = 0; i<manager.getMyTeam(numPlayer).getPlayers().size();i++)
+				if(!manager.isThePlayerDead(manager.getMyTeam(numPlayer).getPlayers().get(i).getPlayerId())){
+					myTeamLost = false;
+				}
+				if(myTeamLost){
+				batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
+				batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+				}
+			}
+			gameOver = true;
 		}
-		else if (manager.imTheWinner(numPlayer))
-			if(manager.getMyTeam(numPlayer).getPlayers().size()==1)
-				batcher.draw(Assets.getYouWin(),6.5f,3,14,8);				
-			else batcher.draw(Assets.getYourTeamWins(),7,3,13,7);
-		else if (manager.isGameTimeOff()){
-			batcher.draw(Assets.getGameOver(),6.5f,3,14,8);
-			batcher.setProjectionMatrix(textCam.combined);
-			//font3.setScale(1.75f);
-			font3.draw(batcher, "TIME OUT!",10.75f*49,3.5f*49);
-			//font32.setScale(1);
-			
+		else if (manager.imTheWinner(numPlayer)) {
+			if(manager.getMyTeam(numPlayer).getPlayers().size()==1){
+				batcher.draw(Assets.getYouWin(),6.5f,6,14,6);	
+				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+			}
+			else{
+				batcher.draw(Assets.getYourTeamWins(),6.5f,6,14,6);
+				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+			}
+			gameOver = true;
+		}else if (manager.isGameTimeOff()){
+ 			if (manager.getGameType().equals(TypeGame.Survival)){
+ 				if (manager.getTeam(numPlayer)==0){
+					batcher.draw(Assets.getGameOver(),6.5f,6.5f,14,6);
+					batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
+					batcher.setProjectionMatrix(textCam.combined);	
+					font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+ 					gameOver = true;
+ 				}
+ 				else {
+					batcher.draw(Assets.getYouWin(),6.5f,6.5f,14,6);
+					batcher.draw(Assets.getYouWonWindow(),10.25f,1f,6.36f,4.39f);
+					batcher.setProjectionMatrix(textCam.combined);	
+					font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+ 					gameOver = true;
+ 				}
+ 			}
+ 			else {
+				batcher.draw(Assets.getGameOver(),6.5f,6.5f,14,6);
+				batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
+				batcher.setProjectionMatrix(textCam.combined);	
+				font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+ 				gameOver = true;
+ 			}
 		}
-		else if (manager.areAllPlayersDead()){
-			batcher.draw(Assets.getDraw(),6.5f,4,14,8);
-		}
-		
 	}
 
 	
@@ -597,7 +667,8 @@ public class GameScreen implements Screen{
 	
 	@Override
 	public void resize(int width, int height) {
-		
+		if (width!=1024 || height!=630) Desktop.resetScreenSize();
+
 	}
 
 	@Override

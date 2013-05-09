@@ -1,11 +1,10 @@
 package Screens;
 
-import java.io.IOException;
-
-
 import Application.Assets;
+import Application.Desktop;
 import Application.GameSettings;
 import Application.LaunchFrozenWars;
+import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.utils.ScreenUtils;
 
 public class InitialScreen implements Screen{
 	private static InitialScreen instance;
@@ -36,7 +34,12 @@ public class InitialScreen implements Screen{
 	private BoundingBox settingsClick;
 	private BoundingBox helpClick;
 	private BoundingBox exitClick;
+	private BoundingBox J1Click;
+	private BoundingBox J2Click;
+	private BoundingBox J3Click;
+	private BoundingBox J4Click;
 	private Game game;
+	private boolean developer;	
 	
 	public InitialScreen() {
 		instance = this;
@@ -47,17 +50,26 @@ public class InitialScreen implements Screen{
 			//  Assets.music.play();
 			Assets.music.setLooping(true);
 	    }
-		guiCam = new OrthographicCamera(420,380);
-		guiCam.position.set(210,190,0);
-		
+
+
+
+		guiCam = new OrthographicCamera(1024,630);
+		guiCam.position.set(512,315,0);
+	    
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 	    //Esquina inferior izq y superior derecha
-	    playClick = new BoundingBox(new Vector3(30,290,0), new Vector3(200,340,0));
-	    settingsClick = new BoundingBox(new Vector3(230,290,0), new Vector3(400,340,0));
-	    helpClick = new BoundingBox(new Vector3(30,230,0), new Vector3(200,280,0));
-	    exitClick = new BoundingBox(new Vector3(230,225,0), new Vector3(400,275,0));
-	              
+	    playClick = new BoundingBox(new Vector3(150,500,0), new Vector3(440,550,0));
+	    helpClick = new BoundingBox(new Vector3(150,400,0), new Vector3(440,445,0));
+	    settingsClick = new BoundingBox(new Vector3(590,500,0), new Vector3(880,540,0));
+	    exitClick = new BoundingBox(new Vector3(590,400,0), new Vector3(880,445,0));
+	    
+	    J1Click = new BoundingBox(new Vector3(184,178,0), new Vector3(212,204,0));
+	    J2Click = new BoundingBox(new Vector3(219,179,0), new Vector3(245,204,0));
+	    J3Click = new BoundingBox(new Vector3(185,144,0), new Vector3(211,168,0));
+	    J4Click = new BoundingBox(new Vector3(219,145,0), new Vector3(246,168,0));
+	    
+	    developer = true;
 	}
 
 	
@@ -85,40 +97,50 @@ public class InitialScreen implements Screen{
 		//detectamos si se ha tocado la pantalla
 		if (Gdx.input.justTouched()){
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
-	
+      		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
+
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (playClick.contains(touchPoint)){
-				game.setScreen(MultiplayerScreen.getInstance());
+				GameSettings sett = GameSettings.getInstance();
+				if (SmartFoxServer.getInstance().isLoggedIn()) game.setScreen(MultiplayerScreen.getInstance());
+				else if (sett.isLoggedIn()){
+					
+					SmartFoxServer.getInstance().conectaSala(sett.getUserName(), sett.getUserPassword());
+				}
+				else game.setScreen(LogSignScreen.getInstance());
+				
 
-      		}else{
-      			//compruebo si he tocado settings
-      			if(settingsClick.contains(touchPoint)){
+      		}else if(settingsClick.contains(touchPoint)){ //compruebo si he tocado settings
       				SettingsScreen settingsScreen = new SettingsScreen();
       				game.setScreen(settingsScreen);
-      		}else{
-      				//compruebo si he tocado help (Se abre ventana de ayuda)
-      			if (helpClick.contains(touchPoint)){
+      		}else if (helpClick.contains(touchPoint)){ //compruebo si he tocado help (Se abre ventana de ayuda)
       				IndexScreen indexScreen = new IndexScreen();
       				game.setScreen(indexScreen);
       				
-      		}else{
-      				//compruebo si he tocado exit (Se abre ventana de confirmacion)
-      			if(exitClick.contains(touchPoint)){
-      				try {
-      					gSettings.saveSettings();
-      				} catch (IOException e) {
-      					// TODO Auto-generated catch block
-      					e.printStackTrace();
-      				}
+      		}else if(exitClick.contains(touchPoint)){ //compruebo si he tocado exit (Se abre ventana de confirmacion)
+      				gSettings.saveSettings();
+      				
       				if (!gSettings.isConfirmedExitOn()) {
       					this.dispose();
       				} else{
       					ConfirmScreen.getInstance().setNewConfirmScreen("Exit", "");   
       				}
-      			}
+      		} else if (developer){
+      			if (J1Click.contains(touchPoint)){
+      				if (SmartFoxServer.getInstance().isLoggedIn()) game.setScreen(MultiplayerScreen.getInstance());
+    				else SmartFoxServer.getInstance().conectaSala("UT1", "UT11");
+      			} else if (J2Click.contains(touchPoint)){
+      				if (SmartFoxServer.getInstance().isLoggedIn()) game.setScreen(MultiplayerScreen.getInstance());
+    				else SmartFoxServer.getInstance().conectaSala("UT2", "UT22");
+      			} else if (J3Click.contains(touchPoint)){
+      				if (SmartFoxServer.getInstance().isLoggedIn()) game.setScreen(MultiplayerScreen.getInstance());
+    				else SmartFoxServer.getInstance().conectaSala("UT3", "UT33");
+      			} else if (J4Click.contains(touchPoint)){
+      				if (SmartFoxServer.getInstance().isLoggedIn()) game.setScreen(MultiplayerScreen.getInstance());
+    				else SmartFoxServer.getInstance().conectaSala("UT4", "UT44");
+      			} 
       		}
-      		}
-      		}
+      		
 		}
 		//crear solamente un batcher por pantalla y eliminarlo cuando no se use
 
@@ -133,28 +155,37 @@ public class InitialScreen implements Screen{
             batcher.disableBlending();
             //se elimina graficamente la transparencia ya que es un fondo
             batcher.begin();
-            batcher.draw(Assets.initialBack,0,0,420,380);
+            batcher.draw(Assets.initialBack,0,0);
             batcher.end();
 
             //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();
 	                
-	        batcher.draw(Assets.play, 25, 300);
-	        batcher.draw(Assets.settings, 225, 300);
-	        batcher.draw(Assets.help, 25, 240);
-	        batcher.draw(Assets.exit, 225, 240);
-	          
+	        batcher.draw(Assets.play, 120, 500);
+	        batcher.draw(Assets.settings, 560, 500);
+	        batcher.draw(Assets.help, 120, 400);
+	        batcher.draw(Assets.exit, 560, 400);
+	        
+	        if (developer) {
+	        	batcher.draw(Assets.J1, 185, 180);
+	        	batcher.draw(Assets.J2, 220, 180);
+	        	batcher.draw(Assets.J3, 185, 145);
+	        	batcher.draw(Assets.J4, 220, 145);
+	        }
+	        
             batcher.end();
             
+            MultiplayerScreen.getInstance().changeToThisIfNeeded();
             ConfirmScreen.getInstance().createConfirmIfNeeded();
+            AcceptScreen.getInstance().createAcceptIfNeeded();
 
 	}
 
+	
 	@Override
 	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		
+		if (arg0!=1024 || arg1!=630) Desktop.resetScreenSize();
 	}
 
 	@Override
@@ -168,4 +199,5 @@ public class InitialScreen implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
+
 }

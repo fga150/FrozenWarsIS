@@ -2,6 +2,7 @@
 package Screens;
 
 import Application.Assets;
+import Application.Desktop;
 import Application.LaunchFrozenWars;
 
 import com.badlogic.gdx.Game;
@@ -15,7 +16,11 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class HelpScreen implements Screen{
 
-
+	private static HelpScreen instance; 
+	public static HelpScreen getInstance() {
+		if (instance == null) instance = new HelpScreen(IndexScreen.getInstance(),IndexScreen.getInstance().window);
+		return instance;
+	}
 	    /** The gui cam. */
 	private OrthographicCamera guiCam;
 	
@@ -35,6 +40,7 @@ public class HelpScreen implements Screen{
     
 
     public HelpScreen(IndexScreen indexScreen, int window) {
+    	instance=this;
 		this.game = LaunchFrozenWars.getGame();
 		this.indexScreen = indexScreen;
 		this.window = window;
@@ -135,6 +141,7 @@ public class HelpScreen implements Screen{
             batcher.end();
 
             ConfirmScreen.getInstance().createConfirmIfNeeded();
+            AcceptScreen.getInstance().createAcceptIfNeeded();
 
 	}
 
@@ -142,7 +149,7 @@ public class HelpScreen implements Screen{
 
 	@Override
 	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub
+		if (arg0!=1024 || arg1!=630) Desktop.resetScreenSize();
 		
 	}
 

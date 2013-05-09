@@ -4,11 +4,20 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.Map;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import Application.GameSettings;
+import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Application.MatchManager.Direction;
+import Screens.AcceptScreen;
 import Screens.ConfirmScreen;
+import Screens.FriendsListScreen;
 import Screens.InviteScreen;
 import Screens.MultiplayerScreen;
+
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector3;
 import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
@@ -20,21 +29,33 @@ import sfs2x.client.core.BaseEvent;
 import sfs2x.client.core.IEventListener;
 import sfs2x.client.core.SFSEvent;
 import sfs2x.client.requests.ExtensionRequest;
-import sfs2x.client.requests.JoinRoomRequest;
 import sfs2x.client.requests.LoginRequest;
+import sfs2x.client.requests.LogoutRequest;
 
 public class SmartFoxServer implements IEventListener {
 
-	private static final String SFS_ZONE = "FrozenWarsLogic";
+	private static final String SFS_ZONE = "FrozenWars";
+	private static final String SFS_RegisterZone = "Register";
 	private SmartFox sfsClient;
 	private MatchManager manager;
 	private static SmartFoxServer instance;
 	private long delayTime;
 	private int myPlayerId;
+	private String lastUserName;
+	private String lastPass;
+	private boolean loggedIn;
 	
 	public static SmartFoxServer getInstance() {
 		if (instance == null) instance = new SmartFoxServer();
 		return instance;
+	}
+	
+	public static boolean isInstanced(){
+		return instance!=null;
+	}
+	
+	public boolean isLoggedIn() {
+		return loggedIn;
 	}
 	
 	public void getTimeResponse(ISFSObject response){
@@ -48,11 +69,14 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public SmartFoxServer(){
+		loggedIn = false;
 		instance = this;
 		myPlayerId = -999;
 		String ip = getServerIP();
 		sfsClient = new SmartFox(false);
-		sfsClient.connect(ip,9933);
+		while(!sfsClient.isConnected()){
+			sfsClient.connect(ip,9933);
+		}
 		addEventListeners();
 	}
 	
@@ -70,26 +94,26 @@ public class SmartFoxServer implements IEventListener {
 		sfsClient.addEventListener(SFSEvent.LOGIN, new IEventListener(){
 
 			public void dispatch(BaseEvent arg0) throws SFSException {
-				getTimeRequest();				
+				getTimeRequest();
 			}
 			
 		});
-		sfsClient.addEventListener(SFSEvent.ROOM_JOIN, new IEventListener(){
+		
+		sfsClient.addEventListener(SFSEvent.LOGIN_ERROR,new IEventListener(){
 
-			public void dispatch(BaseEvent arg0) throws SFSException {
-				sfsClient.send(new JoinRoomRequest("The Lobby"));
-				
+			public void dispatch(BaseEvent event) throws SFSException {
+				Map<String,Object>args=event.getArguments();
+				Short err=(Short) args.get("errorCode");
+				Short error=6;
+				if (!(error==err))
+					AcceptScreen.getInstance().setNewAcceptScreen("NamePassNotValid", "");
+				else
+					AcceptScreen.getInstance().setNewAcceptScreen("AlreadyLogged", "");
 			}
 			
 		});
 		sfsClient.addEventListener(SFSEvent.USER_ENTER_ROOM, this);
 		sfsClient.addEventListener(SFSEvent.USER_EXIT_ROOM, this);
-		sfsClient.addEventListener(SFSEvent.PUBLIC_MESSAGE,new IEventListener(){
-
-			public void dispatch(BaseEvent event) throws SFSException {
-			}
-			
-		});
 		sfsClient.addEventListener(SFSEvent.EXTENSION_RESPONSE, new IEventListener(){
 
 			@Override
@@ -130,13 +154,34 @@ public class SmartFoxServer implements IEventListener {
 					DisconectedOnGame(response);
 				else if (cmd.equals("putHarpoon"))
 					getHarpoon(response);
+				else if (cmd.equals("exploteHarpoon"))
+					exploteHarpoon(response);
 				else if (cmd.equals("getTime"))
 					getTimeResponse(response);
-				else if (cmd.equals("asignaMejoras"))
+				else if (cmd.equals("dbRegister"))
+					registerResponse(response);
+				else if(cmd.equals("FriendRequestRes"))
+					AcceptScreen.getInstance().setNewAcceptScreen("AddFriendAdder", ((ISFSObject)r.get("params")).getUtfString("res"));
+				else if(cmd.equals("BeFriends?"))
+					beFriends(response);
+				else if(cmd.equals("AddFriendRes"))
+					AcceptScreen.getInstance().setNewAcceptScreen("AddFriendAdded", ((ISFSObject)r.get("params")).getUtfString("res"));
+				else if(cmd.equals("ConnectRes"))
+					connectRes(response);
+				else if(cmd.equals("asignaMejoras"))
 					asignaMejoras(response);
+				else if(cmd.equals("getMyFriendsRequestRes"))
+					getMyFriendsRequestRes(response);
+				else if(cmd.equals("ExitGameRes"))
+					exitGameRes(response);
+				else if (cmd.equals("OutOfQueue"))
+					userOutOfQueue(response);
 				else if(cmd.equals("NamesGame"))
 					NamesGame(response);
-				}
+				else if(cmd.equals("UpdateFriendList"))
+					getMyFriendsRequest();	
+			}
+
 		});
 	}
 
@@ -144,18 +189,38 @@ public class SmartFoxServer implements IEventListener {
 		String ip = "";
 		try {
 			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
+			//InetAddress address = InetAddress.getByName(new URL("http://frozenwarsthegame.no-ip.org").getHost());
+			
 			ip = address.getHostAddress();
-			//ip = "192.168.1.38";
+			//ip="127.0.0.1";
 		} catch (Exception e){
 			
 		}
 		return ip;
 	}
 
-	public void conectaSala(String user){
-		sfsClient.send(new LoginRequest(user,"", SFS_ZONE));
-		ExtensionRequest request = new ExtensionRequest("conectarse", null);
-		sfsClient.send(request);
+	public void conectaSala(String user,String pword){
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		sfsClient.send(new LoginRequest(user,pword, SFS_ZONE));
+		lastUserName = user;
+		lastPass = pword;
+
+	}
+	
+	public void connectRes(ISFSObject response) {
+		if (response.getUtfString("Response").equals("Success")){
+			MultiplayerScreen.getInstance().setMyName(sfsClient.getMySelf().getName());
+			loggedIn = true;
+  			GameSettings.getInstance().setUserName(lastUserName);
+  			GameSettings.getInstance().setUserPassword(lastPass);
+  			MultiplayerScreen.getInstance().setChangeToThis(true);
+        	ExtensionRequest request2 = new ExtensionRequest("GetFriendsRequests",new SFSObject());
+			sfsClient.send(request2);
+		}
 	}
 
 	public void sendMove(Direction dir, int myPlayerId,Vector3 position) {
@@ -167,7 +232,8 @@ public class SmartFoxServer implements IEventListener {
 		ISFSObject params = new SFSObject();
 		params.putUtfString("message", "M"+Integer.toString(dirCod)+Integer.toString(myPlayerId)+"X"+ position.x +"Y" + position.y);
 		ExtensionRequest request = new ExtensionRequest("GameMessage",params);
-		sfsClient.send(request);	
+		sfsClient.send(request);
+			
 	}
 	
 	public void sendLance(int x,int y) {
@@ -267,22 +333,21 @@ public class SmartFoxServer implements IEventListener {
 		MultiplayerScreen.getInstance().setEmpiezaPartida(true);
 	} 
 
-	public void insertInQueuesRequest(Vector<String> names, boolean externalPlayers){
-		
+	public void insertInQueuesRequest(Vector<String> names, boolean privateGame){
 		if(names.size()==1){		  //El que lanza la partida debe estar en la posicion 0 del vector.
-			SFSObject params = new SFSObject();
-			params.putInt("mode",MultiplayerScreen.getInstance().getGameMode());  
-			ExtensionRequest request2 = new ExtensionRequest("meter1",params);
-			sfsClient.send(request2);
+			  SFSObject params = new SFSObject();
+			  params.putInt("mode",MultiplayerScreen.getInstance().getGameMode());  
+			  ExtensionRequest request2 = new ExtensionRequest("meter1",params);
+			  sfsClient.send(request2);
 		}
-		else if(names.size()==2 && externalPlayers==true){
+		else if(names.size()==2 && !privateGame){
 			  String friend=names.get(1);
 			  SFSObject params = new SFSObject();
 			  params.putUtfString("pfriend1",friend);
 			  ExtensionRequest request2 = new ExtensionRequest("meter2",params);
 			  sfsClient.send(request2);
 		}
-		else if(names.size()==3 && externalPlayers==true){
+		else if(names.size()==3 && !privateGame){
 			  String friend1=names.get(1);
 			  String friend2=names.get(2);
 			  SFSObject params = new SFSObject();
@@ -291,7 +356,7 @@ public class SmartFoxServer implements IEventListener {
 			  ExtensionRequest request2 = new ExtensionRequest("meter3",params);
 			  sfsClient.send(request2);
 		}
-		else if(names.size()==4 || externalPlayers==false){
+		else if(names.size()==4 || privateGame){
 			String friend1;
 			String friend2;
 			String friend3;
@@ -313,14 +378,55 @@ public class SmartFoxServer implements IEventListener {
 		}
 	}
 	
+	public void register(String user,String email, String pword, String confpword){ //method that sends the user that wants to regist
+		if (!user.equals("")){
+			String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+			Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+			Matcher matcher = pattern.matcher(email);
+			if (matcher.matches()){
+				if (pword.length()>=4 && pword.length()<=8){
+					if (pword.equals(confpword)){
+						sfsClient.send(new LoginRequest("","", SFS_RegisterZone));
+						SFSObject params = new SFSObject();
+						params.putUtfString("name", user);
+						params.putUtfString("pword", pword);
+						params.putUtfString("email", email);
+						lastUserName = user;
+						lastPass = pword;
+						sfsClient.send(new ExtensionRequest("register",params));
+					}else{
+						AcceptScreen.getInstance().setNewAcceptScreen("DiffPasswords", "");
+					}
+				}else{
+					AcceptScreen.getInstance().setNewAcceptScreen("PasswordChars", "");
+				}
+			}else{
+				AcceptScreen.getInstance().setNewAcceptScreen("Email", "");
+			}
+		}else{
+			AcceptScreen.getInstance().setNewAcceptScreen("Username", "");
+		}
+	}
+	
+	public void registerResponse(ISFSObject response){ //response of the regist call
+		String str=response.getUtfString("res");
+		AcceptScreen.getInstance().setNewAcceptScreen("RegisterSuccess", str);
+		if (str.equals("Registered")){
+			GameSettings.getInstance().setUserName(lastUserName);
+  			GameSettings.getInstance().setUserPassword(lastPass);
+		}
+		
+		sfsClient.send(new LogoutRequest());
+	}
+	
 	public void modInQueueResponse(ISFSObject response){
 		MultiplayerScreen.getInstance().setInQueue(true);
 	} 
 	
 	public void removeOfQueue(int playersNumber, int mode){//Funcion invocada por el usuario que quiere salirse de cola.
 		SFSObject params = new SFSObject();
-		params.putInt("mode", mode);
 		params.putInt("numJugadores", playersNumber);//playersNumber es el numero de amigos con los que metiste cola(incluido el que lanza).
+		params.putInt("mode", mode);
 		ExtensionRequest request2 = new ExtensionRequest("sacardecola",params);
 		sfsClient.send(request2);
 	}
@@ -353,11 +459,11 @@ public class SmartFoxServer implements IEventListener {
 	
 	public void modExternalPlayersResponse(ISFSObject response){
 		Boolean external = response.getBool("externalPlayers");
-		MultiplayerScreen.getInstance().setExternalPlayers(external);
+		MultiplayerScreen.getInstance().setPrivateGame(external);
 	}
 	
 	public void gameFullResponse(ISFSObject response) {
-		ConfirmScreen.getInstance().setNewConfirmScreen("FullTeam", "");
+		AcceptScreen.getInstance().setNewAcceptScreen("FullTeam", "");
 	}
 	
 	public void groupExitRequest(String name){
@@ -366,7 +472,8 @@ public class SmartFoxServer implements IEventListener {
 		params.putUtfString("Inviter", name);
 		ExtensionRequest request = new ExtensionRequest("ExitGroup",params);
 		sfsClient.send(request);
-		MultiplayerScreen.getInstance().setDefault();	
+		 MultiplayerScreen.getInstance().setDefault();
+		
 	}
 	
 	public void gameMessage(ISFSObject response){
@@ -408,11 +515,11 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	private void leaderLeftResponse(ISFSObject response) {
-		ConfirmScreen.getInstance().setNewConfirmScreen("LeaderLeft", "");
+		AcceptScreen.getInstance().setNewAcceptScreen("LeaderLeft", "");
 	}
 	
 	private void gameNotFound(ISFSObject response) {
-		ConfirmScreen.getInstance().setNewConfirmScreen("GameNotFound", "");
+		AcceptScreen.getInstance().setNewAcceptScreen("GameNotFound", "");
 	} 
 	
 	
@@ -430,16 +537,63 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void getHarpoon(ISFSObject response){
-		long time = response.getLong("time");		
-		int x = response.getInt("x");
-		int y = response.getInt("y");
-		int range = response.getInt("range");
+		long time=response.getLong("time");		
+		int x=response.getInt("x");
+		int y=response.getInt("y");
+		int range=response.getInt("range");
 		int playerId = response.getInt("playerId"); 
 		manager.putHarpoonEvent(x,y,range,playerId,time+delayTime);
 	}
-
+	
+	private void exploteHarpoon(ISFSObject response) {
+		
+		// TODO GameLogic explote harpoon
+		
+		int x=response.getInt("x");
+		int y=response.getInt("y");	//arguments to know what harpoon is
+		int range=response.getInt("range");
+		int playerId = response.getInt("playerId"); 
+		
+	}
+	
+	public void beFriends(ISFSObject params){
+		SFSObject params2 = new SFSObject();
+		if (params.getSFSArray("Friends")!=null){
+			for(int i= 0;i<params.getSFSArray("Friends").size();i++){
+				ConfirmScreen.getInstance().setNewConfirmScreen("BeFriends?", ((String) params.getSFSArray("Friends").getElementAt(i)));
+			}
+		}
+		if (params.getSFSArray("Friends2")!=null){
+			for(int i=0;i<params.getSFSArray("Friends2").size();i++){
+				AcceptScreen.getInstance().setNewAcceptScreen("AcceptedFriendRequest", ((String) params.getSFSArray("Friends2").getElementAt(i)));
+				params2.putUtfString("friend", ((String) params.getSFSArray("Friends2").getElementAt(i)));
+				ExtensionRequest request2 = new ExtensionRequest("ViewedConfFriend",params2);
+				sfsClient.send(request2);
+			}
+		}
+	}
+	
+	public void sendBeFriends(String conf,String user){
+		SFSObject params2 = new SFSObject();
+		params2.putUtfString("friend", user);
+		params2.putUtfString("res", conf);
+		ExtensionRequest request2 = new ExtensionRequest("AddFriend",params2);
+		sfsClient.send(request2);
+	}
+	
+	public void sendFriendRequest(String friend){
+		 if(!sfsClient.getMySelf().getName().equals(friend)){
+			  SFSObject params = new SFSObject();
+			  params.putUtfString("friend", friend);
+			  ExtensionRequest request2 = new ExtensionRequest("FriendRequest",params);
+			  sfsClient.send(request2);
+		 }else{
+			  AcceptScreen.getInstance().setNewAcceptScreen("AddFriendAdder", "CantAddYourself");
+		 }
+	}
+	
 	public void  sendAsign(int numBarriles,int maxBootUpgrades,int maxRangeUpgrades,int maxNumHarpoonsUpgrades, int maxThrowUpgrades){
-	     SFSObject params = new SFSObject();
+		SFSObject params = new SFSObject();
 	     ISFSArray array = new SFSArray();
 	     array.addInt(maxBootUpgrades);
 	     array.addInt(maxRangeUpgrades);
@@ -450,9 +604,9 @@ public class SmartFoxServer implements IEventListener {
 	     ExtensionRequest request = new ExtensionRequest("AsignaMejoras",params);
 		 sfsClient.send(request);
 	}
-	
-	public void asignaMejoras(ISFSObject params){
-		 while ((manager==null) || (manager.getLoadingScreen()==null));
+
+	public void asignaMejoras(ISFSObject params) {
+		while ((manager==null) || (manager.getLoadingScreen()==null));
 		 int numBarriles=params.getInt("nBarriles");
 		 int upgrades[] = new int[numBarriles];
 		 for(int i=0;i<numBarriles;i++){
@@ -472,9 +626,67 @@ public class SmartFoxServer implements IEventListener {
 		}
 		Application.MatchManager.setUserName(usersName);
 	}
+
+	public void getMyFriendsRequest() {
+		Game aux=LaunchFrozenWars.getGame();
+		if (aux.getScreen()==FriendsListScreen.getInstance()){
+		 ExtensionRequest request = new ExtensionRequest("GetFriends",null);
+		 sfsClient.send(request);
+		}
+	}
 	
-	public void dispatch(BaseEvent event) throws SFSException{
+	private void getMyFriendsRequestRes(ISFSObject params) {
+		Vector<String> connectedFriends = new Vector<String>();
+		Vector<String> disconnectedFriends = new Vector<String>();
+		Vector<String> playingFriends = new Vector<String>();
+		
+		//connected friends
+		for(int i= 0;i<params.getSFSArray("ConnectedFriends").size();i++){
+			connectedFriends.add((String) params.getSFSArray("ConnectedFriends").getElementAt(i));
+		}
+		//disconnected friends
+		for(int i= 0;i<params.getSFSArray("DisconnectedFriends").size();i++){
+			disconnectedFriends.add((String)params.getSFSArray("DisconnectedFriends").getElementAt(i));
+		}
+		//friends gaming
+		for(int i= 0;i<params.getSFSArray("PlayingFriends").size();i++){
+			playingFriends.add((String)params.getSFSArray("PlayingFriends").getElementAt(i));
+		}
+		FriendsListScreen.getInstance().updateFriends(playingFriends, connectedFriends, disconnectedFriends);
+	}
+	
+	/**method when you want to exit from the game*/
+	public void exitGame(){
+		ExtensionRequest request2 = new ExtensionRequest("ExitGame",null);
+		sfsClient.send(request2);
+	}
+	
+	/**response of the server when you want to exit from the game*/
+	private void exitGameRes(ISFSObject response) {
+		if (response.getUtfString("res")=="Success"){
+			//TODO fede when you have exit from the game are you are now in the lobby show a message? and go to the multiplayer screen?
+		}else if (response.getUtfString("res")=="Error"){
+			//TODO show a error message (Like the ones of adding friends)
+		}	
+	}
+	
+	private void userOutOfQueue(ISFSObject response) {
+		AcceptScreen.getInstance().setNewAcceptScreen("UserOutOfQueue", response.getUtfString("playerName"));
 		
 	}
+	
+	public void dispatch(BaseEvent event) throws SFSException {
+	}
+	
+	public void disconnect(){
+		if (sfsClient.isConnected()) sfsClient.disconnect();
+		sfsClient = null;
+	}
+
+	public void dispose() {
+		disconnect();
+		instance = null;
+	}
+	
 	
 }

@@ -3,6 +3,7 @@ package Screens;
 import java.util.Vector;
 
 import Application.Assets;
+import Application.Desktop;
 import Application.LaunchFrozenWars;
 
 import Server.SmartFoxServer;
@@ -34,6 +35,10 @@ public class ConfirmScreen implements Screen{
 	private Screen ancestor; 
 	private String screenMode;
 	private String user;
+	private int width;
+	private int height;
+	private int posW;
+	private int posH;
 	
 	public static ConfirmScreen getInstance() {
 		if (instance == null) instance = new ConfirmScreen();
@@ -41,20 +46,23 @@ public class ConfirmScreen implements Screen{
 	}
 
 	public ConfirmScreen() {
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+		posW = (width-Assets.window.getRegionWidth())/2;
+		posH = (height-Assets.window.getRegionHeight())/2;
 		instance = this;
 		this.game = LaunchFrozenWars.getGame();
 		screenModeV = new Vector<String>();
 		userV = new Vector<String>();
-		guiCam = new OrthographicCamera(1024,629);
-		guiCam.position.set(512,315,0);
+		guiCam = new OrthographicCamera(width, height);
+		guiCam.position.set(width/2, height/2,0);
 		
 		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);;
 
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
-
-	    yesClick = new BoundingBox(new Vector3(350,340,0), new Vector3(500,400,0));
-	    noClick = new BoundingBox(new Vector3(510,340,0), new Vector3(660,660,0));        
+	    yesClick = new BoundingBox(new Vector3(posW+20,posH+45,0), new Vector3(posW+155,posH+100,0));
+	    noClick = new BoundingBox(new Vector3(posW+190,posH+45,0), new Vector3(posW+320,posH+100,0));        
 	}
 	
 	public void setNewConfirmScreen(String mode, String usr){
@@ -83,12 +91,10 @@ public class ConfirmScreen implements Screen{
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
@@ -105,20 +111,25 @@ public class ConfirmScreen implements Screen{
       				SmartFoxServer.getInstance().acceptRequest(user);
       				MultiplayerScreen.getInstance().setGameAdmin(user);
       				game.setScreen(MultiplayerScreen.getInstance());
-      			} else if (screenMode.equals("FullTeam") || screenMode.equals("QueueExit") || screenMode.equals("GameNotFound") || screenMode.equals("LeaderLeft") || screenMode.equals("UserOutOfQueue")){
-      				MultiplayerScreen.getInstance().setDefault();
-      				game.setScreen(MultiplayerScreen.getInstance());
       			} else if (screenMode.equals("InvitedDisconnected")){
       				game.setScreen(new InviteScreen());
+      			} else if (screenMode.equals("BeFriends?")){
+      				SmartFoxServer.getInstance().sendBeFriends("yes", user);
+      				FriendsListScreen.getInstance().updateFriends();
+      				game.setScreen(ancestor);
+      			} else if (screenMode.equals("Unfriend")) {
+      				SmartFoxServer.getInstance().sendBeFriends("no", user);
+      				FriendsListScreen.getInstance().updateFriends();
+      				game.setScreen(ancestor);
       			}
       			
       		} else if(noClick.contains(touchPoint)){ //compruebo si he tocado no
-      			if (screenMode.equals("Exit") || screenMode.equals("FullTeam") || screenMode.equals("QueueExit") || screenMode.equals("InvitedDisconnected")) game.setScreen(ancestor);
+      			if (screenMode.equals("Exit") || screenMode.equals("InvitedDisconnected") || screenMode.equals("Unfriend")) game.setScreen(ancestor);
       			else if (screenMode.equals("InviteGame")) {
       				SmartFoxServer.getInstance().refuseRequest(user);
       				game.setScreen(ancestor);
-      			} else if (screenMode.equals("GameNotFound") || screenMode.equals("LeaderLeft") || screenMode.equals("UserOutOfQueue")){
-      				MultiplayerScreen.getInstance().setDefault();
+      			} else if (screenMode.equals("BeFriends?")){
+      				SmartFoxServer.getInstance().sendBeFriends("no", user);
       				game.setScreen(ancestor);
       			}
       		}
@@ -127,7 +138,7 @@ public class ConfirmScreen implements Screen{
         	GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0
             gl.glClearColor(0,1,0,1);
             gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
- 
+            
             guiCam.update();
             batcher.setProjectionMatrix(guiCam.combined);
              
@@ -141,46 +152,38 @@ public class ConfirmScreen implements Screen{
           //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();    
-            batcher.draw(Assets.window, 330, 300);
-            if (screenMode.equals("Exit")) batcher.draw(Assets.exitText, 330, 300);
+            
+            batcher.draw(Assets.window, posW, posH);
+            if (screenMode.equals("Exit")) batcher.draw(Assets.exitText, posW, posH);
             else if (screenMode.equals("InviteGame")) {
             	String message = user.concat(" has invited you to join his game.");
-            	font.drawWrapped(batcher, message, 350, 525, 330);
-            	font.draw(batcher, "Do you want to join him?", 350, 450);
-            } else if (screenMode.equals("FullTeam")){
-            	String message = "You can't join this game because the team is full. Do you want to create your own game?";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
-            } else if (screenMode.equals("QueueExit")){
-            	String message = "Someone in your team left so you all have left the queue. Do you want to create a game?";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	font.drawWrapped(batcher, message, posW+15, posH+225, 330);
+            	font.draw(batcher, "Do you want to join him?", posW+15, posH+155);
             } else if (screenMode.equals("InvitedDisconnected")){
             	String message = user.concat(" has disconnected. Do you want to invite anyone else?");
-            	font.drawWrapped(batcher, message, 350, 538, 330);
-            } else if (screenMode.equals("GameNotFound")){
-            	String message = "Game not found. Do you want to create your own game?";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
-            } else if (screenMode.equals("LeaderLeft")){
-            	String message = "Game's leader left. Do you want to create your own game?";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
-            } else if (screenMode.equals("UserOutOfQueue")){
-            	String message = "A teammate has disconnected so you all have left the queue. Do you want to create a game?";
-            	font.drawWrapped(batcher, message, 350, 538, 330);
+            	font.drawWrapped(batcher, message, posW+15, posH+225, 330);
+            } else if (screenMode.equals("BeFriends?")){
+            	String message = user.concat(" wants to be your friend.");
+            	font.drawWrapped(batcher, message, posW+15, posH+225, 330);
+            	font.draw(batcher, "Do you want to be friends?", posW+15, posH+145);
+            } else if (screenMode.equals("Unfriend")){
+            	String message = "Do you want to remove "+user+" from your friend list?";
+            	font.drawWrapped(batcher, message, posW+15, posH+225, 330);
             }
             batcher.end();	
 	}
 
 	@Override
 	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub	
+		if (arg0!=1024 || arg1!=630) Desktop.resetScreenSize();
+
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub		
 	}
 }

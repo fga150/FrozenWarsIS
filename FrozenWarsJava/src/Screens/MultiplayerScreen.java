@@ -2,27 +2,21 @@ package Screens;
 
 import java.util.Vector;
 
-
 import Application.Assets;
-import Application.GameSettings;
+import Application.Desktop;
 import Application.LaunchFrozenWars;
 import Application.MatchManager;
-import GameLogic.XMLMapReader;
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MultiplayerScreen implements Screen{
 
@@ -53,7 +47,6 @@ public class MultiplayerScreen implements Screen{
 	
 	/** Se utiliza para dibujar y optimizar las imagenes en el renderizado de la pantalla. */
 	private SpriteBatch batcher;
-	private GameSettings gSettings;
 	private Vector3 touchPoint;
 	private Game game;
 	private SmartFoxServer sfsClient;
@@ -65,17 +58,20 @@ public class MultiplayerScreen implements Screen{
     private  BoundingBox playButtonClick;
     private  BoundingBox backButtonClick;
     private  BoundingBox leaveGroupButtonClick;
+    private BoundingBox exitQueueButtonClick;
     
-    private  BoundingBox mapLeftArrowClick;
-    private  BoundingBox mapRightArrowClick;
+    /*private  BoundingBox mapLeftArrowClick;
+    private  BoundingBox mapRightArrowClick;*/
     private  BoundingBox modeLeftArrowClick;
     private  BoundingBox modeRightArrowClick;
 	
     private BoundingBox scrollDownPlayersClick;
     private BoundingBox scrollUpPlayersClick;
     
+    private BoundingBox friendsListClick;
+    
     // Settings
-    private boolean externalPlayers;
+    private boolean privateGame;
 	private int gameMode;
 	private String myName = "";
 	private boolean empiezaPartida;
@@ -90,6 +86,8 @@ public class MultiplayerScreen implements Screen{
     private Vector<String> waitingPlayers;
     
     private Vector<InvitedInfo> drawPlayers;
+    
+    private boolean changeToThis;
     
     public void setAcceptedPlayers(Vector<String> acceptedPlayers) {
 		this.acceptedPlayers = acceptedPlayers;
@@ -188,12 +186,13 @@ public class MultiplayerScreen implements Screen{
 		}
 	}
     
-    public void setExternalPlayers(boolean externalPlayers) {
-		this.externalPlayers = externalPlayers;
+    public void setPrivateGame(boolean privateGame) {
+		this.privateGame = privateGame;
 	}
 
 	public void setGameMode(int gameMode) {
 		this.gameMode = gameMode;
+		if (gameMode==1) privateGame = false;
 	}
 	
 	public boolean amIAdmin(){
@@ -237,6 +236,18 @@ public class MultiplayerScreen implements Screen{
 		return inQueue;
 	}
 	
+
+	public void setChangeToThis(boolean b) {
+		changeToThis = b;
+	}
+	
+	public void changeToThisIfNeeded(){
+		if (changeToThis) {
+			game.setScreen(this);
+			setChangeToThis(false);
+		}
+	}
+	
     public MultiplayerScreen() {
 		instance = this;
     	this.game = LaunchFrozenWars.getGame();
@@ -257,38 +268,27 @@ public class MultiplayerScreen implements Screen{
 	    
 	    sfsClient = SmartFoxServer.getInstance();
 	    
-	    Gdx.input.getTextInput(new TextInputListener() {
-	         public void input(String text) {
-	        	 MultiplayerScreen.getInstance().setMyName(text);
-	        	 sfsClient.conectaSala(text);
-	         }
-	
-	         public void canceled() {
-	        	 String user = "user".concat(Long.toString(Math.round(Math.random()*1000)));
-	        	 MultiplayerScreen.getInstance().setMyName(user);
-	        	 sfsClient.conectaSala(user);
-	         }
-	    }, "Enter user: ","");
-
-	    
 	    externalPlayerTickClick = new BoundingBox(new Vector3(120,370,0), new Vector3(170,410,0));
 	    
 	    inviteButtonClick = new BoundingBox(new Vector3(500,80,0), new Vector3(740,120,0));
 	    playButtonClick = new BoundingBox(new Vector3(150,80,0), new Vector3(390,120,0));
 	    backButtonClick = new BoundingBox(new Vector3(320,20,0), new Vector3(560,60,0));
 	    leaveGroupButtonClick = new BoundingBox(new Vector3(650,20,0), new Vector3(890,64,0));
+	    exitQueueButtonClick = new BoundingBox(new Vector3(650,20,0), new Vector3(890,64,0));
 	    
-	    mapLeftArrowClick = new BoundingBox(new Vector3(50,200,0), new Vector3(100,290,0));
-	    mapRightArrowClick = new BoundingBox(new Vector3(450,200,0), new Vector3(510,280,0));
+	    /*mapLeftArrowClick = new BoundingBox(new Vector3(50,200,0), new Vector3(100,290,0));
+	    mapRightArrowClick = new BoundingBox(new Vector3(450,200,0), new Vector3(510,280,0));*/
 	    modeLeftArrowClick = new BoundingBox(new Vector3(80,450,0), new Vector3(120,500,0));
 	    modeRightArrowClick = new BoundingBox(new Vector3(425,450,0), new Vector3(460,500,0));
 	    
 	    scrollDownPlayersClick = new BoundingBox(new Vector3(900,190,0), new Vector3(950,225,0));
 	    scrollUpPlayersClick = new BoundingBox(new Vector3(900,365,0), new Vector3(950,400,0));
+
+	    friendsListClick = new BoundingBox(new Vector3(525,540,0), new Vector3(1000,605,0));
 	    
 	    inQueue = false;
 	    empiezaPartida = false;
-	    externalPlayers = true;
+	    privateGame = false;
 	    gameMode = 0;
 	}
 
@@ -308,11 +308,13 @@ public class MultiplayerScreen implements Screen{
 	public void pause() {
 	}
 
+
 	public void creaPartida(){
 		MatchManager manager = new MatchManager(sfsClient,gameMode);
-		LaunchFrozenWars.getGame().setScreen(manager.getLoadingScreen());
+		game.setScreen(manager.getLoadingScreen());
 		if (manager.getMyIdPlayer()==0) manager.sendAsign();
 	}
+	
 	
 	@Override
 	public void render(float arg0) {
@@ -323,20 +325,21 @@ public class MultiplayerScreen implements Screen{
       		//System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
 			//compruebo si he tocado play (se abre ventana de introduccion de usuario si no esta logeado)
 			if (playButtonClick.contains(touchPoint) && amIAdmin() && !inQueue){
-				sfsClient.insertInQueuesRequest(acceptedPlayers, externalPlayers);
+				sfsClient.insertInQueuesRequest(acceptedPlayers, privateGame);
       		} else if (inviteButtonClick.contains(touchPoint) && amIAdmin() && !inQueue) {
       			InviteScreen inviteScreen = new InviteScreen();
       			game.setScreen(inviteScreen);
-      		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue){
-      			externalPlayers = !externalPlayers;
-      			sfsClient.modExternalPlayersRequest(externalPlayers);
-      		
-      		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin()){
+      		}else if (externalPlayerTickClick.contains(touchPoint) && amIAdmin() && acceptedPlayers.size()!=1 && !inQueue && gameMode!=1){
+      			privateGame = !privateGame;
+      			sfsClient.modExternalPlayersRequest(privateGame);
+      		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin() && !inQueue){
       			if (gameMode == 0) gameMode = 4;
+      			else if (gameMode == 3) gameMode = 1;
       			else gameMode--;
       			sfsClient.modeChangeRequest(gameMode);
-      		} else if (modeRightArrowClick.contains(touchPoint) && amIAdmin()){
-      			gameMode = (gameMode + 1) % 5;
+      		} else if (modeRightArrowClick.contains(touchPoint) && amIAdmin() && !inQueue){
+      			if (gameMode == 1) gameMode = 3;
+      			else gameMode = (gameMode + 1) % 5;
       			sfsClient.modeChangeRequest(gameMode);
       		} else if (scrollDownPlayersClick.contains(touchPoint)){
       			if (invitedScroll < (acceptedPlayers.size() + refusedPlayers.size() + waitingPlayers.size()) - 5) invitedScroll++;
@@ -346,6 +349,12 @@ public class MultiplayerScreen implements Screen{
       			game.setScreen(InitialScreen.getInstance());
       		} else if (leaveGroupButtonClick.contains(touchPoint) && !inQueue && (acceptedPlayers.size() > 1 || waitingPlayers.size() > 0)){
       			sfsClient.groupExitRequest(gameAdmin);
+      		} else if (exitQueueButtonClick.contains(touchPoint) && inQueue && !privateGame){
+      			System.out.println(acceptedPlayers.size());
+      			sfsClient.removeOfQueue(acceptedPlayers.size(), gameMode);
+			} else if (friendsListClick.contains(touchPoint)){
+      			this.game.setScreen(new FriendsListScreen());
+      			sfsClient.getMyFriendsRequest();
       		}
 		}
 		
@@ -372,18 +381,15 @@ public class MultiplayerScreen implements Screen{
             //Dibujando elementos en pantalla activamos el Blending
             batcher.enableBlending();
             batcher.begin();
-            batcher.draw(Assets.multiplayerGameTitle, 320, 540);
+            batcher.draw(Assets.multiplayerButtonPressed, 27, 540);
+            batcher.draw(Assets.inviteFriendsButtonUnpressed, 521, 540);
             drawMode();
             if (amIAdmin()) batcher.draw(Assets.modeLeftArrow, 85, 455);
             if (amIAdmin()) batcher.draw(Assets.modeRightArrow, 435, 455);   
             
             batcher.draw(Assets.externalPlayerButton, 130, 380);   
-            if (externalPlayers) batcher.draw(Assets.externalPlayerTick, 130, 380);   
-            batcher.draw(Assets.externalPlayerText, 200, 380);   
-            
-            batcher.draw(Assets.map, 130, 150);   
-            if (amIAdmin()) batcher.draw(Assets.mapLeftArrow, 45, 200);   
-            if (amIAdmin()) batcher.draw(Assets.mapRightArrow, 450, 200);   
+            if (privateGame) batcher.draw(Assets.externalPlayerTick, 130, 380);   
+            batcher.draw(Assets.privateGameText, 180, 380);     
            
             drawInvited();
              
@@ -397,12 +403,14 @@ public class MultiplayerScreen implements Screen{
 
             
             if (!inQueue && (acceptedPlayers.size() > 1 || waitingPlayers.size() > 0)) batcher.draw(Assets.leaveGroupButton, 650, 20); 
+            if (inQueue && !privateGame) batcher.draw(Assets.exitQueueButton, 650, 20);
             batcher.draw(Assets.backButton, 320, 20); 
             	          
             batcher.end();
             
             ConfirmScreen.getInstance().createConfirmIfNeeded();
-            
+            AcceptScreen.getInstance().createAcceptIfNeeded();
+
 	}
 
 	private void drawInvited() {
@@ -423,11 +431,28 @@ public class MultiplayerScreen implements Screen{
 	}
 
 	private void drawMode() {
-		if (gameMode == 0) batcher.draw(Assets.normalRoyalMode, 100, 450);
-		else if (gameMode == 1) batcher.draw(Assets.teamPlayMode, 100, 450);
-		else if (gameMode == 2) batcher.draw(Assets._1vsAllMode, 100, 450);
-		else if (gameMode == 3) batcher.draw(Assets.survivalMode, 100, 450);
-		else if (gameMode == 4) batcher.draw(Assets.battleRoyalMode, 100, 450);
+		batcher.draw(Assets.textSquare, -20,140);
+		
+		if (gameMode == 0) {
+			batcher.draw(Assets.normalRoyalMode, 100, 450);
+			batcher.draw(Assets.normalRoyalModeHelp, 70, 170);
+		}
+		else if (gameMode == 1) {
+			batcher.draw(Assets.teamPlayMode, 100, 450);
+			batcher.draw(Assets.teamPlayModeHelp, 80, 170);
+		}
+		else if (gameMode == 2) {
+			batcher.draw(Assets._1vsAllMode, 100, 450);
+			batcher.draw(Assets._1vsAllModeHelp, 80, 170);
+		}
+		else if (gameMode == 3) {
+			batcher.draw(Assets.survivalMode, 100, 450);
+			batcher.draw(Assets.survivalModeHelp, 80, 170);
+		}
+		else if (gameMode == 4) {
+			batcher.draw(Assets.battleRoyalMode, 100, 450);
+			batcher.draw(Assets.battleRoyalModeHelp, 80, 170);
+		}
 	}
 	
 	public void setDefault() {
@@ -437,7 +462,7 @@ public class MultiplayerScreen implements Screen{
 	    drawPlayers.clear();
 	    
 	    invitedScroll = 0;
-	    externalPlayers = false;
+	    privateGame = false;
 	    gameMode = 0;
 	    inQueue = false;
 	    
@@ -452,18 +477,17 @@ public class MultiplayerScreen implements Screen{
 		drawPlayers.add(new InvitedInfo(name, "Accepted"));
 	
 		gameAdmin = myName;
+		empiezaPartida = false;
 	}
-	
-
-	
 	
 	public int getGameMode() {
 		return gameMode;
 	}
-
+	
 	@Override
 	public void resize(int arg0, int arg1) {
-		
+		if (arg0!=1024 || arg1!=630) Desktop.resetScreenSize();
+
 	}
 
 	@Override
@@ -475,6 +499,7 @@ public class MultiplayerScreen implements Screen{
 	public void show() {
 		
 	}
+
 
 
 

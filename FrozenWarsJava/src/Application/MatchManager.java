@@ -21,6 +21,7 @@ public class MatchManager {
 	private LoadingScreen loadingScreen;
 	private GameScreen gameScreen;
 	private int myPlayerId;
+	@SuppressWarnings("unused")
 	private int numPlayers;
 	private long lastMessage;
 	private TypeGame mode;
@@ -100,9 +101,7 @@ public class MatchManager {
 	
 	public void startGame(int[] upgrades, int numPlayers) {
 		this.numPlayers = numPlayers;
-		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode);
-		if (mode.equals(TypeGame.BattleRoyale))
-			match.getTimeEventsManager().endGameEvent();
+		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode,usersNames[myPlayerId]);
 		this.loadingScreen.setLoaded(true);
 	}
 	
@@ -267,6 +266,14 @@ public class MatchManager {
 
 	public TypeGame getMode() {
 		return this.mode;
+	}
+
+	public long getTimeInvisible(int numPlayer) {
+		return match.getTimeInvisible(numPlayer);
+	}
+
+	public long getTimeMatch() {
+		return match.getTimeManager();
 	}
 	
 }
