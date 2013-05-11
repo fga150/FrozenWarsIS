@@ -5,6 +5,7 @@ import java.util.Queue;
 
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
+import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 
 public class ExtractUsersHandler extends BaseClientRequestHandler {
@@ -34,7 +35,13 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 						i++;
 					}
 			}
-			if(enc==true)queue2.remove(arrayUsers);
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				queue2.remove(arrayUsers);		
+			}
 		}
 		else if(numJug==3){
 			Queue<User[]> queue3 = parentEx.getQueue03();
@@ -50,7 +57,14 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 						i++;
 					}
 			}
-			if(enc==true)queue3.remove(arrayUsers);
+			if(enc==true){
+				ISFSObject rtn = new SFSObject();
+				rtn.putUtfString("playerName", player.getName());
+				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+				queue3.remove(arrayUsers);
+			}
 		}
 		
 	}
@@ -74,7 +88,13 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 							i++;
 						}
 				}
-				if(enc==true)queue2.remove(arrayUsers);
+				if(enc==true){
+					ISFSObject rtn = new SFSObject();
+					rtn.putUtfString("playerName", player.getName());
+					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					queue2.remove(arrayUsers);		
+				}
 			}
 			else if(numJug==3){
 				Queue<User[]> queue3 = parentEx.getQueue13();
@@ -90,7 +110,14 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 							i++;
 						}
 				}
-				if(enc==true)queue3.remove(arrayUsers);
+				if(enc==true){
+					ISFSObject rtn = new SFSObject();
+					rtn.putUtfString("playerName", player.getName());
+					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+					queue3.remove(arrayUsers);
+				}
 			}
 		}
 		
@@ -113,7 +140,13 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 							i++;
 						}
 				}
-				if(enc==true)queue2.remove(arrayUsers);
+				if(enc==true){
+					ISFSObject rtn = new SFSObject();
+					rtn.putUtfString("playerName", player.getName());
+					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					queue2.remove(arrayUsers);		
+				}
 			}
 			else if(numJug==3){
 				Queue<User[]> queue3 = parentEx.getQueue23();
@@ -129,7 +162,14 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 							i++;
 						}
 				}
-				if(enc==true)queue3.remove(arrayUsers);
+				if(enc==true){
+					ISFSObject rtn = new SFSObject();
+					rtn.putUtfString("playerName", player.getName());
+					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+					queue3.remove(arrayUsers);
+				}
 			}
 		}
 		
@@ -153,7 +193,13 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 							i++;
 						}
 				}
-				if(enc==true)queue2.remove(arrayUsers);
+				if(enc==true){
+					ISFSObject rtn = new SFSObject();
+					rtn.putUtfString("playerName", player.getName());
+					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					queue2.remove(arrayUsers);		
+				}
 			}
 			else if(numJug==3){
 				Queue<User[]> queue3 = parentEx.getQueue33();
@@ -169,7 +215,14 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 							i++;
 						}
 				}
-				if(enc==true)queue3.remove(arrayUsers);
+				if(enc==true){
+					ISFSObject rtn = new SFSObject();
+					rtn.putUtfString("playerName", player.getName());
+					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+					queue3.remove(arrayUsers);
+				}
 			}
 		}
 		
@@ -193,7 +246,13 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 							i++;
 						}
 				}
-				if(enc==true)queue2.remove(arrayUsers);
+				if(enc==true){
+					ISFSObject rtn = new SFSObject();
+					rtn.putUtfString("playerName", player.getName());
+					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					queue2.remove(arrayUsers);		
+				}
 			}
 			else if(numJug==3){
 				Queue<User[]> queue3 = parentEx.getQueue43();
@@ -209,7 +268,14 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 							i++;
 						}
 				}
-				if(enc==true)queue3.remove(arrayUsers);
+				if(enc==true){
+					ISFSObject rtn = new SFSObject();
+					rtn.putUtfString("playerName", player.getName());
+					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+					queue3.remove(arrayUsers);
+				}
 			}
 		}
 
