@@ -281,6 +281,7 @@ public class GameScreen implements Screen{
 	private void paintTimeMatch() {
 		if (manager.getMode().equals(TypeGame.Survival)||manager.getMode().equals(TypeGame.BattleRoyale)){
 			long timeMatch = (manager.getTimeMatch() - System.currentTimeMillis())/1000;
+			if(timeMatch == 60) manager.changeToFastBattleMusic();
 			String text = toMinSec(timeMatch);
 			batcher.setProjectionMatrix(textCam.combined);
 			font3.draw(batcher,text,12.5f*49 ,1f*49);
@@ -465,6 +466,7 @@ public class GameScreen implements Screen{
  				gameOver = true;
  			}
 		}
+		if (gameOver==true) manager.stopTheMusic();
 	}
 
 	

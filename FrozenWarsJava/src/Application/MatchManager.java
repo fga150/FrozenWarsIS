@@ -11,11 +11,13 @@ import GameLogic.XMLMapReader;
 import Screens.GameScreen;
 import Screens.LoadingScreen;
 import Server.SmartFoxServer;
+import Sounds.AppMusic;
 
 public class MatchManager {
 	
 	public enum Direction{left,right,up,down} 
 	
+	private AppMusic myAppMusic;
 	private SmartFoxServer sfsClient;
 	private Match match;
 	private LoadingScreen loadingScreen;
@@ -29,7 +31,9 @@ public class MatchManager {
 	private XMLMapReader xmlMapReader;
 
 	
-	public MatchManager(SmartFoxServer sfs,int mode){
+	public MatchManager(SmartFoxServer sfs,int mode, AppMusic myAppMusic){
+		this.myAppMusic = myAppMusic;
+		this.myAppMusic.playMyInitialMusic(mode);
 		this.sfsClient=sfs;
 		String map = "mapaPrueba.xml";
 		this.mode = getTypeGame(mode);
@@ -126,6 +130,13 @@ public class MatchManager {
 		LaunchFrozenWars.getGame().setScreen(gameScreen);
 	}
 	
+	public void changeToFastBattleMusic(){
+		myAppMusic.playfastBattleMusic();
+	}
+	
+	public void stopTheMusic(){
+		myAppMusic.stopMyMusic();
+	}
 	// Getters and Setters
 	
 	public SmartFoxServer getSfsClient() {
