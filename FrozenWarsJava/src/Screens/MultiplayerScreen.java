@@ -334,12 +334,10 @@ public class MultiplayerScreen implements Screen{
       			sfsClient.modExternalPlayersRequest(privateGame);
       		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin() && !inQueue){
       			if (gameMode == 0) gameMode = 4;
-      			else if (gameMode == 3) gameMode = 1;
       			else gameMode--;
       			sfsClient.modeChangeRequest(gameMode);
       		} else if (modeRightArrowClick.contains(touchPoint) && amIAdmin() && !inQueue){
-      			if (gameMode == 1) gameMode = 3;
-      			else gameMode = (gameMode + 1) % 5;
+      			gameMode = (gameMode + 1) % 5;
       			sfsClient.modeChangeRequest(gameMode);
       		} else if (scrollDownPlayersClick.contains(touchPoint)){
       			if (invitedScroll < (acceptedPlayers.size() + refusedPlayers.size() + waitingPlayers.size()) - 5) invitedScroll++;

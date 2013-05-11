@@ -61,7 +61,7 @@ public class Match {
 		ArrayList<Team> teams = null;
 		if (type.equals(TypeGame.Normal)) teams = normalGame(numPlayers,type); 
 		else if (type.equals(TypeGame.Teams)) teams = teamsGame(numPlayers,type);
-		else if (type.equals(TypeGame.Survival)) teams = survivalGame(numPlayers,type);
+		else if ((type.equals(TypeGame.Survival)) || (type.equals(TypeGame.OneVsAll))) teams = survivalGame(numPlayers,type);
 		else if (type.equals(TypeGame.BattleRoyale)) teams = battleRoyalGame(numPlayers,type);
 		return teams;
 	}
@@ -305,6 +305,7 @@ public class Match {
 		if (type.equals(TypeGame.Normal)||type.equals(TypeGame.BattleRoyale)) checkPlayer(player);
 		else if (type.equals(TypeGame.Teams)) sharePlayer(player);
 		else if (type.equals(TypeGame.Survival)) checkSurvival(player);
+		else if (type.equals(TypeGame.OneVsAll)) checkPlayer(player);
 		logFile.writeEvent("The player " + playerId + " has lost a life");
 	}
 

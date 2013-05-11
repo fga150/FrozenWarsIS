@@ -50,6 +50,7 @@ public class Player {
 		else if (type.equals(TypeGame.Teams)) initializePositionNormal(playerId,numPlayers);
 		else if (type.equals(TypeGame.Survival)) initializePositionSurvival(playerId,numPlayers);
 		else if (type.equals(TypeGame.BattleRoyale)) initializePositionNormal(playerId,numPlayers);
+		else if (type.equals(TypeGame.OneVsAll)) initializePositionSurvival(playerId,numPlayers);
 	}
 	
 	private void initializePositionSurvival(int playerId, int numPlayers) {
@@ -178,7 +179,30 @@ public class Player {
 				this.invincible=false;
 			}
 		}
+		else if (type.equals(TypeGame.OneVsAll)){
+			if (playerId == 0){
+				this.lives = 1;
+				this.speed = 5;
+				this.range = 5;
+				this.maxHarpoonsAllow = 5;
+				this.canPlay=true;
+				this.invisible=false;
+				this.specialMove=false;
+				this.invincible=false;
+			}
+			else{
+				this.lives = 1;
+				this.speed = 1;
+				this.range = 1;
+				this.maxHarpoonsAllow = 1;
+				this.canPlay=true;
+				this.invisible=false;
+				this.specialMove=false;
+				this.invincible=false;
+			}
+		}
 	}
+		
 	
 	/**
 	 * This method check is the player is dead

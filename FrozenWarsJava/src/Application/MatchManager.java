@@ -33,7 +33,7 @@ public class MatchManager {
 		this.sfsClient=sfs;
 		String map = "mapaPrueba.xml";
 		this.mode = getTypeGame(mode);
-		if (this.mode.equals(TypeGame.Survival)) map = "SurvivalMap.xml";
+		if ((this.mode.equals(TypeGame.Survival)) || (this.mode.equals(TypeGame.OneVsAll))) map = "SurvivalMap.xml";
 		this.xmlMapReader = new XMLMapReader(map);
 		this.loadingScreen = new LoadingScreen(this);
 		this.sfsClient.addManager(this);
