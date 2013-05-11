@@ -149,12 +149,7 @@ public class GameScreen implements Screen{
 				batcher.draw(texture,i+8,j+1,1,1);
 				//First we draw fissures matrix
 				if(!typeFissureMatrix.equals(FissuresTypes.empty)){
-					if(typeFissureMatrix.equals(FissuresTypes.barrelWithFissure)) texture  = Assets.getBarrelWithFissure();
-					else if (typeFissureMatrix.equals(FissuresTypes.crossingFissures)) texture  = Assets.getFissureCrossing();
-					else if (typeFissureMatrix.equals(FissuresTypes.fissureC))	texture  = Assets.getFissureCenter();
-					else if (typeFissureMatrix.equals(FissuresTypes.fissureSX)) texture  = Assets.getFissureSideX();
-					else if (typeFissureMatrix.equals(FissuresTypes.fissureSY)) texture  = Assets.getFissureSideY();
-					
+					if (typeFissureMatrix.equals(FissuresTypes.fissureC))	texture  = Assets.getFissureCenter();
 					batcher.draw(texture,i+8,j+1,1,1);
 				}
 				
