@@ -1,0 +1,1131 @@
+
+pack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+backConf
+  rotate: false
+  xy: 1, 1246
+  size: 1303, 801
+  orig: 1303, 801
+  offset: 0, 0
+  index: -1
+fondoJuego
+  rotate: false
+  xy: 1, 444
+  size: 1300, 800
+  orig: 1300, 800
+  offset: 0, 0
+  index: -1
+SignInWindow
+  rotate: false
+  xy: 1306, 1547
+  size: 450, 500
+  orig: 450, 500
+  offset: 0, 0
+  index: -1
+LogSignWindow
+  rotate: false
+  xy: 1, 72
+  size: 450, 370
+  orig: 450, 370
+  offset: 0, 0
+  index: -1
+InviteFriendsButtonUnpressed
+  rotate: false
+  xy: 1, 1
+  size: 486, 69
+  orig: 486, 69
+  offset: 0, 0
+  index: -1
+ListOfPeopleOff
+  rotate: false
+  xy: 453, 93
+  size: 421, 349
+  orig: 421, 349
+  offset: 0, 0
+  index: -1
+ListOfPeopleOn
+  rotate: false
+  xy: 876, 93
+  size: 421, 349
+  orig: 421, 349
+  offset: 0, 0
+  index: -1
+LogInWindow
+  rotate: false
+  xy: 1306, 1245
+  size: 440, 300
+  orig: 440, 300
+  offset: 0, 0
+  index: -1
+MandoDirecciones
+  rotate: false
+  xy: 1303, 911
+  size: 346, 332
+  orig: 346, 332
+  offset: 0, 0
+  index: -1
+barrahorizontalAbajo
+  rotate: false
+  xy: 489, 41
+  size: 640, 50
+  orig: 640, 50
+  offset: 0, 0
+  index: -1
+PlayersList
+  rotate: false
+  xy: 1303, 607
+  size: 332, 302
+  orig: 332, 302
+  offset: 0, 0
+  index: -1
+barraverticalDer
+  rotate: false
+  xy: 1758, 1507
+  size: 50, 540
+  orig: 50, 540
+  offset: 0, 0
+  index: -1
+barraverticalIzq
+  rotate: false
+  xy: 1810, 1507
+  size: 50, 540
+  orig: 50, 540
+  offset: 0, 0
+  index: -1
+ExitText
+  rotate: false
+  xy: 1303, 340
+  size: 360, 265
+  orig: 360, 265
+  offset: 0, 0
+  index: -1
+OkWindow
+  rotate: false
+  xy: 1299, 74
+  size: 361, 264
+  orig: 361, 264
+  offset: 0, 0
+  index: -1
+List
+  rotate: false
+  xy: 1651, 943
+  size: 329, 300
+  orig: 329, 300
+  offset: 0, 0
+  index: -1
+barrahorizontalArriba
+  rotate: false
+  xy: 1131, 22
+  size: 638, 50
+  orig: 638, 50
+  offset: 0, 0
+  index: -1
+YouLostWindow
+  rotate: false
+  xy: 1662, 74
+  size: 361, 264
+  orig: 361, 264
+  offset: 0, 0
+  index: -1
+AddFriend
+  rotate: false
+  xy: 1651, 865
+  size: 383, 76
+  orig: 383, 76
+  offset: 0, 0
+  index: -1
+Map
+  rotate: false
+  xy: 1637, 681
+  size: 300, 182
+  orig: 300, 182
+  offset: 0, 0
+  index: -1
+Window
+  rotate: false
+  xy: 1665, 414
+  size: 360, 265
+  orig: 360, 265
+  offset: 0, 0
+  index: -1
+AvailablePlayersText
+  rotate: false
+  xy: 1665, 357
+  size: 330, 55
+  orig: 330, 55
+  offset: 0, 0
+  index: -1
+fondo
+  rotate: false
+  xy: 1862, 1875
+  size: 182, 172
+  orig: 182, 172
+  offset: 0, 0
+  index: -1
+deadLine
+  rotate: false
+  xy: 489, 32
+  size: 315, 7
+  orig: 315, 7
+  offset: 0, 0
+  index: -1
+BotonLanza
+  rotate: false
+  xy: 1862, 1679
+  size: 97, 194
+  orig: 97, 194
+  offset: 0, 0
+  index: -1
+LeaveGroupButton
+  rotate: false
+  xy: 1771, 28
+  size: 240, 44
+  orig: 240, 44
+  offset: 0, 0
+  index: -1
+ExternalPlayersText
+  rotate: false
+  xy: 1771, 1
+  size: 190, 25
+  orig: 190, 25
+  offset: 0, 0
+  index: -1
+Pingu
+  rotate: false
+  xy: 1862, 1557
+  size: 100, 120
+  orig: 100, 120
+  offset: 0, 0
+  index: -1
+PrivateGameText
+  rotate: false
+  xy: 489, 5
+  size: 190, 25
+  orig: 190, 25
+  offset: 0, 0
+  index: -1
+CajaMapas
+  rotate: false
+  xy: 1748, 1400
+  size: 151, 105
+  orig: 151, 105
+  offset: 0, 0
+  index: -1
+InviteListText
+  rotate: false
+  xy: 1748, 1343
+  size: 200, 55
+  orig: 200, 55
+  offset: 0, 0
+  index: -1
+ExitQueue
+  rotate: false
+  xy: 1748, 1298
+  size: 239, 43
+  orig: 239, 43
+  offset: 0, 0
+  index: -1
+BackButton
+  rotate: false
+  xy: 1748, 1255
+  size: 240, 41
+  orig: 240, 41
+  offset: 0, 0
+  index: -1
+MapLeftArrow
+  rotate: false
+  xy: 1982, 1168
+  size: 65, 85
+  orig: 65, 85
+  offset: 0, 0
+  index: -1
+MapRightArrow
+  rotate: false
+  xy: 1982, 1081
+  size: 65, 85
+  orig: 65, 85
+  offset: 0, 0
+  index: -1
+IndicadorVidas
+  rotate: false
+  xy: 1939, 783
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+MejoraInvisibilidadMaxSize
+  rotate: false
+  xy: 1997, 362
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+deadIconBlue
+  rotate: false
+  xy: 1961, 1823
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+deadIconGreen
+  rotate: false
+  xy: 1982, 1029
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+deadIconRed
+  rotate: false
+  xy: 1939, 731
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+deadIconYellow
+  rotate: false
+  xy: 1961, 1771
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+iconoJugadorAmarillo
+  rotate: false
+  xy: 1982, 977
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+iconoJugadorAzul
+  rotate: false
+  xy: 1961, 1719
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+ArponParaBomba
+  rotate: false
+  xy: 1982, 943
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+StatusTick
+  rotate: false
+  xy: 1862, 1515
+  size: 45, 40
+  orig: 45, 40
+  offset: 0, 0
+  index: -1
+iconoJugadorRojo
+  rotate: false
+  xy: 1909, 1505
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+IndexTitle
+  rotate: false
+  xy: 1901, 1443
+  size: 140, 60
+  orig: 140, 60
+  offset: 0, 0
+  index: -1
+iconoJugadorVerde
+  rotate: false
+  xy: 1961, 1505
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+vidasJugadorAmarillo
+  rotate: false
+  xy: 806, 1
+  size: 38, 38
+  orig: 38, 38
+  offset: 0, 0
+  index: -1
+vidasJugadorAzul
+  rotate: false
+  xy: 846, 1
+  size: 38, 38
+  orig: 38, 38
+  offset: 0, 0
+  index: -1
+vidasJugadorRojo
+  rotate: false
+  xy: 886, 1
+  size: 38, 38
+  orig: 38, 38
+  offset: 0, 0
+  index: -1
+vidasJugadorVerde
+  rotate: false
+  xy: 926, 1
+  size: 38, 38
+  orig: 38, 38
+  offset: 0, 0
+  index: -1
+J1
+  rotate: false
+  xy: 1963, 1
+  size: 27, 25
+  orig: 27, 25
+  offset: 0, 0
+  index: -1
+Add
+  rotate: false
+  xy: 1939, 689
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+Minus
+  rotate: false
+  xy: 1901, 1401
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+StatusCancel
+  rotate: false
+  xy: 1943, 1401
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+IgluDerecha
+  rotate: false
+  xy: 1985, 1392
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+MejoraMasArponMaxSize
+  rotate: false
+  xy: 1991, 731
+  size: 49, 50
+  orig: 49, 50
+  offset: 0, 0
+  index: -1
+StatusInterrogation
+  rotate: false
+  xy: 1981, 689
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+MejoraInvisibilidad
+  rotate: false
+  xy: 1950, 1366
+  size: 33, 33
+  orig: 33, 33
+  offset: 0, 0
+  index: -1
+ModeLeftArrow
+  rotate: false
+  xy: 2013, 1829
+  size: 30, 44
+  orig: 30, 44
+  offset: 0, 0
+  index: -1
+ModeRightArrow
+  rotate: false
+  xy: 2013, 1783
+  size: 30, 44
+  orig: 30, 44
+  offset: 0, 0
+  index: -1
+J2
+  rotate: false
+  xy: 1992, 1
+  size: 27, 25
+  orig: 27, 25
+  offset: 0, 0
+  index: -1
+MejoraAndaRapido
+  rotate: false
+  xy: 1961, 1685
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+IgluIzquierda
+  rotate: false
+  xy: 1964, 1634
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+IgluTrasero
+  rotate: false
+  xy: 1964, 1583
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+ExternalPlayersButton
+  rotate: false
+  xy: 1964, 1557
+  size: 27, 24
+  orig: 27, 24
+  offset: 0, 0
+  index: -1
+MejoraDesplArpon
+  rotate: false
+  xy: 1995, 1685
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+MejoraMasArea
+  rotate: false
+  xy: 2015, 1651
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+MejoraMasArpon
+  rotate: false
+  xy: 2015, 1617
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+TickExternalPlayers
+  rotate: false
+  xy: 1993, 1557
+  size: 27, 24
+  orig: 27, 24
+  offset: 0, 0
+  index: -1
+J3
+  rotate: false
+  xy: 681, 5
+  size: 27, 25
+  orig: 27, 25
+  offset: 0, 0
+  index: -1
+J4
+  rotate: false
+  xy: 966, 14
+  size: 27, 25
+  orig: 27, 25
+  offset: 0, 0
+  index: -1
+MejoraAndaRapidoMaxSize
+  rotate: false
+  xy: 1989, 1341
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+MejoraMasAreaMaxSize
+  rotate: false
+  xy: 1990, 1290
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+
+pack2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+gameScreenBackground
+  rotate: false
+  xy: 1, 1412
+  size: 1024, 630
+  orig: 1024, 630
+  offset: 0, 0
+  index: -1
+initialBack
+  rotate: false
+  xy: 1, 780
+  size: 1024, 630
+  orig: 1024, 630
+  offset: 0, 0
+  index: -1
+initialBack.png
+  rotate: false
+  xy: 1, 148
+  size: 1024, 630
+  orig: 1024, 630
+  offset: 0, 0
+  index: -1
+frozenWars
+  rotate: false
+  xy: 1027, 1594
+  size: 902, 448
+  orig: 902, 448
+  offset: 0, 0
+  index: -1
+textSquare
+  rotate: false
+  xy: 1027, 1374
+  size: 535, 218
+  orig: 535, 218
+  offset: 0, 0
+  index: -1
+YouWin
+  rotate: false
+  xy: 1027, 1188
+  size: 441, 184
+  orig: 441, 184
+  offset: 0, 0
+  index: -1
+YouWonWindow
+  rotate: false
+  xy: 1027, 922
+  size: 361, 264
+  orig: 361, 264
+  offset: 0, 0
+  index: -1
+MultiplayerButtonUnpressed
+  rotate: false
+  xy: 1, 77
+  size: 486, 69
+  orig: 486, 69
+  offset: 0, 0
+  index: -1
+UnpressedButtonMp
+  rotate: false
+  xy: 1, 6
+  size: 486, 69
+  orig: 486, 69
+  offset: 0, 0
+  index: -1
+draw
+  rotate: false
+  xy: 1564, 1408
+  size: 441, 184
+  orig: 441, 184
+  offset: 0, 0
+  index: -1
+InviteFriendsButtonPressed
+  rotate: false
+  xy: 489, 85
+  size: 487, 61
+  orig: 487, 61
+  offset: 0, 0
+  index: -1
+MultiplayerButtonPressed
+  rotate: false
+  xy: 489, 22
+  size: 487, 61
+  orig: 487, 61
+  offset: 0, 0
+  index: -1
+gameOver
+  rotate: false
+  xy: 1027, 736
+  size: 441, 184
+  orig: 441, 184
+  offset: 0, 0
+  index: -1
+yourTeamWins
+  rotate: false
+  xy: 1027, 550
+  size: 441, 184
+  orig: 441, 184
+  offset: 0, 0
+  index: -1
+1vsallHelp
+  rotate: false
+  xy: 1027, 388
+  size: 430, 160
+  orig: 430, 160
+  offset: 0, 0
+  index: -1
+NormalHelp
+  rotate: false
+  xy: 1027, 226
+  size: 430, 160
+  orig: 430, 160
+  offset: 0, 0
+  index: -1
+SurvivalHelp
+  rotate: false
+  xy: 1027, 64
+  size: 430, 160
+  orig: 430, 160
+  offset: 0, 0
+  index: -1
+Back
+  rotate: false
+  xy: 1564, 1336
+  size: 475, 70
+  orig: 475, 70
+  offset: 0, 0
+  index: -1
+TeamsHelp
+  rotate: false
+  xy: 1470, 1174
+  size: 430, 160
+  orig: 430, 160
+  offset: 0, 0
+  index: -1
+battleRoyaleHelp
+  rotate: false
+  xy: 1390, 1012
+  size: 430, 160
+  orig: 430, 160
+  offset: 0, 0
+  index: -1
+ConfirmedExitOff
+  rotate: false
+  xy: 1390, 940
+  size: 475, 70
+  orig: 475, 70
+  offset: 0, 0
+  index: -1
+PressedButtonMp
+  rotate: false
+  xy: 978, 1
+  size: 487, 61
+  orig: 487, 61
+  offset: 0, 0
+  index: -1
+ConfirmedExitOn
+  rotate: false
+  xy: 1470, 868
+  size: 475, 70
+  orig: 475, 70
+  offset: 0, 0
+  index: -1
+LoggedIn
+  rotate: false
+  xy: 1470, 796
+  size: 475, 70
+  orig: 475, 70
+  offset: 0, 0
+  index: -1
+LoggedOut
+  rotate: false
+  xy: 1470, 724
+  size: 475, 70
+  orig: 475, 70
+  offset: 0, 0
+  index: -1
+SoundOff
+  rotate: false
+  xy: 1470, 652
+  size: 475, 70
+  orig: 475, 70
+  offset: 0, 0
+  index: -1
+SoundOn
+  rotate: false
+  xy: 1470, 580
+  size: 475, 70
+  orig: 475, 70
+  offset: 0, 0
+  index: -1
+VibrationOff
+  rotate: false
+  xy: 1470, 508
+  size: 475, 70
+  orig: 475, 70
+  offset: 0, 0
+  index: -1
+VibrationOn
+  rotate: false
+  xy: 1459, 436
+  size: 475, 70
+  orig: 475, 70
+  offset: 0, 0
+  index: -1
+InviteGameTitle
+  rotate: false
+  xy: 1459, 369
+  size: 385, 65
+  orig: 385, 65
+  offset: 0, 0
+  index: -1
+MultiplayerGameTitle
+  rotate: false
+  xy: 1459, 369
+  size: 385, 65
+  orig: 385, 65
+  offset: 0, 0
+  index: -1
+Exit
+  rotate: false
+  xy: 1459, 310
+  size: 325, 57
+  orig: 325, 57
+  offset: 0, 0
+  index: -1
+Help
+  rotate: false
+  xy: 1459, 251
+  size: 325, 57
+  orig: 325, 57
+  offset: 0, 0
+  index: -1
+Play
+  rotate: false
+  xy: 1459, 192
+  size: 325, 57
+  orig: 325, 57
+  offset: 0, 0
+  index: -1
+Settings
+  rotate: false
+  xy: 1459, 133
+  size: 325, 57
+  orig: 325, 57
+  offset: 0, 0
+  index: -1
+1vsAllModeButton
+  rotate: false
+  xy: 1459, 76
+  size: 325, 55
+  orig: 325, 55
+  offset: 0, 0
+  index: -1
+BackButtonHelp
+  rotate: false
+  xy: 1467, 17
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+PlayersText
+  rotate: false
+  xy: 1846, 379
+  size: 150, 55
+  orig: 150, 55
+  offset: 0, 0
+  index: -1
+InviteButton
+  rotate: false
+  xy: 1786, 326
+  size: 240, 41
+  orig: 240, 41
+  offset: 0, 0
+  index: -1
+PlayButton
+  rotate: false
+  xy: 1786, 283
+  size: 240, 41
+  orig: 240, 41
+  offset: 0, 0
+  index: -1
+Water1SideOpenEast
+  rotate: false
+  xy: 1931, 1993
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water1SideOpenNorth
+  rotate: false
+  xy: 1822, 1123
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water1SideOpenSouth
+  rotate: false
+  xy: 1902, 1285
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water1SideOpenWest
+  rotate: false
+  xy: 1786, 232
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water2SideOpenBridgeX
+  rotate: false
+  xy: 1931, 1942
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water2SideOpenBridgeY
+  rotate: false
+  xy: 1982, 1993
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water2SideOpenCornerEN
+  rotate: false
+  xy: 1822, 1072
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water2SideOpenCornerNW
+  rotate: false
+  xy: 1902, 1234
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water2SideOpenCornerSE
+  rotate: false
+  xy: 1953, 1285
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water2SideOpenCornerWS
+  rotate: false
+  xy: 1786, 181
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water3SideEastOpen
+  rotate: false
+  xy: 1837, 232
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water3SideNorthOpen
+  rotate: false
+  xy: 1931, 1891
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water3SideSouthOpen
+  rotate: false
+  xy: 1982, 1942
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water3SideWestOpen
+  rotate: false
+  xy: 1822, 1021
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+Water4SideOpen
+  rotate: false
+  xy: 1902, 1183
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+barrelWithFissure
+  rotate: false
+  xy: 1953, 1234
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+barril
+  rotate: false
+  xy: 1786, 130
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+casilla
+  rotate: false
+  xy: 1837, 181
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+fissureCenter
+  rotate: false
+  xy: 1888, 232
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+fissureCrossing
+  rotate: false
+  xy: 1931, 1840
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+fissureSideX
+  rotate: false
+  xy: 1982, 1891
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+fissureSideY
+  rotate: false
+  xy: 1953, 1183
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+iglus
+  rotate: false
+  xy: 1786, 79
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+sunkenObject
+  rotate: false
+  xy: 1837, 130
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+
+pack3.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+BackGrey
+  rotate: false
+  xy: 1, 1379
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+BackgroundMultiplayer
+  rotate: false
+  xy: 1, 1379
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+ControlHelpText
+  rotate: false
+  xy: 1, 748
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+CreateGameHelpText
+  rotate: false
+  xy: 1, 117
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+BattleRoyalButton
+  rotate: false
+  xy: 1027, 1953
+  size: 325, 55
+  orig: 325, 55
+  offset: 0, 0
+  index: -1
+NormalModeButton
+  rotate: false
+  xy: 1, 60
+  size: 325, 55
+  orig: 325, 55
+  offset: 0, 0
+  index: -1
+SurvivalModeButton
+  rotate: false
+  xy: 1027, 1896
+  size: 325, 55
+  orig: 325, 55
+  offset: 0, 0
+  index: -1
+TeamPlayButton
+  rotate: false
+  xy: 1354, 1953
+  size: 325, 55
+  orig: 325, 55
+  offset: 0, 0
+  index: -1
+ControlButtonHelp
+  rotate: false
+  xy: 1, 1
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+CreateButtonHelp
+  rotate: false
+  xy: 1027, 1837
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+GameModesButtonHelp
+  rotate: false
+  xy: 1027, 1778
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+IntroductionButtonHelp
+  rotate: false
+  xy: 1027, 1719
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+UpgradesButtonHelp
+  rotate: false
+  xy: 1027, 1660
+  size: 316, 57
+  orig: 316, 57
+  offset: 0, 0
+  index: -1
+playerLifes
+  rotate: false
+  xy: 328, 75
+  size: 278, 40
+  orig: 278, 40
+  offset: 0, 0
+  index: -1
+
+pack4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+GameModesHelpText
+  rotate: false
+  xy: 1, 1263
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+IntroductionHelpText
+  rotate: false
+  xy: 1, 632
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+UpgradesHelpText
+  rotate: false
+  xy: 1, 1
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+
+pack5.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+noFriendsOnText
+  rotate: false
+  xy: 1, 632
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1
+secondBack
+  rotate: false
+  xy: 1, 1
+  size: 1024, 629
+  orig: 1024, 629
+  offset: 0, 0
+  index: -1

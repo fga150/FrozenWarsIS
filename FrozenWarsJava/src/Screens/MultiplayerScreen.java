@@ -350,6 +350,7 @@ public class MultiplayerScreen implements Screen{
       		} else if (exitQueueButtonClick.contains(touchPoint) && inQueue && !privateGame){
       			System.out.println(acceptedPlayers.size());
       			sfsClient.removeOfQueue(acceptedPlayers.size(), gameMode);
+      			inQueue=false;
 			} else if (friendsListClick.contains(touchPoint)){
       			this.game.setScreen(new FriendsListScreen());
       			sfsClient.getMyFriendsRequest();
