@@ -52,9 +52,6 @@ public class LaunchFrozenWars extends Game implements InputProcessor{
 		   		this.setScreen(InitialScreen.getInstance());
 	   		}
 	    }
-	    else if(keycode == Keys.POWER){
-	    	this.dispose();
-	    }
 		return false;
 	}
 
