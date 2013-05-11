@@ -38,8 +38,8 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 			if(enc==true){
 				ISFSObject rtn = new SFSObject();
 				rtn.putUtfString("playerName", player.getName());
-				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
-				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+				if(arrayUsers[0]!=player)this.send("LeaveQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("LeaveQueue", rtn, arrayUsers[1]);
 				queue2.remove(arrayUsers);		
 			}
 		}
@@ -60,9 +60,9 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 			if(enc==true){
 				ISFSObject rtn = new SFSObject();
 				rtn.putUtfString("playerName", player.getName());
-				if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
-				if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
-				if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+				if(arrayUsers[0]!=player)this.send("LeaveQueue", rtn, arrayUsers[0]);
+				if(arrayUsers[1]!=player)this.send("LeaveQueue", rtn, arrayUsers[1]);
+				if(arrayUsers[2]!=player)this.send("LeaveQueue", rtn, arrayUsers[2]);
 				queue3.remove(arrayUsers);
 			}
 		}
@@ -91,8 +91,8 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 				if(enc==true){
 					ISFSObject rtn = new SFSObject();
 					rtn.putUtfString("playerName", player.getName());
-					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
-					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[0]!=player)this.send("LeaveQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("LeaveQueue", rtn, arrayUsers[1]);
 					queue2.remove(arrayUsers);		
 				}
 			}
@@ -113,9 +113,9 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 				if(enc==true){
 					ISFSObject rtn = new SFSObject();
 					rtn.putUtfString("playerName", player.getName());
-					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
-					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
-					if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+					if(arrayUsers[0]!=player)this.send("LeaveQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("LeaveQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[2]!=player)this.send("LeaveQueue", rtn, arrayUsers[2]);
 					queue3.remove(arrayUsers);
 				}
 			}
@@ -143,8 +143,8 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 				if(enc==true){
 					ISFSObject rtn = new SFSObject();
 					rtn.putUtfString("playerName", player.getName());
-					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
-					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[0]!=player)this.send("LeaveQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("LeaveQueue", rtn, arrayUsers[1]);
 					queue2.remove(arrayUsers);		
 				}
 			}
@@ -165,9 +165,9 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 				if(enc==true){
 					ISFSObject rtn = new SFSObject();
 					rtn.putUtfString("playerName", player.getName());
-					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
-					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
-					if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+					if(arrayUsers[0]!=player)this.send("LeaveQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("LeaveQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[2]!=player)this.send("LeaveQueue", rtn, arrayUsers[2]);
 					queue3.remove(arrayUsers);
 				}
 			}
@@ -196,8 +196,8 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 				if(enc==true){
 					ISFSObject rtn = new SFSObject();
 					rtn.putUtfString("playerName", player.getName());
-					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
-					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[0]!=player)this.send("LeaveQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("LeaveQueue", rtn, arrayUsers[1]);
 					queue2.remove(arrayUsers);		
 				}
 			}
@@ -218,9 +218,9 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 				if(enc==true){
 					ISFSObject rtn = new SFSObject();
 					rtn.putUtfString("playerName", player.getName());
-					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
-					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
-					if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+					if(arrayUsers[0]!=player)this.send("LeaveQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("LeaveQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[2]!=player)this.send("LeaveQueue", rtn, arrayUsers[2]);
 					queue3.remove(arrayUsers);
 				}
 			}
@@ -249,8 +249,8 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 				if(enc==true){
 					ISFSObject rtn = new SFSObject();
 					rtn.putUtfString("playerName", player.getName());
-					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
-					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[0]!=player)this.send("LeaveQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("LeaveQueue", rtn, arrayUsers[1]);
 					queue2.remove(arrayUsers);		
 				}
 			}
@@ -271,9 +271,9 @@ public class ExtractUsersHandler extends BaseClientRequestHandler {
 				if(enc==true){
 					ISFSObject rtn = new SFSObject();
 					rtn.putUtfString("playerName", player.getName());
-					if(arrayUsers[0]!=player)this.send("OutOfQueue", rtn, arrayUsers[0]);
-					if(arrayUsers[1]!=player)this.send("OutOfQueue", rtn, arrayUsers[1]);
-					if(arrayUsers[2]!=player)this.send("OutOfQueue", rtn, arrayUsers[2]);
+					if(arrayUsers[0]!=player)this.send("LeaveQueue", rtn, arrayUsers[0]);
+					if(arrayUsers[1]!=player)this.send("LeaveQueue", rtn, arrayUsers[1]);
+					if(arrayUsers[2]!=player)this.send("LeaveQueue", rtn, arrayUsers[2]);
 					queue3.remove(arrayUsers);
 				}
 			}

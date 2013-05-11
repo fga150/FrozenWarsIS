@@ -1,5 +1,6 @@
 package com.a51integrated.sfs2x;
 
+import java.util.HashMap;
 import java.util.Queue;
 
 import com.smartfoxserver.v2.entities.User;
@@ -10,8 +11,17 @@ public class Put1Handler extends BaseClientRequestHandler {
 
 	@Override
 	public void handleClientRequest(User player, ISFSObject params) { // a single player wants to join a game
-
+	
 	MyExt parentEx = (MyExt) getParentExtension();
+
+	HashMap<String,InvitationRoom> gamesInCreation = parentEx.getGamesInCreation();
+	if(gamesInCreation.containsKey(player.getName())){
+    
+    gamesInCreation.remove(player.getName());
+    parentEx.setGamesInCreation(gamesInCreation);
+	
+	}
+	
 		int mode = params.getInt("mode");
 		
 		if (mode == 0){
