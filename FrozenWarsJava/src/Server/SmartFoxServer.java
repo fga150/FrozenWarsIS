@@ -180,6 +180,8 @@ public class SmartFoxServer implements IEventListener {
 					NamesGame(response);
 				else if(cmd.equals("UpdateFriendList"))
 					getMyFriendsRequest();	
+				else if(cmd.equals("LeaveQueue"))
+					leaveQueueRes(response);	
 			}
 
 		});
@@ -673,6 +675,11 @@ public class SmartFoxServer implements IEventListener {
 	private void userOutOfQueue(ISFSObject response) {
 		AcceptScreen.getInstance().setNewAcceptScreen("UserOutOfQueue", response.getUtfString("playerName"));
 		
+	}
+	
+
+	private void leaveQueueRes(ISFSObject response) {
+		AcceptScreen.getInstance().setNewAcceptScreen("QueueExit", response.getUtfString("playerName"));		
 	}
 	
 	public void dispatch(BaseEvent event) throws SFSException {
