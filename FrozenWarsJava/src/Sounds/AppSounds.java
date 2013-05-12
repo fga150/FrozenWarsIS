@@ -17,10 +17,14 @@ public class AppSounds{
 		}
 		
 		public void init(){
-			loadSound("putHarpoon","put.mp3");
-			loadSound("breakIce","putHarpoon.mp3");
+			loadSound("putHarpoon","putHarpoon.mp3");
+			loadSound("breakIce","breakIce.mp3");
 			loadSound("gong","gong.mp3");
 			loadSound("sinkPenguin","sinkPenguin.mp3");
+			//loadSound("freezeWater","freezeWater.mp3");
+			loadSound("youWin","youWin.mp3");
+			loadSound("youLost","youLost.mp3");
+			loadSound("cacthUpgrade","cacthUpgrade.mp3");
 		}
 		
 		private boolean loadSound(String eventType,String name){
@@ -47,8 +51,9 @@ public class AppSounds{
 		public boolean playSound(String name){
 			Sound sound = sounds.get(name);
 			if (sound!=null){ 
-//				int i = Hexa.random.nextInt(soundArray.size);
-				sound.setVolume((long) 0.5f, 0.5f);
+				if(name.equals("breakIce")){
+					 sound.setVolume((long) 0.25f, 0.25f);
+				}else sound.setVolume((long) 0.75f, 0.75f);
 				sound.play();
 				return true;
 			}else{

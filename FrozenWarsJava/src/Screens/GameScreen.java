@@ -410,6 +410,7 @@ public class GameScreen implements Screen{
 		if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()==1){
 			batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
 			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+			manager.playThisSound("youLost");
 			gameOver = true;
 		}
 		else if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()>1){
@@ -420,6 +421,7 @@ public class GameScreen implements Screen{
 			if(myTeamWin) {
 				batcher.draw(Assets.getYourTeamWins(),6.5f,6,14,6);
 				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+				manager.playThisSound("youWin");
 			}
 			else {
 				boolean myTeamLost = true;
@@ -430,6 +432,7 @@ public class GameScreen implements Screen{
 				if(myTeamLost){
 				batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
 				batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+				manager.playThisSound("youLost");
 				}
 			}
 			gameOver = true;
@@ -438,10 +441,12 @@ public class GameScreen implements Screen{
 			if(manager.getMyTeam(numPlayer).getPlayers().size()==1){
 				batcher.draw(Assets.getYouWin(),6.5f,6,14,6);	
 				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+				manager.playThisSound("youWin");
 			}
 			else{
 				batcher.draw(Assets.getYourTeamWins(),6.5f,6,14,6);
 				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+				manager.playThisSound("youWin");
 			}
 			gameOver = true;
 		}else if (manager.isGameTimeOff()){
@@ -451,6 +456,7 @@ public class GameScreen implements Screen{
 					batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
 					batcher.setProjectionMatrix(textCam.combined);	
 					font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+					manager.playThisSound("youLost");
  					gameOver = true;
  				}
  				else {
@@ -458,6 +464,7 @@ public class GameScreen implements Screen{
 					batcher.draw(Assets.getYouWonWindow(),10.25f,1f,6.36f,4.39f);
 					batcher.setProjectionMatrix(textCam.combined);	
 					font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+					manager.playThisSound("youWin");
  					gameOver = true;
  				}
  			}
@@ -466,6 +473,7 @@ public class GameScreen implements Screen{
 				batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
 				batcher.setProjectionMatrix(textCam.combined);	
 				font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+				manager.playThisSound("youLost");
  				gameOver = true;
  			}
 		}

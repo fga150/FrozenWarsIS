@@ -550,6 +550,9 @@ public class Map {
 	}
 
 	public boolean existUpgrade(Vector3 pos) {
-		return boardGame[(int) pos.x][(int) pos.y]==TypeSquare.bootUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.rangeUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.numHarpoonUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.invisible;
+		return boardGame[(int) pos.x][(int) pos.y]==TypeSquare.bootUpgrade
+			||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.rangeUpgrade
+			||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.numHarpoonUpgrade
+			||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.invisible;
 	}
 }

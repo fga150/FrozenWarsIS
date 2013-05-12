@@ -557,21 +557,26 @@ public class Match {
 		Player player = getPlayer(playerId);
 		Vector3[] positions = player.getPositions();
 		boolean isSunken = false;
+	
 		if(map.getWaterMatrixSquare((int)positions[0].x,(int)positions[0].y)!=WaterTypes.empty){
-			map.sunkenObject((int)positions[0].x,(int)positions[0].y);
-			if(type.equals(TypeGame.BattleRoyale)){
-				Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[0].x,(int)positions[0].y);
-				stealImprovements(player.getPlayerId(),myHarpoon);
+			if((positions[0].x>=0 && positions[0].x<11)&&(positions[0].y>=0 && positions[0].y<11)){
+				map.sunkenObject((int)positions[0].x,(int)positions[0].y);
+				if(type.equals(TypeGame.BattleRoyale)){
+					Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[0].x,(int)positions[0].y);
+					stealImprovements(player.getPlayerId(),myHarpoon);
+				}
+				isSunken = true;
 			}
-			isSunken = true;
 		}
 		else if(map.getWaterMatrixSquare((int)positions[1].x,(int)positions[1].y)!=WaterTypes.empty){
-			map.sunkenObject((int)positions[1].x,(int)positions[1].y);
-			if(type.equals(TypeGame.BattleRoyale )){
-				Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[1].x,(int)positions[1].y);
-				stealImprovements(player.getPlayerId(),myHarpoon);
+			if((positions[1].x>=0 && positions[1].x<11)&&(positions[1].y>=0 && positions[1].y<11)){
+				map.sunkenObject((int)positions[1].x,(int)positions[1].y);
+				if(type.equals(TypeGame.BattleRoyale )){
+					Harpoon myHarpoon = harpoonManager.getsinkHarpoon((int)positions[1].x,(int)positions[1].y);
+					stealImprovements(player.getPlayerId(),myHarpoon);
+				}
+				isSunken = true;
 			}
-			isSunken = true;
 		}
 		if(isSunken) myAppSounds.playSound("sinkPenguin");
 		return isSunken;
@@ -1014,30 +1019,38 @@ public class Match {
 	
 	public void checkUpgrade(Direction dir, int playerId) {
 		Player player = getPlayer(playerId);
+		boolean caughtUpgrade =false;
 		Vector3[] positions = player.getPositions();
-		if (positions[0].equals(positions[1]) && map.existUpgrade(positions[0])) {
-			TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y);
-			if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
-			else player.upgradePlayer(typeSquare);
-			map.setEmpty((int)positions[0].x,(int)positions[0].y);
-			logFile.writeEvent("The player "+ playerId+ " has taken an upgrade " + typeSquare.toString() + " at "+ positions[0].x + " " + positions[0].y);
-		}
-		else {
-			if (map.existUpgrade(positions[0])){
-				TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y);
-				if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
-				else player.upgradePlayer(typeSquare);
-				map.setEmpty((int)positions[0].x,(int)positions[0].y);
-				logFile.writeEvent("The player "+ playerId+ " has taken an upgrade " + typeSquare.toString() + " at "+ positions[0].x + " " + positions[0].y);
-			}
-			else if (map.existUpgrade(positions[1])){
+		if (((positions[0].x>=0 && positions[0].x<11)&&(positions[0].y>=0 && positions[0].y<11))
+			&& ((positions[1].x>=0 && positions[1].x<11)&&(positions[1].y>=0 && positions[1].y<11))){
+			if (positions[0].equals(positions[1]) && map.existUpgrade(positions[0])) {
 				TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y);
 				if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
 				else player.upgradePlayer(typeSquare);
-				map.setEmpty((int)positions[1].x,(int)positions[1].y);
-				logFile.writeEvent("The player "+ playerId+ " has taken an upgrade " + typeSquare.toString() + " at "+ positions[1].x + " " + positions[1].y);
+				map.setEmpty((int)positions[0].x,(int)positions[0].y);
+				caughtUpgrade = true;
+				logFile.writeEvent("The player "+ playerId+ " has taken an upgrade " + typeSquare.toString() + " at "+ positions[0].x + " " + positions[0].y);
+			}
+			else {
+				if (map.existUpgrade(positions[0])){
+					TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[0].x,(int)positions[0].y);
+					if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
+					else player.upgradePlayer(typeSquare);
+					map.setEmpty((int)positions[0].x,(int)positions[0].y);
+					caughtUpgrade = true;
+					logFile.writeEvent("The player "+ playerId+ " has taken an upgrade " + typeSquare.toString() + " at "+ positions[0].x + " " + positions[0].y);
+				}
+				else if (map.existUpgrade(positions[1])){
+					TypeSquare typeSquare = map.getBasicMatrixSquare((int)positions[1].x,(int)positions[1].y);
+					if (typeSquare.equals(TypeSquare.invisible)) makeInvisible(player);
+					else player.upgradePlayer(typeSquare);
+					map.setEmpty((int)positions[1].x,(int)positions[1].y);
+					caughtUpgrade = true;
+					logFile.writeEvent("The player "+ playerId+ " has taken an upgrade " + typeSquare.toString() + " at "+ positions[1].x + " " + positions[1].y);
+				}
 			}
 		}
+		if (caughtUpgrade) myAppSounds.playSound("cacthUpgrade");
 	}
 	
 	private void makeInvisible(Player player){
