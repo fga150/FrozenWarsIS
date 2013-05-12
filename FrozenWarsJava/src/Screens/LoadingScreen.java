@@ -19,6 +19,7 @@ public class LoadingScreen implements Screen{
 	private BitmapFont font2;
 	private boolean loaded;
 	private long waitTime;
+	private boolean send;
 	
 	
 	public LoadingScreen(MatchManager manager){
@@ -62,9 +63,13 @@ public class LoadingScreen implements Screen{
 		batcher.end();
 		textCam.update();
 		
-		if (loaded && (System.currentTimeMillis()-waitTime>3000)){
-			manager.changeGameScreen();
-			loaded=!loaded;
+		if (manager.getMyIdPlayer()==0 && !send && (System.currentTimeMillis()-waitTime>2500)){
+				send = false;
+				manager.sendAsign();
+		}
+		if (loaded && (System.currentTimeMillis()-waitTime>5000)){
+				loaded = false;
+				manager.changeGameScreen();
 		}
 		
 	}

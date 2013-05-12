@@ -316,7 +316,6 @@ public class MultiplayerScreen implements Screen{
 		AppMusic myAppMusic = new AppMusic(gameMode);
 		MatchManager manager = new MatchManager(sfsClient,gameMode, myAppMusic, myAppSounds);
 		game.setScreen(manager.getLoadingScreen());
-		if (manager.getMyIdPlayer()==0) manager.sendAsign();
 	}
 	
 	

@@ -4,12 +4,12 @@ import Application.Assets;
 import Application.Desktop;
 import Application.LaunchFrozenWars;
 import Application.MatchManager;
-import Application.MatchManager.Direction;
+import GameLogic.Direction;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
-import GameLogic.Match.TypeGame;
+import GameLogic.TypeGame;
 import Server.SmartFoxServer;
 
 import com.badlogic.gdx.Gdx;

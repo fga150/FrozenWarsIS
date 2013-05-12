@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import Application.GameSettings;
 import Application.LaunchFrozenWars;
 import Application.MatchManager;
-import Application.MatchManager.Direction;
+import GameLogic.Direction;
 import Screens.AcceptScreen;
 import Screens.ConfirmScreen;
 import Screens.FriendsListScreen;
@@ -19,6 +19,7 @@ import Screens.MultiplayerScreen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector3;
+
 import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSArray;
@@ -83,7 +84,6 @@ public class SmartFoxServer implements IEventListener {
 	public void addManager(MatchManager manager){
 		this.manager = manager;
 	}
-	
 	
 	public int getMyPlayerId(){
 		return myPlayerId;

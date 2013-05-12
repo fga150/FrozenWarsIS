@@ -1,8 +1,8 @@
 package GameLogic;
 
-import Application.MatchManager.Direction;
+import GameLogic.Direction;
 import GameLogic.Map.TypeSquare;
-import GameLogic.Match.TypeGame;
+import GameLogic.TypeGame;
 
 import com.badlogic.gdx.math.Vector3;
 

@@ -1,8 +1,7 @@
 package GameLogic;
 
 import java.util.ArrayList;
-
-import GameLogic.Match.TypeGame;
+import GameLogic.TypeGame;
 
 public class Team {
 	

@@ -1,11 +1,13 @@
 package Application;
 import com.badlogic.gdx.math.Vector3;
+
+import GameLogic.Direction;
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
 import GameLogic.Match;
-import GameLogic.Match.TypeGame;
+import GameLogic.TypeGame;
 import GameLogic.Team;
 import GameLogic.XMLMapReader;
 import Screens.GameScreen;
@@ -16,8 +18,6 @@ import Sounds.AppSounds;
 
 public class MatchManager {
 	
-	public enum Direction{left,right,up,down} 
-	
 	private AppMusic myAppMusic;
 	private AppSounds myAppSounds;
 	private SmartFoxServer sfsClient;
@@ -25,8 +25,6 @@ public class MatchManager {
 	private LoadingScreen loadingScreen;
 	private GameScreen gameScreen;
 	private int myPlayerId;
-	@SuppressWarnings("unused")
-	private int numPlayers;
 	private long lastMessage;
 	private TypeGame mode;
 	private static String[] usersNames;
@@ -41,9 +39,9 @@ public class MatchManager {
 		this.mode = getTypeGame(mode);
 		if ((this.mode.equals(TypeGame.Survival)) || (this.mode.equals(TypeGame.OneVsAll))) map = "SurvivalMap.xml";
 		this.xmlMapReader = new XMLMapReader(map);
-		this.loadingScreen = new LoadingScreen(this);
 		this.sfsClient.addManager(this);
 		this.myPlayerId = sfsClient.getMyPlayerId()-1;
+		this.loadingScreen = new LoadingScreen(this);
 	}
 	
 	public void movePlayer(Direction dir){
@@ -108,7 +106,6 @@ public class MatchManager {
 	public void startGame(int[] upgrades, int numPlayers) {
 		this.myAppMusic.playMyInitialMusic();
 		this.myAppSounds.init();
-		this.numPlayers = numPlayers;
 		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode,usersNames[myPlayerId], myAppSounds);
 		this.loadingScreen.setLoaded(true);
 	}

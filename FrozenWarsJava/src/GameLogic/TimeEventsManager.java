@@ -2,8 +2,8 @@ package GameLogic;
 
 import java.util.HashMap;
 
-import GameLogic.Match.TypeGame;
-import GameLogic.TimeEventsTask.TypeEvent;
+import GameLogic.TypeGame;
+import GameLogic.TypeEvent;
 
 import com.badlogic.gdx.utils.Timer;
 
