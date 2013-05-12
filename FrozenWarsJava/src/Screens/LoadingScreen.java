@@ -64,7 +64,7 @@ public class LoadingScreen implements Screen{
 		textCam.update();
 		
 		if (manager.getMyIdPlayer()==0 && !send && (System.currentTimeMillis()-waitTime>2500)){
-				send = false;
+				send = true;
 				manager.sendAsign();
 		}
 		if (loaded && (System.currentTimeMillis()-waitTime>5000)){
