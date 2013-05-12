@@ -8,6 +8,7 @@ import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Server.SmartFoxServer;
 import Sounds.AppMusic;
+import Sounds.AppSounds;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -311,8 +312,9 @@ public class MultiplayerScreen implements Screen{
 
 
 	public void creaPartida(){
+		AppSounds myAppSounds = new AppSounds();
 		AppMusic myAppMusic = new AppMusic(gameMode);
-		MatchManager manager = new MatchManager(sfsClient,gameMode, myAppMusic);
+		MatchManager manager = new MatchManager(sfsClient,gameMode, myAppMusic, myAppSounds);
 		game.setScreen(manager.getLoadingScreen());
 		if (manager.getMyIdPlayer()==0) manager.sendAsign();
 	}

@@ -11,7 +11,10 @@ public class AppMusic{
 	private Music battleMusic;
 	private Music fastBattleMusic;
 
+	private int gameMode;
+	
 	public AppMusic(int gameMode){
+		this.gameMode = gameMode;
 		switch (gameMode){ 
 			case 0: 
 			case 1: 
@@ -26,14 +29,16 @@ public class AppMusic{
 		
 	}
 	
-	public void playMyInitialMusic(int gameMode){
+	public void playMyInitialMusic(){
 		switch (gameMode){ 
 			case 0: 
 			case 1: 
-			case 2: playHappyMusic();
+			case 2: happyMusic.setVolume(0.5f);
+					playHappyMusic();
 					break;
 			case 3: 
-			case 4: playBattleMusic();
+			case 4: battleMusic.setVolume(0.5f);
+					playBattleMusic();
 					break;
 			default: break;
 		}
@@ -44,6 +49,7 @@ public class AppMusic{
 //		 if(fastBattleMusic.isPlaying()) fastBattleMusic.stop();
 		 if(!happyMusic.isPlaying()){
 			 happyMusic.setLooping(true);
+			 happyMusic.setVolume(0.5f);
 			 happyMusic.play();
 		 }
 	}
@@ -53,6 +59,7 @@ public class AppMusic{
 		 if(fastBattleMusic.isPlaying()) fastBattleMusic.stop();
 		 if(!battleMusic.isPlaying()){
 			 battleMusic.setLooping(true);
+			 battleMusic.setVolume(0.5f);
 			 battleMusic.play();
 		 }
 	}
@@ -62,6 +69,7 @@ public class AppMusic{
 //		 if(happyMusic.isPlaying()) happyMusic.stop();
 		 if(!fastBattleMusic.isPlaying()){
 			 fastBattleMusic.setLooping(true);
+			 fastBattleMusic.setVolume(0.5f);
 			 fastBattleMusic.play();
 		 }
 	}

@@ -12,12 +12,14 @@ import Screens.GameScreen;
 import Screens.LoadingScreen;
 import Server.SmartFoxServer;
 import Sounds.AppMusic;
+import Sounds.AppSounds;
 
 public class MatchManager {
 	
 	public enum Direction{left,right,up,down} 
 	
 	private AppMusic myAppMusic;
+	private AppSounds myAppSounds;
 	private SmartFoxServer sfsClient;
 	private Match match;
 	private LoadingScreen loadingScreen;
@@ -31,9 +33,9 @@ public class MatchManager {
 	private XMLMapReader xmlMapReader;
 
 	
-	public MatchManager(SmartFoxServer sfs,int mode, AppMusic myAppMusic){
+	public MatchManager(SmartFoxServer sfs,int mode, AppMusic myAppMusic, AppSounds myAppSounds){
 		this.myAppMusic = myAppMusic;
-		this.myAppMusic.playMyInitialMusic(mode);
+		this.myAppSounds = myAppSounds;
 		this.sfsClient=sfs;
 		String map = "mapaPrueba.xml";
 		this.mode = getTypeGame(mode);
@@ -104,8 +106,10 @@ public class MatchManager {
 	}
 	
 	public void startGame(int[] upgrades, int numPlayers) {
+		this.myAppMusic.playMyInitialMusic();
+		this.myAppSounds.init();
 		this.numPlayers = numPlayers;
-		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode,usersNames[myPlayerId]);
+		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode,usersNames[myPlayerId], myAppSounds);
 		this.loadingScreen.setLoaded(true);
 	}
 	
@@ -136,6 +140,10 @@ public class MatchManager {
 	
 	public void stopTheMusic(){
 		myAppMusic.stopMyMusic();
+	}
+	
+	public void playThisSound(String sound){
+		myAppSounds.playSound(sound);
 	}
 	// Getters and Setters
 	
