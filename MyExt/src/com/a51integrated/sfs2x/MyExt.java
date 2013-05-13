@@ -20,6 +20,7 @@ import com.smartfoxserver.v2.extensions.SFSExtension;
 public class MyExt extends SFSExtension {
 	
 	private int nRooms;			// To set a different name for the room
+	//private Long harpoonId;
 	private Queue<User> queue01; // queues for the start of games
 	private Queue<User[]> queue02;
 	private Queue<User[]> queue03;
@@ -85,6 +86,7 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("ExitGame", ExitGame.class);
 		
 		nRooms=0;
+		//harpoonId=0L;
 	}
 
 	public HashMap<String, InvitationRoom> getGamesInCreation() {
@@ -188,7 +190,15 @@ public class MyExt extends SFSExtension {
 	public void setnRooms(int nRooms) {
 		this.nRooms = nRooms;
 	}
+	
+/*	public Long getHarpoonId() {
+		return harpoonId;
+	}
 
+	public void setHarpoonId(Long harpoonId) {
+		this.harpoonId = harpoonId;
+	}
+*/
 	public Queue<User> getQueue01() {
 		return queue01;
 	}
