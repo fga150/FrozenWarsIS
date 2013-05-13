@@ -270,6 +270,7 @@ public class GameScreen implements Screen{
 				if ((gameOverOk.contains(touchPoint) || gameOverOk.contains(touchPoint2)) && gameOver){
 					SmartFoxServer.getInstance().exitGame();
 					gameOver = false;
+					manager.stopSounds();
 					MultiplayerScreen ms = MultiplayerScreen.getInstance();
 					ms.setDefault();
 					LaunchFrozenWars.getGame().setScreen(ms);

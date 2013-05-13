@@ -52,14 +52,26 @@ public class AppSounds{
 			Sound sound = sounds.get(name);
 			if (sound!=null){ 
 				if(name.equals("breakIce")){
-					 sound.setVolume((long) 0.25f, 0.25f);
-				}else sound.setVolume((long) 0.75f, 0.75f);
-				sound.play();
+					sound.setVolume((long) 0.15f, 0.15f);
+					sound.play();
+				}else if(name.equals("sinkPenguin")){
+					sound.setVolume((long) 2,2);
+					sound.play();
+				}else{
+					sound.setVolume((long) 0.5f, 0.5f);
+					sound.play();
+				}
+			
 				return true;
 			}else{
 				//Sound not found
 				return false;
 			}
+		}
+
+		public void stopSounds() {
+			sounds.get("youWin").stop();
+			sounds.get("youLost").stop();
 		}
 		
 }
