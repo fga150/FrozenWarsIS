@@ -20,6 +20,7 @@ public class MatchManager {
 	
 	private AppMusic myAppMusic;
 	private AppSounds myAppSounds;
+	boolean playedYet=false;
 	private SmartFoxServer sfsClient;
 	private Match match;
 	private LoadingScreen loadingScreen;
@@ -29,6 +30,7 @@ public class MatchManager {
 	private TypeGame mode;
 	private static String[] usersNames;
 	private XMLMapReader xmlMapReader;
+	
 
 	
 	public MatchManager(int numPlayers, SmartFoxServer sfs,int mode, AppMusic myAppMusic, AppSounds myAppSounds){
@@ -140,8 +142,17 @@ public class MatchManager {
 		myAppMusic.stopMyMusic();
 	}
 	
+	public void stopSounds() {
+		myAppSounds.stopSounds();
+	}
+	
 	public void playThisSound(String sound){
-		myAppSounds.playSound(sound);
+		if(sound.equals("youWin")&&playedYet){}
+		else if(sound.equals("youLost")&&playedYet){}
+		else {
+			myAppSounds.playSound(sound);
+			if(sound.equals("youWin") || sound.equals("youLost")) playedYet=true;
+		}
 	}
 	// Getters and Setters
 	
@@ -292,5 +303,7 @@ public class MatchManager {
 	public long getTimeMatch() {
 		return match.getTimeManager();
 	}
+
+	
 	
 }
