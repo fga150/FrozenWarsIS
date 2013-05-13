@@ -108,20 +108,19 @@ public class Match {
 	 * @param namePlayer The name of the player to create logFile.
 	 * @see Map, XMLMapReader, Team, AppSounds
 	 */
-	public Match(int[] upgrades,XMLMapReader xmlMapReader,int playerId, int numPlayers,TypeGame type,
-			String namePlayer, AppSounds myAppSounds){
+	public Match(XMLMapReader xmlMapReader,int playerId, int numPlayers,TypeGame type, AppSounds myAppSounds){
 		this.myAppSounds = myAppSounds;
 		this.myPlayerId = playerId;
 		this.numPlayers = numPlayers;
 		this.type = type;
-		this.map = new Map(maxSize,maxSize,upgrades,xmlMapReader);
+		this.map = new Map(maxSize,maxSize,xmlMapReader);
 		this.teams = initializeTeams(numPlayers,type);
 		this.harpoonManager = new HarpoonManager(numPlayers);
 		this.timeEventsManager = new TimeEventsManager(this);
 		this.gameTimeOff = false;
 		if (type.equals(TypeGame.BattleRoyale)||type.equals(TypeGame.Survival)) timeEventsManager.endGameEvent(type);
 		coord=new Vector3();
-		this.logFile = new LogFile(namePlayer);
+		this.logFile = new LogFile("Player: " + Integer.toString(playerId));
 		printGameStatus();
 	}
 	
@@ -1223,6 +1222,10 @@ public class Match {
 
 	public long getTimeManager() {
 		return timeEventsManager.getTimeMatch();
+	}
+
+	public void loadUpgrades(int[] upgrades) {
+		map.loadUpgrades(upgrades);		
 	}
 
 	

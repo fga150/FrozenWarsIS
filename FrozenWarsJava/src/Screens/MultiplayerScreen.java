@@ -314,7 +314,7 @@ public class MultiplayerScreen implements Screen{
 	public void creaPartida(){
 		AppSounds myAppSounds = new AppSounds();
 		AppMusic myAppMusic = new AppMusic(gameMode);
-		MatchManager manager = new MatchManager(sfsClient,gameMode, myAppMusic, myAppSounds);
+		MatchManager manager = new MatchManager(this.acceptedPlayers.size(),sfsClient,gameMode, myAppMusic, myAppSounds);
 		game.setScreen(manager.getLoadingScreen());
 	}
 	

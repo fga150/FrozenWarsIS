@@ -31,7 +31,7 @@ public class MatchManager {
 	private XMLMapReader xmlMapReader;
 
 	
-	public MatchManager(SmartFoxServer sfs,int mode, AppMusic myAppMusic, AppSounds myAppSounds){
+	public MatchManager(int numPlayers, SmartFoxServer sfs,int mode, AppMusic myAppMusic, AppSounds myAppSounds){
 		this.myAppMusic = myAppMusic;
 		this.myAppSounds = myAppSounds;
 		this.sfsClient=sfs;
@@ -41,6 +41,7 @@ public class MatchManager {
 		this.xmlMapReader = new XMLMapReader(map);
 		this.sfsClient.addManager(this);
 		this.myPlayerId = sfsClient.getMyPlayerId()-1;
+		this.match = new Match(xmlMapReader,myPlayerId,numPlayers,this.mode,myAppSounds);
 		this.loadingScreen = new LoadingScreen(this);
 	}
 	
@@ -106,7 +107,7 @@ public class MatchManager {
 	public void startGame(int[] upgrades, int numPlayers) {
 		this.myAppMusic.playMyInitialMusic();
 		this.myAppSounds.init();
-		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode,usersNames[myPlayerId], myAppSounds);
+		match.loadUpgrades(upgrades);
 		this.loadingScreen.setLoaded(true);
 	}
 	

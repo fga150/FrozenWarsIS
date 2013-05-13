@@ -40,11 +40,10 @@ public class Map {
 	private WaterTypes[][] waterBoard;
 	private SunkenTypes[][] sunkenBoard;
 	
-	public Map(int lenght, int width, int[] upgrades,XMLMapReader xmlMapReader) {
+	public Map(int lenght, int width, XMLMapReader xmlMapReader) {
 		this.length=lenght;
 		this.width=width;
 		this.numBarrels = 0;
-		this.upgrades = upgrades;
 		this.boardGame = new TypeSquare[lenght][width];
 		this.fissuresBoard = new FissuresTypes[lenght][width];
 		this.waterBoard = new WaterTypes[lenght][width];
@@ -550,9 +549,10 @@ public class Map {
 	}
 
 	public boolean existUpgrade(Vector3 pos) {
-		return boardGame[(int) pos.x][(int) pos.y]==TypeSquare.bootUpgrade
-			||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.rangeUpgrade
-			||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.numHarpoonUpgrade
-			||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.invisible;
+		return boardGame[(int) pos.x][(int) pos.y]==TypeSquare.bootUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.rangeUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.numHarpoonUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.invisible;
+	}
+
+	public void loadUpgrades(int[] upgrades) {
+		this.upgrades = upgrades;		
 	}
 }

@@ -87,6 +87,7 @@ public class Assets {
 	    private static AtlasRegion bootUpgradeMaxSize;
 		private static AtlasRegion rangeUpgradeMaxSize;
 	    private static AtlasRegion numHarpoonUpgradeMaxSize;
+	    private static AtlasRegion notNumHarpoonUpgradeMaxSize;
 	    private static AtlasRegion invisibleUpgradeMaxSize;
 	    
 	    private static AtlasRegion throwUpgrade;
@@ -335,8 +336,8 @@ public class Assets {
 		    bootUpgradeMaxSize= atlas.findRegion("MejoraAndaRapidoMaxSize");
 		    rangeUpgradeMaxSize= atlas.findRegion("MejoraMasAreaMaxSize");
 		    numHarpoonUpgradeMaxSize= atlas.findRegion("MejoraMasArponMaxSize");
+		    notNumHarpoonUpgradeMaxSize= atlas.findRegion("NoMejoraMasArponMaxSize");
 		    invisibleUpgradeMaxSize= atlas.findRegion("MejoraInvisibilidadMaxSize");
-			
 			
 			directionPanel=(atlas.findRegion("MandoDirecciones"));
 			buttonHarpoon = atlas.findRegion("BotonLanza"); 
@@ -419,7 +420,7 @@ public class Assets {
 		    indexTitle = atlas.findRegion("IndexTitle");
 		    introductionButtonHelp = atlas.findRegion("IntroductionButtonHelp");
 		    upgradesButtonHelp = atlas.findRegion("UpgradesButtonHelp");
-		    
+	
 		    
 		    introductionHelpText = atlas.findRegion("IntroductionHelpText");
 		    upgradesHelpText = atlas.findRegion("UpgradesHelpText");
@@ -761,6 +762,15 @@ public static AtlasRegion getBootUpgrade() {
 
 		public static AtlasRegion getYouWonWindow() {
 			return YouWonWindow;
+		}
+
+		public static AtlasRegion getNotNumHarpoonUpgradeMaxSize() {
+			return notNumHarpoonUpgradeMaxSize;
+		}
+
+		public static void setNotNumHarpoonUpgradeMaxSize(
+				AtlasRegion notNumHarpoonUpgradeMaxSize) {
+			Assets.notNumHarpoonUpgradeMaxSize = notNumHarpoonUpgradeMaxSize;
 		}
 
 
