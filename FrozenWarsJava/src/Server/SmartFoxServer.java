@@ -154,8 +154,8 @@ public class SmartFoxServer implements IEventListener {
 					DisconectedOnGame(response);
 				else if (cmd.equals("putHarpoon"))
 					getHarpoon(response);
-				else if (cmd.equals("exploteHarpoon"))
-					exploteHarpoon(response);
+				else if (cmd.equals("exploteHarpoonRes"))
+					exploteHarpoonRes(response);
 				else if (cmd.equals("getTime"))
 					getTimeResponse(response);
 				else if (cmd.equals("dbRegister"))
@@ -547,14 +547,21 @@ public class SmartFoxServer implements IEventListener {
 		manager.putHarpoonEvent(x,y,range,playerId,time+delayTime);
 	}
 	
-	private void exploteHarpoon(ISFSObject response) {
+	public void exploteHarpoon(int x,int y, int myPlayerId){
+		SFSObject params = new SFSObject();
+		params.putInt("x", x);
+		params.putInt("y", y);
+		params.putInt("playerId",myPlayerId);
+		sfsClient.send(new ExtensionRequest("ExploteHarpoon",params));
+		//TODO gameLogic here you send to the server that you want to explote an Harpoon (necessary playerId??)
+	}
+	
+	private void exploteHarpoonRes(ISFSObject response) {
 		
-		// TODO GameLogic explote harpoon
-		
+		// TODO GameLogic explote harpoon (recived from the server)
 		int x=response.getInt("x");
 		int y=response.getInt("y");	//arguments to know what harpoon is
-		int range=response.getInt("range");
-		int playerId = response.getInt("playerId"); 
+		int playerId = response.getInt("playerId");// if not necessary playerId also delete this
 		
 	}
 	
