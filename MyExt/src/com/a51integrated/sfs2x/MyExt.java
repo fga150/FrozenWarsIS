@@ -79,11 +79,12 @@ public class MyExt extends SFSExtension {
 		this.addRequestHandler("GameMessage", GameMessage.class);
 		this.addRequestHandler("AddFriend",AddFriend.class); // handler fired when 2 users confirm get friends
 		this.addRequestHandler("FriendRequest", FriendRequest.class);// handler fired when a user sends a friend request
-		this.addRequestHandler("GetFriendsRequests", GetFriendsRequests.class); // handler firend when user wants to get all his friends
+		this.addRequestHandler("GetFriendsRequests", GetFriendsRequests.class); // handler fired when user wants to get all his friends
 		this.addRequestHandler("ViewedConfFriend", ViewedConfFriend.class);
 		this.addRequestHandler("GetFriends",GetFriends.class);//handler fired when we want to know all friends, connected or not
 		this.addRequestHandler("AsignaMejoras", AsignImprovementsHandler.class);
-		this.addRequestHandler("ExitGame", ExitGame.class);
+		this.addRequestHandler("ExitGame", ExitGame.class);//handler fired when the game is finished and the user wants to go back to the lobby
+		this.addRequestHandler("ExploteHarpoon", ExploteHarpoon.class);// handler fired when it's the time to explote an harpoon
 		
 		nRooms=0;
 		//harpoonId=0L;
