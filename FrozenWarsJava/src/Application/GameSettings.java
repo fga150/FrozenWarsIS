@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 public class GameSettings {
-	private static GameSettings instance; 
+	private static GameSettings instance;
 	public static GameSettings getInstance() {
 		if (instance == null) instance = new GameSettings("settings.xml");
 		return instance;
 	}
-	
+	private boolean runningInPc=Application.Desktop.getRunningInPC();
 	private boolean soundOn;
 	private boolean vibrationOn;
 	private String userName;
@@ -71,11 +71,20 @@ public class GameSettings {
 
 	
 	private void loadXML() {
-		xml = "";
+		xml = "settings.xml";
 		try {
-			FileHandle handle = Gdx.files.internal("data/".concat(xmlPath));
-			xml = handle.readString();
+			FileHandle handle;
+			if(!runningInPc){
+				handle = Gdx.files.local(xmlPath);
+				xml = handle.readString();
+			}
+			else{
+				handle = Gdx.files.internal("data/"+xmlPath);
+				xml = handle.readString();
+			}
+			
 		} catch (Exception e) {
+			
 		}
 	}
 	
@@ -92,7 +101,7 @@ public class GameSettings {
 		
 		//User data
 		xml = xml.concat("\t<Userdata>\n");
-		if (userName == null || userPassword == null){ 
+		if (userName == null || userPassword == null){
 			xml = xml.concat("\t\t<Username></Username>\n");
 			xml = xml.concat("\t\t<Userpassword></Userpassword>\n");
 		} else {
@@ -106,8 +115,13 @@ public class GameSettings {
 		else xml = xml.concat("\t<ConfirmedExit>off</ConfirmedExit>\n");
 		
 		xml = xml.concat("</Settings>");
-		
-		FileHandle handle = Gdx.files.local("data/".concat(xmlPath));//Investigando, tiene que ser así para que funcione en el móvil también.
+		FileHandle handle=null;
+		if(!runningInPc){
+			handle = Gdx.files.local(xmlPath);//Investigando, tiene que ser así para que funcione en el móvil también.
+		}
+		else{
+			handle = Gdx.files.local("data/"+xmlPath);//Investigando, tiene que ser así para que funcione en el móvil también.
+		}
 		handle.writeString(xml, false);
 
 	}
