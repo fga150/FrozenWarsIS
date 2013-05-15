@@ -17,7 +17,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.backends.android.AndroidApplication;
 
 public class LaunchFrozenWars extends Game implements InputProcessor{
 	private static Game instance;
@@ -28,7 +27,6 @@ public class LaunchFrozenWars extends Game implements InputProcessor{
 	}
 	
 	private Screen loadScreen;
-	private AndroidApplication frozenWars;
 	@Override
 	public void create() {
 		Assets.load();

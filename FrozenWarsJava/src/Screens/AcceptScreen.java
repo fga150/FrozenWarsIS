@@ -63,6 +63,7 @@ public class AcceptScreen implements Screen{
 	    touchPoint = new Vector3();
 
 	    acceptClick = new BoundingBox(new Vector3(posW+105,posH+30,0), new Vector3(posW+230,posH+85,0));
+	    Gdx.input.setOnscreenKeyboardVisible(false);
 	}
 	
 	public void setNewAcceptScreen(String mode, String usr){
