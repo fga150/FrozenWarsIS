@@ -312,11 +312,9 @@ public class MultiplayerScreen implements Screen{
 
 
 	public void creaPartida(){
-		int numPlayers = 4;
 		AppSounds myAppSounds = new AppSounds();
 		AppMusic myAppMusic = new AppMusic(gameMode);
-		if (privateGame) numPlayers = acceptedPlayers.size();
-		MatchManager manager = new MatchManager(numPlayers,sfsClient,gameMode, myAppMusic, myAppSounds);
+		MatchManager manager = new MatchManager(this.acceptedPlayers.size(),sfsClient,gameMode, myAppMusic, myAppSounds);
 		game.setScreen(manager.getLoadingScreen());
 	}
 	
@@ -355,6 +353,7 @@ public class MultiplayerScreen implements Screen{
       		} else if (exitQueueButtonClick.contains(touchPoint) && inQueue && !privateGame){
       			System.out.println(acceptedPlayers.size());
       			sfsClient.removeOfQueue(acceptedPlayers.size(), gameMode);
+      			setDefault();
 			} else if (friendsListClick.contains(touchPoint)){
       			this.game.setScreen(new FriendsListScreen());
       			sfsClient.getMyFriendsRequest();

@@ -45,7 +45,7 @@ public class Desktop {
 	
 	public static void main(String[] args) {
 
-		/*
+	/*	
 		Settings settings = new Settings();
         settings.maxHeight=2048;
         settings.maxWidth=2048;        
@@ -56,5 +56,9 @@ public class Desktop {
         j = new LwjglApplication(new LaunchFrozenWars(), "FrozenWars", 1024, 630, false);
         
     }
+	
+	public static boolean getRunningInPC(){
+		return runningInPc;
+	}
 
 }
