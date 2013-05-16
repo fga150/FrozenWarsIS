@@ -2,6 +2,7 @@ package Application;
 import com.badlogic.gdx.math.Vector3;
 
 import GameLogic.Direction;
+import GameLogic.Harpoon;
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Map.WaterTypes;
@@ -31,8 +32,6 @@ public class MatchManager {
 	private static String[] usersNames;
 	private XMLMapReader xmlMapReader;
 	
-
-	
 	public MatchManager(int numPlayers, SmartFoxServer sfs,int mode, AppMusic myAppMusic, AppSounds myAppSounds){
 		this.myAppMusic = myAppMusic;
 		this.myAppSounds = myAppSounds;
@@ -43,7 +42,7 @@ public class MatchManager {
 		this.xmlMapReader = new XMLMapReader(map);
 		this.sfsClient.addManager(this);
 		this.myPlayerId = sfsClient.getMyPlayerId()-1;
-		this.match = new Match(xmlMapReader,myPlayerId,numPlayers,this.mode,myAppSounds);
+		this.match = new Match(xmlMapReader,myPlayerId,numPlayers,this.mode,myAppSounds,this);
 		this.loadingScreen = new LoadingScreen(this);
 	}
 	
@@ -62,6 +61,11 @@ public class MatchManager {
 		}
 	}
 	
+	public void send(int x,int y,int playerId) {
+		sfsClient.sinkHarpoon(x,y,playerId);
+	}	
+	
+	
 	private float speedFactor() {
 		int speed = match.getPlayerSpeed(myPlayerId);
 		if (speed == 1) return 1;
@@ -70,6 +74,10 @@ public class MatchManager {
 		else if (speed == 4) return 1.7f;
 		else if (speed == 5) return 2f;
 		return 0;
+	}
+	
+	public void sinkHarpoon(int x, int y) {
+		match.sinkHarpoon(x,y);		
 	}
 
 	public void putHarpoon(){
@@ -303,7 +311,4 @@ public class MatchManager {
 	public long getTimeMatch() {
 		return match.getTimeManager();
 	}
-
-	
-	
 }

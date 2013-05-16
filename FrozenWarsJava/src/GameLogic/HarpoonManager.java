@@ -25,6 +25,7 @@ public class HarpoonManager{
 			harpoonAux = iterator.next();
 			found = checkHarpoon(x,y,harpoonAux);
 		}
+		if (!found) harpoonAux = null;
 		return harpoonAux;
 	}
 	

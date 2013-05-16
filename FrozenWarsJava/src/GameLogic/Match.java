@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import com.badlogic.gdx.math.Vector3;
 
+import Application.MatchManager;
 import GameLogic.Direction;
 import GameLogic.Map.SunkenTypes;
 import GameLogic.Map.FissuresTypes;
@@ -96,6 +97,10 @@ public class Match {
 	 * Used for manage the sounds.
 	 */
 	private AppSounds myAppSounds;
+	/**
+	 * Used for comunicating purposes. 	
+	 */
+	private MatchManager matchManager;
 	
 	/**
 	 * Creates the match and initialize/load the following classes: Map, Team, TimeEventsManager,
@@ -108,7 +113,9 @@ public class Match {
 	 * @param namePlayer The name of the player to create logFile.
 	 * @see Map, XMLMapReader, Team, AppSounds
 	 */
-	public Match(XMLMapReader xmlMapReader,int playerId, int numPlayers,TypeGame type, AppSounds myAppSounds){
+	public Match(XMLMapReader xmlMapReader,int playerId, int numPlayers,TypeGame type, AppSounds myAppSounds,
+			MatchManager matchManager){
+		this.matchManager = matchManager;
 		this.myAppSounds = myAppSounds;
 		this.myPlayerId = playerId;
 		this.numPlayers = numPlayers;
@@ -608,15 +615,22 @@ public class Match {
 	 * range and update the map(Breaking barrels,deploying upgrades and putting water).</p>
 	 * @param harpoon The harpoon that dispatched the event.
 	 */
-	public void sinkHarpoon(Harpoon harpoon) {
-		Vector3 position = harpoon.getPosition();
-		harpoonManager.sinkHarpoon(harpoon);
-		timeEventsManager.freezeWaterEvent(harpoon);
-		logFile.writeEvent("The harpoon in " + harpoon.getPosition().x + " " + harpoon.getPosition().y + " has sunken");		harpoonRangeDamage(harpoon);
-		map.putSunkenHarpoonAt((int)position.x,(int)position.y);
-		myAppSounds.playSound("breakIce");
-		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
-		map.addAllFissures(harpoonManager.getActiveHarpoonList());
+	public void sinkHarpoon(int x,int y) {
+		try{
+			Harpoon harpoon = harpoonManager.getHarpoon(x,y);
+			timeEventsManager.stopHarpoonTimer(harpoon);
+			Vector3 position = harpoon.getPosition();
+			harpoonManager.sinkHarpoon(harpoon);
+			timeEventsManager.freezeWaterEvent(harpoon);
+			logFile.writeEvent("The harpoon in " + harpoon.getPosition().x + " " + harpoon.getPosition().y + " has sunken");		harpoonRangeDamage(harpoon);
+			map.putSunkenHarpoonAt((int)position.x,(int)position.y);
+			myAppSounds.playSound("breakIce");
+			map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
+			map.addAllFissures(harpoonManager.getActiveHarpoonList());
+		}
+		catch(Exception e){
+			
+		}
 	}
 	
 	/**
@@ -1052,6 +1066,10 @@ public class Match {
 		if (caughtUpgrade) myAppSounds.playSound("cacthUpgrade");
 	}
 	
+	public void sendSinkHarpoon(Harpoon harpoon){
+		matchManager.send((int)harpoon.getPosition().x,(int)harpoon.getPosition().y,harpoon.getPlayerId());		
+	}
+	
 	private void makeInvisible(Player player){
 		if (player.isInvisible()) timeEventsManager.removeInvisibleTimer(player);
 		player.setInvisible(true);
@@ -1227,8 +1245,6 @@ public class Match {
 	public void loadUpgrades(int[] upgrades) {
 		map.loadUpgrades(upgrades);		
 	}
-
-	
 	
 	
 }

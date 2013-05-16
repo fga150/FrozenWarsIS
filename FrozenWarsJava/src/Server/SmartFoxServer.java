@@ -41,6 +41,7 @@ public class SmartFoxServer implements IEventListener {
 	private MatchManager manager;
 	private static SmartFoxServer instance;
 	private long delayTime;
+	private long lagTime;
 	private int myPlayerId;
 	private String lastUserName;
 	private String lastPass;
@@ -60,11 +61,15 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void getTimeResponse(ISFSObject response){
+		long responseTime = System.currentTimeMillis();
+		lagTime = responseTime - lagTime;
 		long time = response.getLong("time");
-		this.delayTime = System.currentTimeMillis() - time;
+		long currentTime = System.currentTimeMillis();
+		this.delayTime = (currentTime - time) + lagTime;
 	}
 	
 	public void getTimeRequest(){
+		this.lagTime = System.currentTimeMillis();
 		ExtensionRequest request = new ExtensionRequest("GetTime",null);
 		sfsClient.send(request);
 	}
@@ -155,7 +160,7 @@ public class SmartFoxServer implements IEventListener {
 				else if (cmd.equals("putHarpoon"))
 					getHarpoon(response);
 				else if (cmd.equals("exploteHarpoonRes"))
-					exploteHarpoonRes(response);
+					sinkHarpoonRes(response);
 				else if (cmd.equals("getTime"))
 					getTimeResponse(response);
 				else if (cmd.equals("dbRegister"))
@@ -191,10 +196,7 @@ public class SmartFoxServer implements IEventListener {
 		String ip = "";
 		try {
 			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
-			//InetAddress address = InetAddress.getByName(new URL("http://frozenwarsthegame.no-ip.org").getHost());
-			
 			ip = address.getHostAddress();
-			//ip="127.0.0.1";
 		} catch (Exception e){
 			
 		}
@@ -547,22 +549,19 @@ public class SmartFoxServer implements IEventListener {
 		manager.putHarpoonEvent(x,y,range,playerId,time+delayTime);
 	}
 	
-	public void exploteHarpoon(int x,int y, int myPlayerId){
+	public void sinkHarpoon(int x,int y, int myPlayerId){
 		SFSObject params = new SFSObject();
 		params.putInt("x", x);
 		params.putInt("y", y);
 		params.putInt("playerId",myPlayerId);
 		sfsClient.send(new ExtensionRequest("ExploteHarpoon",params));
-		//TODO gameLogic here you send to the server that you want to explote an Harpoon (necessary playerId??)
 	}
 	
-	private void exploteHarpoonRes(ISFSObject response) {
-		
-		// TODO GameLogic explote harpoon (recived from the server)
+	private void sinkHarpoonRes(ISFSObject response) {
 		int x=response.getInt("x");
 		int y=response.getInt("y");	//arguments to know what harpoon is
 		int playerId = response.getInt("playerId");// if not necessary playerId also delete this
-		
+		manager.sinkHarpoon(x,y);
 	}
 	
 	public void beFriends(ISFSObject params){

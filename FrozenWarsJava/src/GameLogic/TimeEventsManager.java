@@ -116,7 +116,7 @@ public class TimeEventsManager{
 			Harpoon harpoon = (Harpoon)taskObject;
 			Timer timer = activeHarpoonTimer.get(harpoon);
 			activeHarpoonTimer.remove(timer);
-			match.sinkHarpoon(harpoon);
+			match.sendSinkHarpoon(harpoon);
 		}
 		else if (type.equals(TypeEvent.freezeWater)){
 			Harpoon harpoon = (Harpoon)taskObject;
