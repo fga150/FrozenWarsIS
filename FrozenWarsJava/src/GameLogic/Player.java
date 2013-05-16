@@ -162,7 +162,7 @@ public class Player {
 				this.lives = 3;
 				this.speed = 3;
 				this.range = 2;
-				this.maxHarpoonsAllow = 2;
+				this.maxHarpoonsAllow = 3;
 				this.canPlay=true;
 				this.invisible=false;
 				this.specialMove=false;
@@ -256,7 +256,13 @@ public class Player {
 			invincible = true;
 			canPlay = false;
 		}
-		if (lives==0) position = new Vector3(-1,-1,0);
+		if (lives==0){
+			range = 1;
+			speed = 1;
+			maxHarpoonsAllow = 1;
+			position = new Vector3(-1,-1,0);
+			invisible = false;
+		}
 	}
 	public void secondOportunity() {
 			lives=1;

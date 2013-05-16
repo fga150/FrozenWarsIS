@@ -2,7 +2,6 @@ package Application;
 import com.badlogic.gdx.math.Vector3;
 
 import GameLogic.Direction;
-import GameLogic.Harpoon;
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Map.WaterTypes;
@@ -107,7 +106,6 @@ public class MatchManager {
 	
 	public boolean imTheWinner(int numPlayer){
 		return match.imTheWinner(numPlayer);
-
 	}
 	
 	public boolean areAllPlayersDead() {
@@ -140,6 +138,7 @@ public class MatchManager {
 	public void changeGameScreen() {
 		this.gameScreen = new GameScreen(this);	
 		LaunchFrozenWars.getGame().setScreen(gameScreen);
+		match.startGameTime();
 	}
 	
 	public void changeToFastBattleMusic(){

@@ -33,7 +33,7 @@ public class LoadingScreen implements Screen{
 	private PenguinAnimation[] penguinAnimationsTeam1;
 	private PenguinAnimation loadingPenguin;
 	private float xPenguin;
-
+	private float timeWaiting;
 	
 	public LoadingScreen(MatchManager manager){
 		this.loaded = false;
@@ -100,7 +100,8 @@ public class LoadingScreen implements Screen{
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render(float delta){
+		
 		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		stateTime += Gdx.graphics.getDeltaTime();
@@ -111,12 +112,12 @@ public class LoadingScreen implements Screen{
         batcher.setColor(c.r, c.g, c.b, 0.40f); //set alpha to 1
         batcher.draw(Assets.getBackground(),0,0,21,13);
         batcher.setColor(c.r, c.g, c.b,1); //set alpha to 1
-		
+		timeWaiting = System.currentTimeMillis()-waitTime;
 		if (manager.getMyIdPlayer()==0 && !send && (System.currentTimeMillis()-waitTime>2500)){
 				send = true;
 				manager.sendAsign();
 		}
-		if (loaded && (System.currentTimeMillis()-waitTime>10000)){
+		if (loaded && (timeWaiting>10000)){
 				loaded = false;
 				manager.changeGameScreen();
 		}
@@ -137,7 +138,10 @@ public class LoadingScreen implements Screen{
 	}
 	
 	private void printLoading() {
-		printTextFont2("Loading . . .",1,Color.BLACK,15,2);
+		if (timeWaiting>9000) printTextFont2("The game starts in 1 ...",0.7f,Color.BLACK,12,2);
+		else if (timeWaiting>8000) printTextFont2("The game starts in 2 ...",0.7f,Color.BLACK,12,2);
+		else if (timeWaiting>7000) printTextFont2("The game starts in 3 ...",0.7f,Color.BLACK,12,2);
+		else printTextFont2("Loading ...",1,Color.BLACK,15,2);
 		batcher.draw(loadingPenguin.getCurrentFrame(),xPenguin,1,1.5f,1.5f);
 	}
 
@@ -217,7 +221,7 @@ public class LoadingScreen implements Screen{
 				printTextFont2("Defeat the other penguins to win",0.5f,Color.BLACK,1,6);
 				printTextFont2("If you defeat somebody,s/he will be on your team",0.4f,Color.BLACK,1,4);
 			}else{
-				printTextFont2("Survive to the end of the match to win",0.5f,Color.BLACK,2,6);
+				printTextFont2("Survive to the end of the match to win",0.5f,Color.BLACK,1,6);
 				printTextFont2("If you got defeated, you will be on the enemy team",0.4f,Color.BLACK,1,4);
 			}
 		}
@@ -250,7 +254,12 @@ public class LoadingScreen implements Screen{
 
 	private void printYourself(){
 		printTextFont2("YOU:",1,Color.BLACK,1,10);
-		batcher.draw(penguinAnimationsTeam0[playerId].getCurrentFrame(),4,9,1.5f,1.5f);
+		TypeGame type = manager.getMode();
+		if (type.equals(TypeGame.Normal)||type.equals(TypeGame.BattleRoyale)) batcher.draw(penguinAnimationsTeam0[playerId].getCurrentFrame(),4,9,1.5f,1.5f);
+		else {
+			if (manager.getTeam(playerId)==0)  batcher.draw(penguinAnimationsTeam0[playerId].getCurrentFrame(),4,9,1.5f,1.5f);
+			else if (manager.getTeam(playerId)==1) batcher.draw(penguinAnimationsTeam1[playerId].getCurrentFrame(),4,9,1.5f,1.5f);
+		}
 	}
 
 	private void printTextFont1(String text,float scale,Color color,float posx,float posy){
@@ -266,7 +275,7 @@ public class LoadingScreen implements Screen{
 
 	private void printTextFont2(String text,float scale,Color color,float posx,float posy){
 		batcher.setProjectionMatrix(textCam.combined);
-		Color aux = font.getColor();
+		Color aux = font2.getColor();
 		font2.setColor(color);
 		font2.setScale(scale);
 		font2.draw(batcher,text, posx*49 ,posy*49);

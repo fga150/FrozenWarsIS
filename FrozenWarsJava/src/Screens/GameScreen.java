@@ -47,7 +47,7 @@ public class GameScreen implements Screen{
 	private BitmapFont font;
 	private BitmapFont font2;
 	private BitmapFont font3;
-	private int numPlayer;
+	private int myplayerId;
 	private int numPlayers;
 	private boolean gameOver;
 
@@ -56,7 +56,7 @@ public class GameScreen implements Screen{
 		this.manager = manager;
 		numPlayers = manager.getNumPlayers();
 		name = manager.getMyNamePlayer();
-		numPlayer = manager.getMyIdPlayer();
+		myplayerId = manager.getMyIdPlayer();
 		font =new BitmapFont(Gdx.files.internal("data/simpleFont.fnt"), Gdx.files.internal("data/simpleFont.png"), false);
 		font2 =new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);
 		font3 =new BitmapFont(Gdx.files.internal("data/second.fnt"), Gdx.files.internal("data/second.png"), false);
@@ -200,8 +200,8 @@ public class GameScreen implements Screen{
 		for (int i=0;i<numPlayers;i++){
 			if(manager.canPlay(i)){
 				Vector3 position = manager.getPlayerPosition(i);
-				if (manager.isInvisible(i) && (i == numPlayer)) batcher.setColor(new Color(255,255,255,0.45f));
-				else if(manager.isInvisible(i) && (i != numPlayer)) batcher.setColor(new Color(255,255,255,0.05f));
+				if (manager.isInvisible(i) && (i == myplayerId)) batcher.setColor(new Color(255,255,255,0.45f));
+				else if(manager.isInvisible(i) && (i != myplayerId)) batcher.setColor(new Color(255,255,255,0.05f));
 				drawPenguin(i,position.x+8f,position.y+1,1,1);
 				batcher.setColor(new Color(255,255,255,1));
 			}
@@ -228,7 +228,7 @@ public class GameScreen implements Screen{
 		guiCam.update();
 		textCam.update();
 		
-		if(manager.canPlay(numPlayer)){
+		if(manager.canPlay(myplayerId)){
 			
 			//Keyboard
 			
@@ -331,7 +331,7 @@ public class GameScreen implements Screen{
 			font2.draw(batcher,mission, 10.25f*49 ,12.85f*49);
 		}
 		else if (manager.getGameType().toString().equals("Survival")){
-			if(manager.getMyTeam(numPlayer).getNumTeam()==0){
+			if(manager.getMyTeam(myplayerId).getNumTeam()==0){
 				mission	 = mission.concat("BEAT THEM UP!");
 				font.setColor(Color.BLACK);
 				font2.draw(batcher,mission, 11.25f*49 ,12.85f*49);
@@ -347,10 +347,10 @@ public class GameScreen implements Screen{
 	
 	
 	private void paintUpgrades() {
-		int speedUpgrade = manager.getSpeed(numPlayer);
-		int harpoonUpgrade = manager.getHarpoonsAllow(numPlayer);
-		int rangeUpgrade = manager.getRange(numPlayer);
-		boolean invisibleUpgrade = manager.isInvisible(numPlayer);
+		int speedUpgrade = manager.getSpeed(myplayerId);
+		int harpoonUpgrade = manager.getHarpoonsAllow(myplayerId);
+		int rangeUpgrade = manager.getRange(myplayerId);
+		boolean invisibleUpgrade = manager.isInvisible(myplayerId);
 		if (speedUpgrade<=1) {
 			batcher.setColor(new Color(50,50,50,0.25f));
 			batcher.draw(Assets.getBootUpgradeMaxSize(),20,11.5f,1,1);
@@ -383,7 +383,7 @@ public class GameScreen implements Screen{
 		}
 		if (invisibleUpgrade){
 			   batcher.draw(Assets.getInvisibleUpgradeMaxSize(),20,5.5f,1,1);
-			   long timeInvisible = manager.getTimeInvisible(numPlayer) - System.currentTimeMillis();
+			   long timeInvisible = manager.getTimeInvisible(myplayerId) - System.currentTimeMillis();
 			   if (timeInvisible<4000)printText(Long.toString(timeInvisible/1000),0.75f,Color.RED,20.15f,5.85f);
 			   else printText(Long.toString(timeInvisible/1000),0.75f,Color.BLACK,20.15f,5.85f);
 			  }
@@ -404,19 +404,18 @@ public class GameScreen implements Screen{
 		font.setColor(aux);
 		font.setScale(1);
 	}
-
 	
 	private void paintGameStatus(){
 		boolean myTeamWin=false;
-		if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()==1){
+		if(manager.isThePlayerDead(myplayerId)&& manager.getMyTeam(myplayerId).getPlayers().size()==1){
 			batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
 			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
 			manager.playThisSound("youLost");
 			gameOver = true;
 		}
-		else if(manager.isThePlayerDead(numPlayer)&& manager.getMyTeam(numPlayer).getPlayers().size()>1){
-			for(int i = 0; i<manager.getMyTeam(numPlayer).getPlayers().size();i++){
-				if (manager.imTheWinner(manager.getMyTeam(numPlayer).getPlayers().get(i).getPlayerId()))
+		else if(manager.isThePlayerDead(myplayerId)&& manager.getMyTeam(myplayerId).getPlayers().size()>1){
+			for(int i = 0; i<manager.getMyTeam(myplayerId).getPlayers().size();i++){
+				if (manager.imTheWinner(manager.getMyTeam(myplayerId).getPlayers().get(i).getPlayerId()))
 					myTeamWin=true;
 			}
 			if(myTeamWin) {
@@ -426,8 +425,8 @@ public class GameScreen implements Screen{
 			}
 			else {
 				boolean myTeamLost = true;
-				for(int i = 0; i<manager.getMyTeam(numPlayer).getPlayers().size();i++)
-				if(!manager.isThePlayerDead(manager.getMyTeam(numPlayer).getPlayers().get(i).getPlayerId())){
+				for(int i = 0; i<manager.getMyTeam(myplayerId).getPlayers().size();i++)
+				if(!manager.isThePlayerDead(manager.getMyTeam(myplayerId).getPlayers().get(i).getPlayerId())){
 					myTeamLost = false;
 				}
 				if(myTeamLost){
@@ -438,8 +437,8 @@ public class GameScreen implements Screen{
 			}
 			gameOver = true;
 		}
-		else if (manager.imTheWinner(numPlayer)) {
-			if(manager.getMyTeam(numPlayer).getPlayers().size()==1){
+		else if (manager.imTheWinner(myplayerId)) {
+			if(manager.getMyTeam(myplayerId).getPlayers().size()==1){
 				batcher.draw(Assets.getYouWin(),6.5f,6,14,6);	
 				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
 				manager.playThisSound("youWin");
@@ -452,7 +451,7 @@ public class GameScreen implements Screen{
 			gameOver = true;
 		}else if (manager.isGameTimeOff()){
  			if (manager.getGameType().equals(TypeGame.Survival)){
- 				if (manager.getTeam(numPlayer)==0){
+ 				if (manager.getTeam(myplayerId)==0){
 					batcher.draw(Assets.getGameOver(),6.5f,6.5f,14,6);
 					batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
 					batcher.setProjectionMatrix(textCam.combined);	
@@ -487,19 +486,19 @@ public class GameScreen implements Screen{
 	private void paintPlayerColorAndStatus(){
 	
 		//Paint player status You are dead/you are RED/BLUE/YELLOW/GREEN
- 		if(!manager.isThePlayerDead(numPlayer)){
+ 		if(!manager.isThePlayerDead(myplayerId)){
  			String userMessage = "You are ";
  			batcher.setProjectionMatrix(textCam.combined);
- 			if(numPlayer == 0){
+ 			if(myplayerId == 0){
  				font.setColor(Color.RED);
  				userMessage = userMessage.concat("RED player: ");
- 			}else if(numPlayer == 1){
+ 			}else if(myplayerId == 1){
  				font.setColor(Color.GREEN);
  				userMessage = userMessage.concat("GREEN player: ");
- 			}else if(numPlayer == 2){
+ 			}else if(myplayerId == 2){
  				font.setColor(Color.YELLOW);
  				userMessage = userMessage.concat("YELLOW player: ");
- 			}else if(numPlayer == 3){
+ 			}else if(myplayerId == 3){
  				font.setColor(Color.BLUE);
  				userMessage = userMessage.concat("BLUE player: ");
  			}
@@ -507,13 +506,13 @@ public class GameScreen implements Screen{
  		}else{
  			String userMessage = "You are dead !!! ";
  			batcher.setProjectionMatrix(textCam.combined);
- 			if(numPlayer == 0){
+ 			if(myplayerId == 0){
  				font.setColor(Color.RED);
- 			}else if(numPlayer == 1){
+ 			}else if(myplayerId == 1){
  				font.setColor(Color.GREEN);
- 			}else if(numPlayer == 2){
+ 			}else if(myplayerId == 2){
  				font.setColor(Color.YELLOW);
- 			}else if(numPlayer == 3){
+ 			}else if(myplayerId == 3){
  				font.setColor(Color.BLUE);
  			}
  			font.draw(batcher,userMessage, 1.5f*49 ,12.35f*49);
@@ -537,24 +536,24 @@ public class GameScreen implements Screen{
 	
 	private void paintPlayerStatus(){
 
-		if(!manager.isThePlayerDead(numPlayer)){
-			if (numPlayer==0){
+		if(!manager.isThePlayerDead(myplayerId)){
+			if (myplayerId==0){
 				batcher.draw(Assets.getRedPlayer(),5.75f,11.75f,1,1);
-			}else if(numPlayer==1){
+			}else if(myplayerId==1){
 				batcher.draw(Assets.getGreenPlayer(),5.75f,11.75f,1,1);
-			}else if(numPlayer==2 && numPlayers>=3){
+			}else if(myplayerId==2 && numPlayers>=3){
 				batcher.draw(Assets.getYellowPlayer(),5.75f,11.75f,1,1);
-			}else if(numPlayer==3 && numPlayers==4){
+			}else if(myplayerId==3 && numPlayers==4){
 				batcher.draw(Assets.getBluePlayer(),5.75f,11.75f,1,1);
 			}
 		}else{
-			if (numPlayer==0){
+			if (myplayerId==0){
 				batcher.draw(Assets.getDeadIconRed(),5.5f,11.75f,1,1);
-			}else if(numPlayer==1){
+			}else if(myplayerId==1){
 				batcher.draw(Assets.getDeadIconGreen(),5.5f,11.75f,1,1);
-			}else if(numPlayer==2 && numPlayers>=3){
+			}else if(myplayerId==2 && numPlayers>=3){
 				batcher.draw(Assets.getDeadIconYellow(),5.5f,11.75f,1,1);
-			}else if(numPlayer==3 && numPlayers==4){
+			}else if(myplayerId==3 && numPlayers==4){
 				batcher.draw(Assets.getDeadIconBlue(),5.5f,11.75f,1,1);
 			}
 			

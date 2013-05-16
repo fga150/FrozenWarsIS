@@ -125,7 +125,6 @@ public class Match {
 		this.harpoonManager = new HarpoonManager(numPlayers);
 		this.timeEventsManager = new TimeEventsManager(this);
 		this.gameTimeOff = false;
-		if (type.equals(TypeGame.BattleRoyale)||type.equals(TypeGame.Survival)) timeEventsManager.endGameEvent(type);
 		coord=new Vector3();
 		this.logFile = new LogFile("Player: " + Integer.toString(playerId));
 		printGameStatus();
@@ -209,6 +208,13 @@ public class Match {
 		return normalGame(numPlayers,type);
 	} 
 
+	/**
+	 * Start the game time used in battle royale or survival mode.
+	 */
+	public void startGameTime(){
+		if (type.equals(TypeGame.BattleRoyale)||type.equals(TypeGame.Survival)) timeEventsManager.endGameEvent(type);
+	}
+	
 	/**
 	 * <p>Creates the teams of the Teams game.</p>
 	 * <p>There will be two tams with the following structure:</p>
@@ -926,8 +932,9 @@ public class Match {
 	/**
 	 * Check if the player has won.
 	 * @param playerId The player that wants to be check if wins.
-	 * @return It returns true if it has won, else in other case.
+	 * @return It returns true if it has won, false in other case.
 	 */
+	
 	public boolean imTheWinner(int playerId){
 		Player player = getPlayer(playerId);
 		boolean win = !player.isThePlayerDead();
@@ -938,9 +945,15 @@ public class Match {
 				win = win && player.isThePlayerDead();
 			}
 		}
+		if (win) makeInvencible(playerId);
 		return win;
 	}
 	
+	private void makeInvencible(int playerId) {
+		Player player = getPlayer(playerId);
+		player.makeInvincible();
+	}
+
 	/**
 	 * Check if all players all dead. 
 	 * @return It returns true if all players have dead, false in other case.
