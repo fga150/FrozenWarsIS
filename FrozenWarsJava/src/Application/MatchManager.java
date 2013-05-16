@@ -81,6 +81,7 @@ public class MatchManager {
 
 	public void putHarpoon(){
 		if (match.canPutHarpoon(myPlayerId)){
+			match.increaseHarpoonCount();
 			Vector3 coord=match.getCoord();
 			sfsClient.putHarpoon((int)coord.x,(int)coord.y,match.getMyPlayerRange(myPlayerId),myPlayerId);
 			this.lastMessage = System.currentTimeMillis();
@@ -98,6 +99,7 @@ public class MatchManager {
 		if (match.checkHarpoon(x,y)){
 			match.putHarpoonAt(x,y,range,playerId,time);
 		}
+		else if (playerId == myPlayerId) match.decreaseHarpoonsAllowed();
 	}
 	
 	public boolean isThePlayerDead(int numPlayer) {

@@ -605,7 +605,6 @@ public class Match {
 	public void putHarpoonAt(int x, int y, int range,int playerId, long time){
 		Harpoon harpoon = new Harpoon(x,y,range,playerId);
 		harpoonManager.addHarpoon(harpoon);
-		if (myPlayerId == playerId) harpoonManager.increaseHarpoonCount();
 		timeEventsManager.sinkHarpoonEvent(harpoon,time);
 		if (map.getBasicMatrixSquare(x, y) == TypeSquare.empty){
 			myAppSounds.playSound("putHarpoon");
@@ -628,7 +627,8 @@ public class Match {
 			Vector3 position = harpoon.getPosition();
 			harpoonManager.sinkHarpoon(harpoon);
 			timeEventsManager.freezeWaterEvent(harpoon);
-			logFile.writeEvent("The harpoon in " + harpoon.getPosition().x + " " + harpoon.getPosition().y + " has sunken");		harpoonRangeDamage(harpoon);
+			logFile.writeEvent("The harpoon in " + harpoon.getPosition().x + " " + harpoon.getPosition().y + " has sunken");		
+			harpoonRangeDamage(harpoon);
 			map.putSunkenHarpoonAt((int)position.x,(int)position.y);
 			myAppSounds.playSound("breakIce");
 			map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
@@ -661,7 +661,7 @@ public class Match {
 	 * @param harpoon The harpoon that cause the chain.
 	 * @param isCought An array that indicate which players has been cougth.
 	 */
-	private void harpoonRangeDamageChain(Harpoon harpoon, boolean[] isCought) {
+	private void harpoonRangeDamageChain(Harpoon harpoon, boolean[] isCought){
 		boolean[] isBlocked = new boolean [4];
 		for (int i=0;i<4;i++) isBlocked[i] = false;
 		int range = harpoon.getRange();
@@ -1257,6 +1257,14 @@ public class Match {
 
 	public void loadUpgrades(int[] upgrades) {
 		map.loadUpgrades(upgrades);		
+	}
+
+	public void decreaseHarpoonsAllowed() {
+		harpoonManager.decreaseHarpoonCount();
+	}
+
+	public void increaseHarpoonCount() {
+		harpoonManager.increaseHarpoonCount();		
 	}
 	
 	
