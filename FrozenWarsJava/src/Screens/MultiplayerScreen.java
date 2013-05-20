@@ -362,6 +362,12 @@ public class MultiplayerScreen implements Screen{
       		}
 		}
 		
+		//scroll to change into friendslist
+		if (Gdx.input.isTouched()){
+      		if (Gdx.input.getDeltaX() < -10 ) game.setScreen(FriendsListScreen.getInstance()); 
+      		sfsClient.getMyFriendsRequest();
+      	}
+		
 		if (empiezaPartida) {
 			creaPartida();
 			empiezaPartida=!empiezaPartida;

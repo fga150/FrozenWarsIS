@@ -183,14 +183,14 @@ public class FriendsListScreen implements Screen{
  				proc.setInfoPressed(0);
  				if (disconnectedScroll < (disconnectedFriends.size()) - 6) disconnectedScroll++;
         	 } else if (scrollUpDisconnectedClick.contains(touchPoint)){
-        		 proc.setInfoPressed(0);
+        		proc.setInfoPressed(0);
         		if (disconnectedScroll != 0) disconnectedScroll--;     	
         	 } else if (unfriendConAll.contains(touchPoint)){
-        		 proc.setInfoPressed(0);
-        		 unfriendConnected(); 
+        		proc.setInfoPressed(0);
+        		unfriendConnected(); 
   			 } else if (unfriendDiscAll.contains(touchPoint)){
   				proc.setInfoPressed(0);
-  				 unfriendDisconnected();	
+  				unfriendDisconnected();	
   			 } else {
       			proc.setInfoPressed(0);
       		 }
@@ -199,6 +199,8 @@ public class FriendsListScreen implements Screen{
       	if (Gdx.input.isTouched()){
       		if (Gdx.input.getDeltaY() > 0 ) this.rollScreenUp(Gdx.input.getDeltaY());
       		else if (Gdx.input.getDeltaY() < 0 ) this.rollScreenDown(Gdx.input.getDeltaY());
+      		//scroll to change into friendslist
+    		if (Gdx.input.getDeltaX() > 10 ) game.setScreen(MultiplayerScreen.getInstance());      		
       	}
       	
 		//crear solamente un batcher por pantalla y eliminarlo cuando no se use
