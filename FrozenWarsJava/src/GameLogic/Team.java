@@ -59,27 +59,19 @@ public class Team {
 
 
 	public Player giveMeOneOfYourLives(int idPlayer) {
-//		Player secondOption = null;
 		Player firstOption = null;
 		for (int i=0;i<players.size();i++){
 			if (i != idPlayer-players.size()*numTeam){
-//				if(players.get(i).getLifes()==1){
-//					secondOption = players.get(i);
-//				}
+
 				if(players.get(i).getLives()>1){
 					firstOption = players.get(i);
 				}
 			}
 		}
 		if (firstOption != null){
-//			firstOption.removeLife();
 			players.get(idPlayer-players.size()*numTeam).secondOportunity();
 			return firstOption;
 		}
-//		else if (secondOption != null){
-//			secondOption.setLifes(secondOption.getLifes()-1);
-//			players.get(idPlayer-players.size()*numTeam).setLifes(1);
-//			return true;
 		
 		return null;
 	}

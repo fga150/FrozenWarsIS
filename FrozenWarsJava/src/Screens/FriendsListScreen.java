@@ -283,16 +283,18 @@ public class FriendsListScreen implements Screen{
 	}
 	
 	public void updateFriends(Vector<String> playingFriends, Vector<String> connectedNotPlayingFriends, Vector<String> disconnectedFriends) {
-		drawConnected.clear();
-		
-		Iterator<String> itNotPlaying = connectedNotPlayingFriends.iterator();
-		while (itNotPlaying.hasNext()) drawConnected.add(new ConnectedInfo(itNotPlaying.next(),false));
-		
-		Iterator<String> itPlaying = playingFriends.iterator();
-		while (itPlaying.hasNext()) drawConnected.add(new ConnectedInfo(itPlaying.next(),true));
-		
-		this.disconnectedFriends = disconnectedFriends;
-	}
+	  Vector<ConnectedInfo> drawConnectedAux = new Vector<ConnectedInfo>();
+	  
+	  Iterator<String> itNotPlaying = connectedNotPlayingFriends.iterator();
+	  while (itNotPlaying.hasNext()) drawConnectedAux.add(new ConnectedInfo(itNotPlaying.next(),false));
+	  
+	  Iterator<String> itPlaying = playingFriends.iterator();
+	  while (itPlaying.hasNext()) drawConnectedAux.add(new ConnectedInfo(itPlaying.next(),true));
+	  
+	  this.disconnectedFriends = disconnectedFriends;
+	  
+	  drawConnected = drawConnectedAux;
+	 }
 	
 	private void drawConnected() {
 		batcher.draw(Assets.listOfPeopleOn, 60, 180);  

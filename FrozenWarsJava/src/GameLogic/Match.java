@@ -87,8 +87,7 @@ public class Match {
 	/**
 	 * The number of players that are currently playing.
 	 */
-	private int numPlayers;
-	
+	private int numPlayers;	
 	/**
 	 * If there is no game this variable is set to true.
 	 */
@@ -101,6 +100,10 @@ public class Match {
 	 * Used for comunicating purposes. 	
 	 */
 	private MatchManager matchManager;
+	/** 
+	 * losersTeam is an array that save loser players in survival mode
+	 */
+	private ArrayList<Player> losersTeam;
 	
 	/**
 	 * Creates the match and initialize/load the following classes: Map, Team, TimeEventsManager,
@@ -116,6 +119,7 @@ public class Match {
 	public Match(XMLMapReader xmlMapReader,int playerId, int numPlayers,TypeGame type, AppSounds myAppSounds,
 			MatchManager matchManager){
 		this.matchManager = matchManager;
+		this.losersTeam = new ArrayList<Player>();
 		this.myAppSounds = myAppSounds;
 		this.myPlayerId = playerId;
 		this.numPlayers = numPlayers;
@@ -490,10 +494,13 @@ public class Match {
 		Team team = teams.get(1);
 		team.getPlayers().remove(player);
 		team = teams.get(0);
+		losersTeam.add(player);
 		team.getPlayers().add(player);
 		modifyPlayer(player);
 	}
 	
+
+
 	/**
 	 * Used on the Survival mode. It changes the number of lives to 1
 	 * the posibility of putting harpoons and make the player invincible.
@@ -519,10 +526,15 @@ public class Match {
 			player.removeLife();
 		else if(getMyTeam(player.getPlayerId()).isShare()){
 			Player p = getMyTeam(player.getPlayerId()).giveMeOneOfYourLives(player.getPlayerId());
-			if(p==null) player.removeLife();
+			if(p==null) checkPlayer(player);
 			else {
-				timeEventsManager.respawnTimeEvent(p);
-				p.removeLife();
+				//timeEventsManager.respawnTimeEvent(p);
+				timeEventsManager.sinkPenguinEvent(p);
+				p.resetLookAt(p.getPlayerId());
+				p.resetPositon();
+				p.setCanPlay(false);
+				p.makeInvincible();
+				checkPlayer(p);
 			}
 		}
 	}
@@ -1255,6 +1267,10 @@ public class Match {
 		return timeEventsManager.getTimeMatch();
 	}
 
+	public ArrayList<Player> getLosersTeam() {
+		return losersTeam;
+	}
+	
 	public void loadUpgrades(int[] upgrades) {
 		map.loadUpgrades(upgrades);		
 	}

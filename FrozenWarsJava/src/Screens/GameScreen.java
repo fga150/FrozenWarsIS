@@ -407,75 +407,91 @@ public class GameScreen implements Screen{
 	
 	private void paintGameStatus(){
 		boolean myTeamWin=false;
-		if(manager.isThePlayerDead(myplayerId)&& manager.getMyTeam(myplayerId).getPlayers().size()==1){
-			batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
-			batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
-			manager.playThisSound("youLost");
-			gameOver = true;
-		}
-		else if(manager.isThePlayerDead(myplayerId)&& manager.getMyTeam(myplayerId).getPlayers().size()>1){
-			for(int i = 0; i<manager.getMyTeam(myplayerId).getPlayers().size();i++){
-				if (manager.imTheWinner(manager.getMyTeam(myplayerId).getPlayers().get(i).getPlayerId()))
-					myTeamWin=true;
+		if((manager.getGameType().equals(TypeGame.Survival) && (!manager.isGameTimeOff()) && manager.imTheWinner(0))){
+			for(int i = 0; i<manager.getLosersTeam().size(); i++){
+					if(manager.getLosersTeam().get(i) == manager.getMyTeam(myplayerId).getPlayers().get(myplayerId)){
+						batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
+						batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+						manager.playThisSound("youLost");
+		 				gameOver = true;
+					}else{
+						batcher.draw(Assets.getYouWin(),6.5f,6,14,6);
+						batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+						manager.playThisSound("youWin");
+	 					gameOver = true;
+					}
 			}
-			if(myTeamWin) {
-				batcher.draw(Assets.getYourTeamWins(),6.5f,6,14,6);
-				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
-				manager.playThisSound("youWin");
-			}
-			else {
-				boolean myTeamLost = true;
-				for(int i = 0; i<manager.getMyTeam(myplayerId).getPlayers().size();i++)
-				if(!manager.isThePlayerDead(manager.getMyTeam(myplayerId).getPlayers().get(i).getPlayerId())){
-					myTeamLost = false;
-				}
-				if(myTeamLost){
+		}else{
+			if(manager.isThePlayerDead(myplayerId)&& manager.getMyTeam(myplayerId).getPlayers().size()==1){
 				batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
 				batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
 				manager.playThisSound("youLost");
+				gameOver = true;
+			}
+			else if(manager.isThePlayerDead(myplayerId)&& manager.getMyTeam(myplayerId).getPlayers().size()>1){
+				for(int i = 0; i<manager.getMyTeam(myplayerId).getPlayers().size();i++){
+					if (manager.imTheWinner(manager.getMyTeam(myplayerId).getPlayers().get(i).getPlayerId()))
+						myTeamWin=true;
 				}
+				if(myTeamWin) {
+					batcher.draw(Assets.getYourTeamWins(),6.5f,6,14,6);
+					batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+					manager.playThisSound("youWin");
+				}
+				else {
+					boolean myTeamLost = true;
+					for(int i = 0; i<manager.getMyTeam(myplayerId).getPlayers().size();i++)
+					if(!manager.isThePlayerDead(manager.getMyTeam(myplayerId).getPlayers().get(i).getPlayerId())){
+						myTeamLost = false;
+					}
+					if(myTeamLost){
+					batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
+					batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
+					manager.playThisSound("youLost");
+					}
+				}
+				gameOver = true;
 			}
-			gameOver = true;
-		}
-		else if (manager.imTheWinner(myplayerId)) {
-			if(manager.getMyTeam(myplayerId).getPlayers().size()==1){
-				batcher.draw(Assets.getYouWin(),6.5f,6,14,6);	
-				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
-				manager.playThisSound("youWin");
-			}
-			else{
-				batcher.draw(Assets.getYourTeamWins(),6.5f,6,14,6);
-				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
-				manager.playThisSound("youWin");
-			}
-			gameOver = true;
-		}else if (manager.isGameTimeOff()){
- 			if (manager.getGameType().equals(TypeGame.Survival)){
- 				if (manager.getTeam(myplayerId)==0){
+			else if (manager.imTheWinner(myplayerId)) {
+				if(manager.getMyTeam(myplayerId).getPlayers().size()==1){
+					batcher.draw(Assets.getYouWin(),6.5f,6,14,6);	
+					batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+					manager.playThisSound("youWin");
+				}
+				else{
+					batcher.draw(Assets.getYourTeamWins(),6.5f,6,14,6);
+					batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
+					manager.playThisSound("youWin");
+				}
+				gameOver = true;
+			}else if (manager.isGameTimeOff()){
+	 			if (manager.getGameType().equals(TypeGame.Survival)){
+	 				if (manager.getTeam(myplayerId)==0){
+						batcher.draw(Assets.getGameOver(),6.5f,6.5f,14,6);
+						batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
+						batcher.setProjectionMatrix(textCam.combined);	
+						font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+						manager.playThisSound("youLost");
+	 					gameOver = true;
+	 				}
+	 				else {
+						batcher.draw(Assets.getYouWin(),6.5f,6.5f,14,6);
+						batcher.draw(Assets.getYouWonWindow(),10.25f,1f,6.36f,4.39f);
+						batcher.setProjectionMatrix(textCam.combined);	
+						font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
+						manager.playThisSound("youWin");
+	 					gameOver = true;
+	 				}
+	 			}
+	 			else {
 					batcher.draw(Assets.getGameOver(),6.5f,6.5f,14,6);
 					batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
 					batcher.setProjectionMatrix(textCam.combined);	
 					font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
 					manager.playThisSound("youLost");
- 					gameOver = true;
- 				}
- 				else {
-					batcher.draw(Assets.getYouWin(),6.5f,6.5f,14,6);
-					batcher.draw(Assets.getYouWonWindow(),10.25f,1f,6.36f,4.39f);
-					batcher.setProjectionMatrix(textCam.combined);	
-					font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
-					manager.playThisSound("youWin");
- 					gameOver = true;
- 				}
- 			}
- 			else {
-				batcher.draw(Assets.getGameOver(),6.5f,6.5f,14,6);
-				batcher.draw(Assets.getYouLostWindow(),10.25f,1f,6.36f,4.39f);
-				batcher.setProjectionMatrix(textCam.combined);	
-				font3.draw(batcher, "TIME OUT!",10.95f*49,6.5f*49);
-				manager.playThisSound("youLost");
- 				gameOver = true;
- 			}
+	 				gameOver = true;
+	 			}
+			}
 		}
 		if (gameOver==true) manager.stopTheMusic();
 	}

@@ -1,4 +1,6 @@
 package Application;
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector3;
 
 import GameLogic.Direction;
@@ -7,6 +9,7 @@ import GameLogic.Map.TypeSquare;
 import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
 import GameLogic.Match;
+import GameLogic.Player;
 import GameLogic.TypeGame;
 import GameLogic.Team;
 import GameLogic.XMLMapReader;
@@ -311,5 +314,16 @@ public class MatchManager {
 
 	public long getTimeMatch() {
 		return match.getTimeManager();
+	}
+	
+	public ArrayList<Player> getLosersTeam(){
+		return match.getLosersTeam();
+	}
+
+	public boolean isGameEnded() {
+		boolean ended =false;
+		if (this.getMode().equals("survival"))
+			ended = this.imTheWinner(0);
+		return this.areAllPlayersDead()||ended;
 	}
 }

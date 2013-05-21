@@ -271,6 +271,14 @@ public class Player {
 			canPlay = false;
 	}
 		
+	public void resetLookAt(int idPlayer){
+		switch(idPlayer){
+			case 0: 
+			case 2: this.setLookAt(Direction.right); break;
+			case 1:
+			case 3: this.setLookAt(Direction.left); break;
+		}
+	}
 	
 	public void upgradePlayer(TypeSquare basicMatrixSquare) {
 		if (basicMatrixSquare.equals(TypeSquare.bootUpgrade) && (speed<5)) speed++;
