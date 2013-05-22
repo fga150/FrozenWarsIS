@@ -110,6 +110,12 @@ public class Match {
 	private boolean draw = false;
 	
 	/**
+	 * List with players who have hurt with the same harpoon
+	 */
+	ArrayList<Player> hurtPlayers;
+
+
+	/**
 	 * Creates the match and initialize/load the following classes: Map, Team, TimeEventsManager,
 	 * HarpoonManager and LogFile.
 	 * @param upgrades The array of upgrades for deploying upgrades in the map.
@@ -699,8 +705,8 @@ public class Match {
 	 */
 	private void harpoonRangeDamageChain(Harpoon harpoon, boolean[] isCought){
 		boolean[] isBlocked = new boolean [4];
-		ArrayList<Player> hurtPlayers = new ArrayList<Player>();
-		int[] lifes = new int[hurtPlayers.size()];
+		hurtPlayers = new ArrayList<Player>();
+		int[] lifes;
 		for (int i=0;i<4;i++) isBlocked[i] = false;
 		int range = harpoon.getRange();
 		for (int i=0;i<=range;i++){
@@ -710,18 +716,19 @@ public class Match {
 					Vector3[] positions = player.getPositions();
 					if (isCought(harpoon,i,positions,isBlocked)){
 						isCought[j] = true;
-//						hurtPlayers.add(getPlayer(j));
+						hurtPlayers.add(getPlayer(j));
 						if (type.equals(TypeGame.BattleRoyale))
 						stealImprovements(j, harpoon);
 					}
 				}
 			}
-//			if(hurtPlayers.size()>1 && hurtPlayers.size() == playersAlive()){
-//				for(int n = 0; n<hurtPlayers.size();n++){
-//					lifes[n]= getPlayer(n).getLives();
-//				}
-//				if(countPlayersDead(lifes) == playersAlive()) makeDraw();
-//			}
+			if(hurtPlayers.size()>1 && hurtPlayers.size() == playersAlive()){
+			 lifes = new int[hurtPlayers.size()];
+				for(int n = 0; n<hurtPlayers.size();n++){
+					lifes[n]= getPlayer(n).getLives();
+			}
+				if(countPlayersDead(lifes) == playersAlive()) makeDraw();
+			}
 			if (i!=0) checkHarpoonsInRange(harpoon,i,isCought,isBlocked);
 			updateBlocked(harpoon,i+1,isBlocked);
 		}
@@ -1344,5 +1351,12 @@ public class Match {
 		return draw;
 	}
 	
+	public boolean isHurtPlayer(int pId) {
+		boolean contains =false;
+		for (int i =0; i< hurtPlayers.size();i++){
+			if (hurtPlayers.contains(getPlayer(pId))) contains =true;
+		}
+		return contains;
+	}
 	
 }

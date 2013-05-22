@@ -447,19 +447,17 @@ public class GameScreen implements Screen{
 				}
 			}
 		}else{
-			if(manager.isDraw()){
+			if(manager.isDraw() && manager.isHurtPenguin(myplayerId)){
 				batcher.draw(Assets.getDraw(),6.5f,6,14,6);
 				batcher.draw(Assets.getYouWonWindow(),10.5f,1.5f,6.36f,4.39f);
 				manager.playThisSound("youWin");
 				gameOver = true;
-			}
-			if(manager.isThePlayerDead(myplayerId)&& manager.getMyTeam(myplayerId).getPlayers().size()==1){
+			}else if(manager.isThePlayerDead(myplayerId)&& manager.getMyTeam(myplayerId).getPlayers().size()==1){
 				batcher.draw(Assets.getGameOver(),6.5f,6,14,6);
 				batcher.draw(Assets.getYouLostWindow(),10.5f,1.5f,6.36f,4.39f);
 				manager.playThisSound("youLost");
 				gameOver = true;
-			}
-			else if(manager.isThePlayerDead(myplayerId)&& manager.getMyTeam(myplayerId).getPlayers().size()>1){
+			}else if(manager.isThePlayerDead(myplayerId)&& manager.getMyTeam(myplayerId).getPlayers().size()>1){
 				for(int i = 0; i<manager.getMyTeam(myplayerId).getPlayers().size();i++){
 					if (manager.imTheWinner(manager.getMyTeam(myplayerId).getPlayers().get(i).getPlayerId()))
 						myTeamWin=true;

@@ -229,6 +229,9 @@ public class MatchManager {
 		return match.getSunkenMatrixSquare(i,j);
 		
 	}
+	public boolean isHurtPenguin(int playerId){
+		return match.isHurtPlayer(playerId);
+	}
 
 	public Direction getPlayerDirection(int i) {
 		return match.getPlayerDirection(i);
