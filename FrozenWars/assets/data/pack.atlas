@@ -451,25 +451,18 @@ MejoraAndaRapido
   orig: 32, 32
   offset: 0, 0
   index: -1
+NoMejoraMasArponMaxSize
+  rotate: false
+  xy: 1964, 1633
+  size: 49, 50
+  orig: 49, 50
+  offset: 0, 0
+  index: -1
 IgluIzquierda
   rotate: false
-  xy: 1964, 1634
+  xy: 1964, 1582
   size: 49, 49
   orig: 49, 49
-  offset: 0, 0
-  index: -1
-IgluTrasero
-  rotate: false
-  xy: 1964, 1583
-  size: 49, 49
-  orig: 49, 49
-  offset: 0, 0
-  index: -1
-ExternalPlayersButton
-  rotate: false
-  xy: 1964, 1557
-  size: 27, 24
-  orig: 27, 24
   offset: 0, 0
   index: -1
 MejoraDesplArpon
@@ -493,13 +486,6 @@ MejoraMasArpon
   orig: 32, 32
   offset: 0, 0
   index: -1
-TickExternalPlayers
-  rotate: false
-  xy: 1993, 1557
-  size: 27, 24
-  orig: 27, 24
-  offset: 0, 0
-  index: -1
 J3
   rotate: false
   xy: 681, 5
@@ -514,16 +500,30 @@ J4
   orig: 27, 25
   offset: 0, 0
   index: -1
-MejoraAndaRapidoMaxSize
+ExternalPlayersButton
   rotate: false
-  xy: 1989, 1341
+  xy: 1985, 1366
+  size: 27, 24
+  orig: 27, 24
+  offset: 0, 0
+  index: -1
+TickExternalPlayers
+  rotate: false
+  xy: 2013, 1757
+  size: 27, 24
+  orig: 27, 24
+  offset: 0, 0
+  index: -1
+IgluTrasero
+  rotate: false
+  xy: 1989, 1315
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-MejoraMasAreaMaxSize
+MejoraAndaRapidoMaxSize
   rotate: false
-  xy: 1990, 1290
+  xy: 1990, 1264
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
@@ -813,170 +813,177 @@ PlayButton
   orig: 240, 41
   offset: 0, 0
   index: -1
-Water1SideOpenEast
+MejoraMasAreaMaxSize
   rotate: false
   xy: 1931, 1993
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water1SideOpenNorth
+Water1SideOpenEast
   rotate: false
   xy: 1822, 1123
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water1SideOpenSouth
+Water1SideOpenNorth
   rotate: false
   xy: 1902, 1285
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water1SideOpenWest
+Water1SideOpenSouth
   rotate: false
   xy: 1786, 232
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water2SideOpenBridgeX
+Water1SideOpenWest
   rotate: false
   xy: 1931, 1942
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water2SideOpenBridgeY
+Water2SideOpenBridgeX
   rotate: false
   xy: 1982, 1993
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water2SideOpenCornerEN
+Water2SideOpenBridgeY
   rotate: false
   xy: 1822, 1072
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water2SideOpenCornerNW
+Water2SideOpenCornerEN
   rotate: false
   xy: 1902, 1234
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water2SideOpenCornerSE
+Water2SideOpenCornerNW
   rotate: false
   xy: 1953, 1285
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water2SideOpenCornerWS
+Water2SideOpenCornerSE
   rotate: false
   xy: 1786, 181
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water3SideEastOpen
+Water2SideOpenCornerWS
   rotate: false
   xy: 1837, 232
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water3SideNorthOpen
+Water3SideEastOpen
   rotate: false
   xy: 1931, 1891
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water3SideSouthOpen
+Water3SideNorthOpen
   rotate: false
   xy: 1982, 1942
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water3SideWestOpen
+Water3SideSouthOpen
   rotate: false
   xy: 1822, 1021
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-Water4SideOpen
+Water3SideWestOpen
   rotate: false
   xy: 1902, 1183
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-barrelWithFissure
+Water4SideOpen
   rotate: false
   xy: 1953, 1234
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-barril
+barrelWithFissure
   rotate: false
   xy: 1786, 130
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-casilla
+barril
   rotate: false
   xy: 1837, 181
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-fissureCenter
+casilla
   rotate: false
   xy: 1888, 232
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-fissureCrossing
+fissureCenter
   rotate: false
   xy: 1931, 1840
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-fissureSideX
+fissureCrossing
   rotate: false
   xy: 1982, 1891
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-fissureSideY
+fissureSideX
   rotate: false
   xy: 1953, 1183
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-iglus
+fissureSideY
   rotate: false
   xy: 1786, 79
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
-sunkenObject
+iglus
   rotate: false
   xy: 1837, 130
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+sunkenObject
+  rotate: false
+  xy: 1888, 181
   size: 49, 49
   orig: 49, 49
   offset: 0, 0

@@ -138,7 +138,7 @@ public class GameSettings {
 			//User data
 			loadUserData();		
 			//Confimated exit
-			loadConfirmedExit();
+			//loadConfirmedExit();
 		} else {
 			soundOn = true;
 			vibrationOn = true;
@@ -154,8 +154,8 @@ public class GameSettings {
 		
 		begin = xml.indexOf("<Sound>") + "<Sound>".length();
 		end = xml.indexOf("</Sound>");
-		if (xml.substring(begin, end).toLowerCase().equals("on")) soundOn = true;
-		else soundOn = false;
+		/*if (xml.substring(begin, end).toLowerCase().equals("on"))*/ soundOn = true;
+		//else soundOn = false;
 	}
 	
 	private void loadVibration(){
@@ -164,8 +164,8 @@ public class GameSettings {
 		
 		begin = xml.indexOf("<Vibration>") + "<Vibration>".length();
 		end = xml.indexOf("</Vibration>");
-		if (xml.substring(begin, end).toLowerCase().equals("on")) vibrationOn = true;
-		else vibrationOn = false;
+		/*if (xml.substring(begin, end).toLowerCase().equals("on")) */vibrationOn = true;
+		//else vibrationOn = false;
 	}
 	
 	private void loadConfirmedExit(){
@@ -185,16 +185,16 @@ public class GameSettings {
 		
 		begin = xml.indexOf("<Username>") + "<Username>".length();
 		end = xml.indexOf("</Username>");
-		userName = xml.substring(begin, end);
+		//userName = xml.substring(begin, end);
 		
-		begin = xml.indexOf("<Userpassword>") + "<Userpassword>".length();
+		/*begin = xml.indexOf("<Userpassword>") + "<Userpassword>".length();
 		end = xml.indexOf("</Userpassword>");
-		userPassword = xml.substring(begin, end);
+		userPassword = xml.substring(begin, end);*/
 		
-		if (userName.equals("") || userPassword.equals("")){
+		//if (userName.equals("") || userPassword.equals("")){
 			userName = null;
 			userPassword = null;
-		}
+		//}
 	}	
 	
 	public void saveSettings(){

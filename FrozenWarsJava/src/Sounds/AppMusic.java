@@ -75,9 +75,9 @@ public class AppMusic{
 	}
 
 	public void stopMyMusic() {
-		if(happyMusic != null && happyMusic.isPlaying()) happyMusic.dispose();
-		if(battleMusic != null && battleMusic.isPlaying()) battleMusic.dispose();
-		if(fastBattleMusic != null && fastBattleMusic.isPlaying()) fastBattleMusic.dispose();
+		if(happyMusic != null && happyMusic.isPlaying()) happyMusic.stop();
+		if(battleMusic != null && battleMusic.isPlaying()) battleMusic.stop();
+		if(fastBattleMusic != null && fastBattleMusic.isPlaying())fastBattleMusic.stop();
 		
 		
 	}
