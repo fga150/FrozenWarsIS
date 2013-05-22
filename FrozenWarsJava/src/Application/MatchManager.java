@@ -326,4 +326,8 @@ public class MatchManager {
 			ended = this.imTheWinner(0);
 		return this.areAllPlayersDead()||ended;
 	}
+
+	public boolean isTimeGameRunning() {
+		return match.isGameTimeRunning();
+	}
 }

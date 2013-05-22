@@ -483,8 +483,26 @@ public class Match {
 		else if (type.equals(TypeGame.Survival)) checkSurvival(player);
 		else if (type.equals(TypeGame.OneVsAll)) checkPlayer(player);
 		logFile.writeEvent("The player " + playerId + " has lost a life");
+		if (areGameFinished() && (type.equals(TypeGame.Survival) || type.equals(TypeGame.BattleRoyale))) stopGameTimer();
 	}
 	
+	private boolean areGameFinished() {
+		boolean finished = false;
+		if (type.equals(TypeGame.Survival)){
+			finished = (teams.get(0).getPlayers().size() == numPlayers);
+		}
+		else if (type.equals(TypeGame.BattleRoyale)){
+			int numPlayersAlive = 0;
+			for (int i=0;i<numPlayers;i++) if (getPlayer(i).getLives()>0) numPlayersAlive++;
+			finished = (numPlayersAlive == 1);
+		}
+		return finished;
+	}
+
+	private void stopGameTimer() {
+		timeEventsManager.stopGameTimer();		
+	}
+
 	/**
 	 * If a player of the second team(Team 1) dies,it's changed to the exterminators
 	 * team(Team 0).
@@ -1029,6 +1047,7 @@ public class Match {
 	public void sinkPenguinFinish(Player player) {
 		player.checkCanPlay();
 		player.removeInvincible();
+		if (type.equals(TypeGame.Survival)) player.makeInvincible();
 	}
 
 	/**
@@ -1281,6 +1300,10 @@ public class Match {
 
 	public void increaseHarpoonCount() {
 		harpoonManager.increaseHarpoonCount();		
+	}
+
+	public boolean isGameTimeRunning() {
+		return timeEventsManager.isGameTimeRunning();
 	}
 	
 	

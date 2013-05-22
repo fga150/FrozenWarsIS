@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class LoadingScreen implements Screen{
 	
@@ -213,16 +212,25 @@ public class LoadingScreen implements Screen{
 	private void printMission() {
 		printTextFont2("Mission:",1,Color.BLACK,1,8);
 		if(manager.getGameType().equals(TypeGame.Normal)|| (manager.getGameType().equals(TypeGame.BattleRoyale)))
-			printTextFont2("Defeat the other penguins",0.75f,Color.BLACK,1,6);
+			printTextFont2("Defeat the other penguins to win",0.75f,Color.BLACK,1,6);
 		else if(manager.getGameType().equals(TypeGame.Teams))
-			printTextFont2("Beat the enemy team",0.5f,Color.BLACK,1,5.5f);
+			printTextFont2("Beat the enemy team to win",0.5f,Color.BLACK,1,5.5f);
 		else if (manager.getGameType().equals(TypeGame.Survival)){
 			if(manager.getMyTeam(playerId).getNumTeam()==0){
 				printTextFont2("Defeat the other penguins to win",0.5f,Color.BLACK,1,6);
-				printTextFont2("If you defeat somebody,s/he will be on your team",0.4f,Color.BLACK,1,4);
+				printTextFont2("Tip: If you defeat somebody,s/he will be on your team",0.4f,Color.BLACK,1,4);
 			}else{
 				printTextFont2("Survive to the end of the match to win",0.5f,Color.BLACK,1,6);
-				printTextFont2("If you got defeated, you will be on the enemy team",0.4f,Color.BLACK,1,4);
+				printTextFont2("Tip: If you got defeated, you will be on the enemy team",0.4f,Color.BLACK,1,4);
+			}
+		}
+		else if (manager.getGameType().equals(TypeGame.OneVsAll)){
+			if(manager.getMyTeam(playerId).getNumTeam()==0){
+				printTextFont2("Defeat all the other penguins to win",0.5f,Color.BLACK,1,6);
+				printTextFont2("Tip: You will have all upgrades availables!!",0.4f,Color.BLACK,1,4);
+			}else{
+				printTextFont2("Defeat the other penguin to win",0.5f,Color.BLACK,1,6);
+				printTextFont2("Tip: Work with your allies to defeat the enemy!",0.4f,Color.BLACK,1,4);
 			}
 		}
 	}
