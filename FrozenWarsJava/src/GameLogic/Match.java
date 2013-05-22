@@ -104,6 +104,10 @@ public class Match {
 	 * losersTeam is an array that save loser players in survival mode
 	 */
 	private ArrayList<Player> losersTeam;
+	/**
+	 * Check if there are a draw
+	 */
+	private boolean draw = false;
 	
 	/**
 	 * Creates the match and initialize/load the following classes: Map, Team, TimeEventsManager,
@@ -484,8 +488,8 @@ public class Match {
 		else if (type.equals(TypeGame.OneVsAll)) checkPlayer(player);
 		logFile.writeEvent("The player " + playerId + " has lost a life");
 		if (areGameFinished() && (type.equals(TypeGame.Survival) || type.equals(TypeGame.BattleRoyale))) stopGameTimer();
-	}
-	
+ 	}
+ 	
 	private boolean areGameFinished() {
 		boolean finished = false;
 		if (type.equals(TypeGame.Survival)){
@@ -503,6 +507,8 @@ public class Match {
 		timeEventsManager.stopGameTimer();		
 	}
 
+
+	
 	/**
 	 * If a player of the second team(Team 1) dies,it's changed to the exterminators
 	 * team(Team 0).
@@ -550,9 +556,9 @@ public class Match {
 				timeEventsManager.sinkPenguinEvent(p);
 				p.resetLookAt(p.getPlayerId());
 				p.resetPositon();
+				p.removeLife();
 				p.setCanPlay(false);
 				p.makeInvincible();
-				checkPlayer(p);
 			}
 		}
 	}
@@ -693,6 +699,8 @@ public class Match {
 	 */
 	private void harpoonRangeDamageChain(Harpoon harpoon, boolean[] isCought){
 		boolean[] isBlocked = new boolean [4];
+		ArrayList<Player> hurtPlayers = new ArrayList<Player>();
+		int[] lifes = new int[hurtPlayers.size()];
 		for (int i=0;i<4;i++) isBlocked[i] = false;
 		int range = harpoon.getRange();
 		for (int i=0;i<=range;i++){
@@ -702,17 +710,45 @@ public class Match {
 					Vector3[] positions = player.getPositions();
 					if (isCought(harpoon,i,positions,isBlocked)){
 						isCought[j] = true;
+//						hurtPlayers.add(getPlayer(j));
 						if (type.equals(TypeGame.BattleRoyale))
 						stealImprovements(j, harpoon);
 					}
 				}
 			}
+//			if(hurtPlayers.size()>1 && hurtPlayers.size() == playersAlive()){
+//				for(int n = 0; n<hurtPlayers.size();n++){
+//					lifes[n]= getPlayer(n).getLives();
+//				}
+//				if(countPlayersDead(lifes) == playersAlive()) makeDraw();
+//			}
 			if (i!=0) checkHarpoonsInRange(harpoon,i,isCought,isBlocked);
 			updateBlocked(harpoon,i+1,isBlocked);
 		}
 		if (harpoon.getPlayerId() == myPlayerId) harpoonManager.decreaseHarpoonCount();
 		map.putSunkenHarpoonAt((int)harpoon.getPosition().x,(int)harpoon.getPosition().y);
 		map.paintAllWaters(harpoonManager.getSunkenHarpoonList());
+	}
+
+	private void makeDraw() {
+		draw = true;	
+	}
+
+	private int playersAlive() {
+		int cont = 0;
+		for (int i = 0; i<numPlayers; i++){
+			if (getPlayer(i).getLives()>0) cont++;
+		}
+		return cont;
+	}
+
+	private int countPlayersDead(int[] lifes) {
+		int cont = 0;
+		for (int i = 0; i<lifes.length; i++){
+			if (getPlayer(i).getLives()==1) cont++;
+		}
+		return cont;
+		
 	}
 
 	/**
@@ -1047,7 +1083,6 @@ public class Match {
 	public void sinkPenguinFinish(Player player) {
 		player.checkCanPlay();
 		player.removeInvincible();
-		if (type.equals(TypeGame.Survival)) player.makeInvincible();
 	}
 
 	/**
@@ -1263,6 +1298,9 @@ public class Match {
 	public boolean isGameTimeOff() {
 		return gameTimeOff;
 	}
+	public boolean isGameTimeRunning() {
+		return timeEventsManager.isGameTimeRunning();
+	}
 
 	public int getMyTeamId(int playerId) {
 		Player player = getPlayer(playerId);
@@ -1302,8 +1340,8 @@ public class Match {
 		harpoonManager.increaseHarpoonCount();		
 	}
 
-	public boolean isGameTimeRunning() {
-		return timeEventsManager.isGameTimeRunning();
+	public boolean isDraw() {
+		return draw;
 	}
 	
 	

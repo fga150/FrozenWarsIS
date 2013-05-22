@@ -113,6 +113,10 @@ public class MatchManager {
 		return match.imTheWinner(numPlayer);
 	}
 	
+	
+	public boolean isDraw(){
+		return match.isDraw();
+	}
 	public boolean areAllPlayersDead() {
 		return match.areAllPlayersDead();
 	}
@@ -171,6 +175,11 @@ public class MatchManager {
 	public SmartFoxServer getSfsClient() {
 		return sfsClient;
 	}
+	
+	public boolean isTimeGameRunning() {
+		return match.isGameTimeRunning();
+	}
+
 
 	public void setSfsClient(SmartFoxServer sfsClient) {
 		this.sfsClient = sfsClient;
@@ -325,9 +334,5 @@ public class MatchManager {
 		if (this.getMode().equals("survival"))
 			ended = this.imTheWinner(0);
 		return this.areAllPlayersDead()||ended;
-	}
-
-	public boolean isTimeGameRunning() {
-		return match.isGameTimeRunning();
 	}
 }
