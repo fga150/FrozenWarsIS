@@ -16,7 +16,7 @@ public class Desktop {
 	 * @param args
 	 */
 	public static LwjglApplication j;
-	private static boolean runningInPc = false;
+	private static boolean runningInPc = true;
 
 	static private Thread.UncaughtExceptionHandler exHandler = new Thread.UncaughtExceptionHandler() {
 		@Override

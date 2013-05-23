@@ -17,7 +17,7 @@ public class GameSettings {
 	private boolean confirmedExitOn;
 	
 	String xml;
-	String xmlPath;	
+	String xmlPath;
 	
 	public GameSettings(String xmlPath){
 		instance = this;
@@ -75,8 +75,8 @@ public class GameSettings {
 		try {
 			FileHandle handle;
 			if(!runningInPc){
-				handle = Gdx.files.local(xmlPath);
-				xml = handle.readString();
+					handle = Gdx.files.local(xmlPath);
+					xml = handle.readString();
 			}
 			else{
 				handle = Gdx.files.internal("data/"+xmlPath);
@@ -127,7 +127,7 @@ public class GameSettings {
 	}
 	
 	private void loadSettings(){
-
+		try{
 		loadXML();
 		
 		if (!xml.equals("")){
@@ -138,7 +138,7 @@ public class GameSettings {
 			//User data
 			loadUserData();		
 			//Confimated exit
-			//loadConfirmedExit();
+			loadConfirmedExit();
 		} else {
 			soundOn = true;
 			vibrationOn = true;
@@ -146,6 +146,8 @@ public class GameSettings {
 			userPassword = null;
 			confirmedExitOn = true;
 		}
+		}
+		catch(Exception e){}
 	}
 	
 	private void loadSound() {
@@ -154,8 +156,8 @@ public class GameSettings {
 		
 		begin = xml.indexOf("<Sound>") + "<Sound>".length();
 		end = xml.indexOf("</Sound>");
-		/*if (xml.substring(begin, end).toLowerCase().equals("on"))*/ soundOn = true;
-		//else soundOn = false;
+		if (xml.substring(begin, end).toLowerCase().equals("on")) soundOn = true;
+		else soundOn = false;
 	}
 	
 	private void loadVibration(){
@@ -164,8 +166,8 @@ public class GameSettings {
 		
 		begin = xml.indexOf("<Vibration>") + "<Vibration>".length();
 		end = xml.indexOf("</Vibration>");
-		/*if (xml.substring(begin, end).toLowerCase().equals("on")) */vibrationOn = true;
-		//else vibrationOn = false;
+		if (xml.substring(begin, end).toLowerCase().equals("on")) vibrationOn = true;
+		else vibrationOn = false;
 	}
 	
 	private void loadConfirmedExit(){
@@ -185,16 +187,16 @@ public class GameSettings {
 		
 		begin = xml.indexOf("<Username>") + "<Username>".length();
 		end = xml.indexOf("</Username>");
-		//userName = xml.substring(begin, end);
+		userName = xml.substring(begin, end);
 		
-		/*begin = xml.indexOf("<Userpassword>") + "<Userpassword>".length();
+		begin = xml.indexOf("<Userpassword>") + "<Userpassword>".length();
 		end = xml.indexOf("</Userpassword>");
-		userPassword = xml.substring(begin, end);*/
+		userPassword = xml.substring(begin, end);
 		
-		//if (userName.equals("") || userPassword.equals("")){
+		if (userName.equals("") || userPassword.equals("")){
 			userName = null;
 			userPassword = null;
-		//}
+		}
 	}	
 	
 	public void saveSettings(){
