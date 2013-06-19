@@ -1,5 +1,6 @@
 	package Application;
 
+import Screens.ConfirmScreen;
 import Screens.FriendsListScreen;
 import Screens.HelpScreen;
 import Screens.IndexScreen;
@@ -16,7 +17,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
-
 
 public class LaunchFrozenWars extends Game implements InputProcessor{
 	private static Game instance;
@@ -46,6 +46,13 @@ public class LaunchFrozenWars extends Game implements InputProcessor{
 	   			this.setScreen(MultiplayerScreen.getInstance());
 	    	} else if(this.getScreen()==HelpScreen.getInstance()){
 	    		this.setScreen(IndexScreen.getInstance());
+	    	} else if(this.getScreen()==InitialScreen.getInstance()){
+	    		GameSettings.getInstance().saveSettings();	
+  				if (!GameSettings.getInstance().isConfirmedExitOn()) {
+  					this.dispose();
+  				} else{
+  					ConfirmScreen.getInstance().setNewConfirmScreen("Exit", "");   
+  				}
 	   	   	} else {
 		   		this.setScreen(InitialScreen.getInstance());
 	   		}
@@ -88,20 +95,18 @@ public class LaunchFrozenWars extends Game implements InputProcessor{
 	}
 
 	@Override
-	public boolean scrolled(int arg0) {
-		// TODO Auto-generated method stub
+	public boolean scrolled(int x) {
 		return false;
 	}
 
 	@Override
 	public boolean touchDown(int arg0, int arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean touchDragged(int arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -124,7 +129,7 @@ public class LaunchFrozenWars extends Game implements InputProcessor{
 	public void setInfoPressed(int infoPressed) {
 		this.infoPressed = infoPressed;
 	}
-	
+
 	
 	public void dispose(){
 		GameSettings.getInstance().saveSettings();
@@ -136,7 +141,5 @@ public class LaunchFrozenWars extends Game implements InputProcessor{
 		instance = null;
 		System.exit(0);
 	}
-
-	
 
 }

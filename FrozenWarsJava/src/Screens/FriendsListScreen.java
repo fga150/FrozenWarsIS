@@ -161,9 +161,11 @@ public class FriendsListScreen implements Screen{
 			
       		if (backButtonClick.contains(touchPoint)){
       			proc.setInfoPressed(0);
+      			Gdx.input.setOnscreenKeyboardVisible(false);
       			game.setScreen(InitialScreen.getInstance());
       		 } else if (MultiplayerClick.contains(touchPoint)){
       			proc.setInfoPressed(0);
+      			Gdx.input.setOnscreenKeyboardVisible(false);
       			this.game.setScreen(MultiplayerScreen.getInstance());
       		 } else if (userClick.contains(touchPoint)){
       			Gdx.input.setOnscreenKeyboardVisible(true);
@@ -181,24 +183,30 @@ public class FriendsListScreen implements Screen{
  				proc.setInfoPressed(0);
  				if (disconnectedScroll < (disconnectedFriends.size()) - 6) disconnectedScroll++;
         	 } else if (scrollUpDisconnectedClick.contains(touchPoint)){
-        		 proc.setInfoPressed(0);
+        		proc.setInfoPressed(0);
         		if (disconnectedScroll != 0) disconnectedScroll--;     	
         	 } else if (unfriendConAll.contains(touchPoint)){
-        		 proc.setInfoPressed(0);
-        		 unfriendConnected(); 
+        		proc.setInfoPressed(0);
+        		unfriendConnected(); 
   			 } else if (unfriendDiscAll.contains(touchPoint)){
   				proc.setInfoPressed(0);
-  				 unfriendDisconnected();	
+  				unfriendDisconnected();	
   			 } else {
       			proc.setInfoPressed(0);
       		 }
 		}
 		
-		
+      	if (Gdx.input.isTouched()){
+      		if (Gdx.input.getDeltaY() > 0 ) this.rollScreenUp(Gdx.input.getDeltaY());
+      		else if (Gdx.input.getDeltaY() < 0 ) this.rollScreenDown(Gdx.input.getDeltaY());
+      		//scroll to change into friendslist
+    		if (Gdx.input.getDeltaX() > 10 ) game.setScreen(MultiplayerScreen.getInstance());      		
+      	}
+      	
 		//crear solamente un batcher por pantalla y eliminarlo cuando no se use
 	
       		GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0
-            gl.glClearColor(0,1,0,1);
+            gl.glClearColor(0.9137525F,0.9137525F,0.9137525F,0);
             gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
            
             guiCam.update();
@@ -275,16 +283,18 @@ public class FriendsListScreen implements Screen{
 	}
 	
 	public void updateFriends(Vector<String> playingFriends, Vector<String> connectedNotPlayingFriends, Vector<String> disconnectedFriends) {
-		drawConnected.clear();
-		
-		Iterator<String> itNotPlaying = connectedNotPlayingFriends.iterator();
-		while (itNotPlaying.hasNext()) drawConnected.add(new ConnectedInfo(itNotPlaying.next(),false));
-		
-		Iterator<String> itPlaying = playingFriends.iterator();
-		while (itPlaying.hasNext()) drawConnected.add(new ConnectedInfo(itPlaying.next(),true));
-		
-		this.disconnectedFriends = disconnectedFriends;
-	}
+	  Vector<ConnectedInfo> drawConnectedAux = new Vector<ConnectedInfo>();
+	  
+	  Iterator<String> itNotPlaying = connectedNotPlayingFriends.iterator();
+	  while (itNotPlaying.hasNext()) drawConnectedAux.add(new ConnectedInfo(itNotPlaying.next(),false));
+	  
+	  Iterator<String> itPlaying = playingFriends.iterator();
+	  while (itPlaying.hasNext()) drawConnectedAux.add(new ConnectedInfo(itPlaying.next(),true));
+	  
+	  this.disconnectedFriends = disconnectedFriends;
+	  
+	  drawConnected = drawConnectedAux;
+	 }
 	
 	private void drawConnected() {
 		batcher.draw(Assets.listOfPeopleOn, 60, 180);  
@@ -359,5 +369,29 @@ public class FriendsListScreen implements Screen{
 	@Override
 	public void show() {
 		
+	}
+	
+	public void rollScreenUp(int x){
+		if (Desktop.getRunningInPC())
+			return;
+		
+		if (guiCam.position.y < 315)
+            guiCam.translate(0, x, 0);
+		
+		if (guiCam.position.y > 315)
+			guiCam.position.set(512, 315, 0);
+          
+	}
+	
+	
+	public void rollScreenDown(int x){
+		if (Desktop.getRunningInPC())
+			return;
+
+		if (guiCam.position.y > 50)
+            guiCam.translate(0, x, 0);
+
+		if (guiCam.position.y < 50)
+			guiCam.position.set(512, 50, 0);
 	}
 }

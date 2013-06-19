@@ -2,8 +2,8 @@ package GameLogic;
 
 import java.util.HashMap;
 
-import GameLogic.Match.TypeGame;
-import GameLogic.TimeEventsTask.TypeEvent;
+import GameLogic.TypeGame;
+import GameLogic.TypeEvent;
 
 import com.badlogic.gdx.utils.Timer;
 
@@ -23,18 +23,20 @@ public class TimeEventsManager{
 	private final float endGameSurvivalTime = 90;
 	private final float respawnTime = 0.5f;
 	
-	
 	private Match match;
 	private TimeEventsTask timeMatch;
+	private Timer timerMatch;
 	private HashMap<Player,TimeEventsTask> invisibleTimerPlayers;
 	private HashMap<Player,Timer> invisiblePlayers;
 	private HashMap<Harpoon,Timer> activeHarpoonTimer;
+	private boolean timeGameRunning;
 	
 	public TimeEventsManager(Match match){
 		this.match = match;
 		this.invisiblePlayers = new HashMap<Player,Timer>();
 		this.activeHarpoonTimer = new HashMap<Harpoon,Timer>();
 		this.invisibleTimerPlayers = new HashMap<Player,TimeEventsTask>();
+		this.timeGameRunning = false;
 	}
 	
 	
@@ -102,13 +104,13 @@ public class TimeEventsManager{
 	
 	public void endGameEvent(TypeGame type){
 		float time = 0; 
-		Timer timer = new Timer();
+		timerMatch = new Timer();
 		if (type.equals(TypeGame.BattleRoyale)) time = endGameBattleRoyalTime;
 		else if (type.equals(TypeGame.Survival)) time = endGameSurvivalTime;
-		TimeEventsTask timerTask = new TimeEventsTask(this,null,TypeEvent.endGame,time);
-		timer.scheduleTask(timerTask,time);
-		timer.start();
-		timeMatch = timerTask;
+		timeMatch = new TimeEventsTask(this,null,TypeEvent.endGame,time);
+		timerMatch.scheduleTask(timeMatch,time);
+		timerMatch.start();
+		timeGameRunning = true;
 	}
 	
 	public void actionPerformed(TypeEvent type, Object taskObject, TimeEventsTask timeEventsTask) {
@@ -116,7 +118,7 @@ public class TimeEventsManager{
 			Harpoon harpoon = (Harpoon)taskObject;
 			Timer timer = activeHarpoonTimer.get(harpoon);
 			activeHarpoonTimer.remove(timer);
-			match.sinkHarpoon(harpoon);
+			match.sendSinkHarpoon(harpoon);
 		}
 		else if (type.equals(TypeEvent.freezeWater)){
 			Harpoon harpoon = (Harpoon)taskObject;
@@ -158,6 +160,17 @@ public class TimeEventsManager{
 			time = timer.getEndTime();
 		}catch(Exception e){}
 		return time;
+	}
+
+
+	public void stopGameTimer() {
+		timerMatch.stop();
+		timeGameRunning = false;
+	}
+
+
+	public boolean isGameTimeRunning() {
+		return timeGameRunning;
 	}
 
 }

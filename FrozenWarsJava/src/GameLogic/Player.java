@@ -1,8 +1,8 @@
 package GameLogic;
 
-import Application.MatchManager.Direction;
+import GameLogic.Direction;
 import GameLogic.Map.TypeSquare;
-import GameLogic.Match.TypeGame;
+import GameLogic.TypeGame;
 
 import com.badlogic.gdx.math.Vector3;
 
@@ -50,6 +50,7 @@ public class Player {
 		else if (type.equals(TypeGame.Teams)) initializePositionNormal(playerId,numPlayers);
 		else if (type.equals(TypeGame.Survival)) initializePositionSurvival(playerId,numPlayers);
 		else if (type.equals(TypeGame.BattleRoyale)) initializePositionNormal(playerId,numPlayers);
+		else if (type.equals(TypeGame.OneVsAll)) initializePositionSurvival(playerId,numPlayers);
 	}
 	
 	private void initializePositionSurvival(int playerId, int numPlayers) {
@@ -161,7 +162,7 @@ public class Player {
 				this.lives = 3;
 				this.speed = 3;
 				this.range = 2;
-				this.maxHarpoonsAllow = 2;
+				this.maxHarpoonsAllow = 3;
 				this.canPlay=true;
 				this.invisible=false;
 				this.specialMove=false;
@@ -178,7 +179,30 @@ public class Player {
 				this.invincible=false;
 			}
 		}
+		else if (type.equals(TypeGame.OneVsAll)){
+			if (playerId == 0){
+				this.lives = 1;
+				this.speed = 5;
+				this.range = 5;
+				this.maxHarpoonsAllow = 5;
+				this.canPlay=true;
+				this.invisible=false;
+				this.specialMove=false;
+				this.invincible=false;
+			}
+			else{
+				this.lives = 1;
+				this.speed = 1;
+				this.range = 1;
+				this.maxHarpoonsAllow = 1;
+				this.canPlay=true;
+				this.invisible=false;
+				this.specialMove=false;
+				this.invincible=false;
+			}
+		}
 	}
+		
 	
 	/**
 	 * This method check is the player is dead
@@ -232,7 +256,13 @@ public class Player {
 			invincible = true;
 			canPlay = false;
 		}
-		if (lives==0) position = new Vector3(-1,-1,0);
+		if (lives==0){
+			range = 1;
+			speed = 1;
+			maxHarpoonsAllow = 1;
+			position = new Vector3(-1,-1,0);
+			invisible = false;
+		}
 	}
 	public void secondOportunity() {
 			lives=1;
@@ -241,6 +271,14 @@ public class Player {
 			canPlay = false;
 	}
 		
+	public void resetLookAt(int idPlayer){
+		switch(idPlayer){
+			case 0: 
+			case 2: this.setLookAt(Direction.right); break;
+			case 1:
+			case 3: this.setLookAt(Direction.left); break;
+		}
+	}
 	
 	public void upgradePlayer(TypeSquare basicMatrixSquare) {
 		if (basicMatrixSquare.equals(TypeSquare.bootUpgrade) && (speed<5)) speed++;

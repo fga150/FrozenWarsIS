@@ -1,43 +1,51 @@
 package Application;
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector3;
+
+import GameLogic.Direction;
 import GameLogic.Map.FissuresTypes;
 import GameLogic.Map.TypeSquare;
 import GameLogic.Map.WaterTypes;
 import GameLogic.Map.SunkenTypes;
 import GameLogic.Match;
-import GameLogic.Match.TypeGame;
+import GameLogic.Player;
+import GameLogic.TypeGame;
 import GameLogic.Team;
 import GameLogic.XMLMapReader;
 import Screens.GameScreen;
 import Screens.LoadingScreen;
 import Server.SmartFoxServer;
+import Sounds.AppMusic;
+import Sounds.AppSounds;
 
 public class MatchManager {
 	
-	public enum Direction{left,right,up,down} 
-	
+	private AppMusic myAppMusic;
+	private AppSounds myAppSounds;
+	boolean playedYet=false;
 	private SmartFoxServer sfsClient;
 	private Match match;
 	private LoadingScreen loadingScreen;
 	private GameScreen gameScreen;
 	private int myPlayerId;
-	@SuppressWarnings("unused")
-	private int numPlayers;
 	private long lastMessage;
 	private TypeGame mode;
 	private static String[] usersNames;
 	private XMLMapReader xmlMapReader;
-
 	
-	public MatchManager(SmartFoxServer sfs,int mode){
+	public MatchManager(int numPlayers, SmartFoxServer sfs,int mode, AppMusic myAppMusic, AppSounds myAppSounds){
+		this.myAppMusic = myAppMusic;
+		this.myAppSounds = myAppSounds;
 		this.sfsClient=sfs;
 		String map = "mapaPrueba.xml";
 		this.mode = getTypeGame(mode);
-		if (this.mode.equals(TypeGame.Survival)) map = "SurvivalMap.xml";
+		if ((this.mode.equals(TypeGame.Survival)) || (this.mode.equals(TypeGame.OneVsAll))) map = "SurvivalMap.xml";
 		this.xmlMapReader = new XMLMapReader(map);
-		this.loadingScreen = new LoadingScreen(this);
 		this.sfsClient.addManager(this);
 		this.myPlayerId = sfsClient.getMyPlayerId()-1;
+		this.match = new Match(xmlMapReader,myPlayerId,numPlayers,this.mode,myAppSounds,this);
+		this.loadingScreen = new LoadingScreen(this);
 	}
 	
 	public void movePlayer(Direction dir){
@@ -55,6 +63,11 @@ public class MatchManager {
 		}
 	}
 	
+	public void send(int x,int y,int playerId) {
+		sfsClient.sinkHarpoon(x,y,playerId);
+	}	
+	
+	
 	private float speedFactor() {
 		int speed = match.getPlayerSpeed(myPlayerId);
 		if (speed == 1) return 1;
@@ -64,9 +77,14 @@ public class MatchManager {
 		else if (speed == 5) return 2f;
 		return 0;
 	}
+	
+	public void sinkHarpoon(int x, int y) {
+		match.sinkHarpoon(x,y);		
+	}
 
 	public void putHarpoon(){
 		if (match.canPutHarpoon(myPlayerId)){
+			match.increaseHarpoonCount();
 			Vector3 coord=match.getCoord();
 			sfsClient.putHarpoon((int)coord.x,(int)coord.y,match.getMyPlayerRange(myPlayerId),myPlayerId);
 			this.lastMessage = System.currentTimeMillis();
@@ -84,6 +102,7 @@ public class MatchManager {
 		if (match.checkHarpoon(x,y)){
 			match.putHarpoonAt(x,y,range,playerId,time);
 		}
+		else if (playerId == myPlayerId) match.decreaseHarpoonsAllowed();
 	}
 	
 	public boolean isThePlayerDead(int numPlayer) {
@@ -92,16 +111,20 @@ public class MatchManager {
 	
 	public boolean imTheWinner(int numPlayer){
 		return match.imTheWinner(numPlayer);
-
 	}
 	
+	
+	public boolean isDraw(){
+		return match.isDraw();
+	}
 	public boolean areAllPlayersDead() {
 		return match.areAllPlayersDead();
 	}
 	
 	public void startGame(int[] upgrades, int numPlayers) {
-		this.numPlayers = numPlayers;
-		match = new Match(upgrades,xmlMapReader,myPlayerId,numPlayers,mode,usersNames[myPlayerId]);
+		this.myAppMusic.playMyInitialMusic();
+		this.myAppSounds.init();
+		match.loadUpgrades(upgrades);
 		this.loadingScreen.setLoaded(true);
 	}
 	
@@ -124,13 +147,39 @@ public class MatchManager {
 	public void changeGameScreen() {
 		this.gameScreen = new GameScreen(this);	
 		LaunchFrozenWars.getGame().setScreen(gameScreen);
+		match.startGameTime();
 	}
 	
+	public void changeToFastBattleMusic(){
+		myAppMusic.playfastBattleMusic();
+	}
+	
+	public void stopTheMusic(){
+		myAppMusic.stopMyMusic();
+	}
+	
+	public void stopSounds() {
+		myAppSounds.stopSounds();
+	}
+	
+	public void playThisSound(String sound){
+		if(sound.equals("youWin")&&playedYet){}
+		else if(sound.equals("youLost")&&playedYet){}
+		else {
+			myAppSounds.playSound(sound);
+			if(sound.equals("youWin") || sound.equals("youLost")) playedYet=true;
+		}
+	}
 	// Getters and Setters
 	
 	public SmartFoxServer getSfsClient() {
 		return sfsClient;
 	}
+	
+	public boolean isTimeGameRunning() {
+		return match.isGameTimeRunning();
+	}
+
 
 	public void setSfsClient(SmartFoxServer sfsClient) {
 		this.sfsClient = sfsClient;
@@ -179,6 +228,9 @@ public class MatchManager {
 	public SunkenTypes getSunkenMatrixSquare(int i, int j) {
 		return match.getSunkenMatrixSquare(i,j);
 		
+	}
+	public boolean isHurtPenguin(int playerId){
+		return match.isHurtPlayer(playerId);
 	}
 
 	public Direction getPlayerDirection(int i) {
@@ -276,4 +328,14 @@ public class MatchManager {
 		return match.getTimeManager();
 	}
 	
+	public ArrayList<Player> getLosersTeam(){
+		return match.getLosersTeam();
+	}
+
+	public boolean isGameEnded() {
+		boolean ended =false;
+		if (this.getMode().equals("survival"))
+			ended = this.imTheWinner(0);
+		return this.areAllPlayersDead()||ended;
+	}
 }

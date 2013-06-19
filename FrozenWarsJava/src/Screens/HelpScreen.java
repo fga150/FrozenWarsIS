@@ -35,7 +35,7 @@ public class HelpScreen implements Screen{
     private  BoundingBox backButtonClick;
    
     private int window;
-
+    private long lastScroll;
 	private Game game;
     
 
@@ -97,6 +97,18 @@ public class HelpScreen implements Screen{
       		}
 			return;
 		}
+		
+		// scroll for changing windows
+		if (Gdx.input.isTouched()){
+      		if ((Gdx.input.getDeltaX() > 10) && (System.currentTimeMillis()-lastScroll > 350)) {
+      			window = Math.max(0, window - 1);
+      			lastScroll = System.currentTimeMillis();
+      		}
+      		else if ((Gdx.input.getDeltaX() < -10) && (System.currentTimeMillis()-lastScroll > 350)){
+      			window = Math.min(4, window + 1);
+      			lastScroll = System.currentTimeMillis();
+      		}
+      	}
 		//crear solamente un batcher por pantalla y eliminarlo cuando no se use
 	
       		GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0
@@ -134,8 +146,8 @@ public class HelpScreen implements Screen{
             	batcher.draw(Assets.gameModesHelpText, 0, 0);
             }
             
-            batcher.draw(Assets.modeLeftArrow, 320, 543);            
-            batcher.draw(Assets.modeRightArrow, 670, 543);    
+            if (window != 0) batcher.draw(Assets.modeLeftArrow, 320, 543);            
+            if (window != 4) batcher.draw(Assets.modeRightArrow, 670, 543);    
             batcher.draw(Assets.backButton, 375, 50);   
             	          
             batcher.end();

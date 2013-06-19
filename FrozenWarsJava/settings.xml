@@ -1,0 +1,9 @@
+<Settings>
+	<Sound>off</Sound>
+	<Vibration>off</Vibration>
+	<Userdata>
+		<Username>user4</Username>
+		<Userpassword>user4</Userpassword>
+	</Userdata>
+	<ConfirmedExit>off</ConfirmedExit>
+</Settings>

@@ -63,6 +63,7 @@ public class AcceptScreen implements Screen{
 	    touchPoint = new Vector3();
 
 	    acceptClick = new BoundingBox(new Vector3(posW+105,posH+30,0), new Vector3(posW+230,posH+85,0));
+	    Gdx.input.setOnscreenKeyboardVisible(false);
 	}
 	
 	public void setNewAcceptScreen(String mode, String usr){
@@ -105,7 +106,6 @@ public class AcceptScreen implements Screen{
     	guiCam.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
       	System.out.println(Integer.toString((int)touchPoint.x).concat(",").concat(Integer.toString((int)touchPoint.y)));
     	if (acceptClick.contains(touchPoint)){  	
-    		System.out.println("ok");
       		if (screenMode.equals("FullTeam") || screenMode.equals("QueueExit") || screenMode.equals("GameNotFound") || screenMode.equals("LeaderLeft") || screenMode.equals("UserOutOfQueue")){
   				MultiplayerScreen.getInstance().setDefault();
   				game.setScreen(MultiplayerScreen.getInstance());
@@ -119,12 +119,14 @@ public class AcceptScreen implements Screen{
   				if (user.equals("Registered")) {
   					SmartFoxServer.getInstance().conectaSala(GameSettings.getInstance().getUserName(), GameSettings.getInstance().getUserPassword());
   					game.setScreen(MultiplayerScreen.getInstance());
-  					
   				}
   				else game.setScreen(ancestor);
   			} else if (screenMode.equals("AcceptedFriendRequest")){
   				FriendsListScreen.getInstance().updateFriends();
   				game.setScreen(ancestor);
+  			} else if (screenMode.equals("ExitGameError")){
+  				GameSettings.getInstance().saveSettings();
+  				this.dispose();
   			}
     	}
       }
@@ -190,6 +192,8 @@ public class AcceptScreen implements Screen{
             } else if (screenMode.equals("AcceptedFriendRequest")){
             	message = user.concat(" accepted your friend request");
             	FriendsListScreen.getInstance().updateFriends();
+            } else if (screenMode.equals("ExitGameError")){
+            	message = "There was an error trying to exit game. App will close";
             }
             
             font.drawWrapped(batcher, message, posW+15, posH+205, 330);

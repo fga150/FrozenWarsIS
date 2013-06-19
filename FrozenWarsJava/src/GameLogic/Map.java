@@ -10,8 +10,7 @@ public class Map {
 	public enum SunkenTypes{empty,sunkenObject}
 	
 	//Type of Fissure Square in the fissuresBoard
-	public enum FissuresTypes{empty, barrelWithFissure, fissureC, fissureSX, fissureSY, crossingFissures, invisibleFissureSX, 
-		invisibleFissureSY, crossInvisibleFissure}
+	public enum FissuresTypes{empty, fissureC, invisibleFissureSX, invisibleFissureSY, crossInvisibleFissure}
 	
 	//Type of Water Square in the waterBoard
 	public enum WaterTypes{empty,water1SOpN, water1SOpS, water1SOpE, water1SOpW, water2SOpCornerEN, water2SOpCornerNW, 
@@ -41,11 +40,10 @@ public class Map {
 	private WaterTypes[][] waterBoard;
 	private SunkenTypes[][] sunkenBoard;
 	
-	public Map(int lenght, int width, int[] upgrades,XMLMapReader xmlMapReader) {
+	public Map(int lenght, int width, XMLMapReader xmlMapReader) {
 		this.length=lenght;
 		this.width=width;
 		this.numBarrels = 0;
-		this.upgrades = upgrades;
 		this.boardGame = new TypeSquare[lenght][width];
 		this.fissuresBoard = new FissuresTypes[lenght][width];
 		this.waterBoard = new WaterTypes[lenght][width];
@@ -67,7 +65,8 @@ public class Map {
 	//METHODS OF PUT FISSURE
 	
 	public void putHarpoonAt(int xHarpoonPosition, int yHarpoonPosition) {
-		boardGame[xHarpoonPosition][yHarpoonPosition]= TypeSquare.harpoon;
+		if(boardGame[xHarpoonPosition][yHarpoonPosition]==TypeSquare.empty)
+				boardGame[xHarpoonPosition][yHarpoonPosition]= TypeSquare.harpoon;
 	}
 
 	public void addAllFissures(ArrayList<Harpoon> harpoonList){
@@ -81,8 +80,7 @@ public class Map {
 	
 	/**
      * Fill fissure matrix with fissure types. The method put fissure center in (xHarpoonPosition, yHarpoonPosition)
-     * and draw fissures in one field around this center (N,S,W,E). The rest of range will be draw with invisible fissures
-     * for use in putWaterAt method.
+     * and draw invisible fissures around this center (N,S,W,E) with range = fissureRange
      * @param xHarpoonPosition
      * @param yHarpoonPosition
      * @param fissureRange
@@ -100,18 +98,11 @@ public class Map {
         boolean blocked = false;
         //NORTH
         while (!blocked && (yHarpoonPosition+i<length) && i<=fissureRange && canIputFissure(xHarpoonPosition,yHarpoonPosition+i)){
-            if(fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.fissureSX){
-                if (i == 1) fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.crossingFissures;
-               // else fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.crossInvisibleFissure;
+            if(fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.invisibleFissureSX){
+                fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.crossInvisibleFissure;
             }
-            else if (boardGame[xHarpoonPosition][yHarpoonPosition+i] == TypeSquare.breakable){
-                if (i == 1) fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.barrelWithFissure;
-                else fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.invisibleFissureSY;
-                blocked = true;
-            }
-            else if (fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] != FissuresTypes.fissureSY)
-                if (i == 1) fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.fissureSY;
-                else fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.invisibleFissureSY;
+            else if (fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] != FissuresTypes.invisibleFissureSY)
+               fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.invisibleFissureSY;
             
             i++;
         }
@@ -119,53 +110,31 @@ public class Map {
        
         //SOUTH
         while (!blocked && yHarpoonPosition-i>=0 && i<=fissureRange && canIputFissure(xHarpoonPosition,yHarpoonPosition-i)){
-            if(fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.fissureSX){
-                if (i == 1) fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.crossingFissures;
-               // else fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.crossInvisibleFissure;
+            if(fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.invisibleFissureSX){
+                fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.crossInvisibleFissure;
             }
-            else if (boardGame[xHarpoonPosition][yHarpoonPosition-i] == TypeSquare.breakable){
-                if (i == 1) fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.barrelWithFissure;
-                else fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.invisibleFissureSY;
-                blocked = true;
-            }
-            else if (fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] != FissuresTypes.fissureSY)
-                if (i == 1) fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.fissureSY;
-                else fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.invisibleFissureSY;
-        i++;
+            else if (fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] != FissuresTypes.invisibleFissureSY)
+               fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.invisibleFissureSY;
+            i++;
         }
         i = 1; blocked = false;
         //EAST
         while (!blocked && (xHarpoonPosition+i<width) && i<=fissureRange && canIputFissure(xHarpoonPosition+i,yHarpoonPosition)){
-            if(fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.fissureSY){
-                if (i == 1) fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.crossingFissures;
-               // else fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.crossInvisibleFissure;
-            }
-            else if (boardGame[xHarpoonPosition+i][yHarpoonPosition] == TypeSquare.breakable){
-                if (i == 1) fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.barrelWithFissure;
-                else fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.invisibleFissureSX;
-                blocked = true;
-            }
-            else if(fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] != FissuresTypes.fissureSX)
-                if (i == 1) fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.fissureSX;
-                else fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.invisibleFissureSX;
-            
+            if(fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.invisibleFissureSY){
+                fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.crossInvisibleFissure;
+            }  
+            else if(fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] != FissuresTypes.invisibleFissureSX)
+                fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.invisibleFissureSX;
         i++;
         }
         i = 1; blocked = false;
         //WEST
         while (!blocked && (xHarpoonPosition-i>=0) && i<=fissureRange && canIputFissure(xHarpoonPosition-i,yHarpoonPosition)){
-            if(fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.fissureSY){
-                if (i == 1) fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.crossingFissures;
-               // else fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.crossInvisibleFissure;
+            if(fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.invisibleFissureSY){
+            	fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.crossInvisibleFissure;  
             }
-            else if (boardGame[xHarpoonPosition-i][yHarpoonPosition] == TypeSquare.breakable){
-                if (i == 1) fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.barrelWithFissure;
-                else fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.invisibleFissureSX;
-                blocked = true;
-            }
-            else if (fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] != FissuresTypes.fissureSX)
-                if (i == 1) fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.fissureSX;
-                else fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.invisibleFissureSX;
+            else if (fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] != FissuresTypes.invisibleFissureSX)
+            	fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.invisibleFissureSX;
         i++;
         }
 }
@@ -214,10 +183,8 @@ public class Map {
 	}
 	
 	public boolean hasOneFissure(int x, int y){
-		return (fissuresBoard[x][y] == FissuresTypes.fissureSY || fissuresBoard[x][y] == FissuresTypes.fissureSX	
-				|| fissuresBoard[x][y] == FissuresTypes.invisibleFissureSX	||(fissuresBoard[x][y] == FissuresTypes.barrelWithFissure
-				|| fissuresBoard[x][y] == FissuresTypes.invisibleFissureSY	|| fissuresBoard[x][y] == FissuresTypes.crossInvisibleFissure)
-				&& !(fissuresBoard[x][y] == FissuresTypes.fissureC));
+		return ((fissuresBoard[x][y] == FissuresTypes.invisibleFissureSY || fissuresBoard[x][y] == FissuresTypes.invisibleFissureSX	
+			|| fissuresBoard[x][y] == FissuresTypes.crossInvisibleFissure)	&& !(fissuresBoard[x][y] == FissuresTypes.fissureC));
 		
 	}
 	
@@ -238,29 +205,28 @@ public class Map {
 		//NORTH
 		blocked = false;
 		while (!blocked && (yHarpoonPosition+i<length) && i<=fissureRange && hasOneFissure(xHarpoonPosition,yHarpoonPosition+i)){
-			if (fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.fissureSY
-				||(fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.invisibleFissureSY
-				&& (boardGame[xHarpoonPosition][yHarpoonPosition+i] == TypeSquare.empty || upgradesTypes(xHarpoonPosition,yHarpoonPosition+i)))){
+			if ((fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.invisibleFissureSY 
+					|| fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.crossInvisibleFissure)
+					&& (boardGame[xHarpoonPosition][yHarpoonPosition+i] == TypeSquare.empty 
+					|| upgradesTypes(xHarpoonPosition,yHarpoonPosition+i))){
 					connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition, yHarpoonPosition+i, fissureRange);
 					waterBoard[xHarpoonPosition][yHarpoonPosition+i] = getWaterPiece(connectingSidesPos);
-			}else if (fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.barrelWithFissure
-				|| (fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.invisibleFissureSY
-				&& boardGame[xHarpoonPosition][yHarpoonPosition+i] == TypeSquare.breakable)){
-
-				fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.empty;
-				int typeImprovement = upgrades[numBarrels];
-				numBarrels++;
-				if (typeImprovement==0){
-					boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.bootUpgrade;
-				}else if (typeImprovement==1){
-					boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.rangeUpgrade;
-				}else if (typeImprovement==2){
-					boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.numHarpoonUpgrade;
-				}else if (typeImprovement==3){
-					boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.invisible;
-				}else{
-					boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.empty;
-				}
+			}else if (fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] == FissuresTypes.invisibleFissureSY
+				&& boardGame[xHarpoonPosition][yHarpoonPosition+i] == TypeSquare.breakable){
+					fissuresBoard[xHarpoonPosition][yHarpoonPosition+i] = FissuresTypes.empty;
+					int typeImprovement = upgrades[numBarrels];
+					numBarrels++;
+					if (typeImprovement==0){
+						boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.bootUpgrade;
+					}else if (typeImprovement==1){
+						boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.rangeUpgrade;
+					}else if (typeImprovement==2){
+						boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.numHarpoonUpgrade;
+					}else if (typeImprovement==3){
+						boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.invisible;
+					}else{
+						boardGame[xHarpoonPosition][yHarpoonPosition+i] = TypeSquare.empty;
+					}
 					blocked = true;
 			}
 			i++;
@@ -270,15 +236,14 @@ public class Map {
 		//SOUTH
 		blocked = false;
 		while (!blocked && yHarpoonPosition-i>=0 && i<=fissureRange && hasOneFissure(xHarpoonPosition,yHarpoonPosition-i)){
-			if (fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.fissureSY
-				||(fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.invisibleFissureSY
-				&& (boardGame[xHarpoonPosition][yHarpoonPosition-i] == TypeSquare.empty  || upgradesTypes(xHarpoonPosition,yHarpoonPosition-i)))){
+			if ((fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.invisibleFissureSY
+				|| fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.crossInvisibleFissure)
+				&& (boardGame[xHarpoonPosition][yHarpoonPosition-i] == TypeSquare.empty  
+				|| upgradesTypes(xHarpoonPosition,yHarpoonPosition-i))){
 					connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition, yHarpoonPosition-i, fissureRange);
 					waterBoard[xHarpoonPosition][yHarpoonPosition-i] = getWaterPiece(connectingSidesPos);
-			}else if (fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.barrelWithFissure
-				|| (fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.invisibleFissureSY
-				&& boardGame[xHarpoonPosition][yHarpoonPosition-i] == TypeSquare.breakable)){
-
+			}else if(fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] == FissuresTypes.invisibleFissureSY
+				&& boardGame[xHarpoonPosition][yHarpoonPosition-i] == TypeSquare.breakable){
 					fissuresBoard[xHarpoonPosition][yHarpoonPosition-i] = FissuresTypes.empty;
 					int typeImprovement=upgrades[numBarrels];
 					numBarrels++;
@@ -302,30 +267,29 @@ public class Map {
 		//EAST
 		blocked = false;
 		while (!blocked && (xHarpoonPosition+i<width) && i<=fissureRange && hasOneFissure(xHarpoonPosition+i, yHarpoonPosition)){
-			if (fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.fissureSX
-				||(fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.invisibleFissureSX 
-				&& (boardGame[xHarpoonPosition+i][yHarpoonPosition] == TypeSquare.empty) || upgradesTypes(xHarpoonPosition+i,yHarpoonPosition))){
+			if ((fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.invisibleFissureSX 
+				|| fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.crossInvisibleFissure)
+				&& ((boardGame[xHarpoonPosition+i][yHarpoonPosition] == TypeSquare.empty) 
+				|| upgradesTypes(xHarpoonPosition+i,yHarpoonPosition))){
 					connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition+i, yHarpoonPosition, fissureRange);
 					waterBoard[xHarpoonPosition+i][yHarpoonPosition] = getWaterPiece(connectingSidesPos);
-			}else if (fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.barrelWithFissure
-				|| (fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.invisibleFissureSX
-				&& boardGame[xHarpoonPosition+i][yHarpoonPosition] == TypeSquare.breakable)){
-
-				fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.empty;
-				int typeImprovement=upgrades[numBarrels];
-				numBarrels++;
-				if (typeImprovement==0){
-					boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.bootUpgrade;
-				}else if (typeImprovement==1){
-					boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.rangeUpgrade;
-				}else if (typeImprovement==2){
-					boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.numHarpoonUpgrade;
-				}else if (typeImprovement==3){
-					boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.invisible;
-				}else{
-					boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.empty;
-				}
-				blocked = true;
+			}else if(fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] == FissuresTypes.invisibleFissureSX
+				&& boardGame[xHarpoonPosition+i][yHarpoonPosition] == TypeSquare.breakable){
+					fissuresBoard[xHarpoonPosition+i][yHarpoonPosition] = FissuresTypes.empty;
+					int typeImprovement=upgrades[numBarrels];
+					numBarrels++;
+					if (typeImprovement==0){
+						boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.bootUpgrade;
+					}else if (typeImprovement==1){
+						boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.rangeUpgrade;
+					}else if (typeImprovement==2){
+						boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.numHarpoonUpgrade;
+					}else if (typeImprovement==3){
+						boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.invisible;
+					}else{
+						boardGame[xHarpoonPosition+i][yHarpoonPosition] = TypeSquare.empty;
+					}
+					blocked = true;
 			}
 			i++;
 		}
@@ -333,14 +297,14 @@ public class Map {
 		//WEST
 		blocked = false;
 		while (!blocked && (xHarpoonPosition-i>=0) && i<=fissureRange && hasOneFissure(xHarpoonPosition-i, yHarpoonPosition)){
-			if (fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.fissureSX
-				||(fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.invisibleFissureSX 
-				&& (boardGame[xHarpoonPosition-i][yHarpoonPosition] == TypeSquare.empty)|| upgradesTypes(xHarpoonPosition-i,yHarpoonPosition))){
+			if ((fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.invisibleFissureSX 
+				|| fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.crossInvisibleFissure)
+				&& ((boardGame[xHarpoonPosition-i][yHarpoonPosition] == TypeSquare.empty)
+				|| upgradesTypes(xHarpoonPosition-i,yHarpoonPosition))){
 					connectingSidesPos = ConnectingSidesPosition(xHarpoonPosition-i, yHarpoonPosition, fissureRange);
 					waterBoard[xHarpoonPosition-i][yHarpoonPosition] = getWaterPiece(connectingSidesPos);
-			}else if(fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.barrelWithFissure
-				|| (fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.invisibleFissureSX 
-				&& boardGame[xHarpoonPosition-i][yHarpoonPosition] == TypeSquare.breakable)){
+			}else if(fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] == FissuresTypes.invisibleFissureSX 
+				&& boardGame[xHarpoonPosition-i][yHarpoonPosition] == TypeSquare.breakable){
 					fissuresBoard[xHarpoonPosition-i][yHarpoonPosition] = FissuresTypes.empty;
 					int typeImprovement=upgrades[numBarrels];
 					numBarrels++;
@@ -386,7 +350,7 @@ public class Map {
 	private boolean canIputWater(int xIni,int yIni,int xFin,int yFin){	
 		//The new field is in the East. we have to check that this field is a fissure or is a water block with a connection in the west side
 		if(xIni < xFin){
-			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSX || fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSX
+			return(fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSX
 					|| fissuresBoard[xFin][yFin] == FissuresTypes.fissureC || fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure
 					|| waterBoard[xFin][yFin] == WaterTypes.water1SOpW || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerNW 
 					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerWS || waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeX 
@@ -395,7 +359,7 @@ public class Map {
 		
 		//The new field is in the West. we have to check that this field is a fissure or is a water block with a connection in the east side
 		}else if(xIni > xFin){
-			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSX  || fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSX
+			return(fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSX
 					|| fissuresBoard[xFin][yFin] == FissuresTypes.fissureC || fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure
 					|| waterBoard[xFin][yFin] == WaterTypes.water1SOpE || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerEN 
 					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerSE || waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeX 
@@ -404,7 +368,7 @@ public class Map {
 				
 		//The new field is in the South. we have to check that this field is a fissure or is a water block with a connection in the north side
 		}else if(yIni > yFin){
-			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSY || fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSY
+			return(fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSY
 					|| fissuresBoard[xFin][yFin] == FissuresTypes.fissureC || fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure
 					|| waterBoard[xFin][yFin] == WaterTypes.water1SOpN || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerNW
 					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerEN || waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeY 
@@ -413,7 +377,7 @@ public class Map {
 	
 		//The new field is in the North. we have to check that this field is a fissure or is a water block with a connection in the south side
 		}else if(yIni < yFin){
-			return(fissuresBoard[xFin][yFin] == FissuresTypes.fissureSY  || fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSY
+			return(fissuresBoard[xFin][yFin] == FissuresTypes.invisibleFissureSY
 					|| fissuresBoard[xFin][yFin] == FissuresTypes.fissureC || fissuresBoard[xFin][yFin] == FissuresTypes.crossInvisibleFissure
 					|| waterBoard[xFin][yFin] == WaterTypes.water1SOpS || waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerSE 
 					|| waterBoard[xFin][yFin] == WaterTypes.water2SOpCornerWS || waterBoard[xFin][yFin] == WaterTypes.water2SOpBridgeY 
@@ -586,5 +550,9 @@ public class Map {
 
 	public boolean existUpgrade(Vector3 pos) {
 		return boardGame[(int) pos.x][(int) pos.y]==TypeSquare.bootUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.rangeUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.numHarpoonUpgrade||boardGame[(int) pos.x][(int) pos.y]==TypeSquare.invisible;
+	}
+
+	public void loadUpgrades(int[] upgrades) {
+		this.upgrades = upgrades;		
 	}
 }

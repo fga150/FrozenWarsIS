@@ -7,6 +7,8 @@ import Application.Desktop;
 import Application.LaunchFrozenWars;
 import Application.MatchManager;
 import Server.SmartFoxServer;
+import Sounds.AppMusic;
+import Sounds.AppSounds;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -310,9 +312,12 @@ public class MultiplayerScreen implements Screen{
 
 
 	public void creaPartida(){
-		MatchManager manager = new MatchManager(sfsClient,gameMode);
+		int numPlayers = 4;
+		AppSounds myAppSounds = new AppSounds();
+		AppMusic myAppMusic = new AppMusic(gameMode);
+		if (privateGame) numPlayers = acceptedPlayers.size();
+		MatchManager manager = new MatchManager(numPlayers,sfsClient,gameMode, myAppMusic, myAppSounds);
 		game.setScreen(manager.getLoadingScreen());
-		if (manager.getMyIdPlayer()==0) manager.sendAsign();
 	}
 	
 	
@@ -334,12 +339,10 @@ public class MultiplayerScreen implements Screen{
       			sfsClient.modExternalPlayersRequest(privateGame);
       		} else if (modeLeftArrowClick.contains(touchPoint) && amIAdmin() && !inQueue){
       			if (gameMode == 0) gameMode = 4;
-      			else if (gameMode == 3) gameMode = 1;
       			else gameMode--;
       			sfsClient.modeChangeRequest(gameMode);
       		} else if (modeRightArrowClick.contains(touchPoint) && amIAdmin() && !inQueue){
-      			if (gameMode == 1) gameMode = 3;
-      			else gameMode = (gameMode + 1) % 5;
+      			gameMode = (gameMode + 1) % 5;
       			sfsClient.modeChangeRequest(gameMode);
       		} else if (scrollDownPlayersClick.contains(touchPoint)){
       			if (invitedScroll < (acceptedPlayers.size() + refusedPlayers.size() + waitingPlayers.size()) - 5) invitedScroll++;
@@ -352,12 +355,18 @@ public class MultiplayerScreen implements Screen{
       		} else if (exitQueueButtonClick.contains(touchPoint) && inQueue && !privateGame){
       			System.out.println(acceptedPlayers.size());
       			sfsClient.removeOfQueue(acceptedPlayers.size(), gameMode);
-      			inQueue=false;
-      		} else if (friendsListClick.contains(touchPoint)){
+      			setDefault();
+			} else if (friendsListClick.contains(touchPoint)){
       			this.game.setScreen(new FriendsListScreen());
       			sfsClient.getMyFriendsRequest();
       		}
 		}
+		
+		//scroll to change into friendslist
+		if (Gdx.input.isTouched()){
+      		if (Gdx.input.getDeltaX() < -10 ) game.setScreen(FriendsListScreen.getInstance()); 
+      		sfsClient.getMyFriendsRequest();
+      	}
 		
 		if (empiezaPartida) {
 			creaPartida();

@@ -41,17 +41,14 @@ public class LogInScreen implements Screen {
 	private String passShown;	
 	private String passS;
 	private LaunchFrozenWars proc;
-
+	
 	
 	public LogInScreen() {
 		instance = this;
 		this.game = LaunchFrozenWars.getGame();
-		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);;
+		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);
 		
 		this.user = this.pass = this.passShown = this.passS  = "";
-	
-		guiCam = new OrthographicCamera(1024,630);
-		guiCam.position.set(512,315,0);
 	
 		font = new BitmapFont(Gdx.files.internal("data/first.fnt"), Gdx.files.internal("data/first.png"), false);
 
@@ -68,6 +65,9 @@ public class LogInScreen implements Screen {
 	    sfsClient = SmartFoxServer.getInstance();
 	    
 	    proc = (LaunchFrozenWars) Gdx.input.getInputProcessor();
+	    
+		guiCam = new OrthographicCamera(1024, 630);
+		guiCam.position.set(512, 315, 0);
 	}
 
 	@Override
@@ -99,18 +99,28 @@ public class LogInScreen implements Screen {
       			proc.setInfoPressed(2);
       		} else if(okClick.contains(touchPoint)){ //Check if we have clicked on "ok" button 
       			proc.setInfoPressed(0);
+      			Gdx.input.setOnscreenKeyboardVisible(false);
       			sfsClient.conectaSala(user, pass);
       		} else if(backClick.contains(touchPoint)){ //Check if we have clicked on "back" button 
       			proc.setInfoPressed(0);
+      			Gdx.input.setOnscreenKeyboardVisible(false);
       			game.setScreen(LogSignScreen.getInstance());
       		} else{ //We haven't clicked on any component
       			proc.setInfoPressed(0);
       		}
+
       }
+
+      	if (Gdx.input.isTouched()){
+      		if (Gdx.input.getDeltaY() > 0 ) this.rollScreenUp(Gdx.input.getDeltaY());
+      		else if (Gdx.input.getDeltaY() < 0 ) this.rollScreenDown(Gdx.input.getDeltaY());
+      		
+      	}
       //One batcher in each screen. We should remove it when we don't need it anymore
         	GL10 gl = Gdx.graphics.getGL10(); //references to OpenGL 1.0
-            gl.glClearColor(0,1,0,1);
+            gl.glClearColor(0.9137525F,0.9137525F,0.9137525F,0);
             gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+            
  
             guiCam.update();
             batcher.setProjectionMatrix(guiCam.combined);
@@ -118,10 +128,10 @@ public class LogInScreen implements Screen {
            
             batcher.disableBlending();
             batcher.begin();
-            batcher.draw(Assets.backGrey,0,0, 1024, 630);  //Drawning Background
+            batcher.draw(Assets.backGrey,0,0, 1024, 630);  //Drawing Background
             batcher.end();
 
-          //Dranwing elements on the screen
+          //Drawing elements on the screen
             batcher.enableBlending();
             batcher.begin();    
             batcher.draw(Assets.logInWindow, 300, 200);
@@ -163,6 +173,9 @@ public class LogInScreen implements Screen {
             ConfirmScreen.getInstance().createConfirmIfNeeded();
             AcceptScreen.getInstance().createAcceptIfNeeded();
             
+           
+        
+            
 	}
 
 	@Override
@@ -187,6 +200,7 @@ public class LogInScreen implements Screen {
         	pass += c; //We add the char pressed
         	passS +='.'; 
         } 
+		
 	}
 	
 	public void del(){
@@ -203,5 +217,29 @@ public class LogInScreen implements Screen {
 			proc.setInfoPressed(0);
   			sfsClient.conectaSala(user, pass);
         }
+	}
+	
+	public void rollScreenUp(int x){
+		if (Desktop.getRunningInPC())
+			return;
+		
+		if (guiCam.position.y < 315)
+            guiCam.translate(0, x, 0);
+		
+		if (guiCam.position.y > 315)
+			guiCam.position.set(512, 315, 0);
+          
+	}
+	
+	
+	public void rollScreenDown(int x){
+		if (Desktop.getRunningInPC())
+			return;
+
+		if (guiCam.position.y > 50)
+            guiCam.translate(0, x, 0);
+
+		if (guiCam.position.y < 50)
+			guiCam.position.set(512, 50, 0);
 	}
 }

@@ -62,7 +62,8 @@ public class ConfirmScreen implements Screen{
 	    batcher = new SpriteBatch();
 	    touchPoint = new Vector3();
 	    yesClick = new BoundingBox(new Vector3(posW+20,posH+45,0), new Vector3(posW+155,posH+100,0));
-	    noClick = new BoundingBox(new Vector3(posW+190,posH+45,0), new Vector3(posW+320,posH+100,0));        
+	    noClick = new BoundingBox(new Vector3(posW+190,posH+45,0), new Vector3(posW+320,posH+100,0));   
+	    Gdx.input.setOnscreenKeyboardVisible(false);
 	}
 	
 	public void setNewConfirmScreen(String mode, String usr){

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import Application.GameSettings;
 import Application.LaunchFrozenWars;
 import Application.MatchManager;
-import Application.MatchManager.Direction;
+import GameLogic.Direction;
 import Screens.AcceptScreen;
 import Screens.ConfirmScreen;
 import Screens.FriendsListScreen;
@@ -19,6 +19,7 @@ import Screens.MultiplayerScreen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector3;
+
 import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSArray;
@@ -40,6 +41,7 @@ public class SmartFoxServer implements IEventListener {
 	private MatchManager manager;
 	private static SmartFoxServer instance;
 	private long delayTime;
+	private long lagTime;
 	private int myPlayerId;
 	private String lastUserName;
 	private String lastPass;
@@ -59,11 +61,15 @@ public class SmartFoxServer implements IEventListener {
 	}
 	
 	public void getTimeResponse(ISFSObject response){
+		long responseTime = System.currentTimeMillis();
+		lagTime = responseTime - lagTime;
 		long time = response.getLong("time");
-		this.delayTime = System.currentTimeMillis() - time;
+		long currentTime = System.currentTimeMillis();
+		this.delayTime = (currentTime - time) + lagTime;
 	}
 	
 	public void getTimeRequest(){
+		this.lagTime = System.currentTimeMillis();
 		ExtensionRequest request = new ExtensionRequest("GetTime",null);
 		sfsClient.send(request);
 	}
@@ -83,7 +89,6 @@ public class SmartFoxServer implements IEventListener {
 	public void addManager(MatchManager manager){
 		this.manager = manager;
 	}
-	
 	
 	public int getMyPlayerId(){
 		return myPlayerId;
@@ -154,8 +159,8 @@ public class SmartFoxServer implements IEventListener {
 					DisconectedOnGame(response);
 				else if (cmd.equals("putHarpoon"))
 					getHarpoon(response);
-				else if (cmd.equals("exploteHarpoon"))
-					exploteHarpoon(response);
+				else if (cmd.equals("exploteHarpoonRes"))
+					sinkHarpoonRes(response);
 				else if (cmd.equals("getTime"))
 					getTimeResponse(response);
 				else if (cmd.equals("dbRegister"))
@@ -181,7 +186,7 @@ public class SmartFoxServer implements IEventListener {
 				else if(cmd.equals("UpdateFriendList"))
 					getMyFriendsRequest();	
 				else if(cmd.equals("LeaveQueue"))
-					leaveQueueRes(response);	
+					leaveQueueRes(response);
 			}
 
 		});
@@ -191,10 +196,7 @@ public class SmartFoxServer implements IEventListener {
 		String ip = "";
 		try {
 			InetAddress address = InetAddress.getByName(new URL("http://boomwars-server.no-ip.org").getHost());
-			//InetAddress address = InetAddress.getByName(new URL("http://frozenwarsthegame.no-ip.org").getHost());
-			
 			ip = address.getHostAddress();
-			//ip="127.0.0.1";
 		} catch (Exception e){
 			
 		}
@@ -547,15 +549,19 @@ public class SmartFoxServer implements IEventListener {
 		manager.putHarpoonEvent(x,y,range,playerId,time+delayTime);
 	}
 	
-	private void exploteHarpoon(ISFSObject response) {
-		
-		// TODO GameLogic explote harpoon
-		
+	public void sinkHarpoon(int x,int y, int myPlayerId){
+		SFSObject params = new SFSObject();
+		params.putInt("x", x);
+		params.putInt("y", y);
+		params.putInt("playerId",myPlayerId);
+		sfsClient.send(new ExtensionRequest("ExploteHarpoon",params));
+	}
+	
+	private void sinkHarpoonRes(ISFSObject response) {
 		int x=response.getInt("x");
 		int y=response.getInt("y");	//arguments to know what harpoon is
-		int range=response.getInt("range");
-		int playerId = response.getInt("playerId"); 
-		
+		int playerId = response.getInt("playerId");// if not necessary playerId also delete this
+		manager.sinkHarpoon(x,y);
 	}
 	
 	public void beFriends(ISFSObject params){
@@ -666,9 +672,9 @@ public class SmartFoxServer implements IEventListener {
 	/**response of the server when you want to exit from the game*/
 	private void exitGameRes(ISFSObject response) {
 		if (response.getUtfString("res")=="Success"){
-			//TODO fede when you have exit from the game are you are now in the lobby show a message? and go to the multiplayer screen?
+			
 		}else if (response.getUtfString("res")=="Error"){
-			//TODO show a error message (Like the ones of adding friends)
+			AcceptScreen.getInstance().setNewAcceptScreen("ExitGameError", "");
 		}	
 	}
 	
@@ -677,7 +683,6 @@ public class SmartFoxServer implements IEventListener {
 		
 	}
 	
-
 	private void leaveQueueRes(ISFSObject response) {
 		AcceptScreen.getInstance().setNewAcceptScreen("QueueExit", response.getUtfString("playerName"));		
 	}

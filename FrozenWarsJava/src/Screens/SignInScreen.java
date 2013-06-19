@@ -118,17 +118,25 @@ public class SignInScreen implements Screen {
       			proc.setInfoPressed(12);
       		} else if(okClick.contains(touchPoint)){ //compruebo si he tocado no
       			proc.setInfoPressed(0);
+      			Gdx.input.setOnscreenKeyboardVisible(false);
       			sfsClient.register(user, email, pass1, pass2);
       		} else if(backClick.contains(touchPoint)){ //compruebo si he tocado no
       			proc.setInfoPressed(0);
+      			Gdx.input.setOnscreenKeyboardVisible(false);
       			game.setScreen(LogSignScreen.getInstance());
       		} else{
       			proc.setInfoPressed(0);
       		}
       }
+      
+    	if (Gdx.input.isTouched()){
+      		if (Gdx.input.getDeltaY() > 0 ) this.rollScreenUp(Gdx.input.getDeltaY());
+      		else if (Gdx.input.getDeltaY() < 0 ) this.rollScreenDown(Gdx.input.getDeltaY());
+      	}
+    	
       //crear solamente un batcher por pantalla y eliminarlo cuando no se use
         	GL10 gl = Gdx.graphics.getGL10(); //referencia a OpenGL 1.0
-            gl.glClearColor(0,1,0,1);
+            gl.glClearColor(0.9137525F,0.9137525F,0.9137525F,0);
             gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
  
             guiCam.update();
@@ -260,5 +268,29 @@ public class SignInScreen implements Screen {
 			proc.setInfoPressed(0);
   			sfsClient.register(user, email, pass1, pass2);
         }
+	}
+	
+	public void rollScreenUp(int x){
+		if (Desktop.getRunningInPC())
+			return;
+		
+		if (guiCam.position.y < 315)
+            guiCam.translate(0, x, 0);
+		
+		if (guiCam.position.y > 315)
+			guiCam.position.set(512, 315, 0);
+          
+	}
+	
+	
+	public void rollScreenDown(int x){
+		if (Desktop.getRunningInPC())
+			return;
+
+		if (guiCam.position.y > 50)
+            guiCam.translate(0, x, 0);
+
+		if (guiCam.position.y < 50)
+			guiCam.position.set(512, 50, 0);
 	}
 }
